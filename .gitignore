@@ -1,0 +1,26 @@
+# Environment
+.env
+
+# Frontend
+node_modules/
+.next/
+out/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Database and local data
+postgres_data/
+*.db
+best_model.pth
+
+# Tooling
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
