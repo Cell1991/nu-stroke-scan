@@ -7,8 +7,9 @@ class Settings(BaseSettings):
     app_name: str = "Nu Stroke Scan API"
     database_url: str = "postgresql+psycopg://postgres:postgres@database:5432/nu_stroke_scan"
     cors_origins: str = "http://localhost:3000"
-    model_path: str = "/models/best_model.pth"
-    model_input_size: int = 256
+    vcanet_checkpoint: str = "/model-weights/vcanet_best.pth"
+    dlka_checkpoint: str = "/model-weights/dlka_best.pth"
+    patcher_service_url: str = "http://patcher:8001"
     model_threshold: float = 0.5
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

@@ -30,6 +30,7 @@ body { background: var(--background); color: var(--foreground); margin: 0; }
   .image-pane { @apply relative flex aspect-square items-center justify-center overflow-hidden rounded-[3px] bg-[#07090c]; }
   .empty-image { @apply flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.12em] text-white/25; }
   .output-preview { @apply flex min-h-[230px] flex-1 items-center justify-center overflow-hidden rounded-[3px] bg-[#07090c] p-3; }
+  .model-select { @apply h-11 w-full rounded-[3px] border border-white/20 bg-[#0b0e12] px-3 text-xs font-bold uppercase tracking-[0.1em] text-white/80 transition hover:border-white/50 focus:border-[#ff7c3a]/70 focus:outline-none; }
 }
 
 .button-icon { font-size: 17px; line-height: 0; }
@@ -41,4 +42,7 @@ body { background: var(--background); color: var(--foreground); margin: 0; }
 .range-value { min-width: 28px; text-align: right; color: #ff9b68; font-variant-numeric: tabular-nums; }
 .mask-shape { position: absolute; left: 17%; top: 21%; width: 40%; height: 39%; background: #ff2f32; opacity: .72; clip-path: polygon(12% 5%, 78% 0, 100% 22%, 86% 55%, 100% 82%, 56% 100%, 23% 84%, 0 56%, 7% 23%); mix-blend-mode: screen; pointer-events: none; }
 .mask-small { left: 19%; top: 19%; width: 40%; height: 41%; }
-.lesion-mask { filter: brightness(0) saturate(100%) invert(26%) sepia(95%) saturate(3125%) hue-rotate(344deg) brightness(102%) contrast(105%); mix-blend-mode: screen; pointer-events: none; }
+/* mask_png_base64 is now RGBA (solid red, alpha = lesion probability >= threshold)
+   straight from the backend, so no CSS color/blend trickery is needed here --
+   opacity alone (see the mask-opacity slider's inline style) controls how it reads. */
+.lesion-mask { pointer-events: none; }

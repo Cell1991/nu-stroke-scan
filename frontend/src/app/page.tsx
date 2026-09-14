@@ -10,6 +10,12 @@ type ScanResult = {
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
+const MODEL_OPTIONS = [
+  { id: "vcanet", label: "VCA-Net" },
+  { id: "dlka", label: "Deformable LKA" },
+  { id: "patcher", label: "Patcher (SegFormer)" },
+];
+
 export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -21,6 +27,7 @@ export default function HomePage() {
   const [contrast, setContrast] = useState(100);
   const [maskOpacity, setMaskOpacity] = useState(72);
   const [confidenceThreshold, setConfidenceThreshold] = useState(50);
+  const [modelId, setModelId] = useState("vcanet");
 
   useEffect(() => {
     return () => {
@@ -57,6 +64,7 @@ export default function HomePage() {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("model", modelId);
       formData.append("threshold", String(confidenceThreshold / 100));
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/analysis`, { method: "POST", body: formData });
       const payload = (await response.json()) as { detail?: string; label?: string; confidence?: number; mask_png_base64?: string };
@@ -103,6 +111,20 @@ export default function HomePage() {
               <div><p className="section-kicker">01 / Input</p><h2 className="panel-title">Upload scan</h2></div>
               <span className="text-xl text-[#ff7c3a]">＋</span>
             </div>
+
+            <label className="mb-4 block">
+              <span className="metric-label">Model</span>
+              <select
+                aria-label="Segmentation model"
+                className="model-select mt-2"
+                value={modelId}
+                onChange={(event) => { setModelId(event.target.value); setResult(null); }}
+              >
+                {MODEL_OPTIONS.map((option) => (
+                  <option key={option.id} value={option.id}>{option.label}</option>
+                ))}
+              </select>
+            </label>
 
             <button type="button" onClick={() => inputRef.current?.click()} className="upload-zone group" aria-label="Choose a CT scan image">
               {imageUrl ? <img src={imageUrl} alt="Selected CT scan preview" className="h-full w-full object-cover opacity-90 transition group-hover:opacity-100" /> : <><span className="text-4xl text-white/25">⌁</span><span className="mt-3 text-xs text-white/45">Drop CT image here</span><span className="mt-1 text-[10px] uppercase tracking-[0.14em] text-white/25">PNG / JPG / WEBP</span></>}

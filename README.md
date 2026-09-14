@@ -20,11 +20,17 @@ The backend uses SQLAlchemy 2.x and Alembic. PostgreSQL data is stored in the na
 
 ## Real model inference
 
-Place the trained checkpoint at the repository root as `best_model.pth`, then start the stack. Docker mounts it read-only at `/models/best_model.pth`. The backend loads it as a strict VCA-Net segmentation checkpoint, resizes input to `256x256`, prepares the required two-channel tensor, and returns a lesion mask from `POST /api/analysis`.
+Three trained checkpoints from the sibling thesis folders are wired in via read-only Docker bind mounts (see `docker-compose.yml`) -- no manual copying needed as long as `results/`, `vcanet_ct/`, `dlka_ct/2D/`, and `patcher_ct/` exist next to this repo:
 
-The endpoint accepts an image multipart field named `file`. It rejects unsupported, unreadable, non-grayscale, and non-CT-like images with a clear validation error. This checkpoint produces lesion segmentation only; it does not contain a two-class ischemic/hemorrhagic classification head.
+- `vcanet` -- VCA-Net (`vcanet_ct/model.py`), checkpoint from `results/vcanet_results/checkpoints/best.pth`.
+- `dlka` -- Deformable LKA / MaxViT (`dlka_ct/2D/networks/MaxViT_deform_LKA.py`), checkpoint from `results/dlka_results/checkpoints/best.pth`.
+- `patcher` -- Patcher (SegFormer-style, mmseg + PyTorch Lightning, `patcher_ct/`), checkpoint from `results/patcher_results_new/checkpoints/best.ckpt`. This model needs `torch<2.0` and `mmcv-full`, which conflicts with the main backend's `torch==2.5.1+cpu`, so it runs as its own FastAPI microservice (`patcher_ct/infer_server.py`, its own container) that the backend proxies to over the internal Docker network.
 
-Model settings can be changed with `MODEL_PATH`, `MODEL_INPUT_SIZE`, and `MODEL_THRESHOLD` in `.env`.
+All three share the same 224x224 grayscale preprocessing. `POST /api/analysis` accepts a multipart `file` field, a `model` field (`vcanet` | `dlka` | `patcher`, default `vcanet`), and a `threshold` field (0-1). `GET /api/analysis/models` lists the available models for the frontend's model picker.
+
+The endpoint rejects unsupported, unreadable, non-grayscale, and non-CT-like images with a clear validation error. These checkpoints produce lesion segmentation only; none contains a two-class ischemic/hemorrhagic classification head.
+
+Checkpoint paths and the Patcher service URL can be overridden with `VCANET_CHECKPOINT`, `DLKA_CHECKPOINT`, `PATCHER_SERVICE_URL`, `PATCHER_CHECKPOINT`, and `MODEL_THRESHOLD` in `.env`.
 
 ## Project layout
 
