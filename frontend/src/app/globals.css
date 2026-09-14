@@ -34,6 +34,8 @@ body { background: var(--background); color: var(--foreground); margin: 0; }
 
 .button-icon { font-size: 17px; line-height: 0; }
 .metric-cell + .metric-cell { border-left: 1px solid var(--line); padding-left: 1rem; }
+.confidence-control { border: 1px solid rgb(255 124 58 / 25%); border-radius: 4px; background: rgb(255 124 58 / 5%); padding: 12px 14px 10px; }
+.confidence-threshold-value { color: #ff9b68; font-family: var(--font-space-grotesk); font-size: 20px; font-weight: 700; line-height: 1; }
 
 .range-input { accent-color: #ff7c3a; height: 3px; }
 .range-value { min-width: 28px; text-align: right; color: #ff9b68; font-variant-numeric: tabular-nums; }

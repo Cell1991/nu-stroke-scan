@@ -20,6 +20,7 @@ export default function HomePage() {
   const [brightness, setBrightness] = useState(100);
   const [contrast, setContrast] = useState(100);
   const [maskOpacity, setMaskOpacity] = useState(72);
+  const [confidenceThreshold, setConfidenceThreshold] = useState(50);
 
   useEffect(() => {
     return () => {
@@ -56,6 +57,7 @@ export default function HomePage() {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("threshold", String(confidenceThreshold / 100));
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/analysis`, { method: "POST", body: formData });
       const payload = (await response.json()) as { detail?: string; label?: string; confidence?: number; mask_png_base64?: string };
       if (!response.ok) throw new Error(payload.detail ?? "The image could not be analyzed.");
@@ -134,6 +136,13 @@ export default function HomePage() {
               <RangeControl label="Contrast" value={contrast} min={60} max={160} onChange={setContrast} suffix={`${contrast - 100 > 0 ? "+" : ""}${contrast - 100}`} />
               <RangeControl label="Mask opacity" value={maskOpacity} min={0} max={100} onChange={setMaskOpacity} suffix={`${maskOpacity}`} />
             </div>
+            <div className="confidence-control mt-5">
+              <div className="flex items-start justify-between gap-4">
+                <div><p className="metric-label">Confidence threshold</p><p className="mt-1 text-[10px] text-white/35">Set a threshold, then scan again to apply it.</p></div>
+                <span className="confidence-threshold-value">{confidenceThreshold}%</span>
+              </div>
+              <RangeControl label="Confidence threshold" value={confidenceThreshold} min={10} max={95} onChange={(value) => { setConfidenceThreshold(value); setResult(null); }} suffix={`${confidenceThreshold}%`} hideLabel />
+            </div>
           </section>
 
           <aside className="panel flex flex-col p-4">
@@ -154,6 +163,6 @@ function ImagePane({ label, imageUrl, maskUrl, style, maskOpacity = 72 }: { labe
   return <div><div className="image-pane">{imageUrl ? <div className="relative h-full w-full"><img src={imageUrl} alt={`${label} CT scan`} style={style} className="h-full w-full object-contain" />{maskUrl && <img src={maskUrl} alt="Predicted lesion mask" className="lesion-mask absolute inset-0 h-full w-full object-contain" style={{ opacity: maskOpacity / 100 }} />}</div> : <div className="empty-image"><span className="text-3xl text-white/15">◌</span><span>Upload an image to begin</span></div>}</div><p className="mt-2 text-center text-[10px] uppercase tracking-[0.18em] text-white/45">{label}</p></div>;
 }
 
-function RangeControl({ label, value, min, max, suffix, onChange }: { label: string; value: number; min: number; max: number; suffix: string; onChange: (value: number) => void }) {
-  return <label className="block"><span className="flex justify-between text-[10px] text-white/55"><span>{label}</span><span className="range-value">{suffix}</span></span><input aria-label={label} type="range" min={min} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} className="range-input mt-2 w-full" /></label>;
+function RangeControl({ label, value, min, max, suffix, onChange, hideLabel = false }: { label: string; value: number; min: number; max: number; suffix: string; onChange: (value: number) => void; hideLabel?: boolean }) {
+  return <label className="block"><span className={`${hideLabel ? "sr-only" : ""} flex justify-between text-[10px] text-white/55`}><span>{label}</span><span className="range-value">{suffix}</span></span><input aria-label={label} type="range" min={min} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} className="range-input mt-2 w-full" /></label>;
 }

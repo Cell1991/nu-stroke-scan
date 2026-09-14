@@ -37,7 +37,7 @@ def validate_brain_ct(image: Image.Image) -> None:
         raise HTTPException(status_code=422, detail="Invalid image: the uploaded file does not look like a brain CT scan.")
 
 
-async def analyze_upload(upload: UploadFile) -> dict[str, object]:
+async def analyze_upload(upload: UploadFile, threshold: float | None = None) -> dict[str, object]:
     if not upload.content_type or not upload.content_type.startswith("image/"):
         raise HTTPException(status_code=422, detail="Invalid file: upload a PNG, JPG, or WEBP brain CT image.")
     raw = await upload.read()
@@ -50,11 +50,12 @@ async def analyze_upload(upload: UploadFile) -> dict[str, object]:
         raise HTTPException(status_code=422, detail="Invalid image file. Please upload a readable CT image.") from error
 
     validate_brain_ct(image)
+    selected_threshold = settings.model_threshold if threshold is None else max(0.0, min(1.0, threshold))
     model = get_model()
     tensor = prepare_image(image, settings.model_input_size)
     with torch.inference_mode():
         probabilities = torch.sigmoid(model(tensor))[0, 0]
-    mask = probabilities.ge(settings.model_threshold).to(torch.uint8).mul(255).numpy()
+    mask = probabilities.ge(selected_threshold).to(torch.uint8).mul(255).numpy()
     detected = bool(mask.any())
     positive = probabilities[mask > 0]
     confidence = float(positive.mean().item()) if detected else float((1 - probabilities).mean().item())
@@ -68,6 +69,7 @@ async def analyze_upload(upload: UploadFile) -> dict[str, object]:
         "lesion_detected": detected,
         "label": "Lesion detected" if detected else "No lesion detected",
         "confidence": round(confidence, 4),
+        "threshold": selected_threshold,
         "mask_width": settings.model_input_size,
         "mask_height": settings.model_input_size,
         "mask_png_base64": base64.b64encode(buffer.getvalue()).decode("ascii"),
