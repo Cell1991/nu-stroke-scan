@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #cbd5e1;
-  --foreground: #0f172a;
+  --background: #090d16;
+  --foreground: #f8fafc;
 }
 
 html, body {
@@ -13,77 +13,81 @@ html, body {
   padding: 0;
   background-color: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
-/* Custom light scrollbars */
+/* Luxury Custom Dark Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #e2e8f0;
+  background: rgba(15, 23, 42, 0.6);
 }
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: rgba(56, 189, 248, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: rgba(56, 189, 248, 0.5);
 }
 
-/* DICOM Medical Image Viewer Canvas */
-.dicom-canvas-bg {
-  background-color: #030712;
+/* Ambient Medical Enterprise Backdrop */
+.medical-dark-backdrop {
+  background-color: #070a12;
   background-image: 
-    radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.8) 0%, rgba(3, 7, 18, 0.99) 100%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 100% 100%, 24px 24px, 24px 24px;
+    radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
 }
 
-/* Fine Medical PACS Grid Overlay */
+/* Frosted Luxury Glassmorphism Panel */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.glass-panel-subtle {
+  background: rgba(30, 41, 59, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Deep DICOM Medical Canvas */
+.dicom-canvas-bg {
+  background-color: #03050a;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.9) 0%, rgba(2, 4, 8, 0.99) 100%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 20px 20px, 20px 20px;
+}
+
+/* Fine Clinical Measurement Gridlines */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.14) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.14) 1px, transparent 1px),
-    linear-gradient(to right, rgba(56, 189, 248, 0.32) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.32) 1px, transparent 1px);
+    linear-gradient(to right, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(56, 189, 248, 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.2) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
   pointer-events: none;
 }
 
-/* Clean Clinical Range Sliders */
-.medical-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 6px;
-  border-radius: 9999px;
-  outline: none;
-  cursor: pointer;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
-}
-.medical-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid #0284c7;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
-  transition: transform 0.12s ease, border-color 0.12s ease;
-}
-.medical-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.25);
-  border-color: #0369a1;
-}
-
-/* Smooth Continuous Neumorphic Slider */
+/* Smooth Luxury Sliders */
 .neu-slider-container {
   position: relative;
   width: 100%;
@@ -96,11 +100,11 @@ html, body {
   position: relative;
   width: 100%;
   height: 6px;
-  background: #cbd5e1;
+  background: rgba(30, 41, 59, 0.9);
   border-radius: 9999px;
   box-shadow: 
-    inset 0 1.5px 3px rgba(15, 23, 42, 0.28),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.7);
+    inset 0 1px 3px rgba(0, 0, 0, 0.7),
+    0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
 }
 
@@ -109,9 +113,9 @@ html, body {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  background: linear-gradient(90deg, #0284c7 0%, #00f2fe 100%);
   border-radius: 9999px;
-  box-shadow: 0 0 8px rgba(0, 198, 255, 0.5);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
   pointer-events: none;
 }
 
@@ -138,13 +142,12 @@ html, body {
   height: 18px;
   border-radius: 50%;
   background: 
-    radial-gradient(circle at center, #0284c7 0%, #00d2ff 42%, transparent 46%),
-    linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 1px solid rgba(148, 163, 184, 0.7);
+    radial-gradient(circle at center, #0284c7 0%, #00f2fe 42%, transparent 46%),
+    linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 
-    0 2px 6px rgba(15, 23, 42, 0.3),
-    0 1px 2px rgba(15, 23, 42, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(0, 242, 254, 0.5);
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
@@ -152,12 +155,8 @@ html, body {
 .neu-range-input::-webkit-slider-thumb:hover {
   transform: scale(1.15);
   box-shadow: 
-    0 3px 10px rgba(2, 132, 199, 0.4),
-    inset 0 1px 0 #ffffff;
-}
-
-.neu-range-input::-webkit-slider-thumb:active {
-  transform: scale(1.18);
+    0 3px 12px rgba(0, 0, 0, 0.8),
+    0 0 18px rgba(0, 242, 254, 0.9);
 }
 
 .neu-range-input::-moz-range-thumb {
@@ -165,134 +164,100 @@ html, body {
   height: 18px;
   border-radius: 50%;
   background: 
-    radial-gradient(circle at center, #0284c7 0%, #00d2ff 42%, transparent 46%),
-    linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 1px solid rgba(148, 163, 184, 0.7);
+    radial-gradient(circle at center, #0284c7 0%, #00f2fe 42%, transparent 46%),
+    linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 
-    0 2px 6px rgba(15, 23, 42, 0.3),
-    0 1px 2px rgba(15, 23, 42, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(0, 242, 254, 0.5);
   cursor: pointer;
 }
 
-.lesion-mask {
-  pointer-events: none;
-}
-
-/* Tactile 3D Buttons & Animations (Clinical Grade) */
-.btn-tactile-primary {
+/* Luxury Interactive Glass Buttons */
+.btn-glass-primary {
   background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
-  border-bottom: 2px solid #075985;
+  border: 1px solid rgba(56, 189, 248, 0.5);
   box-shadow: 
-    0 3px 10px rgba(2, 132, 199, 0.35),
+    0 4px 16px rgba(2, 132, 199, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: #ffffff;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-tactile-primary:hover:not(:disabled) {
+.btn-glass-primary:hover:not(:disabled) {
   background: linear-gradient(180deg, #0369a1 0%, #075985 100%);
   transform: translateY(-1.5px);
   box-shadow: 
-    0 5px 16px rgba(2, 132, 199, 0.45),
+    0 6px 20px rgba(2, 132, 199, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
-.btn-tactile-primary:active:not(:disabled) {
+.btn-glass-primary:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 
-    0 1px 4px rgba(2, 132, 199, 0.25),
-    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
 }
 
-.btn-tactile-emerald {
+.btn-glass-subtle {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-glass-subtle:hover:not(:disabled) {
+  background: rgba(51, 65, 85, 0.85);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+.btn-glass-subtle:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-glass-emerald {
+  background: linear-gradient(180deg, #0d9488 0%, #0f766e 100%);
+  border: 1px solid rgba(45, 212, 191, 0.4);
+  box-shadow: 
+    0 4px 14px rgba(13, 148, 136, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-glass-emerald:hover:not(:disabled) {
   background: linear-gradient(180deg, #0f766e 0%, #115e59 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-  border-bottom: 2px solid #042f2e;
-  box-shadow: 
-    0 2px 6px rgba(15, 118, 110, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btn-tactile-emerald:hover:not(:disabled) {
-  background: linear-gradient(180deg, #134e4a 0%, #042f2e 100%);
   transform: translateY(-1.5px);
-  box-shadow: 
-    0 4px 12px rgba(15, 118, 110, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 18px rgba(13, 148, 136, 0.5);
 }
-.btn-tactile-emerald:active:not(:disabled) {
+.btn-glass-emerald:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 
-    0 1px 3px rgba(15, 118, 110, 0.2),
-    inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Sleek Modern Hospital Toolbar & Tactile Buttons */
-.btn-toolbar-capsule {
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  box-shadow: 
-    0 1px 3px rgba(15, 23, 42, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  color: #1e293b;
-  border-radius: 8px;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btn-toolbar-capsule:hover:not(:disabled) {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  border-color: rgba(100, 116, 139, 0.75);
-  color: #0f172a;
-  transform: translateY(-1.5px);
-  box-shadow: 
-    0 4px 12px rgba(15, 23, 42, 0.14),
-    inset 0 1px 0 #ffffff;
-}
-.btn-toolbar-capsule:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: 
-    0 1px 2px rgba(15, 23, 42, 0.06),
-    inset 0 1px 3px rgba(0, 0, 0, 0.08);
+/* Subtle Shimmer & Scan Animations */
+@keyframes subtle-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-.btn-tactile-light {
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  box-shadow: 
-    0 1px 3px rgba(15, 23, 42, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  color: #1e293b;
-  border-radius: 8px;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btn-tactile-light:hover:not(:disabled) {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  border-color: rgba(100, 116, 139, 0.75);
-  color: #0f172a;
-  transform: translateY(-1.5px);
-  box-shadow: 
-    0 4px 12px rgba(15, 23, 42, 0.14),
-    inset 0 1px 0 #ffffff;
-}
-.btn-tactile-light:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: 
-    0 1px 2px rgba(15, 23, 42, 0.06),
-    inset 0 1px 3px rgba(0, 0, 0, 0.08);
+.shimmer-active {
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.15), transparent);
+  background-size: 200% 100%;
+  animation: subtle-shimmer 2.5s infinite;
 }
 
-/* ==========================================================================
-   FUTURISTIC CYBER-MEDICAL ANIMATIONS & HIGH-TECH HUD EFFECTS
-   ========================================================================== */
-
-/* 1. Laser Scanning Sweep Across Viewports */
 @keyframes laser-sweep {
   0% {
     top: 0%;
     opacity: 0;
   }
-  15% {
+  20% {
     opacity: 1;
   }
-  85% {
+  80% {
     opacity: 1;
   }
   100% {
@@ -302,91 +267,5 @@ html, body {
 }
 
 .animate-laser-sweep {
-  animation: laser-sweep 1.8s ease-in-out infinite;
+  animation: laser-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
-
-/* 2. Holographic Scanline Wave */
-@keyframes holographic-scanline {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(1000%);
-  }
-}
-
-.animate-scanline {
-  animation: holographic-scanline 6s linear infinite;
-}
-
-/* 3. High-Tech ECG Heartbeat Pulse Animation */
-@keyframes ecg-dash {
-  0% {
-    stroke-dashoffset: 200;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-.animate-ecg {
-  stroke-dasharray: 200;
-  animation: ecg-dash 2s linear infinite;
-}
-
-/* 4. Radar Beam Sweep for Lesion Detection */
-@keyframes radar-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-radar-spin {
-  animation: radar-spin 3s linear infinite;
-}
-
-/* 5. Ambient Cyber Neon Pulse */
-@keyframes neon-pulse {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 28px rgba(56, 189, 248, 0.8), inset 0 0 25px rgba(56, 189, 248, 0.25);
-  }
-}
-
-.animate-neon-pulse {
-  animation: neon-pulse 2s ease-in-out infinite;
-}
-
-/* 6. Glowing Shimmering Border */
-@keyframes border-shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.shimmer-gradient-border {
-  background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399, #38bdf8);
-  background-size: 300% 300%;
-  animation: border-shimmer 4s ease infinite;
-}
-
-/* 7. Holographic Grid Backdrop */
-.cyber-grid-backdrop {
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
-    linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-  background-size: 100% 100%, 32px 32px, 32px 32px;
-}
-

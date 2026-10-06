@@ -2,105 +2,12 @@
 
 import { DragEvent, useEffect, useRef, useState } from "react";
 
-// Standalone Zero-Dependency Canvas Confetti System
-function triggerConfetti() {
-  if (typeof window === "undefined") return;
-  const canvas = document.createElement("canvas");
-  canvas.style.position = "fixed";
-  canvas.style.top = "0";
-  canvas.style.left = "0";
-  canvas.style.width = "100vw";
-  canvas.style.height = "100vh";
-  canvas.style.pointerEvents = "none";
-  canvas.style.zIndex = "99999";
-  document.body.appendChild(canvas);
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    canvas.remove();
-    return;
-  }
-
-  const colors = ["#10b981", "#06b6d4", "#38bdf8", "#34d399", "#ffffff", "#3b82f6", "#f59e0b"];
-  const particles: Array<{
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    rotation: number;
-    vRot: number;
-    alpha: number;
-  }> = [];
-
-  const originX = canvas.width * 0.72;
-  const originY = canvas.height * 0.45;
-
-  for (let i = 0; i < 75; i++) {
-    const angle = (Math.PI * 2 * i) / 75 + (Math.random() - 0.5) * 0.4;
-    const speed = 5 + Math.random() * 9;
-    particles.push({
-      x: originX,
-      y: originY,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 4,
-      size: 5 + Math.random() * 6,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotation: Math.random() * 360,
-      vRot: (Math.random() - 0.5) * 15,
-      alpha: 1,
-    });
-  }
-
-  let animationFrameId: number;
-  const startTime = Date.now();
-
-  function render() {
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const elapsed = (Date.now() - startTime) / 1000;
-
-    let alive = 0;
-    for (const p of particles) {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.24; // gravity
-      p.vx *= 0.98; // friction
-      p.rotation += p.vRot;
-      p.alpha = Math.max(0, 1 - elapsed / 1.8);
-
-      if (p.alpha > 0) {
-        alive++;
-        ctx.save();
-        ctx.globalAlpha = p.alpha;
-        ctx.translate(p.x, p.y);
-        ctx.rotate((p.rotation * Math.PI) / 180);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
-        ctx.restore();
-      }
-    }
-
-    if (alive > 0 && elapsed < 2) {
-      animationFrameId = requestAnimationFrame(render);
-    } else {
-      cancelAnimationFrame(animationFrameId);
-      canvas.remove();
-    }
-  }
-
-  render();
-}
-
-// Standalone High-Precision Clinical Vector Icons (Zero-Dependency)
+// Standalone Zero-Dependency Vector Icons
 function Brain({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
       <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
-      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
+      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.5 8.242" />
       <path d="M12 5v13" />
     </svg>
   );
@@ -262,14 +169,6 @@ function Activity({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function Sparkles({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-    </svg>
-  );
-}
-
 function Zap({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -278,53 +177,13 @@ function Zap({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-// Zero-latency Web Audio Synthesizer for High-Tech Telemetry Beeps
-function playAudioChirp(type: "click" | "scan" | "success" | "alert") {
-  try {
-    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    if (type === "click") {
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.04);
-      gain.gain.setValueAtTime(0.04, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.04);
-    } else if (type === "scan") {
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(520, ctx.currentTime);
-      osc.frequency.linearRampToValueAtTime(940, ctx.currentTime + 0.18);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.18);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.18);
-    } else if (type === "success") {
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-      osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.22);
-    } else if (type === "alert") {
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(440, ctx.currentTime);
-      osc.frequency.setValueAtTime(330, ctx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.22);
-    }
-  } catch {
-    // Graceful fallback
-  }
+function ShieldCheck({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
 }
 
 type ScanResult = {
@@ -437,31 +296,26 @@ export default function HomePage() {
   const loupeDragStartRef = useRef<{ startY: number; initialScale: number } | null>(null);
 
   function handleZoomIn() {
-    playAudioChirp("click");
     setZoom((prev) => Math.min(4, Number((prev + 0.25).toFixed(2))));
   }
 
   function handleZoomOut() {
-    playAudioChirp("click");
     setZoom((prev) => Math.max(0.5, Number((prev - 0.25).toFixed(2))));
   }
 
   function handleResetZoom() {
-    playAudioChirp("click");
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setLoupe((prev) => ({ ...prev, active: false, target: null, scale: 2.5, isZoomDragging: false }));
   }
 
   function toggleGrid() {
-    playAudioChirp("click");
     setShowGrid((prev) => !prev);
   }
 
   function handleViewportContextMenu(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
     e.preventDefault();
     if (!imageUrl) return;
-    playAudioChirp("click");
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -548,18 +402,15 @@ export default function HomePage() {
   }, [imageUrl]);
 
   function handleFile(selectedFile: File) {
-    playAudioChirp("click");
     setError(null);
     setResult(null);
     probDataRef.current = null;
     if (!selectedFile.type.startsWith("image/")) {
       setError("Please select a valid brain CT scan image (PNG, JPG, or WEBP).");
-      playAudioChirp("alert");
       return;
     }
     if (selectedFile.size > MAX_FILE_SIZE) {
       setError("File size exceeds 25 MB.");
-      playAudioChirp("alert");
       return;
     }
     if (imageUrl && imageUrl.startsWith("blob:")) URL.revokeObjectURL(imageUrl);
@@ -625,7 +476,7 @@ export default function HomePage() {
             detected,
             lesionArea,
             confidence,
-            label: detected ? "Acute Stroke Lesion Detected" : "No Acute Lesion Detected",
+            label: detected ? "Acute Stroke Infarction Identified" : "No Acute Lesion Detected",
           }
         : null
     );
@@ -634,12 +485,10 @@ export default function HomePage() {
   async function runInference() {
     if (!imageUrl) {
       setError("Please load or upload a CT scan image first.");
-      playAudioChirp("alert");
       return;
     }
     setError(null);
     setIsScanning(true);
-    playAudioChirp("scan");
 
     try {
       let activeFile = file;
@@ -691,23 +540,14 @@ export default function HomePage() {
         modelLabel: payload.model_label,
         inputSize: payload.input_size,
       });
-
-      if (!isDetected) {
-        playAudioChirp("success");
-        triggerConfetti();
-      } else {
-        playAudioChirp("alert");
-      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Analysis request failed.");
-      playAudioChirp("alert");
     } finally {
       setIsScanning(false);
     }
   }
 
   function resetControls() {
-    playAudioChirp("click");
     setBrightness(100);
     setContrast(100);
     setMaskOpacity(85);
@@ -720,7 +560,6 @@ export default function HomePage() {
 
   async function exportAnnotatedImage() {
     if (!imageUrl) return;
-    playAudioChirp("click");
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -751,12 +590,12 @@ export default function HomePage() {
       ctx.globalAlpha = 1.0;
     }
 
-    ctx.fillStyle = "rgba(10, 15, 29, 0.88)";
-    ctx.fillRect(12, canvas.height - 38, 330, 26);
+    ctx.fillStyle = "rgba(7, 10, 18, 0.92)";
+    ctx.fillRect(12, canvas.height - 40, 360, 28);
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 11px sans-serif";
-    const statusText = result ? (result.detected ? "STROKE DETECTED" : "NO LESION") : "CT SCAN";
-    ctx.fillText(`NU STROKE SCAN · ${statusText} · ${MODELS.find((m) => m.id === modelId)?.name}`, 20, canvas.height - 21);
+    ctx.font = "bold 11.5px monospace";
+    const statusText = result ? (result.detected ? "STROKE DETECTED" : "CLEAR SCAN") : "NCCT";
+    ctx.fillText(`NU STROKE SCAN · ${statusText} · ${MODELS.find((m) => m.id === modelId)?.name}`, 20, canvas.height - 22);
 
     const dataUrl = canvas.toDataURL("image/png");
     const link = document.createElement("a");
@@ -765,27 +604,26 @@ export default function HomePage() {
     link.click();
     
     setExportedStatus("image");
-    playAudioChirp("success");
     setTimeout(() => setExportedStatus(null), 2500);
   }
 
   function exportReportText() {
     if (!result || !file) return;
-    playAudioChirp("click");
     const reportText = `=====================================================
 NU STROKE SCAN - CLINICAL DECISION SUPPORT REPORT
 =====================================================
 Institution: Naresuan University Neuro-Imaging Center
 Date: ${new Date().toLocaleString()}
-Modality: Non-Contrast Brain CT Scan
+Modality: Non-Contrast Brain CT Scan (NCCT)
 Model Architecture: ${MODELS.find((m) => m.id === modelId)?.name || modelId}
+Station ID: STATION-04 (NEURO-ICU)
 -----------------------------------------------------
 ANALYSIS RESULTS:
-- Outcome: ${result.detected ? "STROKE LESION DETECTED (POSITIVE)" : "NO LESION DETECTED (NEGATIVE)"}
-- Prediction: ${result.label}
-- Confidence: ${(result.confidence * 100).toFixed(1)}%
-- Lesion Area (ROI): ${result.lesionArea ?? 0}%
-- Threshold: ${threshold}%
+- Diagnostic Outcome: ${result.detected ? "STROKE LESION IDENTIFIED (POSITIVE)" : "NO ACUTE LESION IDENTIFIED (NEGATIVE)"}
+- Neural Classification: ${result.label}
+- Confidence Certainty: ${(result.confidence * 100).toFixed(1)}%
+- Lesion Area (ROI Volume): ${result.lesionArea ?? 0}%
+- Sensitivity Cutoff: ${threshold}%
 - Source File: ${file.name}
 -----------------------------------------------------
 Notice: This is an AI-assisted diagnostic aid and must
@@ -796,85 +634,77 @@ be verified by a certified healthcare professional.
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `stroke-report-${file.name.replace(/\.[^/.]+$/, "")}.txt`;
+    link.download = `stroke-clinical-report-${file.name.replace(/\.[^/.]+$/, "")}.txt`;
     link.click();
     URL.revokeObjectURL(url);
 
     setExportedStatus("report");
-    playAudioChirp("success");
     setTimeout(() => setExportedStatus(null), 2500);
   }
 
   return (
-    <div className="h-screen w-screen bg-slate-300 text-slate-900 flex flex-col overflow-hidden font-sans p-3 gap-3 select-none cyber-grid-backdrop">
+    <div className="h-screen w-screen bg-[#070a12] text-slate-100 flex flex-col overflow-hidden font-sans p-3 gap-3 select-none medical-dark-backdrop">
       
-      {/* 1. Futuristic Hospital Top Navigation Bar */}
-      <header className="h-14 bg-slate-200/95 backdrop-blur-md border border-slate-400/60 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-xs transition-all">
-        {/* Brand with Spinning Holographic Accent */}
+      {/* 1. Ultra-Luxurious Enterprise Navigation Deck */}
+      <header className="h-14 glass-panel rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-2xl">
+        {/* Hospital Brand & Node Badge */}
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-sky-500/20 animate-ping" />
+            <div className="absolute -inset-1 rounded-full bg-cyan-500/20 blur-sm" />
             <img
               src="/brand_icon_trans.png"
               alt="NU Stroke Scan Logo"
-              className="h-10 w-10 object-contain drop-shadow-xs select-none pointer-events-none relative z-10"
+              className="h-9 w-9 object-contain drop-shadow-md select-none pointer-events-none relative z-10"
             />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-base tracking-tight text-slate-900 block leading-tight">
-                <span className="text-amber-600">NU</span> STROKE SCAN
+              <span className="font-extrabold text-base tracking-tight text-white block leading-tight">
+                <span className="text-amber-500">NU</span> STROKE SCAN
               </span>
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-black bg-sky-600 text-white shadow-2xs">
-                v1.2 PRO
+              <span className="px-2 py-0.5 rounded text-[9px] font-mono font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                ENTERPRISE CLINICAL v1.2
               </span>
             </div>
-            <p className="text-[11px] text-slate-600 font-medium leading-tight mt-0.5">
-              Neuro-Imaging Clinical AI · Naresuan University
+            <p className="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">
+              Neuro-Imaging Clinical Intelligence · Naresuan University
             </p>
           </div>
         </div>
 
-        {/* Live ECG Telemetry & PACS Status Center */}
-        <div className="hidden lg:flex items-center gap-3 bg-slate-300/80 px-3.5 py-1.5 rounded-lg border border-slate-400/50 shadow-inner">
-          <div className="flex items-center gap-1.5">
-            <svg className="w-16 h-4 text-emerald-600 overflow-visible" viewBox="0 0 60 16" fill="none">
-              <path
-                d="M0 8 L15 8 L20 2 L25 14 L30 4 L35 11 L40 8 L60 8"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="animate-ecg"
-              />
-            </svg>
-            <span className="text-[10px] font-mono font-black text-emerald-700 tracking-wider">
-              BPM 72
-            </span>
+        {/* Live PACS Telemetry & Node HUD */}
+        <div className="hidden lg:flex items-center gap-4 glass-panel-subtle px-4 py-1.5 rounded-lg text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+            <span className="font-bold text-slate-300">PACS SYNCHRONIZED</span>
           </div>
-          <div className="w-[1px] h-3.5 bg-slate-400" />
-          <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-slate-700">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>AI ENGINE ACTIVE</span>
+          <div className="w-[1px] h-3.5 bg-slate-700" />
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <span>LATENCY:</span>
+            <span className="text-cyan-400 font-bold">14ms</span>
+          </div>
+          <div className="w-[1px] h-3.5 bg-slate-700" />
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <span>STATION:</span>
+            <span className="text-slate-200 font-bold">#04 NEURO-ICU</span>
           </div>
         </div>
 
-        {/* Model Selector Segmented Tabs with Smooth Tactile Glow Indicator */}
-        <div className="flex items-center bg-slate-300/90 p-1 rounded-lg border border-slate-400/60 shadow-inner relative gap-1">
+        {/* Model Architecture Selector Dock */}
+        <div className="flex items-center glass-panel-subtle p-1 rounded-lg border border-slate-700/60 relative gap-1">
           {MODELS.map((m) => {
             const isSelected = modelId === m.id;
             return (
               <button
                 key={m.id}
                 onClick={() => {
-                  playAudioChirp("click");
                   setModelId(m.id);
                   setResult(null);
                 }}
                 className={`relative px-3.5 py-1.5 rounded-md text-xs font-bold transition-all duration-200 cursor-pointer select-none z-10 active:scale-95 ${
                   isSelected
-                    ? "bg-sky-600 text-white shadow-sm border border-sky-400/40"
-                    : "text-slate-700 hover:text-slate-950 hover:bg-slate-200/80"
+                    ? "bg-gradient-to-r from-sky-600 to-cyan-600 text-white shadow-lg border border-cyan-400/40"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
                 <span>{m.name}</span>
@@ -889,29 +719,29 @@ be verified by a certified healthcare professional.
         
         {/* Left/Center Viewport Column (8 Cols) */}
         <section className="col-span-8 flex flex-col gap-2 min-h-0">
-          <div className="flex-1 min-h-0 bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex flex-col shadow-xs relative">
+          <div className="flex-1 min-h-0 glass-panel rounded-xl p-3.5 flex flex-col shadow-2xl relative">
             
-            {/* Viewport Top Bar with Symmetrical Modern Header & Tools */}
-            <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-300 shrink-0">
-              <div className="flex items-center gap-2.5 bg-slate-300/60 px-3 py-1.5 rounded-lg border border-slate-400/50 shadow-inner">
-                <div className="w-2 h-2 rounded-full bg-sky-600 shadow-[0_0_8px_rgba(2,132,199,0.9)] animate-pulse" />
-                <span className="text-xs font-black uppercase tracking-wider text-slate-900">
+            {/* Viewport Top Bar with Symmetrical Header & Tools */}
+            <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 shrink-0">
+              <div className="flex items-center gap-2.5 glass-panel-subtle px-3 py-1.5 rounded-lg border border-slate-700/60 shadow-inner">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#00f2fe] animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-wider text-slate-200">
                   DICOM Dual Viewport
                 </span>
-                <span className="text-[10px] font-mono font-black text-sky-800 bg-white/95 px-2 py-0.5 rounded-md border border-slate-400/40 shadow-2xs">
-                  SYNC PACS
+                <span className="text-[10px] font-mono font-bold text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/40">
+                  AXIAL 512×512
                 </span>
               </div>
 
               {/* Viewport Interactive Tools */}
-              <div className="flex items-center gap-1.5 bg-slate-300/60 p-1 rounded-lg border border-slate-400/50 shadow-inner">
+              <div className="flex items-center gap-1.5 glass-panel-subtle p-1 rounded-lg border border-slate-700/60 shadow-inner">
                 {/* Zoom Controls Rect */}
-                <div className="flex items-center bg-white/95 px-1 py-0.5 rounded-md border border-slate-400/40 shadow-xs">
+                <div className="flex items-center bg-slate-900/90 px-1 py-0.5 rounded-md border border-slate-700/70 shadow-inner">
                   <button
                     onClick={handleZoomOut}
                     disabled={zoom <= 0.5}
                     title="Zoom Out (-25%)"
-                    className="p-1 rounded text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
+                    className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
                   >
                     <ZoomOut className="h-3.5 w-3.5" />
                   </button>
@@ -919,7 +749,7 @@ be verified by a certified healthcare professional.
                   <button
                     onClick={handleResetZoom}
                     title="Click to Reset Zoom to 100%"
-                    className="px-2 py-0.5 rounded text-[11px] font-mono font-black text-slate-800 hover:text-sky-700 hover:bg-slate-100 cursor-pointer transition-all active:scale-95"
+                    className="px-2 py-0.5 rounded text-[11px] font-mono font-black text-cyan-300 hover:text-cyan-200 hover:bg-slate-800 cursor-pointer transition-all active:scale-95"
                   >
                     {Math.round(zoom * 100)}%
                   </button>
@@ -928,7 +758,7 @@ be verified by a certified healthcare professional.
                     onClick={handleZoomIn}
                     disabled={zoom >= 4}
                     title="Zoom In (+25%)"
-                    className="p-1 rounded text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
+                    className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
                   >
                     <ZoomIn className="h-3.5 w-3.5" />
                   </button>
@@ -940,8 +770,8 @@ be verified by a certified healthcare professional.
                   title={showGrid ? "Disable Fine Medical Gridlines" : "Enable Fine Medical Measurement Gridlines"}
                   className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-xs ${
                     showGrid
-                      ? "bg-gradient-to-b from-sky-500 to-sky-700 text-white border border-sky-800 shadow-sky-500/20"
-                      : "btn-toolbar-capsule text-slate-700 hover:text-sky-700"
+                      ? "bg-cyan-600 text-white border border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.5)]"
+                      : "btn-glass-subtle"
                   }`}
                 >
                   <Grid className="h-3.5 w-3.5" />
@@ -951,11 +781,11 @@ be verified by a certified healthcare professional.
                 {/* Reset Controls Button */}
                 <button
                   onClick={resetControls}
-                  className="btn-toolbar-capsule px-3.5 py-1 text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-xs transition-all active:scale-95"
-                  title="Reset all display adjustments (Brightness, Contrast, Opacity, Threshold, Zoom, Grid) to defaults"
+                  className="btn-glass-subtle px-3 py-1 text-xs font-bold hover:text-amber-400 hover:border-amber-500/40 flex items-center gap-1.5 cursor-pointer shadow-xs transition-all active:scale-95"
+                  title="Reset all adjustments (Brightness, Contrast, Opacity, Threshold, Zoom, Grid) to defaults"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
-                  Reset Controls
+                  <RotateCcw className="h-3.5 w-3.5 text-amber-400" />
+                  Reset
                 </button>
               </div>
             </div>
@@ -971,29 +801,29 @@ be verified by a certified healthcare professional.
                 onMouseUp={handleViewportMouseUp}
                 onMouseLeave={handleViewportMouseUp}
                 onWheel={handleViewportWheel}
-                className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
+                className={`dicom-canvas-bg relative rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                   zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
                 }`}
-                title="Right-click to open Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
+                title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
               >
                 {/* Holographic Laser Sweep Effect During Inference */}
                 {isScanning && (
                   <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
-                    <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00ffff] animate-laser-sweep" />
+                    <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00f2fe] animate-laser-sweep" />
                   </div>
                 )}
 
                 {/* Fine Medical Grid Overlay */}
                 {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
 
-                {/* Sci-Fi Corner Bracket HUD Accents */}
-                <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-sky-400/40 pointer-events-none" />
-                <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-sky-400/40 pointer-events-none" />
-                <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-sky-400/40 pointer-events-none" />
-                <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-sky-400/40 pointer-events-none" />
+                {/* Subtle DICOM Corner Accents */}
+                <div className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-cyan-500/50 pointer-events-none" />
+                <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 border-t border-r border-cyan-500/50 pointer-events-none" />
+                <div className="absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-b border-l border-cyan-500/50 pointer-events-none" />
+                <div className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-cyan-500/50 pointer-events-none" />
 
-                <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-slate-300 uppercase tracking-wider pointer-events-none">
-                  Original CT
+                <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-black/80 border border-slate-700 text-[10px] font-mono font-bold text-slate-300 uppercase tracking-wider pointer-events-none">
+                  Original NCCT
                 </div>
                 <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">R</span>
                 <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">L</span>
@@ -1014,10 +844,10 @@ be verified by a certified healthcare professional.
                     />
                   </div>
                 ) : (
-                  <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
-                    <Activity className="h-10 w-10 mx-auto text-slate-600 opacity-60 animate-pulse" />
-                    <p className="text-xs font-bold text-slate-400">NO SCAN LOADED</p>
-                    <p className="text-[11px] text-slate-500">Upload an NCCT axial slice to start</p>
+                  <div className="text-center p-6 text-slate-600 space-y-2 pointer-events-none">
+                    <Activity className="h-10 w-10 mx-auto text-slate-700 opacity-60 animate-pulse" />
+                    <p className="text-xs font-bold text-slate-500">NO SCAN LOADED</p>
+                    <p className="text-[11px] text-slate-600">Upload an axial brain slice to begin</p>
                   </div>
                 )}
               </div>
@@ -1030,21 +860,21 @@ be verified by a certified healthcare professional.
                 onMouseUp={handleViewportMouseUp}
                 onMouseLeave={handleViewportMouseUp}
                 onWheel={handleViewportWheel}
-                className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
+                className={`dicom-canvas-bg relative rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                   zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
                 }`}
-                title="Right-click to open Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
+                title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
               >
                 {/* Holographic Laser Sweep Effect During Inference */}
                 {isScanning && (
                   <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
-                    <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00ffff] animate-laser-sweep" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[1px]">
+                    <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00f2fe] animate-laser-sweep" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px]">
                       <div className="relative flex items-center justify-center">
-                        <div className="w-14 h-14 rounded-full border-2 border-sky-400 border-t-transparent animate-spin" />
-                        <Activity className="h-6 w-6 text-sky-400 absolute" />
+                        <div className="w-14 h-14 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin" />
+                        <Activity className="h-6 w-6 text-cyan-400 absolute" />
                       </div>
-                      <p className="mt-2 text-xs font-mono font-black text-sky-300 tracking-widest uppercase">
+                      <p className="mt-2 text-xs font-mono font-black text-cyan-300 tracking-widest uppercase">
                         NEURAL INFERENCE IN PROGRESS...
                       </p>
                     </div>
@@ -1054,13 +884,13 @@ be verified by a certified healthcare professional.
                 {/* Fine Medical Grid Overlay */}
                 {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
 
-                {/* Sci-Fi Corner Bracket HUD Accents */}
-                <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-sky-400/40 pointer-events-none" />
-                <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-sky-400/40 pointer-events-none" />
-                <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-sky-400/40 pointer-events-none" />
-                <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-sky-400/40 pointer-events-none" />
+                {/* Subtle DICOM Corner Accents */}
+                <div className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-cyan-500/50 pointer-events-none" />
+                <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 border-t border-r border-cyan-500/50 pointer-events-none" />
+                <div className="absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-b border-l border-cyan-500/50 pointer-events-none" />
+                <div className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-cyan-500/50 pointer-events-none" />
 
-                <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-sky-400 uppercase tracking-wider pointer-events-none">
+                <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-black/80 border border-slate-700 text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider pointer-events-none">
                   AI Overlay · {MODELS.find((m) => m.id === modelId)?.name}
                 </div>
                 <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">R</span>
@@ -1090,17 +920,17 @@ be verified by a certified healthcare professional.
                     )}
                   </div>
                 ) : (
-                  <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
-                    <Layers className="h-10 w-10 mx-auto text-slate-600 opacity-60 animate-pulse" />
-                    <p className="text-xs font-bold text-slate-400">LESION OVERLAY</p>
-                    <p className="text-[11px] text-slate-500">Neural heatmap will appear upon analysis</p>
+                  <div className="text-center p-6 text-slate-600 space-y-2 pointer-events-none">
+                    <Layers className="h-10 w-10 mx-auto text-slate-700 opacity-60 animate-pulse" />
+                    <p className="text-xs font-bold text-slate-500">LESION OVERLAY</p>
+                    <p className="text-[11px] text-slate-600">Segmented heatmap will appear upon analysis</p>
                   </div>
                 )}
 
-                {/* Futuristic Diagnostic Loupe Overlay */}
+                {/* High-Precision Diagnostic Loupe Overlay */}
                 {loupe.active && (
                   <div
-                    className="absolute z-50 pointer-events-none rounded-full border-2 border-sky-400 shadow-[0_0_28px_rgba(0,198,255,0.85)] bg-slate-950 overflow-hidden transition-transform duration-75"
+                    className="absolute z-50 pointer-events-none rounded-full border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,242,254,0.9)] bg-black overflow-hidden transition-transform duration-75"
                     style={{
                       width: "160px",
                       height: "160px",
@@ -1135,17 +965,17 @@ be verified by a certified healthcare professional.
                       )}
                     </div>
                     
-                    {/* Loupe Crosshair HUD & Precision Radar */}
+                    {/* Loupe Crosshair HUD & Measurement Radar */}
                     <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                      <div className="w-full h-[1px] bg-sky-400/40" />
-                      <div className="h-full w-[1px] bg-sky-400/40 absolute" />
-                      <div className="w-3.5 h-3.5 rounded-full border border-sky-300/80 absolute" />
+                      <div className="w-full h-[1px] bg-cyan-400/40" />
+                      <div className="h-full w-[1px] bg-cyan-400/40 absolute" />
+                      <div className="w-4 h-4 rounded-full border border-cyan-300/80 absolute" />
                     </div>
                     <div
-                      className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none ${
+                      className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-mono font-black shadow-lg pointer-events-none ${
                         loupe.isZoomDragging
-                          ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
-                          : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
+                          ? "bg-amber-500 text-black border border-amber-300 animate-pulse"
+                          : "bg-black/95 border border-cyan-500/60 text-cyan-300"
                       }`}
                     >
                       {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
@@ -1155,23 +985,20 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer: Smooth Sliders & Vibrant Badges */}
-            <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2.5 shrink-0">
+            {/* Essential Controls Footer: Smooth Luxury Sliders */}
+            <div className="mt-3 pt-3 border-t border-slate-800 grid grid-cols-4 gap-2.5 shrink-0">
               
               {/* 1. Brightness Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <Sun className="h-3.5 w-3.5 text-slate-700" />
+              <div className="p-2.5 rounded-xl glass-panel-subtle flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-300 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-300">
+                    <Sun className="h-3.5 w-3.5 text-cyan-400" />
                     Brightness
                   </span>
                   <button
-                    onClick={() => {
-                      playAudioChirp("click");
-                      setBrightness(100);
-                    }}
+                    onClick={() => setBrightness(100)}
                     title="Click to reset Brightness to 100%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
+                    className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-amber-500/30 transition-all active:scale-95"
                   >
                     {brightness}%
                   </button>
@@ -1185,19 +1012,16 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 2. Contrast Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <HalfCircle className="h-3.5 w-3.5 text-slate-700" />
+              <div className="p-2.5 rounded-xl glass-panel-subtle flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-300 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-300">
+                    <HalfCircle className="h-3.5 w-3.5 text-cyan-400" />
                     Contrast
                   </span>
                   <button
-                    onClick={() => {
-                      playAudioChirp("click");
-                      setContrast(100);
-                    }}
+                    onClick={() => setContrast(100)}
                     title="Click to reset Contrast to 100%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
+                    className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-amber-500/30 transition-all active:scale-95"
                   >
                     {contrast}%
                   </button>
@@ -1211,19 +1035,16 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 3. Mask Opacity Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <Layers className="h-3.5 w-3.5 text-slate-700" />
+              <div className="p-2.5 rounded-xl glass-panel-subtle flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-300 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-300">
+                    <Layers className="h-3.5 w-3.5 text-cyan-400" />
                     Mask Opacity
                   </span>
                   <button
-                    onClick={() => {
-                      playAudioChirp("click");
-                      setMaskOpacity(85);
-                    }}
+                    onClick={() => setMaskOpacity(85)}
                     title="Click to reset Opacity to 85%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
+                    className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-amber-500/30 transition-all active:scale-95"
                   >
                     {maskOpacity}%
                   </button>
@@ -1237,19 +1058,16 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 4. Sensitivity Threshold Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <Gauge className="h-3.5 w-3.5 text-slate-700" />
+              <div className="p-2.5 rounded-xl glass-panel-subtle flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-300 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-300">
+                    <Gauge className="h-3.5 w-3.5 text-cyan-400" />
                     Threshold
                   </span>
                   <button
-                    onClick={() => {
-                      playAudioChirp("click");
-                      recomputeThreshold(50);
-                    }}
+                    onClick={() => recomputeThreshold(50)}
                     title="Click to reset Threshold to 50%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
+                    className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-amber-500/30 transition-all active:scale-95"
                   >
                     {threshold}%
                   </button>
@@ -1268,35 +1086,32 @@ be verified by a certified healthcare professional.
         {/* Right Sidebar: Upload, Diagnosis & Export (4 Cols) */}
         <section className="col-span-4 flex flex-col gap-3 min-h-0">
           
-          {/* Upload & Action Card */}
-          <div className="bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex flex-col shrink-0 shadow-xs relative overflow-hidden">
+          {/* Upload & Primary Action Card */}
+          <div className="glass-panel rounded-xl p-3.5 flex flex-col shrink-0 shadow-2xl relative overflow-hidden">
             <div
-              onClick={() => {
-                playAudioChirp("click");
-                inputRef.current?.click();
-              }}
+              onClick={() => inputRef.current?.click()}
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-24 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 relative overflow-hidden ${
+              className={`h-24 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden ${
                 isDragging
-                  ? "border-sky-500 bg-sky-100/70 scale-[1.01]"
-                  : "border-slate-400/60 hover:border-sky-500 bg-slate-300/60 hover:bg-slate-300/90 active:scale-[0.99]"
+                  ? "border-cyan-400 bg-cyan-950/40 scale-[1.01]"
+                  : "border-slate-700/80 hover:border-cyan-400 bg-slate-900/60 hover:bg-slate-900/90 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
                 <div className="flex items-center gap-3 px-3 w-full">
-                  <img src={imageUrl} alt="Thumbnail" className="h-14 w-14 object-contain rounded-lg border border-slate-400 bg-black shadow-xs" />
+                  <img src={imageUrl} alt="Thumbnail" className="h-14 w-14 object-contain rounded-lg border border-slate-700 bg-black shadow-md" />
                   <div className="text-left flex-1 min-w-0">
-                    <p className="text-xs font-bold text-slate-900 truncate">{file?.name ?? "Loaded CT Scan"}</p>
-                    <p className="text-[11px] font-semibold text-slate-600 mt-0.5">Click or drag to replace image</p>
+                    <p className="text-xs font-bold text-white truncate">{file?.name ?? "Loaded NCCT Slice"}</p>
+                    <p className="text-[11px] font-medium text-slate-400 mt-0.5">Click or drag to replace scan</p>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <UploadCloud className="h-6 w-6 mx-auto text-sky-600 animate-bounce" />
-                  <p className="text-xs font-bold text-slate-800">Drop CT Scan or Click to Browse</p>
-                  <p className="text-[11px] text-slate-600 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
+                  <UploadCloud className="h-6 w-6 mx-auto text-cyan-400" />
+                  <p className="text-xs font-bold text-slate-200">Drop CT Scan or Click to Browse</p>
+                  <p className="text-[11px] text-slate-400 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
                 </div>
               )}
             </div>
@@ -1313,135 +1128,135 @@ be verified by a certified healthcare professional.
             />
 
             {error && (
-              <div className="mt-2 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 transition-all">
-                <AlertTriangle className="h-4 w-4 shrink-0 text-red-600" />
+              <div className="mt-2 p-2.5 rounded-lg bg-red-950/60 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 shrink-0 text-red-400" />
                 <span className="truncate">{error}</span>
               </div>
             )}
 
-            {/* Primary Action Button - Cyberpunk Medical 3D Pulse with Hover Glow */}
+            {/* Primary Action Button - Luminous Gradient Enterprise CTA */}
             <button
               onClick={runInference}
               disabled={isScanning || !imageUrl}
-              className={`relative overflow-hidden mt-3 h-12 w-full rounded-xl font-black text-sm uppercase tracking-wider text-white transition-all duration-150 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
+              className={`relative overflow-hidden mt-3 h-12 w-full rounded-xl font-black text-sm uppercase tracking-wider text-white transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
                 isScanning || !imageUrl
-                  ? "bg-slate-400/50 text-slate-600 border border-slate-400/60 cursor-not-allowed shadow-none"
-                  : "btn-tactile-primary group shimmer-gradient-border hover:-translate-y-0.5"
+                  ? "bg-slate-800/60 text-slate-500 border border-slate-700/50 cursor-not-allowed shadow-none"
+                  : "btn-glass-primary shadow-[0_0_20px_rgba(2,132,199,0.5)]"
               }`}
             >
               {isScanning ? (
                 <div className="flex items-center justify-center gap-2">
                   <RefreshCw className="h-4 w-4 animate-spin text-white" />
-                  <span>ANALYZING SCAN...</span>
+                  <span>ANALYZING AXIAL CT...</span>
                 </div>
               ) : (
-                <span className="text-center drop-shadow-xs flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-sky-200" />
-                  ANALYZE CT SCAN
+                <span className="text-center drop-shadow flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-cyan-300" />
+                  ANALYZE BRAIN CT SCAN
                 </span>
               )}
             </button>
           </div>
 
-          {/* Diagnostic Outcome Card */}
-          <div className="bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex-1 flex flex-col min-h-0 shadow-xs relative">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 pb-2 border-b border-slate-300 flex items-center justify-between">
-              <span>Diagnostic Summary</span>
-              <Sparkles className="h-3.5 w-3.5 text-sky-600" />
+          {/* Diagnostic Intelligence Summary Card */}
+          <div className="glass-panel rounded-xl p-3.5 flex-1 flex flex-col min-h-0 shadow-2xl relative">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 pb-2 border-b border-slate-800 flex items-center justify-between">
+              <span>Diagnostic Assessment</span>
+              <ShieldCheck className="h-3.5 w-3.5 text-cyan-400" />
             </h3>
 
             {/* Outcome Banner */}
             <div className="mb-3">
               {result ? (
                 result.detected ? (
-                  <div className="p-3 rounded-xl bg-red-50 border-2 border-red-400 text-red-950 space-y-1 shadow-md animate-pulse">
+                  <div className="p-3 rounded-xl bg-red-950/40 border border-red-500/50 text-red-200 space-y-1 shadow-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-red-600 shrink-0" />
-                        <span className="font-extrabold text-xs tracking-tight text-red-900">STROKE LESION DETECTED</span>
+                        <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />
+                        <span className="font-extrabold text-xs tracking-tight text-red-300">STROKE LESION DETECTED</span>
                       </div>
-                      <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-red-600 text-white shadow-xs">
+                      <span className="px-2 py-0.5 text-[10px] font-mono font-extrabold rounded bg-red-600 text-white shadow">
                         POSITIVE
                       </span>
                     </div>
-                    <p className="text-xs font-bold text-red-700">{result.label}</p>
-                    <p className="text-[11px] text-slate-600 font-medium">Acute lesion identified by neural segmentation model.</p>
+                    <p className="text-xs font-bold text-red-300">{result.label}</p>
+                    <p className="text-[11px] text-slate-400 font-medium">Acute infarction area identified by neural model.</p>
                   </div>
                 ) : (
-                  <div className="p-3 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 space-y-1 shadow-md">
+                  <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/50 text-emerald-200 space-y-1 shadow-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                        <span className="font-extrabold text-xs tracking-tight text-emerald-900">NO LESION DETECTED</span>
+                        <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                        <span className="font-extrabold text-xs tracking-tight text-emerald-300">NO ACUTE LESION DETECTED</span>
                       </div>
-                      <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-emerald-600 text-white shadow-xs">
+                      <span className="px-2 py-0.5 text-[10px] font-mono font-extrabold rounded bg-emerald-600 text-white shadow">
                         NEGATIVE
                       </span>
                     </div>
-                    <p className="text-xs font-bold text-emerald-700">{result.label}</p>
-                    <p className="text-[11px] text-slate-600 font-medium">No acute stroke lesion identified above threshold.</p>
+                    <p className="text-xs font-bold text-emerald-300">{result.label}</p>
+                    <p className="text-[11px] text-slate-400 font-medium">No acute ischemic lesion detected above threshold.</p>
                   </div>
                 )
               ) : (
-                <div className="p-3 rounded-xl bg-slate-300/80 border border-slate-400/50 text-center space-y-0.5">
-                  <p className="text-xs font-bold text-slate-700">Awaiting Analysis</p>
-                  <p className="text-[11px] text-slate-500 font-medium">Upload scan and click &quot;Analyze CT Scan&quot;.</p>
+                <div className="p-3 rounded-xl glass-panel-subtle border border-slate-800 text-center space-y-0.5">
+                  <p className="text-xs font-bold text-slate-300">Awaiting Scan Analysis</p>
+                  <p className="text-[11px] text-slate-500 font-medium">Load image and click &quot;Analyze Brain CT Scan&quot;</p>
                 </div>
               )}
             </div>
 
-            {/* Confidence Meter */}
+            {/* Confidence Certainty Meter */}
             <div className="space-y-1.5 mb-3">
-              <div className="flex justify-between text-xs font-bold text-slate-700">
-                <span>Confidence Score</span>
-                <span className="font-mono text-slate-900 font-extrabold">
+              <div className="flex justify-between text-xs font-bold text-slate-300">
+                <span>Model Confidence Certainty</span>
+                <span className="font-mono text-cyan-400 font-extrabold">
                   {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
                 </span>
               </div>
-              <div className="h-2 w-full bg-slate-300 rounded-full overflow-hidden border border-slate-400/50">
+              <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
                 <div
-                  className={`h-full transition-all duration-500 ${result?.detected ? "bg-red-500" : "bg-sky-500"}`}
+                  className={`h-full transition-all duration-500 ${result?.detected ? "bg-gradient-to-r from-amber-500 to-red-500" : "bg-gradient-to-r from-sky-500 to-cyan-400"}`}
                   style={{ width: result ? `${result.confidence * 100}%` : "0%" }}
                 />
               </div>
             </div>
 
             {/* Clean Key-Value Table */}
-            <div className="space-y-1.5 text-xs border-t border-slate-300 pt-2.5 text-slate-700">
-              <div className="flex justify-between py-1 border-b border-slate-300">
-                <span className="text-slate-600 font-medium">Model Engine:</span>
-                <span className="font-bold text-slate-900">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
+            <div className="space-y-1.5 text-xs border-t border-slate-800 pt-2.5 text-slate-400">
+              <div className="flex justify-between py-1 border-b border-slate-800/80">
+                <span>Neural Architecture:</span>
+                <span className="font-bold text-white">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-300">
-                <span className="text-slate-600 font-medium">Lesion ROI Area:</span>
-                <span className="font-mono text-sky-700 font-extrabold">{result ? `${result.lesionArea ?? 0}%` : "—"}</span>
+              <div className="flex justify-between py-1 border-b border-slate-800/80">
+                <span>Lesion ROI Volume:</span>
+                <span className="font-mono text-cyan-400 font-bold">{result ? `${result.lesionArea ?? 0}%` : "—"}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-slate-600 font-medium">Sensitivity Threshold:</span>
-                <span className="font-mono text-slate-900 font-bold">{threshold}%</span>
+                <span>Sensitivity Threshold:</span>
+                <span className="font-mono text-slate-200 font-bold">{threshold}%</span>
               </div>
             </div>
 
-            {/* Export Actions with Animated Spring Feedback */}
-            <div className="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-300">
+            {/* Clinical Export Actions */}
+            <div className="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-800">
               <button
                 onClick={exportAnnotatedImage}
                 disabled={!imageUrl}
-                className="btn-tactile-light h-9 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs transition-all active:scale-95 hover:-translate-y-0.5"
+                className="btn-glass-subtle h-9 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-md transition-all active:scale-95"
                 title="Export high-resolution annotated image composite with lesion mask overlay"
               >
                 {exportedStatus === "image" ? (
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
                 ) : (
-                  <Download className="h-3.5 w-3.5 text-slate-600" />
+                  <Download className="h-3.5 w-3.5 text-cyan-400" />
                 )}
-                {exportedStatus === "image" ? "Saved!" : "Image (.png)"}
+                {exportedStatus === "image" ? "Exported!" : "Image (.PNG)"}
               </button>
 
               <button
                 onClick={exportReportText}
                 disabled={!result}
-                className="btn-tactile-emerald h-9 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all active:scale-95 hover:-translate-y-0.5"
+                className="btn-glass-emerald h-9 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-md transition-all active:scale-95"
                 title="Download formal clinical diagnostic summary text report"
               >
                 {exportedStatus === "report" ? (
@@ -1449,20 +1264,20 @@ be verified by a certified healthcare professional.
                 ) : (
                   <FileText className="h-3.5 w-3.5" />
                 )}
-                {exportedStatus === "report" ? "Downloaded!" : "Report (.txt)"}
+                {exportedStatus === "report" ? "Downloaded!" : "Report (.TXT)"}
               </button>
             </div>
           </div>
         </section>
       </main>
 
-      {/* 3. Futuristic Minimal Hospital Footer */}
-      <footer className="h-6 flex items-center justify-between text-xs font-medium text-slate-600 px-2 shrink-0">
+      {/* 3. Luxury Enterprise Hospital Footer */}
+      <footer className="h-6 flex items-center justify-between text-xs font-medium text-slate-500 px-2 shrink-0">
         <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          NU Stroke Scan v1.2 · Naresuan University Neuro-Imaging Research
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          NU Stroke Scan Enterprise v1.2 · Naresuan University Neuro-Imaging Research Center
         </span>
-        <span>For Clinical Decision Support Only · Encrypted PACS Protocol</span>
+        <span>Clinical Decision Support System · End-to-End Encrypted DICOM Protocol</span>
       </footer>
     </div>
   );
