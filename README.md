@@ -229,7 +229,7 @@ docker compose up --build
         </a>
       </td>
       <td align="center" style="border: none; padding: 12px; background: transparent;">
-        <a href="https://github.com/kanin-mate">
+        <a href="https://github.com/Rednoselittledog">
           <img src="docs/assets/author-kanin.svg" alt="Kanin Mate - Deep Learning & AI Scientist" width="380px" />
         </a>
       </td>
