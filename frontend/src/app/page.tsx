@@ -742,12 +742,12 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer: Sky Blue Mercury Tracks & Vibrant Amber Badges */}
+            {/* Essential Controls Footer: Ultra-clean Sliders & High-Contrast Badges */}
             <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2.5 shrink-0">
               
               {/* 1. Brightness Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <Sun className="h-3.5 w-3.5 text-slate-700" />
                     Brightness
@@ -771,21 +771,11 @@ be verified by a certified healthcare professional.
                     background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((brightness - 50) / 100) * 100}%, #94a3b8 ${((brightness - 50) / 100) * 100}%, #94a3b8 100%)`,
                   }}
                 />
-                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
-                  <span>50%</span>
-                  <button
-                    onClick={() => setBrightness(100)}
-                    className="hover:text-slate-950 cursor-pointer transition-colors"
-                  >
-                    100% (Def)
-                  </button>
-                  <span>150%</span>
-                </div>
               </div>
 
               {/* 2. Contrast Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <HalfCircle className="h-3.5 w-3.5 text-slate-700" />
                     Contrast
@@ -809,21 +799,11 @@ be verified by a certified healthcare professional.
                     background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((contrast - 50) / 150) * 100}%, #94a3b8 ${((contrast - 50) / 150) * 100}%, #94a3b8 100%)`,
                   }}
                 />
-                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
-                  <span>50%</span>
-                  <button
-                    onClick={() => setContrast(100)}
-                    className="hover:text-slate-950 cursor-pointer transition-colors"
-                  >
-                    100% (Def)
-                  </button>
-                  <span>200%</span>
-                </div>
               </div>
 
               {/* 3. Mask Opacity Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <Layers className="h-3.5 w-3.5 text-slate-700" />
                     Mask Opacity
@@ -847,21 +827,11 @@ be verified by a certified healthcare professional.
                     background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${maskOpacity}%, #94a3b8 ${maskOpacity}%, #94a3b8 100%)`,
                   }}
                 />
-                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
-                  <span>0%</span>
-                  <button
-                    onClick={() => setMaskOpacity(85)}
-                    className="hover:text-slate-950 cursor-pointer transition-colors"
-                  >
-                    85% (Def)
-                  </button>
-                  <span>100%</span>
-                </div>
               </div>
 
               {/* 4. Sensitivity Threshold Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <Gauge className="h-3.5 w-3.5 text-slate-700" />
                     Threshold
@@ -885,16 +855,6 @@ be verified by a certified healthcare professional.
                     background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((threshold - 10) / 85) * 100}%, #94a3b8 ${((threshold - 10) / 85) * 100}%, #94a3b8 100%)`,
                   }}
                 />
-                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
-                  <span>10%</span>
-                  <button
-                    onClick={() => recomputeThreshold(50)}
-                    className="hover:text-slate-950 cursor-pointer transition-colors"
-                  >
-                    50% (Opt)
-                  </button>
-                  <span>95%</span>
-                </div>
               </div>
             </div>
           </div>
