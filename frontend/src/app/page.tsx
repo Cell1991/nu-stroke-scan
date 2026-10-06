@@ -665,8 +665,8 @@ be verified by a certified healthcare professional.
           <div className="relative flex items-center justify-center">
             <div className="absolute -inset-1 rounded-full bg-orange-500/20 blur-sm animate-pulse" />
             <img
-              src="/nu_logo.png"
-              alt="Naresuan University Logo"
+              src="/brand_icon_trans.png"
+              alt="NU Stroke Scan Logo"
               className="h-10 w-10 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.4)] select-none pointer-events-none relative z-10"
             />
           </div>
