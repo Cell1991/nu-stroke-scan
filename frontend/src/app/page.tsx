@@ -850,6 +850,54 @@ be verified by a certified healthcare professional.
                     <p className="text-[11px] text-slate-600">Upload an axial brain slice to begin</p>
                   </div>
                 )}
+
+                {/* Left Viewport Diagnostic Loupe Overlay (0ms Zero-Latency Tracking) */}
+                {loupe.active && loupe.target === "left" && (
+                  <div
+                    className="absolute z-50 pointer-events-none rounded-full border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,242,254,0.9)] bg-black overflow-hidden"
+                    style={{
+                      width: "160px",
+                      height: "160px",
+                      left: 0,
+                      top: 0,
+                      transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
+                      willChange: "transform",
+                    }}
+                  >
+                    <div
+                      className="absolute inset-0 w-full h-full flex items-center justify-center"
+                      style={{
+                        transform: `scale(${loupe.scale})`,
+                        transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
+                      }}
+                    >
+                      {imageUrl && (
+                        <img
+                          src={imageUrl}
+                          alt="Loupe Base"
+                          className="w-full h-full object-contain pointer-events-none"
+                          style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                        />
+                      )}
+                    </div>
+                    
+                    {/* Loupe Crosshair HUD & Measurement Radar */}
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                      <div className="w-full h-[1px] bg-cyan-400/40" />
+                      <div className="h-full w-[1px] bg-cyan-400/40 absolute" />
+                      <div className="w-4 h-4 rounded-full border border-cyan-300/80 absolute" />
+                    </div>
+                    <div
+                      className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-mono font-black shadow-lg pointer-events-none ${
+                        loupe.isZoomDragging
+                          ? "bg-amber-500 text-black border border-amber-300 animate-pulse"
+                          : "bg-black/95 border border-cyan-500/60 text-cyan-300"
+                      }`}
+                    >
+                      {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Right: AI Model Lesion Segmentation */}
@@ -927,10 +975,10 @@ be verified by a certified healthcare professional.
                   </div>
                 )}
 
-                {/* High-Precision Diagnostic Loupe Overlay */}
-                {loupe.active && (
+                {/* Right Viewport Diagnostic Loupe Overlay (0ms Zero-Latency Tracking) */}
+                {loupe.active && loupe.target === "right" && (
                   <div
-                    className="absolute z-50 pointer-events-none rounded-full border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,242,254,0.9)] bg-black overflow-hidden transition-transform duration-75"
+                    className="absolute z-50 pointer-events-none rounded-full border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,242,254,0.9)] bg-black overflow-hidden"
                     style={{
                       width: "160px",
                       height: "160px",
@@ -951,15 +999,15 @@ be verified by a certified healthcare professional.
                         <img
                           src={imageUrl}
                           alt="Loupe Base"
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain pointer-events-none"
                           style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                         />
                       )}
-                      {loupe.target === "right" && result?.maskUrl && (
+                      {result?.maskUrl && (
                         <img
                           src={result.maskUrl}
                           alt="Loupe Mask"
-                          className="lesion-mask absolute inset-0 w-full h-full object-contain mix-blend-screen"
+                          className="lesion-mask absolute inset-0 w-full h-full object-contain mix-blend-screen pointer-events-none"
                           style={{ opacity: maskOpacity / 100 }}
                         />
                       )}
