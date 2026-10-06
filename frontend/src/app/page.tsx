@@ -646,11 +646,17 @@ be verified by a certified healthcare professional.
         <section className="col-span-8 flex flex-col gap-2 min-h-0">
           <div className="flex-1 min-h-0 bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex flex-col shadow-xs">
             
-            {/* Viewport Top Bar with Zoom, Reset Scale, Grid Toggle & Reset All */}
+            {/* Viewport Top Bar with Symmetrical Modern Header & Tools */}
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-300 shrink-0">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                DICOM Dual Viewport
-              </span>
+              <div className="flex items-center gap-2.5 bg-slate-300/60 px-3.5 py-1.5 rounded-full border border-slate-400/50 shadow-inner">
+                <div className="w-2 h-2 rounded-full bg-sky-600 shadow-[0_0_6px_rgba(2,132,199,0.8)] animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-wider text-slate-900">
+                  DICOM Dual Viewport
+                </span>
+                <span className="text-[10px] font-mono font-black text-sky-800 bg-white/95 px-2.5 py-0.5 rounded-full border border-slate-400/40 shadow-2xs">
+                  SYNC PACS
+                </span>
+              </div>
 
               {/* Viewport Interactive Tools */}
               <div className="flex items-center gap-1.5 bg-slate-300/60 p-1 rounded-full border border-slate-400/50 shadow-inner">
