@@ -648,8 +648,7 @@ be verified by a certified healthcare professional.
             
             {/* Viewport Top Bar with Zoom, Reset Scale, Grid Toggle & Reset All */}
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-300 shrink-0">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <Brain className="h-3.5 w-3.5 text-sky-600" />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
                 DICOM Dual Viewport
               </span>
 
