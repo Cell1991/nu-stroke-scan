@@ -1,0 +1,13 @@
+{
+  "name": "nu-stroke-scan",
+  "version": "1.2.0",
+  "private": true,
+  "description": "NU Stroke Scan - AI-Assisted Clinical Decision Support for Non-Contrast Brain CT",
+  "scripts": {
+    "start": "start.bat",
+    "ngrok": "start.bat",
+    "dev:backend": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npm run dev",
+    "tunnel": "ngrok http 3000"
+  }
+}
