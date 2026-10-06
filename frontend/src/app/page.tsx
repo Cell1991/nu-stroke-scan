@@ -593,7 +593,7 @@ be verified by a certified healthcare professional.
                   <span>50%</span>
                   <button
                     onClick={() => setBrightness(100)}
-                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                    className="hover:text-slate-950 cursor-pointer transition-colors"
                   >
                     100% (Def)
                   </button>
@@ -631,7 +631,7 @@ be verified by a certified healthcare professional.
                   <span>50%</span>
                   <button
                     onClick={() => setContrast(100)}
-                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                    className="hover:text-slate-950 cursor-pointer transition-colors"
                   >
                     100% (Def)
                   </button>
@@ -669,7 +669,7 @@ be verified by a certified healthcare professional.
                   <span>0%</span>
                   <button
                     onClick={() => setMaskOpacity(85)}
-                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                    className="hover:text-slate-950 cursor-pointer transition-colors"
                   >
                     85% (Def)
                   </button>
@@ -707,7 +707,7 @@ be verified by a certified healthcare professional.
                   <span>10%</span>
                   <button
                     onClick={() => recomputeThreshold(50)}
-                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                    className="hover:text-slate-950 cursor-pointer transition-colors"
                   >
                     50% (Opt)
                   </button>
