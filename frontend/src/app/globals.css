@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Naresuan University Colors: Gray & Flame Orange (สีเทา-แสด) */
 :root {
-  --background: #080c16;
+  --background: #090a0f;
   --foreground: #f8fafc;
+  --nu-orange: #f97316;
+  --nu-orange-dark: #ea580c;
+  --nu-orange-glow: rgba(249, 115, 22, 0.5);
+  --nu-gray-light: #cbd5e1;
+  --nu-gray-slate: #64748b;
+  --nu-gray-dark: #1e293b;
 }
 
 html, body {
@@ -19,77 +26,77 @@ html, body {
   overflow: hidden;
 }
 
-/* Luxury Custom Dark Scrollbar */
+/* Naresuan University Custom Dark Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.7);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.35);
+  background: rgba(249, 115, 22, 0.4);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.65);
+  background: rgba(249, 115, 22, 0.75);
 }
 
-/* Vibrant Aurora Medical Enterprise Backdrop */
+/* Naresuan University Vibrant Aurora Backdrop (Flame Orange & Titanium Gray Mesh) */
 .medical-vibrant-backdrop {
-  background-color: #060913;
+  background-color: #08090e;
   background-image: 
-    radial-gradient(circle at 20% 15%, rgba(2, 132, 199, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.20) 0%, transparent 45%),
+    radial-gradient(circle at 85% 18%, rgba(234, 88, 12, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(148, 163, 184, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 90% 85%, rgba(245, 158, 11, 0.12) 0%, transparent 40%),
     linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
 }
 
-/* Frosted Luxury Glassmorphism Panel with Luminous Tint */
+/* Frosted Luxury Glassmorphism Panel with NU Orange/Silver Specular Rim */
 .glass-panel-vibrant {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.72) 100%);
+  background: linear-gradient(135deg, rgba(18, 20, 29, 0.88) 0%, rgba(15, 18, 25, 0.78) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(249, 115, 22, 0.22);
   box-shadow: 
-    0 16px 36px -10px rgba(0, 0, 0, 0.7),
-    0 0 20px rgba(2, 132, 199, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 16px 36px -10px rgba(0, 0, 0, 0.75),
+    0 0 24px rgba(249, 115, 22, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .glass-panel-subtle {
-  background: rgba(30, 41, 59, 0.55);
+  background: rgba(28, 32, 44, 0.58);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Deep DICOM Medical Canvas */
+/* Deep DICOM Medical Canvas with NU Precision Matrix */
 .dicom-canvas-bg {
-  background-color: #020409;
+  background-color: #030407;
   background-image: 
-    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.95) 0%, rgba(2, 4, 8, 1) 100%),
-    linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+    radial-gradient(circle at 50% 50%, rgba(20, 24, 35, 0.95) 0%, rgba(3, 4, 7, 1) 100%),
+    linear-gradient(to right, rgba(249, 115, 22, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.03) 1px, transparent 1px);
   background-size: 100% 100%, 20px 20px, 20px 20px;
 }
 
-/* Fine Clinical Measurement Gridlines */
+/* Fine Clinical Measurement Gridlines (NU Titanium Amber) */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-    linear-gradient(to right, rgba(56, 189, 248, 0.28) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.28) 1px, transparent 1px);
+    linear-gradient(to right, rgba(249, 115, 22, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(249, 115, 22, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.22) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
   pointer-events: none;
 }
 
-/* Smooth Luxury Vibrant Sliders */
+/* Smooth Luxury NU Flame Orange Sliders */
 .neu-slider-container {
   position: relative;
   width: 100%;
@@ -102,10 +109,10 @@ html, body {
   position: relative;
   width: 100%;
   height: 6px;
-  background: rgba(30, 41, 59, 0.95);
+  background: rgba(30, 35, 48, 0.95);
   border-radius: 9999px;
   box-shadow: 
-    inset 0 1.5px 3px rgba(0, 0, 0, 0.8),
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.85),
     0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
@@ -115,9 +122,9 @@ html, body {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #0284c7 0%, #00f2fe 70%, #38bdf8 100%);
+  background: linear-gradient(90deg, #ea580c 0%, #f97316 55%, #fbbf24 100%);
   border-radius: 9999px;
-  box-shadow: 0 0 14px rgba(0, 242, 254, 0.8);
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.85);
   pointer-events: none;
 }
 
@@ -144,12 +151,12 @@ html, body {
   height: 18px;
   border-radius: 50%;
   background: 
-    radial-gradient(circle at center, #0284c7 0%, #00f2fe 42%, transparent 46%),
+    radial-gradient(circle at center, #ea580c 0%, #f97316 42%, transparent 46%),
     linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
   border: 1.5px solid #ffffff;
   box-shadow: 
     0 2px 8px rgba(0, 0, 0, 0.6),
-    0 0 14px rgba(0, 242, 254, 0.7);
+    0 0 14px rgba(249, 115, 22, 0.75);
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
@@ -158,7 +165,7 @@ html, body {
   transform: scale(1.18);
   box-shadow: 
     0 3px 12px rgba(0, 0, 0, 0.8),
-    0 0 22px rgba(0, 242, 254, 1);
+    0 0 22px rgba(249, 115, 22, 1);
 }
 
 .neu-range-input::-moz-range-thumb {
@@ -166,52 +173,52 @@ html, body {
   height: 18px;
   border-radius: 50%;
   background: 
-    radial-gradient(circle at center, #0284c7 0%, #00f2fe 42%, transparent 46%),
+    radial-gradient(circle at center, #ea580c 0%, #f97316 42%, transparent 46%),
     linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
   border: 1.5px solid #ffffff;
   box-shadow: 
     0 2px 8px rgba(0, 0, 0, 0.6),
-    0 0 14px rgba(0, 242, 254, 0.7);
+    0 0 14px rgba(249, 115, 22, 0.75);
   cursor: pointer;
 }
 
-/* Vibrant Primary CTA Button */
+/* NU Flame Orange Primary CTA Button */
 .btn-vibrant-primary {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #00b4d8 100%);
-  border: 1px solid rgba(56, 189, 248, 0.6);
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 45%, #fb923c 100%);
+  border: 1px solid rgba(251, 146, 60, 0.65);
   box-shadow: 
-    0 6px 24px rgba(2, 132, 199, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    0 6px 24px rgba(234, 88, 12, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   color: #ffffff;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-vibrant-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #00f2fe 100%);
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fbbf24 100%);
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 30px rgba(2, 132, 199, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 8px 30px rgba(249, 115, 22, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 .btn-vibrant-primary:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.4);
 }
 
 .btn-vibrant-subtle {
-  background: rgba(30, 41, 59, 0.75);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(30, 35, 48, 0.75);
+  border: 1px solid rgba(249, 115, 22, 0.22);
   box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
   color: #f1f5f9;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-vibrant-subtle:hover:not(:disabled) {
-  background: rgba(51, 65, 85, 0.9);
-  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(45, 52, 70, 0.9);
+  border-color: rgba(249, 115, 22, 0.55);
   color: #ffffff;
   transform: translateY(-1.5px);
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
 }
 .btn-vibrant-subtle:active:not(:disabled) {
   transform: translateY(1px);
