@@ -83,7 +83,7 @@
         animation: ecgDraw 3.5s ease-in-out infinite;
       }
       .radar-line {
-        transform-origin: 980px 210px;
+        transform-origin: 940px 205px;
         animation: radarSweep 6s linear infinite;
       }
       .node-1 { animation: nodeBlink 2.5s ease-in-out infinite; }
@@ -101,80 +101,77 @@
   
   <!-- Ambient Glow Spheres in Background -->
   <circle cx="200" cy="120" r="160" fill="#0EA5E9" fill-opacity="0.08" filter="url(#glow)" />
-  <circle cx="980" cy="210" r="180" fill="#06B6D4" fill-opacity="0.09" filter="url(#glow)" />
+  <circle cx="940" cy="205" r="180" fill="#06B6D4" fill-opacity="0.09" filter="url(#glow)" />
   <circle cx="600" cy="380" r="140" fill="#10B981" fill-opacity="0.05" filter="url(#glow)" />
 
   <!-- Left/Center Hero Content -->
-  <g transform="translate(70, 0)">
+  <g transform="translate(60, 0)">
     <!-- Top Pill / Status Tag -->
     <g transform="translate(0, 52)">
-      <rect width="360" height="32" rx="16" fill="url(#badge-bg)" stroke="#0284C7" stroke-width="1" stroke-opacity="0.5" />
+      <rect width="375" height="32" rx="16" fill="url(#badge-bg)" stroke="#0284C7" stroke-width="1" stroke-opacity="0.5" />
       <circle cx="18" cy="16" r="4.5" fill="#10B981" class="pulse-circle" />
       <circle cx="18" cy="16" r="8" fill="none" stroke="#10B981" stroke-width="1" opacity="0.6" class="pulse-circle" />
-      <text x="34" y="20.5" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">CLINICAL NEURO-IMAGING AI PLATFORM</text>
+      <text x="34" y="20.5" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="700" letter-spacing="0.8">CLINICAL NEURO-IMAGING AI PLATFORM</text>
     </g>
 
     <!-- Main Title -->
     <text x="0" y="145" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Space Grotesk', sans-serif" font-size="46" font-weight="800" letter-spacing="-0.5">
       NU STROKE SCAN
     </text>
-    <text x="430" y="145" fill="url(#cyan-glow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Space Grotesk', sans-serif" font-size="46" font-weight="800" filter="url(#soft-glow)">
-      v2.0
-    </text>
 
     <!-- Subtitle / Tagline -->
-    <text x="0" y="185" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="500" letter-spacing="0.2">
+    <text x="0" y="185" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16.5" font-weight="500" letter-spacing="0.2">
       Non-Contrast Brain CT Stroke Lesion Segmentation &amp; Diagnostic Decision Support
     </text>
 
-    <!-- Key Research Capability Tags -->
+    <!-- Key Research Capability Tags (With plenty of horizontal padding) -->
     <g transform="translate(0, 222)">
       <!-- Badge 1: VCA-Net -->
       <g>
-        <rect width="155" height="34" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1" stroke-opacity="0.6" />
-        <circle cx="16" cy="17" r="3.5" fill="#38BDF8" />
-        <text x="28" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">VCA-Net Attention</text>
+        <rect width="160" height="34" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1" stroke-opacity="0.6" />
+        <circle cx="18" cy="17" r="3.5" fill="#38BDF8" />
+        <text x="30" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">VCA-Net Attention</text>
       </g>
-      <!-- Badge 2: Deformable LKA -->
-      <g transform="translate(165, 0)">
-        <rect width="170" height="34" rx="8" fill="#0F172A" stroke="#0D9488" stroke-width="1" stroke-opacity="0.6" />
-        <circle cx="16" cy="17" r="3.5" fill="#2DD4BF" />
-        <text x="28" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Deformable LKA / MaxViT</text>
+      <!-- Badge 2: Deformable LKA (Expanded width for comfortable fit) -->
+      <g transform="translate(175, 0)">
+        <rect width="215" height="34" rx="8" fill="#0F172A" stroke="#0D9488" stroke-width="1" stroke-opacity="0.6" />
+        <circle cx="18" cy="17" r="3.5" fill="#2DD4BF" />
+        <text x="30" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Deformable LKA / MaxViT</text>
       </g>
       <!-- Badge 3: Patcher SegFormer -->
-      <g transform="translate(345, 0)">
-        <rect width="170" height="34" rx="8" fill="#0F172A" stroke="#6366F1" stroke-width="1" stroke-opacity="0.6" />
-        <circle cx="16" cy="17" r="3.5" fill="#818CF8" />
-        <text x="28" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Patcher SegFormer</text>
+      <g transform="translate(405, 0)">
+        <rect width="175" height="34" rx="8" fill="#0F172A" stroke="#6366F1" stroke-width="1" stroke-opacity="0.6" />
+        <circle cx="18" cy="17" r="3.5" fill="#818CF8" />
+        <text x="30" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Patcher SegFormer</text>
       </g>
     </g>
 
-    <!-- Bottom Feature Summary Line -->
+    <!-- Bottom Feature Summary Line (Well spaced) -->
     <g transform="translate(0, 290)">
       <!-- Metric Item 1 -->
       <g>
         <text x="0" y="22" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800">2.5×</text>
-        <text x="48" y="16" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Diagnostic Loupe</text>
-        <text x="48" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Real-time Cursor Tracking</text>
+        <text x="52" y="15" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Diagnostic Loupe</text>
+        <text x="52" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Real-time Cursor Tracking</text>
       </g>
 
       <!-- Metric Item 2 -->
-      <g transform="translate(200, 0)">
+      <g transform="translate(210, 0)">
         <text x="0" y="22" fill="#2DD4BF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800">1:1</text>
-        <text x="40" y="16" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Dual Synced Pan/Zoom</text>
-        <text x="40" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Side-by-side Overlay</text>
+        <text x="44" y="15" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Dual Synced Pan/Zoom</text>
+        <text x="44" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Side-by-side Overlay</text>
       </g>
 
       <!-- Metric Item 3 -->
-      <g transform="translate(400, 0)">
+      <g transform="translate(425, 0)">
         <text x="0" y="22" fill="#818CF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800">100%</text>
-        <text x="58" y="16" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Non-Contrast CT Guard</text>
-        <text x="58" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Pre-inference Validation</text>
+        <text x="64" y="15" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Non-Contrast CT Guard</text>
+        <text x="64" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Pre-inference Validation</text>
       </g>
     </g>
 
     <!-- Animated ECG Pulse Line at bottom -->
-    <path d="M 0 365 L 140 365 L 155 350 L 165 380 L 180 330 L 195 390 L 205 365 L 220 365 L 230 355 L 240 365 L 530 365" 
+    <path d="M 0 365 L 140 365 L 155 350 L 165 380 L 180 330 L 195 390 L 205 365 L 220 365 L 230 355 L 240 365 L 560 365" 
           fill="none" stroke="url(#cyan-glow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ecg-line" opacity="0.7" />
   </g>
 
@@ -203,10 +200,7 @@
     </g>
 
     <!-- Scanline overlay across brain box -->
-    <g clip-path="url(#clip-scanner)">
-      <rect x="-110" y="-110" width="220" height="220" fill="none" />
-      <rect x="-110" y="-110" width="220" height="40" fill="url(#scan-beam)" class="scan-bar" />
-    </g>
+    <rect x="-110" y="-110" width="220" height="40" fill="url(#scan-beam)" class="scan-bar" />
 
     <!-- Target Reticles -->
     <path d="M -130 -40 L -140 -40 L -140 -60" fill="none" stroke="#38BDF8" stroke-width="2" />
