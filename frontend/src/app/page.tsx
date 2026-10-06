@@ -572,14 +572,14 @@ be verified by a certified healthcare professional.
               </span>
 
               {/* Viewport Interactive Tools */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 bg-slate-300/60 p-1 rounded-full border border-slate-400/50 shadow-inner">
                 {/* Zoom Controls Pill */}
-                <div className="flex items-center bg-slate-300/90 p-0.5 rounded-lg border border-slate-400/50 shadow-2xs">
+                <div className="flex items-center bg-white/95 px-1 py-0.5 rounded-full border border-slate-400/40 shadow-xs">
                   <button
                     onClick={handleZoomOut}
                     disabled={zoom <= 0.5}
                     title="Zoom Out (-25%)"
-                    className="p-1 rounded-md text-slate-700 hover:text-slate-950 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    className="p-1 rounded-full text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                   >
                     <ZoomOut className="h-3.5 w-3.5" />
                   </button>
@@ -587,7 +587,7 @@ be verified by a certified healthcare professional.
                   <button
                     onClick={handleResetZoom}
                     title="Click to Reset Zoom to 100%"
-                    className="px-2 py-0.5 rounded text-[11px] font-mono font-black text-slate-800 hover:text-sky-700 hover:bg-slate-200 cursor-pointer transition-colors"
+                    className="px-2 py-0.5 rounded-full text-[11px] font-mono font-black text-slate-800 hover:text-sky-700 hover:bg-slate-100 cursor-pointer transition-colors"
                   >
                     {Math.round(zoom * 100)}%
                   </button>
@@ -596,7 +596,7 @@ be verified by a certified healthcare professional.
                     onClick={handleZoomIn}
                     disabled={zoom >= 4}
                     title="Zoom In (+25%)"
-                    className="p-1 rounded-md text-slate-700 hover:text-slate-950 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    className="p-1 rounded-full text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                   >
                     <ZoomIn className="h-3.5 w-3.5" />
                   </button>
@@ -606,7 +606,7 @@ be verified by a certified healthcare professional.
                 <button
                   onClick={handleResetZoom}
                   title="Reset Viewport to Default Scale (100%) and Center"
-                  className="btn-tactile-light px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 hover:text-sky-700 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                  className="btn-toolbar-capsule px-3 py-1 text-xs font-bold text-slate-700 hover:text-sky-700 flex items-center gap-1.5 cursor-pointer shadow-xs"
                 >
                   <Maximize2 className="h-3.5 w-3.5 text-slate-600" />
                   Reset View
@@ -616,10 +616,10 @@ be verified by a certified healthcare professional.
                 <button
                   onClick={toggleGrid}
                   title={showGrid ? "Disable Fine Medical Gridlines" : "Enable Fine Medical Measurement Gridlines"}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-2xs ${
+                  className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-xs ${
                     showGrid
-                      ? "bg-sky-600 text-white shadow-xs border border-sky-700"
-                      : "btn-tactile-light text-slate-700 hover:text-sky-700"
+                      ? "bg-gradient-to-b from-sky-500 to-sky-700 text-white border border-sky-800 shadow-sky-500/20"
+                      : "btn-toolbar-capsule text-slate-700 hover:text-sky-700"
                   }`}
                 >
                   <Grid className="h-3.5 w-3.5" />
@@ -629,7 +629,7 @@ be verified by a certified healthcare professional.
                 {/* Reset Controls Button */}
                 <button
                   onClick={resetControls}
-                  className="btn-tactile-light px-3 py-1 rounded-lg text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-2xs ml-1"
+                  className="btn-toolbar-capsule px-3.5 py-1 text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-xs"
                   title="Reset all display adjustments (Brightness, Contrast, Opacity, Threshold, Zoom, Grid) to defaults while preserving current image & analysis"
                 >
                   <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
