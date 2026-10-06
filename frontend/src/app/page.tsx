@@ -300,6 +300,23 @@ export default function HomePage() {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [showGrid, setShowGrid] = useState(false);
 
+  // Diagnostic Loupe State (Right-Click popup magnifying glass following mouse)
+  const [loupe, setLoupe] = useState<{
+    active: boolean;
+    x: number;
+    y: number;
+    normX: number;
+    normY: number;
+    target: "left" | "right" | null;
+  }>({
+    active: false,
+    x: 0,
+    y: 0,
+    normX: 0.5,
+    normY: 0.5,
+    target: null,
+  });
+
   function handleZoomIn() {
     setZoom((prev) => Math.min(4, Number((prev + 0.25).toFixed(2))));
   }
@@ -311,23 +328,60 @@ export default function HomePage() {
   function handleResetZoom() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
+    setLoupe((prev) => ({ ...prev, active: false, target: null }));
   }
 
   function toggleGrid() {
     setShowGrid((prev) => !prev);
   }
 
+  function handleViewportContextMenu(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
+    e.preventDefault();
+    if (!imageUrl) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setLoupe((prev) => {
+      if (prev.active && prev.target === target) {
+        return { ...prev, active: false, target: null };
+      }
+      return {
+        active: true,
+        x,
+        y,
+        normX: Math.max(0, Math.min(1, x / rect.width)),
+        normY: Math.max(0, Math.min(1, y / rect.height)),
+        target,
+      };
+    });
+  }
+
   function handleViewportMouseDown(e: React.MouseEvent) {
+    if (e.button === 2) return; // Handled by onContextMenu
     if (e.button !== 0) return;
     setIsDraggingViewport(true);
     dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
   }
 
-  function handleViewportMouseMove(e: React.MouseEvent) {
-    if (!isDraggingViewport || !dragStartRef.current) return;
-    const dx = e.clientX - dragStartRef.current.x;
-    const dy = e.clientY - dragStartRef.current.y;
-    setPan({ x: dragStartRef.current.panX + dx, y: dragStartRef.current.panY + dy });
+  function handleViewportMouseMove(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
+    if (isDraggingViewport && dragStartRef.current) {
+      const dx = e.clientX - dragStartRef.current.x;
+      const dy = e.clientY - dragStartRef.current.y;
+      setPan({ x: dragStartRef.current.panX + dx, y: dragStartRef.current.panY + dy });
+    }
+
+    if (loupe.active && loupe.target === target) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setLoupe((prev) => ({
+        ...prev,
+        x,
+        y,
+        normX: Math.max(0, Math.min(1, x / rect.width)),
+        normY: Math.max(0, Math.min(1, y / rect.height)),
+      }));
+    }
   }
 
   function handleViewportMouseUp() {
@@ -504,6 +558,7 @@ export default function HomePage() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
+    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null });
     recomputeThreshold(50);
   }
 
@@ -727,14 +782,16 @@ be verified by a certified healthcare professional.
             <div className="flex-1 min-h-0 grid grid-cols-2 gap-3">
               {/* Left: Original CT */}
               <div
+                onContextMenu={(e) => handleViewportContextMenu(e, "left")}
                 onMouseDown={handleViewportMouseDown}
-                onMouseMove={handleViewportMouseMove}
+                onMouseMove={(e) => handleViewportMouseMove(e, "left")}
                 onMouseUp={handleViewportMouseUp}
                 onMouseLeave={handleViewportMouseUp}
                 onWheel={handleViewportWheel}
                 className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
-                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
                 }`}
+                title="Right-click anywhere to open 2.5× Magnifying Loupe"
               >
                 {/* Fine Medical Grid Overlay */}
                 {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
@@ -766,18 +823,56 @@ be verified by a certified healthcare professional.
                     <p className="text-xs text-slate-400 font-semibold">Non-Contrast CT</p>
                   </div>
                 )}
+
+                {/* 2.5x Diagnostic Loupe Magnifier (Right-Click popup following mouse) */}
+                {loupe.active && loupe.target === "left" && imageUrl && (
+                  <div
+                    className="absolute pointer-events-none z-30 w-48 h-48 rounded-full border-2 border-sky-400 bg-slate-950 overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(2,132,199,0.6)]"
+                    style={{
+                      left: loupe.x,
+                      top: loupe.y,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <div
+                      className="w-full h-full relative"
+                      style={{
+                        transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
+                        transform: `scale(2.5)`,
+                      }}
+                    >
+                      <img
+                        src={imageUrl}
+                        alt="Loupe Zoom"
+                        className="w-full h-full object-contain pointer-events-none"
+                        style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                      />
+                    </div>
+                    {/* Clinical Crosshair & Scale Badge */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="w-6 h-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8]" />
+                      <div className="h-6 w-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8] absolute" />
+                      <div className="w-3 h-3 rounded-full border border-sky-400/80 absolute" />
+                    </div>
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-slate-950/95 border border-sky-500/60 text-[9px] font-mono font-black text-sky-300 shadow-xs pointer-events-none">
+                      2.5× LOUPE
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Right: AI Segmentation Mask */}
               <div
+                onContextMenu={(e) => handleViewportContextMenu(e, "right")}
                 onMouseDown={handleViewportMouseDown}
-                onMouseMove={handleViewportMouseMove}
+                onMouseMove={(e) => handleViewportMouseMove(e, "right")}
                 onMouseUp={handleViewportMouseUp}
                 onMouseLeave={handleViewportMouseUp}
                 onWheel={handleViewportWheel}
                 className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
-                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
                 }`}
+                title="Right-click anywhere to open 2.5× Magnifying Loupe"
               >
                 {/* Fine Medical Grid Overlay */}
                 {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
@@ -818,6 +913,50 @@ be verified by a certified healthcare professional.
                   <div className="text-center text-slate-500 space-y-1">
                     <Eye className="h-8 w-8 mx-auto opacity-30 text-slate-400" />
                     <p className="text-xs text-slate-400 font-semibold">AI Lesion Mask</p>
+                  </div>
+                )}
+
+                {/* 2.5x Diagnostic Loupe Magnifier (Right-Click popup following mouse) */}
+                {loupe.active && loupe.target === "right" && imageUrl && (
+                  <div
+                    className="absolute pointer-events-none z-30 w-48 h-48 rounded-full border-2 border-sky-400 bg-slate-950 overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(2,132,199,0.6)]"
+                    style={{
+                      left: loupe.x,
+                      top: loupe.y,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <div
+                      className="w-full h-full relative"
+                      style={{
+                        transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
+                        transform: `scale(2.5)`,
+                      }}
+                    >
+                      <img
+                        src={imageUrl}
+                        alt="Loupe Zoom"
+                        className="w-full h-full object-contain pointer-events-none"
+                        style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                      />
+                      {result?.maskUrl && (
+                        <img
+                          src={result.maskUrl}
+                          alt="Loupe Mask"
+                          className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none"
+                          style={{ opacity: maskOpacity / 100 }}
+                        />
+                      )}
+                    </div>
+                    {/* Clinical Crosshair & Scale Badge */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="w-6 h-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8]" />
+                      <div className="h-6 w-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8] absolute" />
+                      <div className="w-3 h-3 rounded-full border border-sky-400/80 absolute" />
+                    </div>
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-slate-950/95 border border-sky-500/60 text-[9px] font-mono font-black text-sky-300 shadow-xs pointer-events-none">
+                      2.5× LOUPE
+                    </div>
                   </div>
                 )}
               </div>
