@@ -420,30 +420,15 @@ export default function HomePage() {
     }
   }
 
-  // Complete System Reset: Clears image, results, inputs, and resets all parameters to defaults
-  function resetAll() {
-    if (imageUrl && imageUrl.startsWith("blob:")) {
-      URL.revokeObjectURL(imageUrl);
-    }
-    probDataRef.current = null;
-    setFile(null);
-    setImageUrl(null);
-    setResult(null);
-    setError(null);
-    setIsScanning(false);
-    setIsDragging(false);
-    setIsDraggingViewport(false);
-    setModelId("vcanet");
+  // Reset all adjustments/sliders/viewport back to default while keeping the loaded image and analysis mask intact!
+  function resetControls() {
     setBrightness(100);
     setContrast(100);
     setMaskOpacity(85);
-    setThreshold(50);
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
+    recomputeThreshold(50);
   }
 
   // Real composite image export with overlay & metadata
@@ -641,14 +626,14 @@ be verified by a certified healthcare professional.
                   Grid {showGrid ? "ON" : "OFF"}
                 </button>
 
-                {/* Complete Reset Control */}
+                {/* Reset Controls Button */}
                 <button
-                  onClick={resetAll}
+                  onClick={resetControls}
                   className="btn-tactile-light px-3 py-1 rounded-lg text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-2xs ml-1"
-                  title="Reset all images, inputs, results, and parameters to default"
+                  title="Reset all display adjustments (Brightness, Contrast, Opacity, Threshold, Zoom, Grid) to defaults while preserving current image & analysis"
                 >
                   <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
-                  Reset All
+                  Reset Controls
                 </button>
               </div>
             </div>
