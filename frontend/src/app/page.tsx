@@ -137,6 +137,50 @@ function Gauge({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+function ZoomIn({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" x2="16.65" y1="21" y2="16.65" />
+      <line x1="11" x2="11" y1="8" y2="14" />
+      <line x1="8" x2="14" y1="11" y2="11" />
+    </svg>
+  );
+}
+
+function ZoomOut({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" x2="16.65" y1="21" y2="16.65" />
+      <line x1="8" x2="14" y1="11" y2="11" />
+    </svg>
+  );
+}
+
+function Maximize2({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <polyline points="15 3 21 3 21 9" />
+      <polyline points="9 21 3 21 3 15" />
+      <line x1="21" x2="14" y1="3" y2="10" />
+      <line x1="3" x2="10" y1="21" y2="14" />
+    </svg>
+  );
+}
+
+function Grid({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M3 15h18" />
+      <path d="M9 3v18" />
+      <path d="M15 3v18" />
+    </svg>
+  );
+}
+
 type ScanResult = {
   label: string;
   confidence: number;
@@ -158,12 +202,15 @@ const MODELS = [
 export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
+  const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
+  
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isDraggingViewport, setIsDraggingViewport] = useState(false);
 
   // Model & Display Controls
   const [modelId, setModelId] = useState("vcanet");
@@ -171,6 +218,54 @@ export default function HomePage() {
   const [contrast, setContrast] = useState(100);
   const [maskOpacity, setMaskOpacity] = useState(85);
   const [threshold, setThreshold] = useState(50);
+
+  // Advanced Viewport Zoom, Pan & Fine Grid Controls
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [showGrid, setShowGrid] = useState(false);
+
+  function handleZoomIn() {
+    setZoom((prev) => Math.min(4, Number((prev + 0.25).toFixed(2))));
+  }
+
+  function handleZoomOut() {
+    setZoom((prev) => Math.max(0.5, Number((prev - 0.25).toFixed(2))));
+  }
+
+  function handleResetZoom() {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }
+
+  function toggleGrid() {
+    setShowGrid((prev) => !prev);
+  }
+
+  function handleViewportMouseDown(e: React.MouseEvent) {
+    if (e.button !== 0) return;
+    setIsDraggingViewport(true);
+    dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
+  }
+
+  function handleViewportMouseMove(e: React.MouseEvent) {
+    if (!isDraggingViewport || !dragStartRef.current) return;
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+    setPan({ x: dragStartRef.current.panX + dx, y: dragStartRef.current.panY + dy });
+  }
+
+  function handleViewportMouseUp() {
+    setIsDraggingViewport(false);
+    dragStartRef.current = null;
+  }
+
+  function handleViewportWheel(e: React.WheelEvent) {
+    if (e.deltaY < 0) {
+      setZoom((prev) => Math.min(4, Number((prev + 0.15).toFixed(2))));
+    } else {
+      setZoom((prev) => Math.max(0.5, Number((prev - 0.15).toFixed(2))));
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -337,11 +432,15 @@ export default function HomePage() {
     setError(null);
     setIsScanning(false);
     setIsDragging(false);
+    setIsDraggingViewport(false);
     setModelId("vcanet");
     setBrightness(100);
     setContrast(100);
     setMaskOpacity(85);
     setThreshold(50);
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+    setShowGrid(false);
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -480,41 +579,117 @@ be verified by a certified healthcare professional.
         <section className="col-span-8 flex flex-col gap-2 min-h-0">
           <div className="flex-1 min-h-0 bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex flex-col shadow-xs">
             
-            {/* Viewport Top Bar */}
-            <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-300 shrink-0">
+            {/* Viewport Top Bar with Zoom, Reset Scale, Grid Toggle & Reset All */}
+            <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-300 shrink-0">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                 <Brain className="h-3.5 w-3.5 text-sky-600" />
                 DICOM Dual Viewport
               </span>
 
-              {/* Complete Reset Control */}
-              <button
-                onClick={resetAll}
-                className="btn-tactile-light px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                title="Reset all images, inputs, results, and parameters to default"
-              >
-                <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
-                Reset All
-              </button>
+              {/* Viewport Interactive Tools */}
+              <div className="flex items-center gap-1.5">
+                {/* Zoom Controls Pill */}
+                <div className="flex items-center bg-slate-300/90 p-0.5 rounded-lg border border-slate-400/50 shadow-2xs">
+                  <button
+                    onClick={handleZoomOut}
+                    disabled={zoom <= 0.5}
+                    title="Zoom Out (-25%)"
+                    className="p-1 rounded-md text-slate-700 hover:text-slate-950 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  >
+                    <ZoomOut className="h-3.5 w-3.5" />
+                  </button>
+
+                  <button
+                    onClick={handleResetZoom}
+                    title="Click to Reset Zoom to 100%"
+                    className="px-2 py-0.5 rounded text-[11px] font-mono font-black text-slate-800 hover:text-sky-700 hover:bg-slate-200 cursor-pointer transition-colors"
+                  >
+                    {Math.round(zoom * 100)}%
+                  </button>
+
+                  <button
+                    onClick={handleZoomIn}
+                    disabled={zoom >= 4}
+                    title="Zoom In (+25%)"
+                    className="p-1 rounded-md text-slate-700 hover:text-slate-950 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  >
+                    <ZoomIn className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                {/* Reset View Button */}
+                <button
+                  onClick={handleResetZoom}
+                  title="Reset Viewport to Default Scale (100%) and Center"
+                  className="btn-tactile-light px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 hover:text-sky-700 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <Maximize2 className="h-3.5 w-3.5 text-slate-600" />
+                  Reset View
+                </button>
+
+                {/* Gridlines Toggle Button */}
+                <button
+                  onClick={toggleGrid}
+                  title={showGrid ? "Disable Fine Medical Gridlines" : "Enable Fine Medical Measurement Gridlines"}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-2xs ${
+                    showGrid
+                      ? "bg-sky-600 text-white shadow-xs border border-sky-700"
+                      : "btn-tactile-light text-slate-700 hover:text-sky-700"
+                  }`}
+                >
+                  <Grid className="h-3.5 w-3.5" />
+                  Grid {showGrid ? "ON" : "OFF"}
+                </button>
+
+                {/* Complete Reset Control */}
+                <button
+                  onClick={resetAll}
+                  className="btn-tactile-light px-3 py-1 rounded-lg text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-2xs ml-1"
+                  title="Reset all images, inputs, results, and parameters to default"
+                >
+                  <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
+                  Reset All
+                </button>
+              </div>
             </div>
 
             {/* Dual CT Scanners Display */}
             <div className="flex-1 min-h-0 grid grid-cols-2 gap-3">
               {/* Left: Original CT */}
-              <div className="dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner">
-                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
+              <div
+                onMouseDown={handleViewportMouseDown}
+                onMouseMove={handleViewportMouseMove}
+                onMouseUp={handleViewportMouseUp}
+                onMouseLeave={handleViewportMouseUp}
+                onWheel={handleViewportWheel}
+                className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
+                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+                }`}
+              >
+                {/* Fine Medical Grid Overlay */}
+                {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
+
+                <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-slate-300 uppercase tracking-wider pointer-events-none">
                   Original CT
                 </div>
-                <span className="absolute top-2.5 right-3 text-xs font-mono text-slate-500 font-bold">R</span>
-                <span className="absolute bottom-2.5 right-3 text-xs font-mono text-slate-500 font-bold">L</span>
+                <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">R</span>
+                <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">L</span>
 
                 {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="Original Scan"
-                    className="max-h-full max-w-full object-contain pointer-events-none transition-[filter]"
-                    style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                  />
+                  <div
+                    className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
+                    style={{
+                      transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                      transformOrigin: "center center",
+                    }}
+                  >
+                    <img
+                      src={imageUrl}
+                      alt="Original Scan"
+                      className="max-h-full max-w-full object-contain pointer-events-none transition-[filter]"
+                      style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                    />
+                  </div>
                 ) : (
                   <div className="text-center text-slate-500 space-y-1">
                     <Brain className="h-8 w-8 mx-auto opacity-30 text-slate-400" />
@@ -524,18 +699,36 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* Right: AI Segmentation Mask */}
-              <div className="dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner">
-                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
+              <div
+                onMouseDown={handleViewportMouseDown}
+                onMouseMove={handleViewportMouseMove}
+                onMouseUp={handleViewportMouseUp}
+                onMouseLeave={handleViewportMouseUp}
+                onWheel={handleViewportWheel}
+                className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
+                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+                }`}
+              >
+                {/* Fine Medical Grid Overlay */}
+                {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
+
+                <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-sky-300 uppercase tracking-wider flex items-center gap-1.5 pointer-events-none">
                   AI Overlay
                   {result && (
                     <span className={`h-1.5 w-1.5 rounded-full ${result.detected ? "bg-red-500 animate-pulse" : "bg-emerald-400"}`} />
                   )}
                 </div>
-                <span className="absolute top-2.5 right-3 text-xs font-mono text-slate-500 font-bold">R</span>
-                <span className="absolute bottom-2.5 right-3 text-xs font-mono text-slate-500 font-bold">L</span>
+                <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">R</span>
+                <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">L</span>
 
                 {imageUrl ? (
-                  <div className="relative h-full w-full flex items-center justify-center">
+                  <div
+                    className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
+                    style={{
+                      transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                      transformOrigin: "center center",
+                    }}
+                  >
                     <img
                       src={imageUrl}
                       alt="Base Scan"

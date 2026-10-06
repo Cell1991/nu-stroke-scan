@@ -44,6 +44,17 @@ html, body {
   background-size: 100% 100%, 24px 24px, 24px 24px;
 }
 
+/* Fine Medical PACS Grid Overlay */
+.dicom-fine-grid {
+  background-image: 
+    linear-gradient(to right, rgba(56, 189, 248, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.14) 1px, transparent 1px),
+    linear-gradient(to right, rgba(56, 189, 248, 0.32) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.32) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+  pointer-events: none;
+}
+
 /* Clean Clinical Range Sliders */
 .medical-slider {
   -webkit-appearance: none;
