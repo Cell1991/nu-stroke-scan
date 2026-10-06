@@ -983,7 +983,7 @@ be verified by a certified healthcare professional.
                       <img
                         src={result.maskUrl}
                         alt="Segmented Mask"
-                        className="lesion-mask absolute inset-0 w-full h-full object-contain mix-blend-screen transition-opacity duration-150"
+                        className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-150"
                         style={{ opacity: maskOpacity / 100 }}
                       />
                     )}
@@ -1028,7 +1028,7 @@ be verified by a certified healthcare professional.
                         <img
                           src={result.maskUrl}
                           alt="Loupe Mask"
-                          className="lesion-mask absolute inset-0 w-full h-full object-contain mix-blend-screen pointer-events-none"
+                          className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none"
                           style={{ opacity: maskOpacity / 100 }}
                         />
                       )}
