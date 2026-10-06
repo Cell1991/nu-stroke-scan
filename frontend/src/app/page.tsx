@@ -122,6 +122,8 @@ export default function HomePage() {
 
   // Model & Display Controls
   const [modelId, setModelId] = useState("vcanet");
+  const [brightness, setBrightness] = useState(100);
+  const [contrast, setContrast] = useState(100);
   const [maskOpacity, setMaskOpacity] = useState(85);
   const [threshold, setThreshold] = useState(50);
 
@@ -214,6 +216,8 @@ export default function HomePage() {
     setIsScanning(false);
     setIsDragging(false);
     setModelId("vcanet");
+    setBrightness(100);
+    setContrast(100);
     setMaskOpacity(85);
     setThreshold(50);
     if (inputRef.current) {
@@ -238,8 +242,10 @@ export default function HomePage() {
     canvas.width = baseImg.naturalWidth || 512;
     canvas.height = baseImg.naturalHeight || 512;
 
-    // Draw CT image
+    // Draw CT image with active brightness & contrast filter
+    ctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
     ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
+    ctx.filter = "none";
 
     // Overlay lesion mask
     if (result?.maskUrl) {
@@ -256,7 +262,7 @@ export default function HomePage() {
 
     // Overlay watermark badge
     ctx.fillStyle = "rgba(10, 15, 29, 0.85)";
-    ctx.fillRect(12, canvas.height - 38, 280, 26);
+    ctx.fillRect(12, canvas.height - 38, 320, 26);
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 11px sans-serif";
     const statusText = result ? (result.detected ? "STROKE DETECTED" : "NO LESION") : "CT SCAN";
@@ -385,7 +391,8 @@ be verified by a certified healthcare professional.
                   <img
                     src={imageUrl}
                     alt="Original Scan"
-                    className="max-h-full max-w-full object-contain pointer-events-none"
+                    className="max-h-full max-w-full object-contain pointer-events-none transition-[filter]"
+                    style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                   />
                 ) : (
                   <div className="text-center text-slate-500 space-y-1">
@@ -411,7 +418,8 @@ be verified by a certified healthcare professional.
                     <img
                       src={imageUrl}
                       alt="Base Scan"
-                      className="max-h-full max-w-full object-contain pointer-events-none"
+                      className="max-h-full max-w-full object-contain pointer-events-none transition-[filter]"
+                      style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                     />
                     {result?.maskUrl && (
                       <img
@@ -431,11 +439,43 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Sliders Footer: Opacity & Decision Threshold */}
-            <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-2 gap-3 shrink-0">
+            {/* Essential Controls Footer: Brightness, Contrast, Opacity & Sensitivity */}
+            <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2 shrink-0">
+              {/* Brightness */}
+              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
+                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
+                  <span className="text-slate-800">Brightness</span>
+                  <span className="font-mono text-sky-700 font-extrabold">{brightness}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="50"
+                  max="150"
+                  value={brightness}
+                  onChange={(e) => setBrightness(Number(e.target.value))}
+                  className="medical-slider"
+                />
+              </div>
+
+              {/* Contrast */}
+              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
+                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
+                  <span className="text-slate-800">Contrast</span>
+                  <span className="font-mono text-sky-700 font-extrabold">{contrast}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="50"
+                  max="200"
+                  value={contrast}
+                  onChange={(e) => setContrast(Number(e.target.value))}
+                  className="medical-slider"
+                />
+              </div>
+
               {/* Mask Opacity */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/50">
-                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1.5">
+              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
+                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
                   <span className="text-red-700">Mask Opacity</span>
                   <span className="font-mono text-red-600 font-extrabold">{maskOpacity}%</span>
                 </div>
@@ -450,9 +490,9 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* Sensitivity Threshold */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/50">
-                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1.5">
-                  <span className="text-slate-800">Sensitivity Threshold</span>
+              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
+                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
+                  <span className="text-slate-800">Threshold</span>
                   <span className="font-mono text-sky-700 font-extrabold">{threshold}%</span>
                 </div>
                 <input
