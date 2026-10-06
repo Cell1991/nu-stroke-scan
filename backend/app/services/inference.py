@@ -110,10 +110,16 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
 
     # Resize mask to original uploaded image dimensions with crisp NEAREST interpolation
     mask_resized = mask_pil.resize((image.width, image.height), Image.NEAREST)
+    mask_buffer = io.BytesIO()
+    mask_resized.save(mask_buffer, format="PNG", optimize=True)
+    mask_b64 = base64.b64encode(mask_buffer.getvalue()).decode("ascii")
 
-    buffer = io.BytesIO()
-    mask_resized.save(buffer, format="PNG", optimize=True)
-    mask_b64 = base64.b64encode(buffer.getvalue()).decode("ascii")
+    # Probability map encoded as 8-bit grayscale PNG (0-255 representing 0.0-1.0 probability)
+    prob_uint8 = (prob_np * 255.0).clip(0, 255).astype(np.uint8)
+    prob_pil = Image.fromarray(prob_uint8, mode="L").resize((image.width, image.height), Image.BILINEAR)
+    prob_buf = io.BytesIO()
+    prob_pil.save(prob_buf, format="PNG")
+    prob_b64 = base64.b64encode(prob_buf.getvalue()).decode("ascii")
 
     return {
         "filename": upload.filename or "scan.png",
@@ -129,4 +135,5 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         "mask_width": image.width,
         "mask_height": image.height,
         "mask_png_base64": mask_b64,
+        "prob_png_base64": prob_b64,
     }

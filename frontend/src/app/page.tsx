@@ -157,6 +157,7 @@ const MODELS = [
 
 export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
@@ -180,6 +181,7 @@ export default function HomePage() {
   function handleFile(selectedFile: File) {
     setError(null);
     setResult(null);
+    probDataRef.current = null;
     if (!selectedFile.type.startsWith("image/")) {
       setError("Please select a valid brain CT scan image (PNG, JPG, or WEBP).");
       return;
@@ -199,6 +201,63 @@ export default function HomePage() {
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files?.[0];
     if (droppedFile) handleFile(droppedFile);
+  }
+
+  // Real-time zero-latency dynamic re-thresholding without losing the mask
+  function recomputeThreshold(newThreshold: number) {
+    setThreshold(newThreshold);
+    if (!probDataRef.current) return;
+    const { width, height, data } = probDataRef.current;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const outImgData = ctx.createImageData(width, height);
+    const out = outImgData.data;
+    const cutoff = Math.round((newThreshold / 100) * 255);
+
+    let lesionPixels = 0;
+    let sumProb = 0;
+    let maxProb = 0;
+    const totalPixels = width * height;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const prob = data[i]; // Grayscale value 0-255
+      if (prob > maxProb) maxProb = prob;
+      if (prob >= cutoff) {
+        out[i] = 239;     // R
+        out[i + 1] = 68;  // G
+        out[i + 2] = 68;  // B
+        out[i + 3] = 255; // Solid Alpha
+        lesionPixels++;
+        sumProb += prob / 255;
+      } else {
+        out[i + 3] = 0;
+      }
+    }
+
+    ctx.putImageData(outImgData, 0, 0);
+    const newMaskUrl = canvas.toDataURL("image/png");
+    const detected = lesionPixels > 0;
+    const lesionArea = Number(((lesionPixels / totalPixels) * 100).toFixed(2));
+    const confidence = detected
+      ? Number((sumProb / lesionPixels).toFixed(4))
+      : Number((1.0 - maxProb / 255).toFixed(4));
+
+    setResult((prev) =>
+      prev
+        ? {
+            ...prev,
+            maskUrl: newMaskUrl,
+            detected,
+            lesionArea,
+            confidence,
+            label: detected ? "Acute Stroke Lesion Detected" : "No Acute Lesion Detected",
+          }
+        : null
+    );
   }
 
   async function runInference() {
@@ -230,6 +289,24 @@ export default function HomePage() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.detail ?? "Inference failed.");
 
+      // Cache raw neural probability map for instant client-side thresholding
+      if (payload.prob_png_base64) {
+        const probImg = new Image();
+        probImg.src = `data:image/png;base64,${payload.prob_png_base64}`;
+        await new Promise<void>((resolve) => {
+          probImg.onload = () => resolve();
+        });
+        const cvs = document.createElement("canvas");
+        cvs.width = probImg.naturalWidth;
+        cvs.height = probImg.naturalHeight;
+        const c = cvs.getContext("2d");
+        if (c) {
+          c.drawImage(probImg, 0, 0);
+          const idata = c.getImageData(0, 0, cvs.width, cvs.height);
+          probDataRef.current = { width: cvs.width, height: cvs.height, data: idata.data };
+        }
+      }
+
       const isDetected = payload.lesion_detected ?? payload.confidence >= threshold / 100;
 
       setResult({
@@ -253,6 +330,7 @@ export default function HomePage() {
     if (imageUrl && imageUrl.startsWith("blob:")) {
       URL.revokeObjectURL(imageUrl);
     }
+    probDataRef.current = null;
     setFile(null);
     setImageUrl(null);
     setResult(null);
@@ -607,10 +685,7 @@ be verified by a certified healthcare professional.
                     Threshold
                   </span>
                   <button
-                    onClick={() => {
-                      setThreshold(50);
-                      setResult(null);
-                    }}
+                    onClick={() => recomputeThreshold(50)}
                     title="Click to reset Threshold to 50%"
                     className="px-2 py-0.5 rounded-md bg-slate-900 text-indigo-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
                   >
@@ -622,10 +697,7 @@ be verified by a certified healthcare professional.
                   min="10"
                   max="95"
                   value={threshold}
-                  onChange={(e) => {
-                    setThreshold(Number(e.target.value));
-                    setResult(null);
-                  }}
+                  onChange={(e) => recomputeThreshold(Number(e.target.value))}
                   className="medical-slider"
                   style={{
                     background: `linear-gradient(to right, #4f46e5 0%, #4f46e5 ${((threshold - 10) / 85) * 100}%, #94a3b8 ${((threshold - 10) / 85) * 100}%, #94a3b8 100%)`,
@@ -634,10 +706,7 @@ be verified by a certified healthcare professional.
                 <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
                   <span>10%</span>
                   <button
-                    onClick={() => {
-                      setThreshold(50);
-                      setResult(null);
-                    }}
+                    onClick={() => recomputeThreshold(50)}
                     className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
                   >
                     50% (Opt)
