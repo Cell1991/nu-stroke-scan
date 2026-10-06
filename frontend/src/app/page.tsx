@@ -93,18 +93,6 @@ function Eye({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function Sparkles({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-      <path d="M5 3v4" />
-      <path d="M19 17v4" />
-      <path d="M3 5h4" />
-      <path d="M17 19h4" />
-    </svg>
-  );
-}
-
 type ScanResult = {
   label: string;
   confidence: number;
@@ -122,65 +110,6 @@ const MODELS = [
   { id: "dlka", name: "Deformable LKA", desc: "MaxViT + Large Kernel" },
   { id: "patcher", name: "Patcher", desc: "Patch SegFormer" },
 ];
-
-// Helper to generate a clean demo brain CT scan
-function generateDemoCTScan(): string {
-  if (typeof document === "undefined") return "";
-  const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 256;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return "";
-
-  ctx.fillStyle = "#05070a";
-  ctx.fillRect(0, 0, 256, 256);
-
-  // Skull outline
-  ctx.beginPath();
-  ctx.ellipse(128, 128, 95, 110, 0, 0, 2 * Math.PI);
-  ctx.fillStyle = "#2a3441";
-  ctx.fill();
-
-  // Bone
-  ctx.beginPath();
-  ctx.ellipse(128, 128, 88, 102, 0, 0, 2 * Math.PI);
-  ctx.fillStyle = "#78879b";
-  ctx.fill();
-
-  // Brain parenchyma
-  ctx.beginPath();
-  ctx.ellipse(128, 128, 82, 96, 0, 0, 2 * Math.PI);
-  ctx.fillStyle = "#475569";
-  ctx.fill();
-
-  // Ventricles
-  ctx.fillStyle = "#1e293b";
-  ctx.beginPath();
-  ctx.ellipse(115, 118, 12, 35, -0.2, 0, 2 * Math.PI);
-  ctx.ellipse(141, 118, 12, 35, 0.2, 0, 2 * Math.PI);
-  ctx.fill();
-
-  // Midline
-  ctx.strokeStyle = "#334155";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(128, 35);
-  ctx.lineTo(128, 220);
-  ctx.stroke();
-
-  // Stroke lesion area
-  ctx.fillStyle = "#1e2430";
-  ctx.beginPath();
-  ctx.ellipse(152, 110, 24, 18, 0.3, 0, 2 * Math.PI);
-  ctx.fill();
-
-  ctx.fillStyle = "#27303f";
-  ctx.beginPath();
-  ctx.ellipse(155, 112, 16, 12, 0.2, 0, 2 * Math.PI);
-  ctx.fill();
-
-  return canvas.toDataURL("image/png");
-}
 
 export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -224,18 +153,6 @@ export default function HomePage() {
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files?.[0];
     if (droppedFile) handleFile(droppedFile);
-  }
-
-  function loadDemoScan() {
-    setError(null);
-    setResult(null);
-    const demoUrl = generateDemoCTScan();
-    setImageUrl(demoUrl);
-    fetch(demoUrl)
-      .then((r) => r.blob())
-      .then((b) => {
-        setFile(new File([b], "demo_brain_ct.png", { type: "image/png" }));
-      });
   }
 
   async function runInference() {
@@ -426,22 +343,6 @@ be verified by a certified healthcare professional.
               </button>
             );
           })}
-        </div>
-
-        {/* Quick Actions */}
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={loadDemoScan}
-            className="btn-tactile-light px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-sky-600" />
-            Demo Scan
-          </button>
-          <div className="h-4 w-px bg-slate-200" />
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            System Ready
-          </div>
         </div>
       </header>
 
