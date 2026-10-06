@@ -671,7 +671,7 @@ be verified by a certified healthcare professional.
                     <img
                       src={imageUrl}
                       alt="Original Scan"
-                      className="max-h-full max-w-full object-contain pointer-events-none transition-[filter]"
+                      className="w-full h-full object-contain pointer-events-none transition-[filter]"
                       style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                     />
                   </div>
@@ -717,14 +717,14 @@ be verified by a certified healthcare professional.
                     <img
                       src={imageUrl}
                       alt="Base Scan"
-                      className="max-h-full max-w-full object-contain pointer-events-none transition-[filter]"
+                      className="w-full h-full object-contain pointer-events-none transition-[filter]"
                       style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                     />
                     {result?.maskUrl && (
                       <img
                         src={result.maskUrl}
                         alt="Segmented Mask"
-                        className="lesion-mask absolute inset-0 max-h-full max-w-full m-auto object-contain transition-opacity duration-150 pointer-events-none"
+                        className="lesion-mask absolute inset-0 w-full h-full m-auto object-contain transition-opacity duration-150 pointer-events-none"
                         style={{ opacity: maskOpacity / 100 }}
                       />
                     )}
