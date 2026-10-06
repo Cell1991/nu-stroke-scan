@@ -49,8 +49,8 @@ html, body {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 8px;
-  border-radius: 4px;
+  height: 5px;
+  border-radius: 9999px;
   background: #334155;
   outline: none;
   transition: background 0.15s ease-in-out;
@@ -58,12 +58,12 @@ html, body {
 .medical-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #38bdf8;
-  border: 3px solid #0f172a;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  border: 2px solid #0f172a;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   transition: transform 0.1s ease, background-color 0.1s ease;
 }
@@ -74,5 +74,4 @@ html, body {
 
 .lesion-mask {
   pointer-events: none;
-  mix-blend-mode: screen;
 }
