@@ -301,9 +301,9 @@ be verified by a certified healthcare professional.
   }
 
   return (
-    <div className="h-screen w-screen bg-[#F1F5F9] text-slate-900 flex flex-col overflow-hidden font-sans p-3 gap-3 select-none">
+    <div className="h-screen w-screen bg-slate-200 text-slate-900 flex flex-col overflow-hidden font-sans p-3 gap-3 select-none">
       {/* 1. Sleek Hospital-Grade Top Navigation Bar */}
-      <header className="h-14 bg-white border border-slate-200/90 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-xs">
+      <header className="h-14 bg-slate-100/95 border border-slate-300 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-xs">
         {/* Brand */}
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-lg bg-sky-600 flex items-center justify-center text-white shadow-xs">
@@ -312,18 +312,18 @@ be verified by a certified healthcare professional.
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-base tracking-tight text-slate-900">NU STROKE SCAN</span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200">
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-300">
                 Clinical AI
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 leading-none">
+            <p className="text-[11px] text-slate-600 leading-none">
               Neuro-Imaging Decision Support · Naresuan University
             </p>
           </div>
         </div>
 
         {/* Model Selector Pills */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
+        <div className="flex items-center bg-slate-200 p-1 rounded-lg border border-slate-300 shadow-inner">
           {MODELS.map((m) => {
             const isSelected = modelId === m.id;
             return (
@@ -336,7 +336,7 @@ be verified by a certified healthcare professional.
                 className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
                   isSelected
                     ? "bg-sky-600 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+                    : "text-slate-700 hover:text-slate-950 hover:bg-slate-100"
                 }`}
               >
                 {m.name}
@@ -351,10 +351,10 @@ be verified by a certified healthcare professional.
         
         {/* Left/Center Viewport Column (8 Cols) */}
         <section className="col-span-8 flex flex-col gap-2 min-h-0">
-          <div className="flex-1 min-h-0 bg-white border border-slate-200/90 rounded-xl p-3.5 flex flex-col shadow-xs">
+          <div className="flex-1 min-h-0 bg-slate-100/90 border border-slate-300 rounded-xl p-3.5 flex flex-col shadow-xs">
             
             {/* Viewport Top Bar */}
-            <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 shrink-0">
+            <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-200 shrink-0">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                 <Brain className="h-3.5 w-3.5 text-sky-600" />
                 DICOM Dual Viewport
@@ -363,7 +363,7 @@ be verified by a certified healthcare professional.
               {/* Complete Reset Control */}
               <button
                 onClick={resetAll}
-                className="btn-tactile-light px-3 py-1.5 rounded-lg text-xs font-semibold hover:text-amber-700 hover:border-amber-300 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                className="btn-tactile-light px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                 title="Reset all images, inputs, results, and parameters to default"
               >
                 <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
@@ -374,7 +374,7 @@ be verified by a certified healthcare professional.
             {/* Dual CT Scanners Display */}
             <div className="flex-1 min-h-0 grid grid-cols-2 gap-3">
               {/* Left: Original CT */}
-              <div className="dicom-canvas-bg relative rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center p-2 shadow-inner">
+              <div className="dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner">
                 <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                   Original CT
                 </div>
@@ -396,7 +396,7 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* Right: AI Segmentation Mask */}
-              <div className="dicom-canvas-bg relative rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center p-2 shadow-inner">
+              <div className="dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner">
                 <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-700 text-[10px] font-bold text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
                   AI Overlay
                   {result && (
@@ -432,10 +432,10 @@ be verified by a certified healthcare professional.
             </div>
 
             {/* Essential Sliders Footer: Opacity & Decision Threshold */}
-            <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-2 gap-3 shrink-0">
+            <div className="mt-3 pt-3 border-t border-slate-200 grid grid-cols-2 gap-3 shrink-0">
               {/* Mask Opacity */}
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
+              <div className="p-2.5 rounded-xl bg-slate-200/80 border border-slate-300">
+                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1.5">
                   <span className="text-red-700">Mask Opacity</span>
                   <span className="font-mono text-red-600 font-extrabold">{maskOpacity}%</span>
                 </div>
@@ -450,8 +450,8 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* Sensitivity Threshold */}
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
+              <div className="p-2.5 rounded-xl bg-slate-200/80 border border-slate-300">
+                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1.5">
                   <span className="text-slate-800">Sensitivity Threshold</span>
                   <span className="font-mono text-sky-700 font-extrabold">{threshold}%</span>
                 </div>
@@ -475,7 +475,7 @@ be verified by a certified healthcare professional.
         <section className="col-span-4 flex flex-col gap-3 min-h-0">
           
           {/* Upload & Action Card */}
-          <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 flex flex-col shrink-0 shadow-xs">
+          <div className="bg-slate-100/90 border border-slate-300 rounded-xl p-3.5 flex flex-col shrink-0 shadow-xs">
             <div
               onClick={() => inputRef.current?.click()}
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -483,23 +483,23 @@ be verified by a certified healthcare professional.
               onDrop={handleDrop}
               className={`h-24 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 relative overflow-hidden ${
                 isDragging
-                  ? "border-sky-500 bg-sky-50/80 scale-[1.01]"
-                  : "border-slate-200 hover:border-sky-400 bg-slate-50/60 hover:bg-sky-50/30"
+                  ? "border-sky-500 bg-sky-100/70 scale-[1.01]"
+                  : "border-slate-300 hover:border-sky-400 bg-slate-200/50 hover:bg-slate-200/80"
               }`}
             >
               {imageUrl ? (
                 <div className="flex items-center gap-3 px-3 w-full">
-                  <img src={imageUrl} alt="Thumbnail" className="h-14 w-14 object-contain rounded-lg border border-slate-200 bg-black shadow-xs" />
+                  <img src={imageUrl} alt="Thumbnail" className="h-14 w-14 object-contain rounded-lg border border-slate-300 bg-black shadow-xs" />
                   <div className="text-left flex-1 min-w-0">
                     <p className="text-xs font-bold text-slate-900 truncate">{file?.name ?? "Loaded CT Scan"}</p>
-                    <p className="text-[11px] font-semibold text-slate-500 mt-0.5">Click or drag to replace image</p>
+                    <p className="text-[11px] font-semibold text-slate-600 mt-0.5">Click or drag to replace image</p>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-1">
                   <UploadCloud className="h-6 w-6 mx-auto text-sky-600" />
                   <p className="text-xs font-bold text-slate-800">Drop CT Scan or Click to Browse</p>
-                  <p className="text-[11px] text-slate-500 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
+                  <p className="text-[11px] text-slate-600 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
                 </div>
               )}
             </div>
@@ -528,7 +528,7 @@ be verified by a certified healthcare professional.
               disabled={isScanning || !imageUrl}
               className={`relative overflow-hidden mt-3 h-12 w-full rounded-xl font-black text-sm uppercase tracking-wider text-white transition-all duration-150 flex items-center justify-center cursor-pointer select-none ${
                 isScanning || !imageUrl
-                  ? "bg-slate-200 text-slate-400 border border-slate-200 cursor-not-allowed shadow-none"
+                  ? "bg-slate-300 text-slate-500 border border-slate-300 cursor-not-allowed shadow-none"
                   : "btn-tactile-primary group"
               }`}
             >
@@ -546,8 +546,8 @@ be verified by a certified healthcare professional.
           </div>
 
           {/* Diagnostic Outcome Card */}
-          <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 flex-1 flex flex-col min-h-0 shadow-xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 pb-2 border-b border-slate-100">
+          <div className="bg-slate-100/90 border border-slate-300 rounded-xl p-3.5 flex-1 flex flex-col min-h-0 shadow-xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 pb-2 border-b border-slate-200">
               Diagnostic Summary
             </h3>
 
@@ -584,7 +584,7 @@ be verified by a certified healthcare professional.
                   </div>
                 )
               ) : (
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-0.5">
+                <div className="p-3 rounded-xl bg-slate-200/70 border border-slate-300 text-center space-y-0.5">
                   <p className="text-xs font-bold text-slate-700">Awaiting Analysis</p>
                   <p className="text-[11px] text-slate-500 font-medium">Upload scan and click &quot;Analyze CT Scan&quot;.</p>
                 </div>
@@ -599,7 +599,7 @@ be verified by a certified healthcare professional.
                   {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
                 </span>
               </div>
-              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+              <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-slate-300">
                 <div
                   className={`h-full transition-all duration-300 ${result?.detected ? "bg-red-500" : "bg-sky-500"}`}
                   style={{ width: result ? `${result.confidence * 100}%` : "0%" }}
@@ -608,23 +608,23 @@ be verified by a certified healthcare professional.
             </div>
 
             {/* Clean Key-Value Table */}
-            <div className="space-y-1.5 text-xs border-t border-slate-100 pt-2.5 text-slate-700">
-              <div className="flex justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-500 font-medium">Model Engine:</span>
+            <div className="space-y-1.5 text-xs border-t border-slate-200 pt-2.5 text-slate-700">
+              <div className="flex justify-between py-1 border-b border-slate-200">
+                <span className="text-slate-600 font-medium">Model Engine:</span>
                 <span className="font-bold text-slate-900">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-500 font-medium">Lesion ROI Area:</span>
+              <div className="flex justify-between py-1 border-b border-slate-200">
+                <span className="text-slate-600 font-medium">Lesion ROI Area:</span>
                 <span className="font-mono text-sky-700 font-extrabold">{result ? `${result.lesionArea ?? 0}%` : "—"}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-slate-500 font-medium">Sensitivity Threshold:</span>
+                <span className="text-slate-600 font-medium">Sensitivity Threshold:</span>
                 <span className="font-mono text-slate-900 font-bold">{threshold}%</span>
               </div>
             </div>
 
             {/* 100% Functional Export Actions */}
-            <div className="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-100">
+            <div className="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-200">
               <button
                 onClick={exportAnnotatedImage}
                 disabled={!imageUrl}
@@ -650,7 +650,7 @@ be verified by a certified healthcare professional.
       </main>
 
       {/* 3. Minimal Clean Hospital Footer */}
-      <footer className="h-6 flex items-center justify-between text-xs font-medium text-slate-500 px-2 shrink-0">
+      <footer className="h-6 flex items-center justify-between text-xs font-medium text-slate-600 px-2 shrink-0">
         <span>NU Stroke Scan v1.2 · Naresuan University Neuro-Imaging Research</span>
         <span>For Clinical Decision Support Only</span>
       </footer>
