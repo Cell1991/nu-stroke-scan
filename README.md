@@ -20,7 +20,7 @@
   <i>Deep Learning-Powered Lesion Segmentation on Non-Contrast Brain Computed Tomography (NCCT)</i>
 </p>
 
-<!-- Animated Divider -->
+<!-- Animated Medical Divider -->
 <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 
 </div>
@@ -29,243 +29,130 @@
 
 ## 📋 Executive Overview
 
-**NU Stroke Scan** เป็นระบบช่วยตัดสินใจทางการแพทย์ (Clinical Decision Support System - CDSS) สำหรับงานวิจัยระดับปริญญานิพนธ์ (Senior Research Thesis) ด้านการแพทย์และปัญญาประดิษฐ์ทางการถ่ายภาพรังสีวิทยาทางระบบประสาท (Neuro-Radiology AI) 
+**NU Stroke Scan** is a state-of-the-art **Clinical Decision Support System (CDSS)** developed as an undergraduate graduation research thesis in biomedical artificial intelligence and neuro-radiological computer vision.
 
-ตัวระบบได้รับการออกแบบและพัฒนาขึ้นเพื่อสนับสนุนแพทย์ รังสีแพทย์ และบุคลากรทางการแพทย์ในการตรวจหา ระบุขอบเขต และประเมินรอยโรคหลอดเลือดสมอง (Stroke Lesions) จากภาพถ่ายเอกซเรย์คอมพิวเตอร์สมองชนิดไม่ฉีดสารทึบรังสี (**Non-Contrast Brain CT**) แบบอัตโนมัติ โดยผสมผสานโมเดล **Deep Learning** ระดับ State-of-the-Art (SOTA) เข้ากับหน้าต่างการตรวจวินิจฉัย (Clinical Diagnostic Interface) ที่ตอบสนองแบบ Real-time และมีความแม่นยำสูง
+The system empowers neurologists, radiologists, and emergency clinicians to rapidly detect, delineate, and quantify acute stroke lesions on **Non-Contrast Brain Computed Tomography (NCCT)** scans with sub-millimeter precision. By orchestrating multiple cutting-edge deep learning architectures with an ultra-responsive, zero-latency clinical workspace, **NU Stroke Scan** bridges the critical gap between academic neural networks and frontline diagnostic radiology.
 
 ---
 
-## ✨ Key Capabilities & Clinical Features
-
+<!-- Animated Medical Divider -->
 <div align="center">
-
-| 🔬 **Deep Learning Intelligence** | 🖥️ **Clinical Diagnostic Workspace** | 🛡️ **Medical Image Guardrails** |
-| :--- | :--- | :--- |
-| • **3 SOTA AI Model Architectures**<br/>• Sub-millimeter pixel segmentation<br/>• Dynamic lesion threshold calibration<br/>• Real-time confidence quantification | • **2.5× Diagnostic Loupe Magnifier**<br/>• Synchronized Dual-Viewport Zoom & Pan<br/>• Neumorphic tactile brightness/contrast<br/>• Calibrated anatomical grid overlay | • Strict Non-Contrast CT verification<br/>• Skull-to-Brain ratio boundary checks<br/>• Hounsfield Unit distribution check<br/>• Rejection of invalid / non-brain inputs |
-
+  <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
+
+## ✨ Clinical Diagnostic Workspace
+
+<!-- Custom High-Definition SVG Features Matrix -->
+<img src="docs/assets/features-grid.svg" alt="Clinical Workspace Features" width="100%" />
 
 <br/>
 
-### 🔍 1. Interactive 2.5× Diagnostic Loupe
-- **Cursor Tracking**: คลิกขวาเพื่อเปิดแว่นขยายระดับตรวจวินิจฉัย (Magnifying Loupe) กำลังขยาย **2.5×** ติดตามตำแหน่งเคอร์เซอร์ของเมาส์แบบ Real-time
-- **Microvascular Inspection**: ช่วยให้แพทย์ตรวจสอบขอบเขตขอบรอยโรค (Lesion Boundaries) และเนื้อเยื่อสมองที่มีความเปรียบต่างต่ำ (Low-Contrast Ischemic Penumbra) ได้อย่างละเอียดแม่นยำ
+### 🔍 1. Real-Time 2.5× to 8.0× Diagnostic Loupe
+- **Cursor Tracking**: Right-click anywhere on the scan to activate an ultra-high-definition circular magnifying loupe that tracks the cursor in real-time.
+- **Vertical Drag Zoom**: Left-click and drag vertically within the active loupe to dynamically scale the magnification from **1.2× up to 8.0×**, allowing meticulous inspection of penumbral microvasculature and low-contrast hypodense borders.
 
-### 🔄 2. Synchronized Dual-Pane Viewport
-- **Dual-Pane View**: แสดงภาพต้นฉบับ (**Original NCCT Scan**) ควบคู่กับภาพผลการแบ่งส่วนรอยโรค (**AI Lesion Overlay**)
-- **1:1 Synchronized Pan & Zoom**: การเลื่อนตำแหน่ง (Pan) และการซูม (0.5× ถึง 4.0×) ทำงานพร้อมกันทั้งสองฝั่งแบบ 1:1 พร้อมปุ่มสลับตารางวัดสัดส่วน (**Anatomical Grid Reticle**)
+### 🔄 2. 1:1 Synchronized Dual-Pane Viewport
+- **Comparative Side-by-Side**: Dual viewport displaying the raw NCCT slice and the AI-generated lesion probability mask in lockstep.
+- **Synchronized Navigation**: Panning and scaling (0.5× to 4.0×) are bidirectionally synchronized between both viewports with an optional anatomical reticle grid for precise coordinate referencing.
 
-### 🎛️ 3. Tactile Stepped Neumorphic Controls
-- **Medical Windowing**: สไลเดอร์ปรับค่า Brightness และ Contrast ด้วยสไตล์ Neumorphic ขั้นบันได
-- **Dynamic Mask Opacity & Threshold**: ปรับระดับความทึบแสงของ Mask และเกณฑ์การตัดสินใจของโมเดล (Decision Threshold 0% – 100%) แบบ Live-rendered บน Client Canvas
+### 🛡️ 3. Clinical Non-Contrast CT Guardrails
+- **Automated Validation**: Multi-stage pre-inference heuristic validation checks for grayscale single-channel integrity, Hounsfield Unit (HU) distribution, and skull contour aspect ratios.
+- **Artifact Rejection**: Instantly rejects corrupted files, colored synthetic illustrations, non-brain anatomical regions, and invalid non-axial slices before passing tensors to neural networks.
+
+### 🎛️ 4. Stepped Neumorphic Windowing & Dynamic Thresholding
+- **Radiological Windowing**: Tactile stepped slider controls for brightness, contrast, and mask alpha blending.
+- **Zero-Latency Mask Cutoff**: Adjust model decision thresholds (0% to 100%) on the fly with instantaneous client-side Canvas rendering, eliminating redundant server round-trips.
 
 ---
 
-<!-- Animated Divider -->
+<!-- Animated Medical Divider -->
 <div align="center">
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 🧠 Supported Deep Learning Architectures
+## 🧠 Deep Learning Architecture Suite
 
-ระบบผสานรวมโมเดลโครงข่ายประสาทเทียมชั้นสูง 3 สถาปัตยกรรมที่ผ่านการเทรนและทดสอบกับชุดข้อมูลภาพ CT สมอง:
+<!-- Custom High-Definition SVG Models Suite -->
+<img src="docs/assets/models-architecture.svg" alt="Deep Learning Suite Architecture" width="100%" />
 
-```mermaid
-graph LR
-    subgraph SOTA_Architectures["🧠 Deep Learning Models"]
-        direction TB
-        M1["<b>VCA-Net</b><br/>Visual Cortex Attention<br/><i>Focal Attention on Acute Lesions</i>"]
-        M2["<b>Deformable LKA / MaxViT</b><br/>Multi-Axis Vision Transformer<br/><i>Long-Range Spatial Context</i>"]
-        M3["<b>Patcher SegFormer</b><br/>Patch-based Transformer<br/><i>Dedicated Inference Microservice</i>"]
-    end
+<br/>
 
-    Input["📷 Non-Contrast Brain CT<br/>(224 × 224 Grayscale)"] --> M1 & M2 & M3
-    M1 & M2 & M3 --> Output["🎯 Probability Map &amp; Lesion Mask"]
+The platform natively supports three research-backed deep learning architectures, each tailored for distinct morphological lesion characteristics:
 
-    style SOTA_Architectures fill:#0b132b,stroke:#0284c7,stroke-width:2px,color:#fff
-    style M1 fill:#0f172a,stroke:#38bdf8,stroke-width:1.5px,color:#fff
-    style M2 fill:#0f172a,stroke:#2dd4bf,stroke-width:1.5px,color:#fff
-    style M3 fill:#0f172a,stroke:#818cf8,stroke-width:1.5px,color:#fff
-    style Input fill:#1e293b,stroke:#64748b,stroke-width:1px,color:#f8fafc
-    style Output fill:#134e4a,stroke:#10b981,stroke-width:2px,color:#f0fdf4
-```
-
-1. **VCA-Net (`vcanet`)**:
-   - สถาปัตยกรรม **Visual Cortex Attention Network** จำลองกลไกการเพ่งความสนใจของเปลือกสมองส่วนการมองเห็น มุ่งเน้นการตรวจจับรอยโรคขาดเลือดระยะเฉียบพลันที่มีลักษณะ Hypodense จางๆ
-2. **Deformable LKA (`dlka`)**:
-   - การผสานระหว่าง **MaxViT (Multi-Axis Vision Transformer)** ร่วมกับ **Deformable Large Kernel Attention** ช่วยเก็บข้อมูลบริบทเชิงพื้นที่ระยะไกล (Long-Range Spatial Dependencies) และปรับรูปทรงตามขอบรอยโรคที่มีความบิดเบี้ยวตามกายวิภาค
-3. **Patcher SegFormer (`patcher`)**:
-   - โมเดล Patch-based SegFormer ที่ทำงานบน **MMCV & PyTorch Lightning** โดยแยกทำงานเป็นอิสระในรูปแบบ **Microservice Architecture** เพื่อรองรับ Dependency เฉพาะทางได้อย่างไร้รอยต่อ
+| Architecture | Backbone & Attention Mechanism | Key Clinical Specialization | Runtime Environment |
+| :--- | :--- | :--- | :--- |
+| **VCA-Net** | Visual Cortex Attention Network | Focal attention targeting acute, low-contrast ischemic infarcts | PyTorch 2.5 (FastAPI Gateway) |
+| **Deformable LKA** | MaxViT + Deformable Large Kernel Attention | Long-range spatial context with anatomical contour deformation | PyTorch 2.5 (FastAPI Gateway) |
+| **Patcher SegFormer** | Patch-based SegFormer Transformer | High-resolution micro-lesion patch segmentation | MMCV / PyTorch Lightning Microservice |
 
 ---
 
-<!-- Animated Divider -->
+<!-- Animated Medical Divider -->
 <div align="center">
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 🏗️ System Architecture
+## 🏗️ 3-Tier System Architecture
 
-ระบบถูกออกแบบด้วยสถาปัตยกรรม **3-Tier Enterprise Clinical Architecture** ภายใต้สภาพแวดล้อม Containerized Docker Network:
+<!-- Custom High-Definition SVG System Architecture -->
+<img src="docs/assets/system-architecture.svg" alt="3-Tier Clinical System Architecture" width="100%" />
 
-```mermaid
-flowchart TD
-    subgraph ClientLayer["🖥️ Presentation Layer (Client Tier)"]
-        Browser["🌐 Clinical Web Client<br/>(Radiologist / Physician Workstation)"]
-        NextApp["⚡ Next.js 15 App Router (Port 3000)<br/><i>Tailwind CSS · React Canvas · Web APIs</i>"]
-        Browser <--> NextApp
-    end
+<br/>
 
-    subgraph GatewayLayer["⚙️ Application & Gateway Layer (FastAPI Tier)"]
-        FastAPIServer["🚀 FastAPI Gateway (Port 8000)<br/><i>Pydantic Validation · CORS · Async Task Engine</i>"]
-        GuardEngine["🛡️ CT Validation Guard<br/><i>Grayscale, Skull Contour &amp; HU Check</i>"]
-        InferenceEngine["🔬 Core Inference Engine<br/><i>Torch 2.5 CPU / CUDA Runner</i>"]
-        
-        FastAPIServer --> GuardEngine --> InferenceEngine
-    end
+The application is structured into three enterprise tiers containerized within an isolated Docker network:
 
-    subgraph ServiceLayer["🧠 Microservices & Persistence Tier"]
-        PatcherService["📦 Patcher Microservice (Port 8001)<br/><i>PyTorch 1.x · MMCV-Full · Lightning</i>"]
-        Database[("🗄️ PostgreSQL 16 DB (Port 5432)<br/><i>Session State &amp; Clinical Metadata</i>")]
-        Checkpoints[("💾 Model Checkpoints Volume<br/><i>best.pth / best.ckpt Weights</i>")]
-    end
-
-    NextApp -- "REST API (JSON / Multipart)" --> FastAPIServer
-    InferenceEngine -- "Proxied Microservice Call" --> PatcherService
-    InferenceEngine -- "Read Model Weights" --> Checkpoints
-    PatcherService -- "Read Weights" --> Checkpoints
-    FastAPIServer -- "SQLAlchemy 2.x ORM" --> Database
-
-    classDef client fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
-    classDef server fill:#082f49,stroke:#0284c7,stroke-width:2px,color:#f8fafc;
-    classDef micro fill:#1e1b4b,stroke:#6366f1,stroke-width:2px,color:#f8fafc;
-    classDef db fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#f8fafc;
-
-    class Browser,NextApp client;
-    class FastAPIServer,GuardEngine,InferenceEngine server;
-    class PatcherService micro;
-    class Database,Checkpoints db;
-```
+1. **Presentation Tier (`frontend`)**: Next.js 15 App Router running React 19, TypeScript, Tailwind CSS, and optimized HTML5 Canvas renderers on port `3000`.
+2. **Gateway & Logic Tier (`backend`)**: FastAPI asynchronous application on port `8000` handling Pydantic V2 request validation, clinical guardrails, native PyTorch inference runners, and proxy routing.
+3. **Microservices & Persistence Tier**:
+   - **Patcher Service**: Dedicated containerized MMCV-Full and PyTorch Lightning inference server on port `8001`.
+   - **PostgreSQL 16**: Relational storage on port `5432` managed via SQLAlchemy 2.x ORM and Alembic schema migrations.
+   - **Model Weights Volume**: Checkpoint bind mounts preserving trained model weights (`best.pth`, `best.ckpt`).
 
 ---
 
-<!-- Animated Divider -->
+<!-- Animated Medical Divider -->
 <div align="center">
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 🔄 Diagnostic Inference Pipeline
+## 🔄 Clinical Inference Pipeline
 
-กระบวนการประมวลผลตั้งแต่การรับภาพจนถึงการสร้างภาพผลลัพธ์ทางการแพทย์:
+<!-- Custom High-Definition SVG Pipeline Flow -->
+<img src="docs/assets/inference-pipeline.svg" alt="Clinical Image Processing Pipeline" width="100%" />
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Clinician as 👨‍⚕️ Radiologist / Clinician
-    participant UI as 🖥️ Next.js Web Client
-    participant API as 🚀 FastAPI Backend
-    participant Guard as 🛡️ Brain Guardrail
-    participant AI as 🧠 DL Inference Engine
-    participant DB as 🗄️ PostgreSQL
+<br/>
 
-    Clinician->>UI: Upload Non-Contrast CT Scan (DICOM/PNG/JPG)
-    UI->>UI: Client-side Preview & Dimension Validation
-    UI->>API: POST /api/analysis (Image, Model Choice, Threshold)
-    
-    API->>Guard: Validate Brain CT Criteria
-    alt Invalid Image / Non-Brain CT
-        Guard-->>API: 422 Validation Error
-        API-->>UI: Reject with Clinical Warning Message
-        UI-->>Clinician: Display Diagnostic Input Alert
-    else Valid Brain CT Scan
-        Guard-->>API: Pass Pre-screening
-        API->>AI: Grayscale Preprocessing (224×224 Normalization)
-        AI->>AI: Model Forward Pass (VCA-Net / DLKA / Patcher)
-        AI->>AI: Generate Continuous Probability Heatmap (256×256)
-        API->>DB: Log Diagnostic Session
-        API-->>UI: Return Label, Confidence, Area & Mask Stream
-        UI->>UI: Dynamic Threshold Overlay & Color Map Rendering
-        UI-->>Clinician: Interactive Dual-Pane & 2.5× Loupe Ready
-    end
-```
+The end-to-end diagnostic workflow executes seamlessly across five deterministic stages:
+
+1. **Ingestion**: The clinician uploads an axial Non-Contrast Brain CT image (`PNG`, `JPG`, or `DICOM` slice) via the multipart interface.
+2. **Validation**: The Brain Guardrail engine verifies cranial morphology, single-channel grayscale distribution, and Hounsfield Unit consistency.
+3. **Preprocessing**: The scan is standardized to $224 \times 224 \times 1$, normalized with zero-center windowing, and formatted as a 4D batch tensor.
+4. **Model Execution**: The selected neural network computes the forward pass, emitting raw logits transformed via continuous Sigmoid probability scaling.
+5. **Presentation**: The client receives detection metrics, confidence scores, and probability maps, dynamically rendering overlays for immediate clinical review.
 
 ---
 
-<!-- Animated Divider -->
-<div align="center">
-  <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
-</div>
-
-## 🛠️ Tech Stack & Architecture Matrix
-
-| Domain | Technology / Library | Description |
-| :--- | :--- | :--- |
-| **Frontend UI/UX** | **Next.js 15 (App Router)** | React 19, Server & Client Components, Dynamic Canvas Rendering |
-| **Styling & Icons** | **Tailwind CSS 3.4** | Modern Medical Dark/Light Neumorphic Aesthetic, Vector SVG Icons |
-| **Backend API** | **FastAPI 0.115** | High-performance Asynchronous Python API, OpenAPI / Swagger Docs |
-| **AI / Deep Learning** | **PyTorch 2.5 / MMCV** | GPU/CPU Tensor Acceleration, Vision Transformers & Attention Nets |
-| **Database & ORM** | **PostgreSQL 16 & SQLAlchemy 2.x** | Enterprise ACID Relational Storage, Alembic Schema Migrations |
-| **Containerization** | **Docker & Docker Compose** | Multi-container isolation, Microservices proxy network |
-
----
-
-<!-- Animated Divider -->
-<div align="center">
-  <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
-</div>
-
-## ⚡ Quick Start & Deployment Guide
-
-### Prerequisites
-- [Docker](https://www.docker.com/) & Docker Compose (v2.20+)
-- Node.js (v20+) & Python 3.12+ (สำหรับกรณี Local Development)
-
-### 1. One-Click Launch with Docker Compose (Recommended)
-
-```bash
-# 1. Clone repository
-git clone https://github.com/Cell1991/nu-stroke-scan.git
-cd nu-stroke-scan
-
-# 2. Setup environment variables
-cp .env.example .env
-
-# 3. Build and launch all clinical services
-docker compose up --build
-```
-
-### 2. Service Access Endpoints
-
-| Service | Protocol / Port | URL |
-| :--- | :--- | :--- |
-| 🖥️ **Clinical Web UI** | HTTP / 3000 | [`http://localhost:3000`](http://localhost:3000) |
-| 🚀 **FastAPI Backend Gateway** | HTTP / 8000 | [`http://localhost:8000`](http://localhost:8000) |
-| 📖 **Interactive Swagger UI** | HTTP / 8000 | [`http://localhost:8000/docs`](http://localhost:8000/docs) |
-| 📑 **ReDoc API Documentation** | HTTP / 8000 | [`http://localhost:8000/redoc`](http://localhost:8000/redoc) |
-| 🗄️ **PostgreSQL Database** | TCP / 5432 | `localhost:5432` |
-
----
-
-<!-- Animated Divider -->
+<!-- Animated Medical Divider -->
 <div align="center">
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
 ## 📡 REST API Reference
 
-### 1. Run Stroke Lesion Segmentation Analysis
+### 1. Perform Stroke Lesion Analysis
 ```http
 POST /api/analysis
 Content-Type: multipart/form-data
 ```
 
-| Parameter | Type | Required | Default | Description |
+#### Request Parameters
+| Field | Type | Required | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `file` | `Binary File` | **Yes** | — | Brain CT image (`PNG`, `JPG`, `DICOM slice`) |
-| `model` | `string` | No | `vcanet` | Model ID (`vcanet`, `dlka`, `patcher`) |
-| `threshold` | `float` | No | `0.50` | Binary segmentation cutoff (0.0 to 1.0) |
+| `file` | `Binary File` | **Yes** | — | Non-contrast brain CT scan (`PNG`, `JPG`, `DICOM slice`) |
+| `model` | `string` | No | `vcanet` | Model identifier: `vcanet`, `dlka`, or `patcher` |
+| `threshold` | `float` | No | `0.50` | Binary segmentation cutoff threshold ($0.0 \le t \le 1.0$) |
 
-**Sample Response:**
+#### Response Schema
 ```json
 {
   "detected": true,
@@ -279,14 +166,51 @@ Content-Type: multipart/form-data
 }
 ```
 
-### 2. Query Supported Model Architectures
+### 2. Retrieve Available Deep Learning Models
 ```http
 GET /api/analysis/models
 ```
 
 ---
 
-<!-- Animated Divider -->
+<!-- Animated Medical Divider -->
+<div align="center">
+  <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
+</div>
+
+## ⚡ Quick Start & Deployment Guide
+
+### Prerequisites
+- [Docker Engine](https://docs.docker.com/engine/install/) & Docker Compose (v2.20+)
+- Node.js (v20+) & Python 3.12+ *(for local non-containerized development)*
+
+### 1. Production Docker Launch (Recommended)
+
+```bash
+# Clone the research repository
+git clone https://github.com/Cell1991/nu-stroke-scan.git
+cd nu-stroke-scan
+
+# Configure environment variables
+cp .env.example .env
+
+# Build and start all clinical microservices
+docker compose up --build
+```
+
+### 2. Service Endpoints
+
+| Service | Protocol / Port | Endpoint URL |
+| :--- | :--- | :--- |
+| 🖥️ **Clinical Web UI** | HTTP / 3000 | [`http://localhost:3000`](http://localhost:3000) |
+| 🚀 **FastAPI Backend Gateway** | HTTP / 8000 | [`http://localhost:8000`](http://localhost:8000) |
+| 📖 **Interactive Swagger UI** | HTTP / 8000 | [`http://localhost:8000/docs`](http://localhost:8000/docs) |
+| 📑 **ReDoc Documentation** | HTTP / 8000 | [`http://localhost:8000/redoc`](http://localhost:8000/redoc) |
+| 🗄️ **PostgreSQL Database** | TCP / 5432 | `localhost:5432` |
+
+---
+
+<!-- Animated Medical Divider -->
 <div align="center">
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
@@ -295,7 +219,7 @@ GET /api/analysis/models
 
 <div align="center">
   <p><b>🎓 Undergraduate Graduation Research Project (Senior Thesis)</b><br/>
-  <i>Computer Engineering &amp; Artificial Intelligence for Medical Imaging</i></p>
+  <i>Department of Computer Engineering · Neuro-Radiology &amp; Medical AI</i></p>
 
   <table align="center" style="border: none; background: transparent;">
     <tr style="border: none; background: transparent;">
@@ -314,24 +238,24 @@ GET /api/analysis/models
 
   <br/>
 
-  <table align="center" width="85%">
+  <table align="center" width="90%">
     <thead>
       <tr>
-        <th align="left">Researcher</th>
-        <th align="left">Primary Research Responsibilities</th>
-        <th align="left">Key Focus Areas</th>
+        <th align="left">Co-Researcher</th>
+        <th align="left">Primary Academic &amp; Engineering Role</th>
+        <th align="left">Key Research Contributions</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><b>Chu</b><br/><code>@Cell1991</code></td>
         <td><b>Lead UI/UX Architect &amp; Full-Stack System Engineer</b></td>
-        <td>Next.js 15 Client Architecture, 2.5× Diagnostic Loupe, Dual Synced Viewport, Neumorphic UI, Microservices Integration &amp; Docker Infrastructure.</td>
+        <td>Architected the Next.js 15 clinical application, 2.5×–8.0× diagnostic loupe magnifier, 1:1 synchronized dual-pane viewport, neumorphic windowing system, FastAPI gateway integration, and multi-container Docker infrastructure.</td>
       </tr>
       <tr>
         <td><b>Kanin Mate</b><br/><code>@Rednoselittledog</code></td>
         <td><b>Lead AI &amp; Deep Learning Research Scientist</b></td>
-        <td>Neuro-Imaging Model Pipelines, VCA-Net, Deformable LKA / MaxViT, Patcher SegFormer, PyTorch &amp; MMCV Microservices, Model Weights &amp; Evaluation.</td>
+        <td>Engineered neural network pipelines, trained and optimized VCA-Net, Deformable LKA / MaxViT, and Patcher SegFormer architectures, built MMCV microservice containers, and conducted quantitative lesion segmentation benchmarks.</td>
       </tr>
     </tbody>
   </table>
@@ -344,7 +268,7 @@ GET /api/analysis/models
 <div align="center">
 
 > [!NOTE]
-> **Clinical Research Notice & Disclaimer**: This software application is developed for academic research, medical imaging evaluation, and clinical decision support purposes. It is intended to assist medical professionals and should not replace certified radiological diagnosis.
+> **Clinical Research Notice & Disclaimer**: This software application is developed exclusively for academic research, medical imaging evaluation, and clinical decision support purposes. It is intended to assist qualified healthcare professionals and should not replace certified radiological diagnosis.
 
 <br/>
 

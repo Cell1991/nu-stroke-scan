@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 360" width="100%" height="100%">
+  <defs>
+    <!-- Background & Gradients -->
+    <linearGradient id="bg-grad-models" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080D1A" />
+      <stop offset="50%" stop-color="#0B132B" />
+      <stop offset="100%" stop-color="#090E1B" />
+    </linearGradient>
+
+    <linearGradient id="card-vca" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0C1E38" />
+      <stop offset="100%" stop-color="#081426" />
+    </linearGradient>
+
+    <linearGradient id="card-dlka" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#09282D" />
+      <stop offset="100%" stop-color="#07191E" />
+    </linearGradient>
+
+    <linearGradient id="card-patcher" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A1838" />
+      <stop offset="100%" stop-color="#100F26" />
+    </linearGradient>
+
+    <linearGradient id="flow-line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="50%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="shadow-card" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+
+    <filter id="glow-vca">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#38BDF8" flood-opacity="0.3" />
+    </filter>
+    <filter id="glow-dlka">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#2DD4BF" flood-opacity="0.3" />
+    </filter>
+    <filter id="glow-patcher">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#818CF8" flood-opacity="0.3" />
+    </filter>
+
+    <style>
+      @keyframes dashFlow {
+        0% { stroke-dashoffset: 40; }
+        100% { stroke-dashoffset: 0; }
+      }
+      @keyframes pulseNode {
+        0%, 100% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.15); opacity: 1; }
+      }
+      .flow-path {
+        stroke-dasharray: 6 4;
+        animation: dashFlow 1.8s linear infinite;
+      }
+      .node-pulse {
+        transform-origin: center;
+        animation: pulseNode 3s ease-in-out infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Canvas Base -->
+  <rect width="1100" height="360" rx="16" fill="url(#bg-grad-models)" stroke="#1E293B" stroke-width="1.2" />
+
+  <!-- SECTION HEADER -->
+  <g transform="translate(40, 36)">
+    <rect width="180" height="22" rx="11" fill="#0369A1" fill-opacity="0.25" stroke="#0284C7" stroke-width="0.8" />
+    <text x="90" y="15" text-anchor="middle" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1">DEEP LEARNING SUITE</text>
+    <text x="0" y="46" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Space Grotesk', sans-serif" font-size="20" font-weight="800" letter-spacing="-0.3">
+      Multi-Architecture Lesion Segmentation Engine
+    </text>
+  </g>
+
+  <!-- INPUT HUB (Left) -->
+  <g transform="translate(40, 115)">
+    <rect width="150" height="190" rx="12" fill="#0F172A" stroke="#334155" stroke-width="1.2" filter="url(#shadow-card)" />
+    
+    <!-- Input Icon Header -->
+    <rect x="15" y="15" width="40" height="40" rx="8" fill="#1E293B" />
+    <!-- CT Scan Icon -->
+    <circle cx="35" cy="35" r="12" fill="none" stroke="#38BDF8" stroke-width="1.5" />
+    <ellipse cx="35" cy="35" rx="8" ry="5" fill="none" stroke="#94A3B8" stroke-width="1" />
+    
+    <text x="15" y="76" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">Input Non-Contrast CT</text>
+    <text x="15" y="94" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11">Brain Scan Image</text>
+
+    <!-- Specs Pill -->
+    <rect x="15" y="112" width="120" height="22" rx="6" fill="#1E293B" />
+    <text x="75" y="127" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="10" font-weight="600">224 × 224 × 1</text>
+
+    <rect x="15" y="140" width="120" height="22" rx="6" fill="#1E293B" />
+    <text x="75" y="155" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-size="10" font-weight="600">Grayscale / HU Std</text>
+
+    <circle cx="75" cy="176" r="3" fill="#10B981" />
+    <text x="84" y="179" fill="#10B981" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="700">VALIDATED</text>
+  </g>
+
+  <!-- CONNECTING FLOWS FROM INPUT TO MODELS -->
+  <path d="M 190 210 L 230 210 L 230 160 L 250 160" fill="none" stroke="#0284C7" stroke-width="1.5" class="flow-path" />
+  <path d="M 190 210 L 250 210" fill="none" stroke="#0D9488" stroke-width="1.5" class="flow-path" />
+  <path d="M 190 210 L 230 210 L 230 260 L 250 260" fill="none" stroke="#6366F1" stroke-width="1.5" class="flow-path" />
+
+  <!-- MODEL 1: VCA-NET -->
+  <g transform="translate(250, 115)" filter="url(#glow-vca)">
+    <rect width="260" height="60" rx="10" fill="url(#card-vca)" stroke="#0284C7" stroke-width="1.4" />
+    <circle cx="28" cy="30" r="14" fill="#0369A1" fill-opacity="0.3" stroke="#38BDF8" stroke-width="1" />
+    <text x="28" y="34" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-size="11" font-weight="800">01</text>
+
+    <text x="52" y="26" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">VCA-Net Architecture</text>
+    <text x="52" y="44" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Visual Cortex Attention · PyTorch 2.5</text>
+    <rect x="200" y="20" width="48" height="20" rx="4" fill="#0284C7" fill-opacity="0.2" />
+    <text x="224" y="34" text-anchor="middle" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="700">FOCAL</text>
+  </g>
+
+  <!-- MODEL 2: DLKA / MAXVIT -->
+  <g transform="translate(250, 185)" filter="url(#glow-dlka)">
+    <rect width="260" height="60" rx="10" fill="url(#card-dlka)" stroke="#0D9488" stroke-width="1.4" />
+    <circle cx="28" cy="30" r="14" fill="#0F766E" fill-opacity="0.3" stroke="#2DD4BF" stroke-width="1" />
+    <text x="28" y="34" text-anchor="middle" fill="#2DD4BF" font-family="monospace" font-size="11" font-weight="800">02</text>
+
+    <text x="52" y="26" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">Deformable LKA / MaxViT</text>
+    <text x="52" y="44" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Multi-Axis ViT + Large Kernel</text>
+    <rect x="200" y="20" width="48" height="20" rx="4" fill="#0D9488" fill-opacity="0.2" />
+    <text x="224" y="34" text-anchor="middle" fill="#2DD4BF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="700">CONTEXT</text>
+  </g>
+
+  <!-- MODEL 3: PATCHER -->
+  <g transform="translate(250, 255)" filter="url(#glow-patcher)">
+    <rect width="260" height="60" rx="10" fill="url(#card-patcher)" stroke="#6366F1" stroke-width="1.4" />
+    <circle cx="28" cy="30" r="14" fill="#4338CA" fill-opacity="0.3" stroke="#818CF8" stroke-width="1" />
+    <text x="28" y="34" text-anchor="middle" fill="#818CF8" font-family="monospace" font-size="11" font-weight="800">03</text>
+
+    <text x="52" y="26" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">Patcher SegFormer</text>
+    <text x="52" y="44" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Patch-based MMCV Microservice</text>
+    <rect x="195" y="20" width="53" height="20" rx="4" fill="#6366F1" fill-opacity="0.2" />
+    <text x="221" y="34" text-anchor="middle" fill="#A5B4FC" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="700">SERVICE</text>
+  </g>
+
+  <!-- CONNECTING FLOWS FROM MODELS TO INFERENCE POST-PROCESS -->
+  <path d="M 510 145 L 560 145 L 560 210 L 580 210" fill="none" stroke="#0284C7" stroke-width="1.5" class="flow-path" />
+  <path d="M 510 215 L 580 210" fill="none" stroke="#0D9488" stroke-width="1.5" class="flow-path" />
+  <path d="M 510 285 L 560 285 L 560 210 L 580 210" fill="none" stroke="#6366F1" stroke-width="1.5" class="flow-path" />
+
+  <!-- POST-PROCESSING STAGE (Middle Right) -->
+  <g transform="translate(580, 115)">
+    <rect width="210" height="190" rx="12" fill="#0F172A" stroke="#334155" stroke-width="1.2" filter="url(#shadow-card)" />
+    
+    <rect x="16" y="16" width="36" height="36" rx="8" fill="#1E293B" />
+    <!-- Filter Icon -->
+    <path d="M 24 26 L 44 26 L 37 36 L 37 43 L 31 40 L 31 36 Z" fill="none" stroke="#22D3EE" stroke-width="1.4" stroke-linejoin="round" />
+
+    <text x="60" y="32" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">Inference Core</text>
+    <text x="60" y="47" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Post-Processing Engine</text>
+
+    <!-- Post process steps -->
+    <g transform="translate(16, 66)">
+      <rect width="178" height="28" rx="6" fill="#1E293B" />
+      <text x="10" y="18" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">1. Sigmoid Normalization</text>
+    </g>
+    <g transform="translate(16, 102)">
+      <rect width="178" height="28" rx="6" fill="#1E293B" />
+      <text x="10" y="18" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">2. Continuous Heatmap</text>
+    </g>
+    <g transform="translate(16, 138)">
+      <rect width="178" height="28" rx="6" fill="#1E293B" />
+      <text x="10" y="18" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">3. Dynamic Cutoff (0-100%)</text>
+    </g>
+  </g>
+
+  <!-- FLOW TO OUTPUT -->
+  <path d="M 790 210 L 840 210" fill="none" stroke="#10B981" stroke-width="2" class="flow-path" />
+
+  <!-- FINAL CLINICAL OUTPUT (Far Right) -->
+  <g transform="translate(840, 115)">
+    <rect width="220" height="190" rx="12" fill="#064E3B" fill-opacity="0.25" stroke="#10B981" stroke-width="1.6" filter="url(#shadow-card)" />
+
+    <rect x="16" y="16" width="36" height="36" rx="8" fill="#064E3B" />
+    <!-- Check & Mask Icon -->
+    <path d="M 26 34 L 32 40 L 42 28" fill="none" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+    <text x="60" y="32" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">Diagnostic Result</text>
+    <text x="60" y="47" fill="#34D399" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Clinical Ready Stream</text>
+
+    <!-- Metrics Output Box -->
+    <g transform="translate(16, 66)">
+      <rect width="188" height="106" rx="6" fill="#0B1D19" stroke="#047857" stroke-width="0.8" />
+      
+      <text x="12" y="24" fill="#94A3B8" font-family="sans-serif" font-size="10">Detection State:</text>
+      <text x="176" y="24" text-anchor="end" fill="#34D399" font-family="sans-serif" font-size="10" font-weight="700">Lesion Detected</text>
+
+      <line x1="12" y1="34" x2="176" y2="34" stroke="#134E4A" stroke-width="0.8" />
+
+      <text x="12" y="52" fill="#94A3B8" font-family="sans-serif" font-size="10">Lesion Area Ratio:</text>
+      <text x="176" y="52" text-anchor="end" fill="#F8FAFC" font-family="monospace" font-size="10" font-weight="700">3.85% Area</text>
+
+      <line x1="12" y1="62" x2="176" y2="62" stroke="#134E4A" stroke-width="0.8" />
+
+      <text x="12" y="80" fill="#94A3B8" font-family="sans-serif" font-size="10">Segmentation Mask:</text>
+      <text x="176" y="80" text-anchor="end" fill="#38BDF8" font-family="monospace" font-size="10" font-weight="700">256 × 256 Mask</text>
+
+      <text x="12" y="98" fill="#94A3B8" font-family="sans-serif" font-size="10">Confidence Score:</text>
+      <text x="176" y="98" text-anchor="end" fill="#FBBF24" font-family="monospace" font-size="10" font-weight="700">94.2% Conf.</text>
+    </g>
+  </g>
+</svg>

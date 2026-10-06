@@ -1,0 +1,232 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad-sys" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070C18" />
+      <stop offset="50%" stop-color="#0A1124" />
+      <stop offset="100%" stop-color="#080E1D" />
+    </linearGradient>
+
+    <!-- Tier Box Gradients -->
+    <linearGradient id="tier-client-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B1C33" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#081426" stop-opacity="0.9" />
+    </linearGradient>
+
+    <linearGradient id="tier-gateway-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#082A38" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#061C26" stop-opacity="0.9" />
+    </linearGradient>
+
+    <linearGradient id="tier-services-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#141838" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0E1026" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.7" />
+    </filter>
+
+    <style>
+      @keyframes dashAnim {
+        0% { stroke-dashoffset: 48; }
+        100% { stroke-dashoffset: 0; }
+      }
+      @keyframes pulsePort {
+        0%, 100% { fill-opacity: 0.8; }
+        50% { fill-opacity: 0.3; }
+      }
+      .anim-flow {
+        stroke-dasharray: 8 6;
+        animation: dashAnim 2s linear infinite;
+      }
+      .port-pulse {
+        animation: pulsePort 2s ease-in-out infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1100" height="480" rx="16" fill="url(#bg-grad-sys)" stroke="#1E293B" stroke-width="1.2" />
+
+  <!-- Top Title Area -->
+  <g transform="translate(40, 32)">
+    <rect width="210" height="22" rx="11" fill="#0284C7" fill-opacity="0.2" stroke="#0284C7" stroke-width="0.8" />
+    <text x="105" y="15" text-anchor="middle" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="700" letter-spacing="1">SYSTEM INFRASTRUCTURE</text>
+    <text x="0" y="46" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Space Grotesk', sans-serif" font-size="20" font-weight="800" letter-spacing="-0.3">
+      3-Tier Clinical Architecture &amp; Microservices Topology
+    </text>
+  </g>
+
+  <!-- 3 MAIN TIER PANELS (Columns) -->
+
+  <!-- ==================== TIER 1: CLIENT TIER ==================== -->
+  <g transform="translate(40, 95)" filter="url(#card-shadow)">
+    <!-- Container -->
+    <rect width="310" height="345" rx="14" fill="url(#tier-client-bg)" stroke="#0284C7" stroke-width="1.4" />
+    
+    <!-- Header -->
+    <rect width="310" height="42" rx="14" fill="#0E2749" />
+    <rect y="28" width="310" height="14" fill="#0E2749" />
+    <circle cx="24" cy="21" r="5" fill="#38BDF8" />
+    <text x="38" y="25" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">Presentation Layer (Client Tier)</text>
+
+    <!-- Component 1: Next.js App Router -->
+    <g transform="translate(16, 56)">
+      <rect width="278" height="74" rx="8" fill="#081426" stroke="#1E3A8A" stroke-width="1" />
+      <rect x="12" y="12" width="32" height="32" rx="6" fill="#1E293B" />
+      <text x="28" y="32" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-size="12" font-weight="800">UI</text>
+      
+      <text x="54" y="26" fill="#FFFFFF" font-family="sans-serif" font-size="12.5" font-weight="700">Next.js 15 (App Router)</text>
+      <text x="54" y="42" fill="#94A3B8" font-family="sans-serif" font-size="10.5">React 19 · TypeScript · Tailwind CSS</text>
+      <text x="54" y="58" fill="#38BDF8" font-family="monospace" font-size="10" font-weight="600">:3000 (HTTP Web Host)</text>
+    </g>
+
+    <!-- Component 2: Diagnostic Workspace Features -->
+    <g transform="translate(16, 140)">
+      <rect width="278" height="185" rx="8" fill="#060F1E" stroke="#1E293B" stroke-width="0.8" />
+      <text x="14" y="24" fill="#94A3B8" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="0.5">CLIENT-SIDE CLINICAL MODULES</text>
+
+      <!-- Feature Pill 1 -->
+      <g transform="translate(14, 34)">
+        <rect width="250" height="30" rx="6" fill="#0B192C" />
+        <circle cx="12" cy="15" r="3" fill="#38BDF8" />
+        <text x="24" y="19" fill="#E2E8F0" font-family="sans-serif" font-size="11" font-weight="600">2.5× – 8.0× Diagnostic Loupe</text>
+      </g>
+      <!-- Feature Pill 2 -->
+      <g transform="translate(14, 70)">
+        <rect width="250" height="30" rx="6" fill="#0B192C" />
+        <circle cx="12" cy="15" r="3" fill="#2DD4BF" />
+        <text x="24" y="19" fill="#E2E8F0" font-family="sans-serif" font-size="11" font-weight="600">Dual 1:1 Synced Pan &amp; Zoom</text>
+      </g>
+      <!-- Feature Pill 3 -->
+      <g transform="translate(14, 106)">
+        <rect width="250" height="30" rx="6" fill="#0B192C" />
+        <circle cx="12" cy="15" r="3" fill="#818CF8" />
+        <text x="24" y="19" fill="#E2E8F0" font-family="sans-serif" font-size="11" font-weight="600">Dynamic Live Mask &amp; Opacity</text>
+      </g>
+      <!-- Feature Pill 4 -->
+      <g transform="translate(14, 142)">
+        <rect width="250" height="30" rx="6" fill="#0B192C" />
+        <circle cx="12" cy="15" r="3" fill="#F472B6" />
+        <text x="24" y="19" fill="#E2E8F0" font-family="sans-serif" font-size="11" font-weight="600">Tactile Neumorphic Windowing</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- FLOW: CLIENT -> FASTAPI -->
+  <g>
+    <path d="M 350 185 L 395 185" fill="none" stroke="#0284C7" stroke-width="2" class="anim-flow" />
+    <path d="M 395 195 L 350 195" fill="none" stroke="#10B981" stroke-width="2" class="anim-flow" />
+    <rect x="355" y="160" width="36" height="18" rx="4" fill="#0C1D38" stroke="#0284C7" stroke-width="0.8" />
+    <text x="373" y="172" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-size="8.5" font-weight="700">REST</text>
+  </g>
+
+  <!-- ==================== TIER 2: GATEWAY & BACKEND TIER ==================== -->
+  <g transform="translate(395, 95)" filter="url(#card-shadow)">
+    <!-- Container -->
+    <rect width="310" height="345" rx="14" fill="url(#tier-gateway-bg)" stroke="#0D9488" stroke-width="1.4" />
+    
+    <!-- Header -->
+    <rect width="310" height="42" rx="14" fill="#0F383D" />
+    <rect y="28" width="310" height="14" fill="#0F383D" />
+    <circle cx="24" cy="21" r="5" fill="#2DD4BF" />
+    <text x="38" y="25" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">Gateway &amp; Logic (FastAPI Tier)</text>
+
+    <!-- Component 1: FastAPI Gateway -->
+    <g transform="translate(16, 56)">
+      <rect width="278" height="74" rx="8" fill="#06181F" stroke="#115E59" stroke-width="1" />
+      <rect x="12" y="12" width="32" height="32" rx="6" fill="#134E4A" />
+      <text x="28" y="32" text-anchor="middle" fill="#2DD4BF" font-family="monospace" font-size="12" font-weight="800">API</text>
+
+      <text x="54" y="26" fill="#FFFFFF" font-family="sans-serif" font-size="12.5" font-weight="700">FastAPI Asynchronous Gateway</text>
+      <text x="54" y="42" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Pydantic V2 · CORS · Multipart/Form</text>
+      <text x="54" y="58" fill="#2DD4BF" font-family="monospace" font-size="10" font-weight="600">:8000 (/docs &amp; /redoc)</text>
+    </g>
+
+    <!-- Component 2: Guard Engine & Native Models -->
+    <g transform="translate(16, 140)">
+      <rect width="278" height="185" rx="8" fill="#041217" stroke="#115E59" stroke-width="0.8" />
+      <text x="14" y="24" fill="#94A3B8" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="0.5">CORE GATEWAY SERVICES</text>
+
+      <!-- Guard Engine -->
+      <g transform="translate(14, 34)">
+        <rect width="250" height="42" rx="6" fill="#0B2329" stroke="#0F766E" stroke-width="0.8" />
+        <circle cx="14" cy="21" r="4" fill="#34D399" />
+        <text x="26" y="18" fill="#F8FAFC" font-family="sans-serif" font-size="11" font-weight="700">Brain CT Validation Guard</text>
+        <text x="26" y="32" fill="#94A3B8" font-family="sans-serif" font-size="9.5">Rejects color, non-brain &amp; corrupted files</text>
+      </g>
+
+      <!-- Native PyTorch Runner -->
+      <g transform="translate(14, 84)">
+        <rect width="250" height="42" rx="6" fill="#0B2329" stroke="#0F766E" stroke-width="0.8" />
+        <circle cx="14" cy="21" r="4" fill="#38BDF8" />
+        <text x="26" y="18" fill="#F8FAFC" font-family="sans-serif" font-size="11" font-weight="700">Native PyTorch 2.5 Runner</text>
+        <text x="26" y="32" fill="#94A3B8" font-family="sans-serif" font-size="9.5">VCA-Net &amp; Deformable LKA / MaxViT</text>
+      </g>
+
+      <!-- Proxy Engine -->
+      <g transform="translate(14, 134)">
+        <rect width="250" height="40" rx="6" fill="#0B2329" stroke="#0F766E" stroke-width="0.8" />
+        <circle cx="14" cy="20" r="4" fill="#818CF8" />
+        <text x="26" y="17" fill="#F8FAFC" font-family="sans-serif" font-size="11" font-weight="700">Internal Microservice Proxy</text>
+        <text x="26" y="31" fill="#94A3B8" font-family="sans-serif" font-size="9.5">Async Forwarding to Patcher Service</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- FLOW: FASTAPI -> PERSISTENCE & SERVICES -->
+  <g>
+    <path d="M 705 185 L 750 185" fill="none" stroke="#0D9488" stroke-width="2" class="anim-flow" />
+    <path d="M 750 195 L 705 195" fill="none" stroke="#6366F1" stroke-width="2" class="anim-flow" />
+    <rect x="710" y="160" width="36" height="18" rx="4" fill="#141E38" stroke="#6366F1" stroke-width="0.8" />
+    <text x="728" y="172" text-anchor="middle" fill="#A5B4FC" font-family="monospace" font-size="8.5" font-weight="700">DOCKER</text>
+  </g>
+
+  <!-- ==================== TIER 3: SERVICES & PERSISTENCE TIER ==================== -->
+  <g transform="translate(750, 95)" filter="url(#card-shadow)">
+    <!-- Container -->
+    <rect width="310" height="345" rx="14" fill="url(#tier-services-bg)" stroke="#6366F1" stroke-width="1.4" />
+    
+    <!-- Header -->
+    <rect width="310" height="42" rx="14" fill="#20224A" />
+    <rect y="28" width="310" height="14" fill="#20224A" />
+    <circle cx="24" cy="21" r="5" fill="#818CF8" />
+    <text x="38" y="25" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">Microservices &amp; Storage Tier</text>
+
+    <!-- Component 1: Patcher Microservice -->
+    <g transform="translate(16, 56)">
+      <rect width="278" height="74" rx="8" fill="#0C0D21" stroke="#3730A3" stroke-width="1" />
+      <rect x="12" y="12" width="32" height="32" rx="6" fill="#312E81" />
+      <text x="28" y="32" text-anchor="middle" fill="#818CF8" font-family="monospace" font-size="11" font-weight="800">SEG</text>
+
+      <text x="54" y="26" fill="#FFFFFF" font-family="sans-serif" font-size="12" font-weight="700">Patcher Microservice</text>
+      <text x="54" y="42" fill="#94A3B8" font-family="sans-serif" font-size="10.5">MMCV-Full · PyTorch Lightning · :8001</text>
+      <text x="54" y="58" fill="#818CF8" font-family="monospace" font-size="10" font-weight="600">Isolated Container Environment</text>
+    </g>
+
+    <!-- Component 2: PostgreSQL 16 Database -->
+    <g transform="translate(16, 140)">
+      <rect width="278" height="84" rx="8" fill="#0C0D21" stroke="#047857" stroke-width="1" />
+      <rect x="12" y="16" width="32" height="32" rx="6" fill="#064E3B" />
+      <text x="28" y="36" text-anchor="middle" fill="#34D399" font-family="monospace" font-size="11" font-weight="800">SQL</text>
+
+      <text x="54" y="28" fill="#FFFFFF" font-family="sans-serif" font-size="12" font-weight="700">PostgreSQL 16 DB</text>
+      <text x="54" y="44" fill="#94A3B8" font-family="sans-serif" font-size="10.5">SQLAlchemy 2.x · Alembic Migrations</text>
+      <text x="54" y="60" fill="#34D399" font-family="monospace" font-size="10" font-weight="600">:5432 (Internal Volume Storage)</text>
+    </g>
+
+    <!-- Component 3: Model Weights Volume -->
+    <g transform="translate(16, 234)">
+      <rect width="278" height="90" rx="8" fill="#0C0D21" stroke="#334155" stroke-width="0.8" />
+      <text x="14" y="22" fill="#CBD5E1" font-family="sans-serif" font-size="11" font-weight="700">Model Checkpoint Bind Mounts</text>
+      
+      <g transform="translate(14, 32)">
+        <text x="0" y="14" fill="#38BDF8" font-family="monospace" font-size="9.5">• vcanet_results/checkpoints/best.pth</text>
+        <text x="0" y="30" fill="#2DD4BF" font-family="monospace" font-size="9.5">• dlka_results/checkpoints/best.pth</text>
+        <text x="0" y="46" fill="#818CF8" font-family="monospace" font-size="9.5">• patcher_results_new/best.ckpt</text>
+      </g>
+    </g>
+  </g>
+</svg>
