@@ -1,7 +1,6 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { DragEvent, useEffect, useRef, useState } from "react";
 
 // Standalone Zero-Dependency Canvas Confetti System
 function triggerConfetti() {
@@ -96,7 +95,7 @@ function triggerConfetti() {
   render();
 }
 
-// Standalone High-Precision Clinical Icons
+// Standalone High-Precision Clinical Vector Icons (Zero-Dependency)
 function Brain({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -279,7 +278,7 @@ function Zap({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-// Zero-latency Browser Web Audio Synthesizer for high-tech medical telemetry beeps
+// Zero-latency Web Audio Synthesizer for High-Tech Telemetry Beeps
 function playAudioChirp(type: "click" | "scan" | "success" | "alert") {
   try {
     const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
@@ -695,7 +694,6 @@ export default function HomePage() {
 
       if (!isDetected) {
         playAudioChirp("success");
-        // Trigger celebratory confetti burst on clean scan
         triggerConfetti();
       } else {
         playAudioChirp("alert");
@@ -811,12 +809,7 @@ be verified by a certified healthcare professional.
     <div className="h-screen w-screen bg-slate-300 text-slate-900 flex flex-col overflow-hidden font-sans p-3 gap-3 select-none cyber-grid-backdrop">
       
       {/* 1. Futuristic Hospital Top Navigation Bar */}
-      <motion.header 
-        initial={{ opacity: 0, y: -15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="h-14 bg-slate-200/95 backdrop-blur-md border border-slate-400/60 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-xs"
-      >
+      <header className="h-14 bg-slate-200/95 backdrop-blur-md border border-slate-400/60 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-xs transition-all">
         {/* Brand with Spinning Holographic Accent */}
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center">
@@ -866,8 +859,8 @@ be verified by a certified healthcare professional.
           </div>
         </div>
 
-        {/* Model Selector Segmented Tabs with Smooth Gliding Pill Indicator */}
-        <div className="flex items-center bg-slate-300/90 p-1 rounded-lg border border-slate-400/60 shadow-inner relative">
+        {/* Model Selector Segmented Tabs with Smooth Tactile Glow Indicator */}
+        <div className="flex items-center bg-slate-300/90 p-1 rounded-lg border border-slate-400/60 shadow-inner relative gap-1">
           {MODELS.map((m) => {
             const isSelected = modelId === m.id;
             return (
@@ -878,34 +871,24 @@ be verified by a certified healthcare professional.
                   setModelId(m.id);
                   setResult(null);
                 }}
-                className={`relative px-3.5 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer select-none z-10 ${
-                  isSelected ? "text-white" : "text-slate-700 hover:text-slate-950"
+                className={`relative px-3.5 py-1.5 rounded-md text-xs font-bold transition-all duration-200 cursor-pointer select-none z-10 active:scale-95 ${
+                  isSelected
+                    ? "bg-sky-600 text-white shadow-sm border border-sky-400/40"
+                    : "text-slate-700 hover:text-slate-950 hover:bg-slate-200/80"
                 }`}
               >
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeModelPill"
-                    className="absolute inset-0 rounded-md bg-sky-600 shadow-sm border border-sky-400/40"
-                    transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                  />
-                )}
-                <span className="relative z-10">{m.name}</span>
+                <span>{m.name}</span>
               </button>
             );
           })}
         </div>
-      </motion.header>
+      </header>
 
       {/* 2. Main Workspace Layout */}
       <main className="flex-1 min-h-0 grid grid-cols-12 gap-3 overflow-hidden">
         
         {/* Left/Center Viewport Column (8 Cols) */}
-        <motion.section 
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          className="col-span-8 flex flex-col gap-2 min-h-0"
-        >
+        <section className="col-span-8 flex flex-col gap-2 min-h-0">
           <div className="flex-1 min-h-0 bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex flex-col shadow-xs relative">
             
             {/* Viewport Top Bar with Symmetrical Modern Header & Tools */}
@@ -924,43 +907,38 @@ be verified by a certified healthcare professional.
               <div className="flex items-center gap-1.5 bg-slate-300/60 p-1 rounded-lg border border-slate-400/50 shadow-inner">
                 {/* Zoom Controls Rect */}
                 <div className="flex items-center bg-white/95 px-1 py-0.5 rounded-md border border-slate-400/40 shadow-xs">
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
+                  <button
                     onClick={handleZoomOut}
                     disabled={zoom <= 0.5}
                     title="Zoom Out (-25%)"
-                    className="p-1 rounded text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    className="p-1 rounded text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
                   >
                     <ZoomOut className="h-3.5 w-3.5" />
-                  </motion.button>
+                  </button>
 
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={handleResetZoom}
                     title="Click to Reset Zoom to 100%"
-                    className="px-2 py-0.5 rounded text-[11px] font-mono font-black text-slate-800 hover:text-sky-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                    className="px-2 py-0.5 rounded text-[11px] font-mono font-black text-slate-800 hover:text-sky-700 hover:bg-slate-100 cursor-pointer transition-all active:scale-95"
                   >
                     {Math.round(zoom * 100)}%
-                  </motion.button>
+                  </button>
 
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
+                  <button
                     onClick={handleZoomIn}
                     disabled={zoom >= 4}
                     title="Zoom In (+25%)"
-                    className="p-1 rounded text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    className="p-1 rounded text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
                   >
                     <ZoomIn className="h-3.5 w-3.5" />
-                  </motion.button>
+                  </button>
                 </div>
 
                 {/* Gridlines Toggle Button */}
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.95 }}
+                <button
                   onClick={toggleGrid}
                   title={showGrid ? "Disable Fine Medical Gridlines" : "Enable Fine Medical Measurement Gridlines"}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-xs ${
+                  className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-xs ${
                     showGrid
                       ? "bg-gradient-to-b from-sky-500 to-sky-700 text-white border border-sky-800 shadow-sky-500/20"
                       : "btn-toolbar-capsule text-slate-700 hover:text-sky-700"
@@ -968,19 +946,17 @@ be verified by a certified healthcare professional.
                 >
                   <Grid className="h-3.5 w-3.5" />
                   Grid {showGrid ? "ON" : "OFF"}
-                </motion.button>
+                </button>
 
                 {/* Reset Controls Button */}
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.95 }}
+                <button
                   onClick={resetControls}
-                  className="btn-toolbar-capsule px-3.5 py-1 text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  className="btn-toolbar-capsule px-3.5 py-1 text-xs font-bold text-slate-700 hover:text-amber-700 hover:border-amber-400 flex items-center gap-1.5 cursor-pointer shadow-xs transition-all active:scale-95"
                   title="Reset all display adjustments (Brightness, Contrast, Opacity, Threshold, Zoom, Grid) to defaults"
                 >
                   <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
                   Reset Controls
-                </motion.button>
+                </button>
               </div>
             </div>
 
@@ -1121,67 +1097,61 @@ be verified by a certified healthcare professional.
                   </div>
                 )}
 
-                {/* Futuristic Diagnostic Loupe Overlay with Spring Physics */}
-                <AnimatePresence>
-                  {loupe.active && (
-                    <motion.div
-                      initial={{ scale: 0.6, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.6, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 450, damping: 28 }}
-                      className="absolute z-50 pointer-events-none rounded-full border-2 border-sky-400 shadow-[0_0_28px_rgba(0,198,255,0.85)] bg-slate-950 overflow-hidden"
+                {/* Futuristic Diagnostic Loupe Overlay */}
+                {loupe.active && (
+                  <div
+                    className="absolute z-50 pointer-events-none rounded-full border-2 border-sky-400 shadow-[0_0_28px_rgba(0,198,255,0.85)] bg-slate-950 overflow-hidden transition-transform duration-75"
+                    style={{
+                      width: "160px",
+                      height: "160px",
+                      left: 0,
+                      top: 0,
+                      transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
+                      willChange: "transform",
+                    }}
+                  >
+                    <div
+                      className="absolute inset-0 w-full h-full flex items-center justify-center"
                       style={{
-                        width: "160px",
-                        height: "160px",
-                        left: 0,
-                        top: 0,
-                        transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
-                        willChange: "transform",
+                        transform: `scale(${loupe.scale})`,
+                        transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
                       }}
                     >
-                      <div
-                        className="absolute inset-0 w-full h-full flex items-center justify-center"
-                        style={{
-                          transform: `scale(${loupe.scale})`,
-                          transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
-                        }}
-                      >
-                        {imageUrl && (
-                          <img
-                            src={imageUrl}
-                            alt="Loupe Base"
-                            className="w-full h-full object-contain"
-                            style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                          />
-                        )}
-                        {loupe.target === "right" && result?.maskUrl && (
-                          <img
-                            src={result.maskUrl}
-                            alt="Loupe Mask"
-                            className="lesion-mask absolute inset-0 w-full h-full object-contain mix-blend-screen"
-                            style={{ opacity: maskOpacity / 100 }}
-                          />
-                        )}
-                      </div>
-                      
-                      {/* Loupe Crosshair HUD & Precision Radar */}
-                      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                        <div className="w-full h-[1px] bg-sky-400/40" />
-                        <div className="h-full w-[1px] bg-sky-400/40 absolute" />
-                        <div className="w-3.5 h-3.5 rounded-full border border-sky-300/80 absolute" />
-                      </div>
-                      <div
-                        className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none ${
-                          loupe.isZoomDragging
-                            ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
-                            : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
-                        }`}
-                      >
-                        {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      {imageUrl && (
+                        <img
+                          src={imageUrl}
+                          alt="Loupe Base"
+                          className="w-full h-full object-contain"
+                          style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                        />
+                      )}
+                      {loupe.target === "right" && result?.maskUrl && (
+                        <img
+                          src={result.maskUrl}
+                          alt="Loupe Mask"
+                          className="lesion-mask absolute inset-0 w-full h-full object-contain mix-blend-screen"
+                          style={{ opacity: maskOpacity / 100 }}
+                        />
+                      )}
+                    </div>
+                    
+                    {/* Loupe Crosshair HUD & Precision Radar */}
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                      <div className="w-full h-[1px] bg-sky-400/40" />
+                      <div className="h-full w-[1px] bg-sky-400/40 absolute" />
+                      <div className="w-3.5 h-3.5 rounded-full border border-sky-300/80 absolute" />
+                    </div>
+                    <div
+                      className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none ${
+                        loupe.isZoomDragging
+                          ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
+                          : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
+                      }`}
+                    >
+                      {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1195,17 +1165,16 @@ be verified by a certified healthcare professional.
                     <Sun className="h-3.5 w-3.5 text-slate-700" />
                     Brightness
                   </span>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
+                  <button
                     onClick={() => {
                       playAudioChirp("click");
                       setBrightness(100);
                     }}
                     title="Click to reset Brightness to 100%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
                   >
                     {brightness}%
-                  </motion.button>
+                  </button>
                 </div>
                 <SmoothSlider
                   value={brightness}
@@ -1222,17 +1191,16 @@ be verified by a certified healthcare professional.
                     <HalfCircle className="h-3.5 w-3.5 text-slate-700" />
                     Contrast
                   </span>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
+                  <button
                     onClick={() => {
                       playAudioChirp("click");
                       setContrast(100);
                     }}
                     title="Click to reset Contrast to 100%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
                   >
                     {contrast}%
-                  </motion.button>
+                  </button>
                 </div>
                 <SmoothSlider
                   value={contrast}
@@ -1249,17 +1217,16 @@ be verified by a certified healthcare professional.
                     <Layers className="h-3.5 w-3.5 text-slate-700" />
                     Mask Opacity
                   </span>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
+                  <button
                     onClick={() => {
                       playAudioChirp("click");
                       setMaskOpacity(85);
                     }}
                     title="Click to reset Opacity to 85%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
                   >
                     {maskOpacity}%
-                  </motion.button>
+                  </button>
                 </div>
                 <SmoothSlider
                   value={maskOpacity}
@@ -1276,17 +1243,16 @@ be verified by a certified healthcare professional.
                     <Gauge className="h-3.5 w-3.5 text-slate-700" />
                     Threshold
                   </span>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
+                  <button
                     onClick={() => {
                       playAudioChirp("click");
                       recomputeThreshold(50);
                     }}
                     title="Click to reset Threshold to 50%"
-                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono text-[11px] font-black cursor-pointer hover:bg-amber-400 shadow-2xs transition-all active:scale-95"
                   >
                     {threshold}%
-                  </motion.button>
+                  </button>
                 </div>
                 <SmoothSlider
                   value={threshold}
@@ -1297,21 +1263,14 @@ be verified by a certified healthcare professional.
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Right Sidebar: Upload, Diagnosis & Export (4 Cols) */}
-        <motion.section 
-          initial={{ opacity: 0, x: 15 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="col-span-4 flex flex-col gap-3 min-h-0"
-        >
+        <section className="col-span-4 flex flex-col gap-3 min-h-0">
           
           {/* Upload & Action Card */}
           <div className="bg-slate-200/95 border border-slate-400/60 rounded-xl p-3.5 flex flex-col shrink-0 shadow-xs relative overflow-hidden">
-            <motion.div
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+            <div
               onClick={() => {
                 playAudioChirp("click");
                 inputRef.current?.click();
@@ -1322,7 +1281,7 @@ be verified by a certified healthcare professional.
               className={`h-24 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 relative overflow-hidden ${
                 isDragging
                   ? "border-sky-500 bg-sky-100/70 scale-[1.01]"
-                  : "border-slate-400/60 hover:border-sky-500 bg-slate-300/60 hover:bg-slate-300/90"
+                  : "border-slate-400/60 hover:border-sky-500 bg-slate-300/60 hover:bg-slate-300/90 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
@@ -1340,7 +1299,7 @@ be verified by a certified healthcare professional.
                   <p className="text-[11px] text-slate-600 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
                 </div>
               )}
-            </motion.div>
+            </div>
 
             <input
               ref={inputRef}
@@ -1354,26 +1313,20 @@ be verified by a certified healthcare professional.
             />
 
             {error && (
-              <motion.div 
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-2 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2"
-              >
+              <div className="mt-2 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 transition-all">
                 <AlertTriangle className="h-4 w-4 shrink-0 text-red-600" />
                 <span className="truncate">{error}</span>
-              </motion.div>
+              </div>
             )}
 
             {/* Primary Action Button - Cyberpunk Medical 3D Pulse with Hover Glow */}
-            <motion.button
-              whileHover={!isScanning && imageUrl ? { scale: 1.02, y: -2 } : {}}
-              whileTap={!isScanning && imageUrl ? { scale: 0.98, y: 1 } : {}}
+            <button
               onClick={runInference}
               disabled={isScanning || !imageUrl}
-              className={`relative overflow-hidden mt-3 h-12 w-full rounded-xl font-black text-sm uppercase tracking-wider text-white transition-all duration-150 flex items-center justify-center cursor-pointer select-none ${
+              className={`relative overflow-hidden mt-3 h-12 w-full rounded-xl font-black text-sm uppercase tracking-wider text-white transition-all duration-150 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
                 isScanning || !imageUrl
                   ? "bg-slate-400/50 text-slate-600 border border-slate-400/60 cursor-not-allowed shadow-none"
-                  : "btn-tactile-primary group shimmer-gradient-border"
+                  : "btn-tactile-primary group shimmer-gradient-border hover:-translate-y-0.5"
               }`}
             >
               {isScanning ? (
@@ -1387,7 +1340,7 @@ be verified by a certified healthcare professional.
                   ANALYZE CT SCAN
                 </span>
               )}
-            </motion.button>
+            </button>
           </div>
 
           {/* Diagnostic Outcome Card */}
@@ -1399,61 +1352,42 @@ be verified by a certified healthcare professional.
 
             {/* Outcome Banner */}
             <div className="mb-3">
-              <AnimatePresence mode="wait">
-                {result ? (
-                  result.detected ? (
-                    <motion.div 
-                      key="detected"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="p-3 rounded-xl bg-red-50 border-2 border-red-400 text-red-950 space-y-1 shadow-md animate-pulse"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <AlertTriangle className="h-4 w-4 text-red-600 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-red-900">STROKE LESION DETECTED</span>
-                        </div>
-                        <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-red-600 text-white shadow-xs">
-                          POSITIVE
-                        </span>
+              {result ? (
+                result.detected ? (
+                  <div className="p-3 rounded-xl bg-red-50 border-2 border-red-400 text-red-950 space-y-1 shadow-md animate-pulse">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-600 shrink-0" />
+                        <span className="font-extrabold text-xs tracking-tight text-red-900">STROKE LESION DETECTED</span>
                       </div>
-                      <p className="text-xs font-bold text-red-700">{result.label}</p>
-                      <p className="text-[11px] text-slate-600 font-medium">Acute lesion identified by neural segmentation model.</p>
-                    </motion.div>
-                  ) : (
-                    <motion.div 
-                      key="clear"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="p-3 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 space-y-1 shadow-md"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-emerald-900">NO LESION DETECTED</span>
-                        </div>
-                        <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-emerald-600 text-white shadow-xs">
-                          NEGATIVE
-                        </span>
-                      </div>
-                      <p className="text-xs font-bold text-emerald-700">{result.label}</p>
-                      <p className="text-[11px] text-slate-600 font-medium">No acute stroke lesion identified above threshold.</p>
-                    </motion.div>
-                  )
+                      <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-red-600 text-white shadow-xs">
+                        POSITIVE
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-red-700">{result.label}</p>
+                    <p className="text-[11px] text-slate-600 font-medium">Acute lesion identified by neural segmentation model.</p>
+                  </div>
                 ) : (
-                  <motion.div 
-                    key="awaiting"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="p-3 rounded-xl bg-slate-300/80 border border-slate-400/50 text-center space-y-0.5"
-                  >
-                    <p className="text-xs font-bold text-slate-700">Awaiting Analysis</p>
-                    <p className="text-[11px] text-slate-500 font-medium">Upload scan and click &quot;Analyze CT Scan&quot;.</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  <div className="p-3 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 space-y-1 shadow-md">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                        <span className="font-extrabold text-xs tracking-tight text-emerald-900">NO LESION DETECTED</span>
+                      </div>
+                      <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-emerald-600 text-white shadow-xs">
+                        NEGATIVE
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-emerald-700">{result.label}</p>
+                    <p className="text-[11px] text-slate-600 font-medium">No acute stroke lesion identified above threshold.</p>
+                  </div>
+                )
+              ) : (
+                <div className="p-3 rounded-xl bg-slate-300/80 border border-slate-400/50 text-center space-y-0.5">
+                  <p className="text-xs font-bold text-slate-700">Awaiting Analysis</p>
+                  <p className="text-[11px] text-slate-500 font-medium">Upload scan and click &quot;Analyze CT Scan&quot;.</p>
+                </div>
+              )}
             </div>
 
             {/* Confidence Meter */}
@@ -1465,11 +1399,9 @@ be verified by a certified healthcare professional.
                 </span>
               </div>
               <div className="h-2 w-full bg-slate-300 rounded-full overflow-hidden border border-slate-400/50">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: result ? `${result.confidence * 100}%` : "0%" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className={`h-full ${result?.detected ? "bg-red-500" : "bg-sky-500"}`}
+                <div
+                  className={`h-full transition-all duration-500 ${result?.detected ? "bg-red-500" : "bg-sky-500"}`}
+                  style={{ width: result ? `${result.confidence * 100}%` : "0%" }}
                 />
               </div>
             </div>
@@ -1492,12 +1424,10 @@ be verified by a certified healthcare professional.
 
             {/* Export Actions with Animated Spring Feedback */}
             <div className="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-300">
-              <motion.button
-                whileHover={imageUrl ? { scale: 1.03, y: -1 } : {}}
-                whileTap={imageUrl ? { scale: 0.96 } : {}}
+              <button
                 onClick={exportAnnotatedImage}
                 disabled={!imageUrl}
-                className="btn-tactile-light h-9 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                className="btn-tactile-light h-9 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs transition-all active:scale-95 hover:-translate-y-0.5"
                 title="Export high-resolution annotated image composite with lesion mask overlay"
               >
                 {exportedStatus === "image" ? (
@@ -1506,14 +1436,12 @@ be verified by a certified healthcare professional.
                   <Download className="h-3.5 w-3.5 text-slate-600" />
                 )}
                 {exportedStatus === "image" ? "Saved!" : "Image (.png)"}
-              </motion.button>
+              </button>
 
-              <motion.button
-                whileHover={result ? { scale: 1.03, y: -1 } : {}}
-                whileTap={result ? { scale: 0.96 } : {}}
+              <button
                 onClick={exportReportText}
                 disabled={!result}
-                className="btn-tactile-emerald h-9 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                className="btn-tactile-emerald h-9 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all active:scale-95 hover:-translate-y-0.5"
                 title="Download formal clinical diagnostic summary text report"
               >
                 {exportedStatus === "report" ? (
@@ -1522,10 +1450,10 @@ be verified by a certified healthcare professional.
                   <FileText className="h-3.5 w-3.5" />
                 )}
                 {exportedStatus === "report" ? "Downloaded!" : "Report (.txt)"}
-              </motion.button>
+              </button>
             </div>
           </div>
-        </motion.section>
+        </section>
       </main>
 
       {/* 3. Futuristic Minimal Hospital Footer */}
