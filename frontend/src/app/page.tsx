@@ -300,7 +300,7 @@ export default function HomePage() {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [showGrid, setShowGrid] = useState(false);
 
-  // Diagnostic Loupe State (Right-Click popup magnifying glass following mouse)
+  // Diagnostic Loupe State (Right-Click popup magnifying glass, Left-Click drag zoom inside loupe)
   const [loupe, setLoupe] = useState<{
     active: boolean;
     x: number;
@@ -308,6 +308,8 @@ export default function HomePage() {
     normX: number;
     normY: number;
     target: "left" | "right" | null;
+    scale: number;
+    isZoomDragging: boolean;
   }>({
     active: false,
     x: 0,
@@ -315,7 +317,11 @@ export default function HomePage() {
     normX: 0.5,
     normY: 0.5,
     target: null,
+    scale: 2.5,
+    isZoomDragging: false,
   });
+
+  const loupeDragStartRef = useRef<{ startY: number; initialScale: number } | null>(null);
 
   function handleZoomIn() {
     setZoom((prev) => Math.min(4, Number((prev + 0.25).toFixed(2))));
@@ -328,7 +334,7 @@ export default function HomePage() {
   function handleResetZoom() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
-    setLoupe((prev) => ({ ...prev, active: false, target: null }));
+    setLoupe((prev) => ({ ...prev, active: false, target: null, scale: 2.5, isZoomDragging: false }));
   }
 
   function toggleGrid() {
@@ -343,7 +349,7 @@ export default function HomePage() {
     const y = e.clientY - rect.top;
     setLoupe((prev) => {
       if (prev.active && prev.target === target) {
-        return { ...prev, active: false, target: null };
+        return { ...prev, active: false, target: null, isZoomDragging: false };
       }
       return {
         active: true,
@@ -352,25 +358,38 @@ export default function HomePage() {
         normX: Math.max(0, Math.min(1, x / rect.width)),
         normY: Math.max(0, Math.min(1, y / rect.height)),
         target,
+        scale: 2.5,
+        isZoomDragging: false,
       };
     });
   }
 
-  function handleViewportMouseDown(e: React.MouseEvent) {
+  function handleViewportMouseDown(e: React.MouseEvent, target: "left" | "right") {
     if (e.button === 2) return; // Handled by onContextMenu
     if (e.button !== 0) return;
+
+    // If loupe is active on this viewport, Left-Click Freezes position and enters Drag-Zoom mode
+    if (loupe.active && loupe.target === target) {
+      loupeDragStartRef.current = { startY: e.clientY, initialScale: loupe.scale };
+      setLoupe((prev) => ({ ...prev, isZoomDragging: true }));
+      return;
+    }
+
     setIsDraggingViewport(true);
     dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
   }
 
   function handleViewportMouseMove(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
-    if (isDraggingViewport && dragStartRef.current) {
-      const dx = e.clientX - dragStartRef.current.x;
-      const dy = e.clientY - dragStartRef.current.y;
-      setPan({ x: dragStartRef.current.panX + dx, y: dragStartRef.current.panY + dy });
+    // 1. If actively Left-Click Dragging to Zoom inside the Loupe (Freezed position):
+    if (loupe.active && loupe.target === target && loupe.isZoomDragging && loupeDragStartRef.current) {
+      const dy = loupeDragStartRef.current.startY - e.clientY; // Drag UP -> Zoom IN, Drag DOWN -> Zoom OUT
+      const newScale = Math.max(1.2, Math.min(8.0, Number((loupeDragStartRef.current.initialScale + dy * 0.025).toFixed(2))));
+      setLoupe((prev) => ({ ...prev, scale: newScale }));
+      return;
     }
 
-    if (loupe.active && loupe.target === target) {
+    // 2. If loupe is active (Free hover, not dragging): Follow mouse cursor in real-time
+    if (loupe.active && loupe.target === target && !loupe.isZoomDragging) {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -382,9 +401,20 @@ export default function HomePage() {
         normY: Math.max(0, Math.min(1, y / rect.height)),
       }));
     }
+
+    // 3. Normal Viewport Pan
+    if (isDraggingViewport && dragStartRef.current) {
+      const dx = e.clientX - dragStartRef.current.x;
+      const dy = e.clientY - dragStartRef.current.y;
+      setPan({ x: dragStartRef.current.panX + dx, y: dragStartRef.current.panY + dy });
+    }
   }
 
   function handleViewportMouseUp() {
+    if (loupe.isZoomDragging) {
+      loupeDragStartRef.current = null;
+      setLoupe((prev) => ({ ...prev, isZoomDragging: false }));
+    }
     setIsDraggingViewport(false);
     dragStartRef.current = null;
   }

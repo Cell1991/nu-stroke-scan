@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 260" width="100%" height="100%">
+  <defs>
+    <linearGradient id="card-bg-kanin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#090D16" />
+    </linearGradient>
+
+    <linearGradient id="avatar-grad-kanin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+
+    <linearGradient id="kanin-border" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="50%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+
+    <filter id="kanin-shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#8B5CF6" flood-opacity="0.15" />
+    </filter>
+
+    <style>
+      @keyframes glowKanin {
+        0%, 100% { stroke-opacity: 0.4; }
+        50% { stroke-opacity: 0.9; }
+      }
+      .card-kanin-border {
+        animation: glowKanin 3s ease-in-out infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Card Background -->
+  <rect width="556" height="256" x="2" y="2" rx="16" fill="url(#card-bg-kanin)" filter="url(#kanin-shadow)" />
+  <rect width="556" height="256" x="2" y="2" rx="16" fill="none" stroke="url(#kanin-border)" stroke-width="1.5" class="card-kanin-border" />
+
+  <!-- Avatar Badge (Left) -->
+  <g transform="translate(30, 32)">
+    <rect width="76" height="76" rx="20" fill="url(#avatar-grad-kanin)" />
+    <!-- User Icon Vector -->
+    <circle cx="38" cy="30" r="14" fill="#FFFFFF" fill-opacity="0.9" />
+    <path d="M 18 64 C 18 50 26 44 38 44 C 50 44 58 50 58 64 Z" fill="#FFFFFF" fill-opacity="0.9" />
+    <!-- Active Status Beacon -->
+    <circle cx="66" cy="12" r="6" fill="#8B5CF6" stroke="#0F172A" stroke-width="2" />
+  </g>
+
+  <!-- Researcher Details (Right) -->
+  <g transform="translate(126, 32)">
+    <!-- Research Track Pill -->
+    <rect width="180" height="22" rx="11" fill="#4F46E5" fill-opacity="0.25" stroke="#6366F1" stroke-width="0.8" />
+    <text x="90" y="15" text-anchor="middle" fill="#A5B4FC" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="700" letter-spacing="0.8">CO-RESEARCHER &amp; LEAD AI</text>
+
+    <!-- Name -->
+    <text x="0" y="52" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Space Grotesk', sans-serif" font-size="22" font-weight="800" letter-spacing="-0.3">
+      Kanin Mate (@Rednoselittledog)
+    </text>
+
+    <!-- Role / Specialty -->
+    <text x="0" y="74" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600">
+      Senior Researcher · Deep Learning &amp; Computer Vision
+    </text>
+
+    <!-- Focus Description -->
+    <text x="0" y="98" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="400">
+      VCA-Net · Deformable LKA / MaxViT · Patcher SegFormer
+    </text>
+
+    <!-- Skill Tags -->
+    <g transform="translate(0, 116)">
+      <rect width="78" height="22" rx="6" fill="#1E293B" />
+      <text x="39" y="15" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10" font-weight="600">PyTorch</text>
+
+      <rect x="84" width="82" height="22" rx="6" fill="#1E293B" />
+      <text x="125" y="15" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10" font-weight="600">MMCV/Seg</text>
+
+      <rect x="172" width="76" height="22" rx="6" fill="#1E293B" />
+      <text x="210" y="15" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10" font-weight="600">MaxViT</text>
+
+      <rect x="254" width="88" height="22" rx="6" fill="#1E293B" />
+      <text x="298" y="15" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10" font-weight="600">TorchVision</text>
+    </g>
+
+    <!-- Contact & Links -->
+    <g transform="translate(0, 160)">
+      <circle cx="6" cy="6" r="3" fill="#818CF8" />
+      <text x="15" y="10" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="500">
+        kanin.mate@gmail.com
+      </text>
+
+      <circle cx="190" cy="6" r="3" fill="#EC4899" />
+      <text x="199" y="10" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="500">
+        github.com/kanin-mate
+      </text>
+    </g>
+  </g>
+</svg>

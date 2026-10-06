@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070B14" />
+      <stop offset="50%" stop-color="#0B132B" />
+      <stop offset="100%" stop-color="#090E1A" />
+    </linearGradient>
+
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.9" />
+    </linearGradient>
+
+    <linearGradient id="scan-beam" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0" />
+      <stop offset="50%" stop-color="#22D3EE" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.8" />
+    </linearGradient>
+
+    <linearGradient id="badge-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E1E38" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#13233F" stop-opacity="0.6" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.8" stroke-opacity="0.4" />
+      <circle cx="40" cy="0" r="1" fill="#38BDF8" fill-opacity="0.25" />
+    </pattern>
+
+    <style>
+      @keyframes scanline {
+        0% { transform: translateY(-40px); opacity: 0; }
+        15% { opacity: 0.8; }
+        85% { opacity: 0.8; }
+        100% { transform: translateY(320px); opacity: 0; }
+      }
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.4; transform: scale(1); }
+        50% { opacity: 0.85; transform: scale(1.08); }
+      }
+      @keyframes floatSlow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      @keyframes ecgDraw {
+        0% { stroke-dashoffset: 1000; }
+        100% { stroke-dashoffset: 0; }
+      }
+      @keyframes radarSweep {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes nodeBlink {
+        0%, 100% { opacity: 0.2; r: 2px; }
+        50% { opacity: 1; r: 4px; }
+      }
+      .scan-bar {
+        animation: scanline 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      .pulse-circle {
+        transform-origin: center;
+        animation: pulseGlow 3s ease-in-out infinite;
+      }
+      .float-badge {
+        animation: floatSlow 5s ease-in-out infinite;
+      }
+      .ecg-line {
+        stroke-dasharray: 1000;
+        animation: ecgDraw 3.5s ease-in-out infinite;
+      }
+      .radar-line {
+        transform-origin: 980px 210px;
+        animation: radarSweep 6s linear infinite;
+      }
+      .node-1 { animation: nodeBlink 2.5s ease-in-out infinite; }
+      .node-2 { animation: nodeBlink 3.1s ease-in-out 0.8s infinite; }
+      .node-3 { animation: nodeBlink 2.8s ease-in-out 1.5s infinite; }
+    </style>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1200" height="420" fill="url(#bg-grad)" rx="16" />
+  <rect width="1200" height="420" fill="url(#grid)" rx="16" />
+
+  <!-- Outer Border Frame -->
+  <rect width="1196" height="416" x="2" y="2" fill="none" stroke="#1E3A8A" stroke-width="1.5" stroke-opacity="0.4" rx="15" />
+  
+  <!-- Ambient Glow Spheres in Background -->
+  <circle cx="200" cy="120" r="160" fill="#0EA5E9" fill-opacity="0.08" filter="url(#glow)" />
+  <circle cx="980" cy="210" r="180" fill="#06B6D4" fill-opacity="0.09" filter="url(#glow)" />
+  <circle cx="600" cy="380" r="140" fill="#10B981" fill-opacity="0.05" filter="url(#glow)" />
+
+  <!-- Left/Center Hero Content -->
+  <g transform="translate(70, 0)">
+    <!-- Top Pill / Status Tag -->
+    <g transform="translate(0, 52)">
+      <rect width="360" height="32" rx="16" fill="url(#badge-bg)" stroke="#0284C7" stroke-width="1" stroke-opacity="0.5" />
+      <circle cx="18" cy="16" r="4.5" fill="#10B981" class="pulse-circle" />
+      <circle cx="18" cy="16" r="8" fill="none" stroke="#10B981" stroke-width="1" opacity="0.6" class="pulse-circle" />
+      <text x="34" y="20.5" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">CLINICAL NEURO-IMAGING AI PLATFORM</text>
+    </g>
+
+    <!-- Main Title -->
+    <text x="0" y="145" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Space Grotesk', sans-serif" font-size="46" font-weight="800" letter-spacing="-0.5">
+      NU STROKE SCAN
+    </text>
+    <text x="430" y="145" fill="url(#cyan-glow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Space Grotesk', sans-serif" font-size="46" font-weight="800" filter="url(#soft-glow)">
+      v2.0
+    </text>
+
+    <!-- Subtitle / Tagline -->
+    <text x="0" y="185" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="500" letter-spacing="0.2">
+      Non-Contrast Brain CT Stroke Lesion Segmentation &amp; Diagnostic Decision Support
+    </text>
+
+    <!-- Key Research Capability Tags -->
+    <g transform="translate(0, 222)">
+      <!-- Badge 1: VCA-Net -->
+      <g>
+        <rect width="155" height="34" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1" stroke-opacity="0.6" />
+        <circle cx="16" cy="17" r="3.5" fill="#38BDF8" />
+        <text x="28" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">VCA-Net Attention</text>
+      </g>
+      <!-- Badge 2: Deformable LKA -->
+      <g transform="translate(165, 0)">
+        <rect width="170" height="34" rx="8" fill="#0F172A" stroke="#0D9488" stroke-width="1" stroke-opacity="0.6" />
+        <circle cx="16" cy="17" r="3.5" fill="#2DD4BF" />
+        <text x="28" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Deformable LKA / MaxViT</text>
+      </g>
+      <!-- Badge 3: Patcher SegFormer -->
+      <g transform="translate(345, 0)">
+        <rect width="170" height="34" rx="8" fill="#0F172A" stroke="#6366F1" stroke-width="1" stroke-opacity="0.6" />
+        <circle cx="16" cy="17" r="3.5" fill="#818CF8" />
+        <text x="28" y="21.5" fill="#E2E8F0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Patcher SegFormer</text>
+      </g>
+    </g>
+
+    <!-- Bottom Feature Summary Line -->
+    <g transform="translate(0, 290)">
+      <!-- Metric Item 1 -->
+      <g>
+        <text x="0" y="22" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800">2.5×</text>
+        <text x="48" y="16" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Diagnostic Loupe</text>
+        <text x="48" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Real-time Cursor Tracking</text>
+      </g>
+
+      <!-- Metric Item 2 -->
+      <g transform="translate(200, 0)">
+        <text x="0" y="22" fill="#2DD4BF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800">1:1</text>
+        <text x="40" y="16" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Dual Synced Pan/Zoom</text>
+        <text x="40" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Side-by-side Overlay</text>
+      </g>
+
+      <!-- Metric Item 3 -->
+      <g transform="translate(400, 0)">
+        <text x="0" y="22" fill="#818CF8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800">100%</text>
+        <text x="58" y="16" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">Non-Contrast CT Guard</text>
+        <text x="58" y="30" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">Pre-inference Validation</text>
+      </g>
+    </g>
+
+    <!-- Animated ECG Pulse Line at bottom -->
+    <path d="M 0 365 L 140 365 L 155 350 L 165 380 L 180 330 L 195 390 L 205 365 L 220 365 L 230 355 L 240 365 L 530 365" 
+          fill="none" stroke="url(#cyan-glow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ecg-line" opacity="0.7" />
+  </g>
+
+  <!-- Right Visual: Futuristic CT / Brain AI Scanning Target Hub -->
+  <g transform="translate(940, 205)" class="float-badge">
+    <!-- Radar concentric circles -->
+    <circle cx="0" cy="0" r="140" fill="none" stroke="#0369A1" stroke-width="1" stroke-dasharray="4 6" opacity="0.3" />
+    <circle cx="0" cy="0" r="105" fill="none" stroke="#0284C7" stroke-width="1" opacity="0.4" />
+    <circle cx="0" cy="0" r="70" fill="none" stroke="#38BDF8" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.5" />
+    <circle cx="0" cy="0" r="35" fill="none" stroke="#22D3EE" stroke-width="1" opacity="0.7" />
+
+    <!-- Scanning Radar Line -->
+    <line x1="0" y1="0" x2="135" y2="0" stroke="url(#cyan-glow)" stroke-width="2" opacity="0.8" class="radar-line" />
+
+    <!-- Brain Vector Silhouette / Neural Network Visual -->
+    <g transform="translate(-45, -50) scale(3.8)" opacity="0.85">
+      <!-- Brain Outer Shell -->
+      <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" 
+            fill="none" stroke="#38BDF8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" 
+            fill="none" stroke="#38BDF8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M12 5v13" fill="none" stroke="#22D3EE" stroke-width="1" stroke-dasharray="2 2" />
+      
+      <!-- Lesion Target Area (Highlighted in Crimson / Amber) -->
+      <ellipse cx="8.5" cy="11.5" rx="2.5" ry="3.2" fill="#EF4444" fill-opacity="0.4" stroke="#F87171" stroke-width="0.8" />
+    </g>
+
+    <!-- Scanline overlay across brain box -->
+    <g clip-path="url(#clip-scanner)">
+      <rect x="-110" y="-110" width="220" height="220" fill="none" />
+      <rect x="-110" y="-110" width="220" height="40" fill="url(#scan-beam)" class="scan-bar" />
+    </g>
+
+    <!-- Target Reticles -->
+    <path d="M -130 -40 L -140 -40 L -140 -60" fill="none" stroke="#38BDF8" stroke-width="2" />
+    <path d="M 130 -40 L 140 -40 L 140 -60" fill="none" stroke="#38BDF8" stroke-width="2" />
+    <path d="M -130 40 L -140 40 L -140 60" fill="none" stroke="#38BDF8" stroke-width="2" />
+    <path d="M 130 40 L 140 40 L 140 60" fill="none" stroke="#38BDF8" stroke-width="2" />
+
+    <!-- Animated Synapse Points -->
+    <circle cx="-25" cy="-20" r="3" fill="#38BDF8" class="node-1" />
+    <circle cx="20" cy="15" r="3" fill="#34D399" class="node-2" />
+    <circle cx="-15" cy="25" r="3" fill="#F472B6" class="node-3" />
+
+    <!-- HUD Label -->
+    <rect x="-65" y="115" width="130" height="24" rx="12" fill="#030712" stroke="#0284C7" stroke-width="1" />
+    <text x="0" y="131" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-size="10" font-weight="700" letter-spacing="1">AI INFERENCE ACTIVE</text>
+  </g>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 60" width="100%" height="100%">
+  <defs>
+    <linearGradient id="div-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0" />
+      <stop offset="20%" stop-color="#06B6D4" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="1" />
+      <stop offset="80%" stop-color="#10B981" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0" />
+    </linearGradient>
+
+    <filter id="glow-div">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <style>
+      @keyframes flowWave {
+        0% { stroke-dashoffset: 2400; }
+        100% { stroke-dashoffset: 0; }
+      }
+      .ecg-flow {
+        stroke-dasharray: 600 300;
+        animation: flowWave 8s linear infinite;
+      }
+      @keyframes pulseDot {
+        0%, 100% { transform: scale(1); opacity: 0.6; }
+        50% { transform: scale(1.4); opacity: 1; }
+      }
+      .pulse-core {
+        transform-origin: 600px 30px;
+        animation: pulseDot 2s ease-in-out infinite;
+      }
+    </style>
+  </defs>
+
+  <rect width="1200" height="60" fill="transparent" />
+
+  <!-- Base Subtle Line -->
+  <line x1="100" y1="30" x2="1100" y2="30" stroke="#1E293B" stroke-width="1.5" stroke-opacity="0.6" />
+
+  <!-- Animated Electrocardiogram / Neural Waveform -->
+  <path d="M 100 30 L 350 30 L 370 20 L 385 40 L 405 5 L 420 55 L 435 30 L 460 30 L 480 25 L 495 30 L 580 30 L 595 18 L 600 42 L 605 10 L 612 50 L 620 30 L 720 30 L 740 22 L 755 38 L 775 8 L 790 52 L 805 30 L 830 30 L 850 25 L 865 30 L 1100 30"
+        fill="none" stroke="url(#div-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ecg-flow" filter="url(#glow-div)" />
+
+  <!-- Center Focal Nodes -->
+  <circle cx="600" cy="30" r="4" fill="#38BDF8" class="pulse-core" filter="url(#glow-div)" />
+  <circle cx="600" cy="30" r="8" fill="none" stroke="#22D3EE" stroke-width="1" opacity="0.4" class="pulse-core" />
+</svg>
