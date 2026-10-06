@@ -73,20 +73,14 @@ html, body {
   height: 15px;
   border-radius: 50%;
   background: #ffffff;
-  border: 3px solid #0284c7;
+  border: 3px solid #ea580c;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   cursor: pointer;
   transition: transform 0.12s ease, border-color 0.12s ease;
 }
 .medical-slider::-webkit-slider-thumb:hover {
   transform: scale(1.25);
-  border-color: #0369a1;
-}
-.medical-slider-rose::-webkit-slider-thumb {
-  border-color: #e11d48;
-}
-.medical-slider-rose::-webkit-slider-thumb:hover {
-  border-color: #be123c;
+  border-color: #c2410c;
 }
 
 .lesion-mask {

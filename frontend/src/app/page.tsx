@@ -738,20 +738,20 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer: Brightness, Contrast, Opacity & Sensitivity with Low Cognitive Load UI */}
+            {/* Essential Controls Footer: Unified Warm Amber Tracks & High-Contrast Badges */}
             <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2.5 shrink-0">
               
               {/* 1. Brightness Slider */}
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
-                    <Sun className="h-3.5 w-3.5 text-amber-600" />
+                    <Sun className="h-3.5 w-3.5 text-slate-700" />
                     Brightness
                   </span>
                   <button
                     onClick={() => setBrightness(100)}
                     title="Click to reset Brightness to 100%"
-                    className="px-2 py-0.5 rounded-md bg-slate-900 text-amber-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-slate-950 text-sky-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-900 shadow-2xs transition-colors"
                   >
                     {brightness}%
                   </button>
@@ -764,7 +764,7 @@ be verified by a certified healthcare professional.
                   onChange={(e) => setBrightness(Number(e.target.value))}
                   className="medical-slider"
                   style={{
-                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((brightness - 50) / 100) * 100}%, #94a3b8 ${((brightness - 50) / 100) * 100}%, #94a3b8 100%)`,
+                    background: `linear-gradient(to right, #ea580c 0%, #ea580c ${((brightness - 50) / 100) * 100}%, #94a3b8 ${((brightness - 50) / 100) * 100}%, #94a3b8 100%)`,
                   }}
                 />
                 <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
@@ -783,13 +783,13 @@ be verified by a certified healthcare professional.
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
-                    <HalfCircle className="h-3.5 w-3.5 text-sky-600" />
+                    <HalfCircle className="h-3.5 w-3.5 text-slate-700" />
                     Contrast
                   </span>
                   <button
                     onClick={() => setContrast(100)}
                     title="Click to reset Contrast to 100%"
-                    className="px-2 py-0.5 rounded-md bg-slate-900 text-sky-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-slate-950 text-sky-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-900 shadow-2xs transition-colors"
                   >
                     {contrast}%
                   </button>
@@ -802,7 +802,7 @@ be verified by a certified healthcare professional.
                   onChange={(e) => setContrast(Number(e.target.value))}
                   className="medical-slider"
                   style={{
-                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((contrast - 50) / 150) * 100}%, #94a3b8 ${((contrast - 50) / 150) * 100}%, #94a3b8 100%)`,
+                    background: `linear-gradient(to right, #ea580c 0%, #ea580c ${((contrast - 50) / 150) * 100}%, #94a3b8 ${((contrast - 50) / 150) * 100}%, #94a3b8 100%)`,
                   }}
                 />
                 <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
@@ -820,14 +820,14 @@ be verified by a certified healthcare professional.
               {/* 3. Mask Opacity Slider */}
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
-                  <span className="flex items-center gap-1.5 text-red-700">
-                    <Layers className="h-3.5 w-3.5 text-red-600" />
+                  <span className="flex items-center gap-1.5 text-slate-800">
+                    <Layers className="h-3.5 w-3.5 text-slate-700" />
                     Mask Opacity
                   </span>
                   <button
                     onClick={() => setMaskOpacity(85)}
                     title="Click to reset Opacity to 85%"
-                    className="px-2 py-0.5 rounded-md bg-slate-900 text-rose-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-slate-950 text-sky-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-900 shadow-2xs transition-colors"
                   >
                     {maskOpacity}%
                   </button>
@@ -838,9 +838,9 @@ be verified by a certified healthcare professional.
                   max="100"
                   value={maskOpacity}
                   onChange={(e) => setMaskOpacity(Number(e.target.value))}
-                  className="medical-slider medical-slider-rose"
+                  className="medical-slider"
                   style={{
-                    background: `linear-gradient(to right, #e11d48 0%, #e11d48 ${maskOpacity}%, #94a3b8 ${maskOpacity}%, #94a3b8 100%)`,
+                    background: `linear-gradient(to right, #ea580c 0%, #ea580c ${maskOpacity}%, #94a3b8 ${maskOpacity}%, #94a3b8 100%)`,
                   }}
                 />
                 <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
@@ -859,13 +859,13 @@ be verified by a certified healthcare professional.
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
-                    <Gauge className="h-3.5 w-3.5 text-indigo-600" />
+                    <Gauge className="h-3.5 w-3.5 text-slate-700" />
                     Threshold
                   </span>
                   <button
                     onClick={() => recomputeThreshold(50)}
                     title="Click to reset Threshold to 50%"
-                    className="px-2 py-0.5 rounded-md bg-slate-900 text-indigo-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-slate-950 text-sky-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-900 shadow-2xs transition-colors"
                   >
                     {threshold}%
                   </button>
@@ -878,7 +878,7 @@ be verified by a certified healthcare professional.
                   onChange={(e) => recomputeThreshold(Number(e.target.value))}
                   className="medical-slider"
                   style={{
-                    background: `linear-gradient(to right, #4f46e5 0%, #4f46e5 ${((threshold - 10) / 85) * 100}%, #94a3b8 ${((threshold - 10) / 85) * 100}%, #94a3b8 100%)`,
+                    background: `linear-gradient(to right, #ea580c 0%, #ea580c ${((threshold - 10) / 85) * 100}%, #94a3b8 ${((threshold - 10) / 85) * 100}%, #94a3b8 100%)`,
                   }}
                 />
                 <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
