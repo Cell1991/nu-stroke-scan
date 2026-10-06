@@ -158,16 +158,6 @@ function ZoomOut({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function Maximize2({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <polyline points="15 3 21 3 21 9" />
-      <polyline points="9 21 3 21 3 15" />
-      <line x1="21" x2="14" y1="3" y2="10" />
-      <line x1="3" x2="10" y1="21" y2="14" />
-    </svg>
-  );
-}
 
 function Grid({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -199,46 +189,31 @@ const MODELS = [
   { id: "patcher", name: "Patcher", desc: "Patch SegFormer" },
 ];
 
-function NeuStepSlider({
+function SmoothSlider({
   value,
   onChange,
   min,
   max,
   step = 1,
-  stops,
 }: {
   value: number;
   onChange: (val: number) => void;
   min: number;
   max: number;
   step?: number;
-  stops: Array<{ value: number; label: string }>;
 }) {
   const currentPct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
 
   return (
-    <div className="w-full select-none px-1">
-      <div className="neu-slider-container relative h-6 flex items-center">
+    <div className="w-full select-none py-1">
+      <div className="neu-slider-container relative h-5 flex items-center">
         {/* Recessed Track Container */}
-        <div className="neu-slider-track-bg mx-2">
+        <div className="neu-slider-track-bg w-full">
           {/* Active Glowing Gradient Fill */}
           <div
             className="neu-slider-track-fill"
             style={{ width: `${currentPct}%` }}
           />
-
-          {/* Stepped Node Dots along track */}
-          {stops.map((stop) => {
-            const nodePct = ((stop.value - min) / (max - min)) * 100;
-            const isActive = value >= stop.value;
-            return (
-              <div
-                key={stop.value}
-                className={`neu-slider-node ${isActive ? "active" : "inactive"}`}
-                style={{ left: `${nodePct}%` }}
-              />
-            );
-          })}
         </div>
 
         {/* Floating Tactile Neumorphic Thumb Input */}
@@ -251,25 +226,6 @@ function NeuStepSlider({
           onChange={(e) => onChange(Number(e.target.value))}
           className="neu-range-input"
         />
-      </div>
-
-      {/* Stepped Scale Tick Labels directly under nodes */}
-      <div className="relative w-full h-4 mt-1.5 pointer-events-none select-none px-2">
-        {stops.map((stop) => {
-          const nodePct = ((stop.value - min) / (max - min)) * 100;
-          const isActive = value >= stop.value;
-          return (
-            <span
-              key={stop.value}
-              style={{ left: `${nodePct}%` }}
-              className={`absolute top-0 -translate-x-1/2 text-[11.5px] font-mono font-extrabold tracking-tight transition-colors ${
-                isActive ? "text-slate-950" : "text-slate-600"
-              }`}
-            >
-              {stop.label}
-            </span>
-          );
-        })}
       </div>
     </div>
   );
@@ -772,16 +728,6 @@ be verified by a certified healthcare professional.
                   </button>
                 </div>
 
-                {/* Reset View Button */}
-                <button
-                  onClick={handleResetZoom}
-                  title="Reset Viewport to Default Scale (100%) and Center"
-                  className="btn-toolbar-capsule px-3 py-1 text-xs font-bold text-slate-700 hover:text-sky-700 flex items-center gap-1.5 cursor-pointer shadow-xs"
-                >
-                  <Maximize2 className="h-3.5 w-3.5 text-slate-600" />
-                  Reset View
-                </button>
-
                 {/* Gridlines Toggle Button */}
                 <button
                   onClick={toggleGrid}
@@ -1012,7 +958,7 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer: Skeuomorphic Node Sliders & Vibrant Badges */}
+            {/* Essential Controls Footer: Smooth Sliders & Vibrant Badges */}
             <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2.5 shrink-0">
               
               {/* 1. Brightness Slider */}
@@ -1030,18 +976,11 @@ be verified by a certified healthcare professional.
                     {brightness}%
                   </button>
                 </div>
-                <NeuStepSlider
+                <SmoothSlider
                   value={brightness}
                   onChange={setBrightness}
                   min={50}
                   max={150}
-                  stops={[
-                    { value: 50, label: "50" },
-                    { value: 75, label: "75" },
-                    { value: 100, label: "100" },
-                    { value: 125, label: "125" },
-                    { value: 150, label: "150" },
-                  ]}
                 />
               </div>
 
@@ -1060,17 +999,11 @@ be verified by a certified healthcare professional.
                     {contrast}%
                   </button>
                 </div>
-                <NeuStepSlider
+                <SmoothSlider
                   value={contrast}
                   onChange={setContrast}
                   min={50}
                   max={200}
-                  stops={[
-                    { value: 50, label: "50" },
-                    { value: 100, label: "100" },
-                    { value: 150, label: "150" },
-                    { value: 200, label: "200" },
-                  ]}
                 />
               </div>
 
@@ -1089,18 +1022,11 @@ be verified by a certified healthcare professional.
                     {maskOpacity}%
                   </button>
                 </div>
-                <NeuStepSlider
+                <SmoothSlider
                   value={maskOpacity}
                   onChange={setMaskOpacity}
                   min={0}
                   max={100}
-                  stops={[
-                    { value: 0, label: "0" },
-                    { value: 25, label: "25" },
-                    { value: 50, label: "50" },
-                    { value: 75, label: "75" },
-                    { value: 100, label: "100" },
-                  ]}
                 />
               </div>
 
@@ -1119,18 +1045,11 @@ be verified by a certified healthcare professional.
                     {threshold}%
                   </button>
                 </div>
-                <NeuStepSlider
+                <SmoothSlider
                   value={threshold}
                   onChange={recomputeThreshold}
                   min={10}
                   max={95}
-                  stops={[
-                    { value: 10, label: "10" },
-                    { value: 30, label: "30" },
-                    { value: 50, label: "50" },
-                    { value: 70, label: "70" },
-                    { value: 95, label: "95" },
-                  ]}
                 />
               </div>
             </div>
