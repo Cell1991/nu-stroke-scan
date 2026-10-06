@@ -199,6 +199,84 @@ const MODELS = [
   { id: "patcher", name: "Patcher", desc: "Patch SegFormer" },
 ];
 
+function NeuStepSlider({
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  stops,
+}: {
+  value: number;
+  onChange: (val: number) => void;
+  min: number;
+  max: number;
+  step?: number;
+  stops: Array<{ value: number; label: string }>;
+}) {
+  const currentPct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+
+  return (
+    <div className="w-full select-none">
+      <div className="neu-slider-container">
+        {/* Recessed Track Container */}
+        <div className="neu-slider-track-bg">
+          {/* Active Glowing Gradient Fill */}
+          <div
+            className="neu-slider-track-fill"
+            style={{ width: `${currentPct}%` }}
+          />
+
+          {/* Stepped Node Dots along track */}
+          {stops.map((stop) => {
+            const nodePct = ((stop.value - min) / (max - min)) * 100;
+            const isActive = value >= stop.value;
+            return (
+              <div
+                key={stop.value}
+                className={`neu-slider-node ${isActive ? "active" : "inactive"}`}
+                style={{ left: `${nodePct}%` }}
+              >
+                <div className="node-core" />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Floating Tactile Neumorphic Thumb Input */}
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="neu-range-input"
+        />
+      </div>
+
+      {/* Stepped Scale Tick Labels directly under nodes */}
+      <div className="relative w-full h-3.5 mt-1.5 pointer-events-none select-none">
+        {stops.map((stop) => {
+          const nodePct = ((stop.value - min) / (max - min)) * 100;
+          const isActive = value >= stop.value;
+          return (
+            <span
+              key={stop.value}
+              style={{ left: `${nodePct}%` }}
+              className={`absolute top-0 -translate-x-1/2 text-[10px] font-mono font-bold transition-colors ${
+                isActive ? "text-slate-900" : "text-slate-500"
+              }`}
+            >
+              {stop.label}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
@@ -742,12 +820,12 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer: Ultra-clean Sliders & High-Contrast Badges */}
+            {/* Essential Controls Footer: Skeuomorphic Node Sliders & Vibrant Badges */}
             <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2.5 shrink-0">
               
               {/* 1. Brightness Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <Sun className="h-3.5 w-3.5 text-slate-700" />
                     Brightness
@@ -760,22 +838,24 @@ be verified by a certified healthcare professional.
                     {brightness}%
                   </button>
                 </div>
-                <input
-                  type="range"
-                  min="50"
-                  max="150"
+                <NeuStepSlider
                   value={brightness}
-                  onChange={(e) => setBrightness(Number(e.target.value))}
-                  className="medical-slider"
-                  style={{
-                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((brightness - 50) / 100) * 100}%, #94a3b8 ${((brightness - 50) / 100) * 100}%, #94a3b8 100%)`,
-                  }}
+                  onChange={setBrightness}
+                  min={50}
+                  max={150}
+                  stops={[
+                    { value: 50, label: "50" },
+                    { value: 75, label: "75" },
+                    { value: 100, label: "100" },
+                    { value: 125, label: "125" },
+                    { value: 150, label: "150" },
+                  ]}
                 />
               </div>
 
               {/* 2. Contrast Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <HalfCircle className="h-3.5 w-3.5 text-slate-700" />
                     Contrast
@@ -788,22 +868,23 @@ be verified by a certified healthcare professional.
                     {contrast}%
                   </button>
                 </div>
-                <input
-                  type="range"
-                  min="50"
-                  max="200"
+                <NeuStepSlider
                   value={contrast}
-                  onChange={(e) => setContrast(Number(e.target.value))}
-                  className="medical-slider"
-                  style={{
-                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((contrast - 50) / 150) * 100}%, #94a3b8 ${((contrast - 50) / 150) * 100}%, #94a3b8 100%)`,
-                  }}
+                  onChange={setContrast}
+                  min={50}
+                  max={200}
+                  stops={[
+                    { value: 50, label: "50" },
+                    { value: 100, label: "100" },
+                    { value: 150, label: "150" },
+                    { value: 200, label: "200" },
+                  ]}
                 />
               </div>
 
               {/* 3. Mask Opacity Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <Layers className="h-3.5 w-3.5 text-slate-700" />
                     Mask Opacity
@@ -816,22 +897,24 @@ be verified by a certified healthcare professional.
                     {maskOpacity}%
                   </button>
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
+                <NeuStepSlider
                   value={maskOpacity}
-                  onChange={(e) => setMaskOpacity(Number(e.target.value))}
-                  className="medical-slider"
-                  style={{
-                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${maskOpacity}%, #94a3b8 ${maskOpacity}%, #94a3b8 100%)`,
-                  }}
+                  onChange={setMaskOpacity}
+                  min={0}
+                  max={100}
+                  stops={[
+                    { value: 0, label: "0" },
+                    { value: 25, label: "25" },
+                    { value: 50, label: "50" },
+                    { value: 75, label: "75" },
+                    { value: 100, label: "100" },
+                  ]}
                 />
               </div>
 
               {/* 4. Sensitivity Threshold Slider */}
-              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-center gap-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-800">
                     <Gauge className="h-3.5 w-3.5 text-slate-700" />
                     Threshold
@@ -844,16 +927,18 @@ be verified by a certified healthcare professional.
                     {threshold}%
                   </button>
                 </div>
-                <input
-                  type="range"
-                  min="10"
-                  max="95"
+                <NeuStepSlider
                   value={threshold}
-                  onChange={(e) => recomputeThreshold(Number(e.target.value))}
-                  className="medical-slider"
-                  style={{
-                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((threshold - 10) / 85) * 100}%, #94a3b8 ${((threshold - 10) / 85) * 100}%, #94a3b8 100%)`,
-                  }}
+                  onChange={recomputeThreshold}
+                  min={10}
+                  max={95}
+                  stops={[
+                    { value: 10, label: "10" },
+                    { value: 30, label: "30" },
+                    { value: 50, label: "50" },
+                    { value: 70, label: "70" },
+                    { value: 95, label: "95" },
+                  ]}
                 />
               </div>
             </div>
