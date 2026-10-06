@@ -297,7 +297,7 @@ export default function HomePage() {
     normX: 0.5,
     normY: 0.5,
     target: null,
-    scale: 2.5,
+    scale: 3.0,
     isZoomDragging: false,
   });
 
@@ -314,7 +314,7 @@ export default function HomePage() {
   function handleResetZoom() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
-    setLoupe((prev) => ({ ...prev, active: false, target: null, scale: 2.5, isZoomDragging: false }));
+    setLoupe((prev) => ({ ...prev, active: false, target: null, scale: 3.0, isZoomDragging: false }));
   }
 
   function toggleGrid() {
@@ -338,7 +338,7 @@ export default function HomePage() {
         normX: Math.max(0, Math.min(1, x / rect.width)),
         normY: Math.max(0, Math.min(1, y / rect.height)),
         target,
-        scale: 2.5,
+        scale: 3.0,
         isZoomDragging: false,
       };
     });
@@ -365,7 +365,7 @@ export default function HomePage() {
 
     if (loupe.active && loupe.target === target && loupe.isZoomDragging && loupeDragStartRef.current) {
       const dy = loupeDragStartRef.current.startY - e.clientY;
-      const newScale = Math.max(1.2, Math.min(8.0, Number((loupeDragStartRef.current.initialScale + dy * 0.025).toFixed(2))));
+      const newScale = Math.max(3.0, Math.min(8.0, Number((loupeDragStartRef.current.initialScale + dy * 0.025).toFixed(2))));
       setLoupe((prev) => ({ ...prev, scale: newScale }));
       return;
     }
@@ -567,7 +567,7 @@ export default function HomePage() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
-    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null, scale: 2.5, isZoomDragging: false });
+    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null, scale: 3.0, isZoomDragging: false });
     recomputeThreshold(50);
   }
 
