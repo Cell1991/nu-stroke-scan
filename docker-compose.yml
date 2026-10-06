@@ -22,32 +22,16 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://postgres:postgres@database:5432/nu_stroke_scan}
-      VCANET_CHECKPOINT: ${VCANET_CHECKPOINT:-/model-weights/vcanet_best.pth}
-      DLKA_CHECKPOINT: ${DLKA_CHECKPOINT:-/model-weights/dlka_best.pth}
-      PATCHER_SERVICE_URL: ${PATCHER_SERVICE_URL:-http://patcher:8001}
+      VCANET_CHECKPOINT: ${VCANET_CHECKPOINT:-/checkpoints/vcanet_best.pth}
+      DLKA_CHECKPOINT: ${DLKA_CHECKPOINT:-/checkpoints/dlka_best.pth}
+      PATCHER_CHECKPOINT: ${PATCHER_CHECKPOINT:-/checkpoints/patcher_best.ckpt}
       MODEL_THRESHOLD: ${MODEL_THRESHOLD:-0.5}
-      PYTHONPATH: /model-src/vcanet_ct:/model-src/dlka_ct_2d
     volumes:
       - ./backend:/app
-      - ../results/vcanet_results/checkpoints/best.pth:/model-weights/vcanet_best.pth:ro
-      - ../results/dlka_results/checkpoints/best.pth:/model-weights/dlka_best.pth:ro
-      - ../vcanet_ct/model.py:/model-src/vcanet_ct/model.py:ro
-      - ../vcanet_ct/custom_layers.py:/model-src/vcanet_ct/custom_layers.py:ro
-      - ../dlka_ct/2D/networks:/model-src/dlka_ct_2d/networks:ro
-      - ../dlka_ct/2D/deformable_LKA:/model-src/dlka_ct_2d/deformable_LKA:ro
+      - ./checkpoints:/checkpoints:ro
     depends_on:
       database:
         condition: service_healthy
-      patcher:
-        condition: service_started
-
-  patcher:
-    build:
-      context: ../patcher_ct
-    environment:
-      PATCHER_CHECKPOINT: ${PATCHER_CHECKPOINT:-/model-weights/patcher_best.ckpt}
-    volumes:
-      - ../results/patcher_results_new/checkpoints/best.ckpt:/model-weights/patcher_best.ckpt:ro
 
   database:
     image: postgres:16-alpine
