@@ -857,19 +857,19 @@ be verified by a certified healthcare professional.
                 {/* Real-time Diagnostic Loupe Magnifier (Right-Click popup, Left-Click drag zoom) */}
                 {loupe.active && loupe.target === "left" && imageUrl && (
                   <div
-                    className={`absolute pointer-events-none z-30 w-52 h-52 rounded-full bg-slate-950 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(2,132,199,0.7)] transition-all duration-75 ${
+                    className={`absolute pointer-events-none z-30 w-52 h-52 rounded-full bg-slate-950 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(2,132,199,0.7)] will-change-transform ${
                       loupe.isZoomDragging
-                        ? "border-2 border-amber-400 ring-4 ring-amber-400/40 scale-[1.03]"
+                        ? "border-2 border-amber-400 ring-4 ring-amber-400/40"
                         : "border-2 border-sky-400"
                     }`}
                     style={{
                       left: loupe.x,
                       top: loupe.y,
-                      transform: "translate(-50%, -50%)",
+                      transform: "translate3d(-50%, -50%, 0)",
                     }}
                   >
                     <div
-                      className="w-full h-full relative"
+                      className="w-full h-full relative will-change-transform"
                       style={{
                         transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
                         transform: `scale(${loupe.scale})`,
@@ -889,7 +889,7 @@ be verified by a certified healthcare professional.
                       <div className="w-3 h-3 rounded-full border border-sky-400/80 absolute" />
                     </div>
                     <div
-                      className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none transition-colors ${
+                      className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none ${
                         loupe.isZoomDragging
                           ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
                           : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
@@ -959,19 +959,19 @@ be verified by a certified healthcare professional.
                 {/* Real-time Diagnostic Loupe Magnifier (Right-Click popup, Left-Click drag zoom) */}
                 {loupe.active && loupe.target === "right" && imageUrl && (
                   <div
-                    className={`absolute pointer-events-none z-30 w-52 h-52 rounded-full bg-slate-950 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(2,132,199,0.7)] transition-all duration-75 ${
+                    className={`absolute pointer-events-none z-30 w-52 h-52 rounded-full bg-slate-950 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(2,132,199,0.7)] will-change-transform ${
                       loupe.isZoomDragging
-                        ? "border-2 border-amber-400 ring-4 ring-amber-400/40 scale-[1.03]"
+                        ? "border-2 border-amber-400 ring-4 ring-amber-400/40"
                         : "border-2 border-sky-400"
                     }`}
                     style={{
                       left: loupe.x,
                       top: loupe.y,
-                      transform: "translate(-50%, -50%)",
+                      transform: "translate3d(-50%, -50%, 0)",
                     }}
                   >
                     <div
-                      className="w-full h-full relative"
+                      className="w-full h-full relative will-change-transform"
                       style={{
                         transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
                         transform: `scale(${loupe.scale})`,
@@ -999,7 +999,7 @@ be verified by a certified healthcare professional.
                       <div className="w-3 h-3 rounded-full border border-sky-400/80 absolute" />
                     </div>
                     <div
-                      className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none transition-colors ${
+                      className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none ${
                         loupe.isZoomDragging
                           ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
                           : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
