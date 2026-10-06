@@ -312,17 +312,21 @@ be verified by a certified healthcare professional.
       <header className="h-14 bg-slate-200/95 border border-slate-400/60 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-xs">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-sky-600 flex items-center justify-center text-white shadow-xs">
-            <Brain className="h-4.5 w-4.5" />
-          </div>
+          <img
+            src="/brand_icon_trans.png"
+            alt="NU Stroke Scan Logo"
+            className="h-10 w-10 object-contain drop-shadow-xs select-none pointer-events-none"
+          />
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-slate-900">NU STROKE SCAN</span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-300">
+              <span className="font-black text-base tracking-tight text-slate-900">
+                <span className="text-amber-600">NU</span> STROKE SCAN
+              </span>
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100/70 text-amber-900 border border-amber-300">
                 Clinical AI
               </span>
             </div>
-            <p className="text-[11px] text-slate-600 leading-none">
+            <p className="text-[11px] text-slate-600 font-medium leading-none">
               Neuro-Imaging Decision Support · Naresuan University
             </p>
           </div>
