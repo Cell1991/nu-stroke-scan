@@ -588,7 +588,7 @@ export default function HomePage() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
-    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null });
+    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null, scale: 2.5, isZoomDragging: false });
     recomputeThreshold(50);
   }
 
@@ -813,7 +813,7 @@ be verified by a certified healthcare professional.
               {/* Left: Original CT */}
               <div
                 onContextMenu={(e) => handleViewportContextMenu(e, "left")}
-                onMouseDown={handleViewportMouseDown}
+                onMouseDown={(e) => handleViewportMouseDown(e, "left")}
                 onMouseMove={(e) => handleViewportMouseMove(e, "left")}
                 onMouseUp={handleViewportMouseUp}
                 onMouseLeave={handleViewportMouseUp}
@@ -821,7 +821,7 @@ be verified by a certified healthcare professional.
                 className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
                   zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
                 }`}
-                title="Right-click anywhere to open 2.5× Magnifying Loupe"
+                title="Right-click to open Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
               >
                 {/* Fine Medical Grid Overlay */}
                 {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
@@ -854,10 +854,14 @@ be verified by a certified healthcare professional.
                   </div>
                 )}
 
-                {/* 2.5x Diagnostic Loupe Magnifier (Right-Click popup following mouse) */}
+                {/* Real-time Diagnostic Loupe Magnifier (Right-Click popup, Left-Click drag zoom) */}
                 {loupe.active && loupe.target === "left" && imageUrl && (
                   <div
-                    className="absolute pointer-events-none z-30 w-48 h-48 rounded-full border-2 border-sky-400 bg-slate-950 overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(2,132,199,0.6)]"
+                    className={`absolute pointer-events-none z-30 w-52 h-52 rounded-full bg-slate-950 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(2,132,199,0.7)] transition-all duration-75 ${
+                      loupe.isZoomDragging
+                        ? "border-2 border-amber-400 ring-4 ring-amber-400/40 scale-[1.03]"
+                        : "border-2 border-sky-400"
+                    }`}
                     style={{
                       left: loupe.x,
                       top: loupe.y,
@@ -868,7 +872,7 @@ be verified by a certified healthcare professional.
                       className="w-full h-full relative"
                       style={{
                         transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
-                        transform: `scale(2.5)`,
+                        transform: `scale(${loupe.scale})`,
                       }}
                     >
                       <img
@@ -878,14 +882,20 @@ be verified by a certified healthcare professional.
                         style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                       />
                     </div>
-                    {/* Clinical Crosshair & Scale Badge */}
+                    {/* Clinical Crosshair & Dynamic Scale Badge */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <div className="w-6 h-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8]" />
                       <div className="h-6 w-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8] absolute" />
                       <div className="w-3 h-3 rounded-full border border-sky-400/80 absolute" />
                     </div>
-                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-slate-950/95 border border-sky-500/60 text-[9px] font-mono font-black text-sky-300 shadow-xs pointer-events-none">
-                      2.5× LOUPE
+                    <div
+                      className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none transition-colors ${
+                        loupe.isZoomDragging
+                          ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
+                          : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
+                      }`}
+                    >
+                      {loupe.scale.toFixed(1)}× LOUPE {loupe.isZoomDragging ? "· LOCKED" : ""}
                     </div>
                   </div>
                 )}
@@ -894,7 +904,7 @@ be verified by a certified healthcare professional.
               {/* Right: AI Segmentation Mask */}
               <div
                 onContextMenu={(e) => handleViewportContextMenu(e, "right")}
-                onMouseDown={handleViewportMouseDown}
+                onMouseDown={(e) => handleViewportMouseDown(e, "right")}
                 onMouseMove={(e) => handleViewportMouseMove(e, "right")}
                 onMouseUp={handleViewportMouseUp}
                 onMouseLeave={handleViewportMouseUp}
@@ -902,7 +912,7 @@ be verified by a certified healthcare professional.
                 className={`dicom-canvas-bg relative rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center p-2 shadow-inner select-none ${
                   zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
                 }`}
-                title="Right-click anywhere to open 2.5× Magnifying Loupe"
+                title="Right-click to open Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
               >
                 {/* Fine Medical Grid Overlay */}
                 {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
@@ -946,10 +956,14 @@ be verified by a certified healthcare professional.
                   </div>
                 )}
 
-                {/* 2.5x Diagnostic Loupe Magnifier (Right-Click popup following mouse) */}
+                {/* Real-time Diagnostic Loupe Magnifier (Right-Click popup, Left-Click drag zoom) */}
                 {loupe.active && loupe.target === "right" && imageUrl && (
                   <div
-                    className="absolute pointer-events-none z-30 w-48 h-48 rounded-full border-2 border-sky-400 bg-slate-950 overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(2,132,199,0.6)]"
+                    className={`absolute pointer-events-none z-30 w-52 h-52 rounded-full bg-slate-950 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(2,132,199,0.7)] transition-all duration-75 ${
+                      loupe.isZoomDragging
+                        ? "border-2 border-amber-400 ring-4 ring-amber-400/40 scale-[1.03]"
+                        : "border-2 border-sky-400"
+                    }`}
                     style={{
                       left: loupe.x,
                       top: loupe.y,
@@ -960,7 +974,7 @@ be verified by a certified healthcare professional.
                       className="w-full h-full relative"
                       style={{
                         transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
-                        transform: `scale(2.5)`,
+                        transform: `scale(${loupe.scale})`,
                       }}
                     >
                       <img
@@ -978,14 +992,20 @@ be verified by a certified healthcare professional.
                         />
                       )}
                     </div>
-                    {/* Clinical Crosshair & Scale Badge */}
+                    {/* Clinical Crosshair & Dynamic Scale Badge */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <div className="w-6 h-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8]" />
                       <div className="h-6 w-[1px] bg-sky-400/80 shadow-[0_0_4px_#38bdf8] absolute" />
                       <div className="w-3 h-3 rounded-full border border-sky-400/80 absolute" />
                     </div>
-                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-slate-950/95 border border-sky-500/60 text-[9px] font-mono font-black text-sky-300 shadow-xs pointer-events-none">
-                      2.5× LOUPE
+                    <div
+                      className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-xs pointer-events-none transition-colors ${
+                        loupe.isZoomDragging
+                          ? "bg-amber-500 text-slate-950 border border-amber-300 animate-pulse"
+                          : "bg-slate-950/95 border border-sky-500/60 text-sky-300"
+                      }`}
+                    >
+                      {loupe.scale.toFixed(1)}× LOUPE {loupe.isZoomDragging ? "· LOCKED" : ""}
                     </div>
                   </div>
                 )}
