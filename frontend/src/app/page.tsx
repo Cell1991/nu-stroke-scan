@@ -362,15 +362,10 @@ be verified by a certified healthcare professional.
             className="h-10 w-10 object-contain drop-shadow-xs select-none pointer-events-none"
           />
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-black text-base tracking-tight text-slate-900">
-                <span className="text-amber-600">NU</span> STROKE SCAN
-              </span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100/70 text-amber-900 border border-amber-300">
-                Clinical AI
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-600 font-medium leading-none">
+            <span className="font-black text-base tracking-tight text-slate-900 block leading-tight">
+              <span className="text-amber-600">NU</span> STROKE SCAN
+            </span>
+            <p className="text-[11px] text-slate-600 font-medium leading-tight mt-0.5">
               Neuro-Imaging Decision Support · Naresuan University
             </p>
           </div>
