@@ -217,10 +217,10 @@ function NeuStepSlider({
   const currentPct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
 
   return (
-    <div className="w-full select-none">
-      <div className="neu-slider-container">
+    <div className="w-full select-none px-1">
+      <div className="neu-slider-container relative h-6 flex items-center">
         {/* Recessed Track Container */}
-        <div className="neu-slider-track-bg">
+        <div className="neu-slider-track-bg mx-2">
           {/* Active Glowing Gradient Fill */}
           <div
             className="neu-slider-track-fill"
@@ -256,7 +256,7 @@ function NeuStepSlider({
       </div>
 
       {/* Stepped Scale Tick Labels directly under nodes */}
-      <div className="relative w-full h-3.5 mt-1.5 pointer-events-none select-none">
+      <div className="relative w-full h-3 mt-1 pointer-events-none select-none px-2">
         {stops.map((stop) => {
           const nodePct = ((stop.value - min) / (max - min)) * 100;
           const isActive = value >= stop.value;
