@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #e2e8f0;
+  --background: #cbd5e1;
   --foreground: #0f172a;
 }
 
@@ -124,18 +124,18 @@ html, body {
 }
 
 .btn-tactile-light {
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 1px solid #cbd5e1;
-  border-top: 1px solid #ffffff;
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 1px solid #94a3b8;
+  border-top: 1px solid #f1f5f9;
   box-shadow: 
     0 1px 3px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #ffffff;
-  color: #334155;
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: #1e293b;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-tactile-light:hover:not(:disabled) {
-  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-  border-color: #94a3b8;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border-color: #64748b;
   color: #0f172a;
   transform: translateY(-1.5px);
   box-shadow: 
