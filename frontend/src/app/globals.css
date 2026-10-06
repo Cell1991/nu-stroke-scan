@@ -278,3 +278,115 @@ html, body {
     0 1px 2px rgba(15, 23, 42, 0.06),
     inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
+/* ==========================================================================
+   FUTURISTIC CYBER-MEDICAL ANIMATIONS & HIGH-TECH HUD EFFECTS
+   ========================================================================== */
+
+/* 1. Laser Scanning Sweep Across Viewports */
+@keyframes laser-sweep {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-laser-sweep {
+  animation: laser-sweep 1.8s ease-in-out infinite;
+}
+
+/* 2. Holographic Scanline Wave */
+@keyframes holographic-scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+.animate-scanline {
+  animation: holographic-scanline 6s linear infinite;
+}
+
+/* 3. High-Tech ECG Heartbeat Pulse Animation */
+@keyframes ecg-dash {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-ecg {
+  stroke-dasharray: 200;
+  animation: ecg-dash 2s linear infinite;
+}
+
+/* 4. Radar Beam Sweep for Lesion Detection */
+@keyframes radar-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar-spin {
+  animation: radar-spin 3s linear infinite;
+}
+
+/* 5. Ambient Cyber Neon Pulse */
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(56, 189, 248, 0.8), inset 0 0 25px rgba(56, 189, 248, 0.25);
+  }
+}
+
+.animate-neon-pulse {
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+/* 6. Glowing Shimmering Border */
+@keyframes border-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.shimmer-gradient-border {
+  background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399, #38bdf8);
+  background-size: 300% 300%;
+  animation: border-shimmer 4s ease infinite;
+}
+
+/* 7. Holographic Grid Backdrop */
+.cyber-grid-backdrop {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+    linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+}
+
