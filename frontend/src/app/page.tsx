@@ -254,7 +254,7 @@ function NeuStepSlider({
       </div>
 
       {/* Stepped Scale Tick Labels directly under nodes */}
-      <div className="relative w-full h-3 mt-1 pointer-events-none select-none px-2">
+      <div className="relative w-full h-4 mt-1.5 pointer-events-none select-none px-2">
         {stops.map((stop) => {
           const nodePct = ((stop.value - min) / (max - min)) * 100;
           const isActive = value >= stop.value;
@@ -262,8 +262,8 @@ function NeuStepSlider({
             <span
               key={stop.value}
               style={{ left: `${nodePct}%` }}
-              className={`absolute top-0 -translate-x-1/2 text-[10px] font-mono font-bold transition-colors ${
-                isActive ? "text-slate-900" : "text-slate-500"
+              className={`absolute top-0 -translate-x-1/2 text-[11.5px] font-mono font-extrabold tracking-tight transition-colors ${
+                isActive ? "text-slate-950" : "text-slate-600"
               }`}
             >
               {stop.label}
