@@ -2,7 +2,99 @@
 
 import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
+
+// Standalone Zero-Dependency Canvas Confetti System
+function triggerConfetti() {
+  if (typeof window === "undefined") return;
+  const canvas = document.createElement("canvas");
+  canvas.style.position = "fixed";
+  canvas.style.top = "0";
+  canvas.style.left = "0";
+  canvas.style.width = "100vw";
+  canvas.style.height = "100vh";
+  canvas.style.pointerEvents = "none";
+  canvas.style.zIndex = "99999";
+  document.body.appendChild(canvas);
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    canvas.remove();
+    return;
+  }
+
+  const colors = ["#10b981", "#06b6d4", "#38bdf8", "#34d399", "#ffffff", "#3b82f6", "#f59e0b"];
+  const particles: Array<{
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    color: string;
+    rotation: number;
+    vRot: number;
+    alpha: number;
+  }> = [];
+
+  const originX = canvas.width * 0.72;
+  const originY = canvas.height * 0.45;
+
+  for (let i = 0; i < 75; i++) {
+    const angle = (Math.PI * 2 * i) / 75 + (Math.random() - 0.5) * 0.4;
+    const speed = 5 + Math.random() * 9;
+    particles.push({
+      x: originX,
+      y: originY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 4,
+      size: 5 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 15,
+      alpha: 1,
+    });
+  }
+
+  let animationFrameId: number;
+  const startTime = Date.now();
+
+  function render() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const elapsed = (Date.now() - startTime) / 1000;
+
+    let alive = 0;
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.24; // gravity
+      p.vx *= 0.98; // friction
+      p.rotation += p.vRot;
+      p.alpha = Math.max(0, 1 - elapsed / 1.8);
+
+      if (p.alpha > 0) {
+        alive++;
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+        ctx.restore();
+      }
+    }
+
+    if (alive > 0 && elapsed < 2) {
+      animationFrameId = requestAnimationFrame(render);
+    } else {
+      cancelAnimationFrame(animationFrameId);
+      canvas.remove();
+    }
+  }
+
+  render();
+}
 
 // Standalone High-Precision Clinical Icons
 function Brain({ className = "h-4 w-4" }: { className?: string }) {
@@ -604,12 +696,7 @@ export default function HomePage() {
       if (!isDetected) {
         playAudioChirp("success");
         // Trigger celebratory confetti burst on clean scan
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.65 },
-          colors: ["#10b981", "#06b6d4", "#38bdf8", "#ffffff"],
-        });
+        triggerConfetti();
       } else {
         playAudioChirp("alert");
       }
