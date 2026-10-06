@@ -107,25 +107,25 @@ html, body {
 }
 
 .btn-tactile-emerald {
-  background: linear-gradient(180deg, #10b981 0%, #059669 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
-  border-bottom: 2px solid #047857;
+  background: linear-gradient(180deg, #0f766e 0%, #115e59 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 2px solid #042f2e;
   box-shadow: 
-    0 2px 8px rgba(16, 185, 129, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    0 2px 6px rgba(15, 118, 110, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-tactile-emerald:hover:not(:disabled) {
-  background: linear-gradient(180deg, #059669 0%, #047857 100%);
+  background: linear-gradient(180deg, #134e4a 0%, #042f2e 100%);
   transform: translateY(-1.5px);
   box-shadow: 
-    0 4px 14px rgba(16, 185, 129, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    0 4px 12px rgba(15, 118, 110, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 .btn-tactile-emerald:active:not(:disabled) {
   transform: translateY(1px);
   box-shadow: 
-    0 1px 3px rgba(16, 185, 129, 0.2),
+    0 1px 3px rgba(15, 118, 110, 0.2),
     inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
