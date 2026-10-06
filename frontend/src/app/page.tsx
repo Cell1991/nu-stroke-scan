@@ -32,22 +32,6 @@ function RotateCcw({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function Sliders({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <line x1="4" x2="4" y1="21" y2="14" />
-      <line x1="4" x2="4" y1="10" y2="3" />
-      <line x1="12" x2="12" y1="21" y2="12" />
-      <line x1="12" x2="12" y1="8" y2="3" />
-      <line x1="20" x2="20" y1="21" y2="16" />
-      <line x1="20" x2="20" y1="12" y2="3" />
-      <line x1="1" x2="7" y1="14" y2="14" />
-      <line x1="9" x2="15" y1="8" y2="8" />
-      <line x1="17" x2="23" y1="16" y2="16" />
-    </svg>
-  );
-}
-
 function Download({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -148,12 +132,6 @@ const MODELS = [
   { id: "patcher", name: "Patcher", desc: "Patch SegFormer" },
 ];
 
-const PRESETS = [
-  { id: "default", name: "Standard", wl: 50, ww: 100 },
-  { id: "stroke", name: "Stroke Window", wl: 38, ww: 38 },
-  { id: "brain", name: "Brain Tissue", wl: 45, ww: 75 },
-];
-
 // Helper to generate a clean demo brain CT scan
 function generateDemoCTScan(): string {
   if (typeof document === "undefined") return "";
@@ -222,11 +200,8 @@ export default function HomePage() {
   const [isScanning, setIsScanning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  // PACS & Display Controls
+  // Model & Display Controls
   const [modelId, setModelId] = useState("vcanet");
-  const [activePreset, setActivePreset] = useState("default");
-  const [windowLevel, setWindowLevel] = useState(50);
-  const [windowWidth, setWindowWidth] = useState(100);
   const [maskOpacity, setMaskOpacity] = useState(85);
   const [threshold, setThreshold] = useState(50);
 
@@ -319,20 +294,23 @@ export default function HomePage() {
     }
   }
 
-  function applyPreset(presetId: string) {
-    const p = PRESETS.find((item) => item.id === presetId);
-    if (!p) return;
-    setActivePreset(p.id);
-    setWindowLevel(p.wl);
-    setWindowWidth(p.ww);
-  }
-
-  function resetControls() {
-    setActivePreset("default");
-    setWindowLevel(50);
-    setWindowWidth(100);
+  // Complete System Reset: Clears image, results, inputs, and resets all parameters to defaults
+  function resetAll() {
+    if (imageUrl && imageUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(imageUrl);
+    }
+    setFile(null);
+    setImageUrl(null);
+    setResult(null);
+    setError(null);
+    setIsScanning(false);
+    setIsDragging(false);
+    setModelId("vcanet");
     setMaskOpacity(85);
     setThreshold(50);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   }
 
   // Real composite image export with overlay & metadata
@@ -414,29 +392,8 @@ be verified by a certified healthcare professional.
     URL.revokeObjectURL(url);
   }
 
-  // PACS VOI LUT Transfer calculation
-  const normWw = Math.max(0.15, windowWidth / 100);
-  const normWl = windowLevel / 100;
-  const lutSlope = Number(((1 / normWw)).toFixed(4));
-  const lutIntercept = Number((- (1 / normWw) * (normWl - normWw / 2)).toFixed(4));
-
-  const imageFilterStyle: React.CSSProperties = {
-    filter: `url(#pacs-lut-filter)`,
-  };
-
   return (
     <div className="h-screen w-screen bg-[#090D16] text-slate-100 flex flex-col overflow-hidden font-sans p-3 gap-3 select-none">
-      {/* Hardware-Accelerated PACS LUT Filter */}
-      <svg className="absolute w-0 h-0 pointer-events-none opacity-0 -z-50" aria-hidden="true">
-        <filter id="pacs-lut-filter" colorInterpolationFilters="sRGB">
-          <feComponentTransfer>
-            <feFuncR type="linear" slope={lutSlope} intercept={lutIntercept} />
-            <feFuncG type="linear" slope={lutSlope} intercept={lutIntercept} />
-            <feFuncB type="linear" slope={lutSlope} intercept={lutIntercept} />
-          </feComponentTransfer>
-        </filter>
-      </svg>
-
       {/* 1. Sleek Top Navigation Bar */}
       <header className="h-12 bg-slate-900/80 border border-slate-800/80 rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 backdrop-blur-md">
         {/* Brand */}
@@ -501,34 +458,19 @@ be verified by a certified healthcare professional.
             
             {/* Viewport Top Bar */}
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 shrink-0">
-              {/* Presets */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-[11px] font-medium text-slate-400 mr-1 flex items-center gap-1">
-                  <Sliders className="h-3.5 w-3.5 text-slate-400" /> Window:
-                </span>
-                {PRESETS.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => applyPreset(p.id)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition cursor-pointer ${
-                      activePreset === p.id
-                        ? "bg-sky-600 text-white shadow-xs font-semibold"
-                        : "bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/50"
-                    }`}
-                  >
-                    {p.name}
-                  </button>
-                ))}
-              </div>
+              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                <Brain className="h-3.5 w-3.5 text-sky-400" />
+                DICOM Dual Viewport
+              </span>
 
-              {/* Reset Control */}
+              {/* Complete Reset Control */}
               <button
-                onClick={resetControls}
-                className="px-2.5 py-1 rounded-md text-[11px] font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition cursor-pointer flex items-center gap-1"
-                title="Reset windowing and threshold to default"
+                onClick={resetAll}
+                className="px-2.5 py-1 rounded-md text-[11px] font-medium text-slate-300 hover:text-white bg-slate-800/70 hover:bg-slate-800 border border-slate-700/60 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                title="Reset all images, inputs, results, and parameters to default"
               >
-                <RotateCcw className="h-3 w-3" />
-                Reset
+                <RotateCcw className="h-3 w-3 text-amber-400" />
+                Reset All
               </button>
             </div>
 
@@ -546,7 +488,6 @@ be verified by a certified healthcare professional.
                   <img
                     src={imageUrl}
                     alt="Original Scan"
-                    style={imageFilterStyle}
                     className="max-h-full max-w-full object-contain pointer-events-none"
                   />
                 ) : (
@@ -573,7 +514,6 @@ be verified by a certified healthcare professional.
                     <img
                       src={imageUrl}
                       alt="Base Scan"
-                      style={imageFilterStyle}
                       className="max-h-full max-w-full object-contain pointer-events-none"
                     />
                     {result?.maskUrl && (
@@ -594,50 +534,12 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer */}
-            <div className="mt-3 pt-2.5 border-t border-slate-800/80 grid grid-cols-4 gap-3 shrink-0">
-              {/* Level (WL) */}
-              <div className="p-2 rounded-lg bg-slate-950/40 border border-slate-800/60">
-                <div className="flex justify-between text-[11px] font-medium text-slate-400 mb-1.5">
-                  <span>Window Level</span>
-                  <span className="font-mono text-sky-400">{windowLevel}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="10"
-                  max="90"
-                  value={windowLevel}
-                  onChange={(e) => {
-                    setWindowLevel(Number(e.target.value));
-                    setActivePreset("custom");
-                  }}
-                  className="medical-slider"
-                />
-              </div>
-
-              {/* Width (WW) */}
-              <div className="p-2 rounded-lg bg-slate-950/40 border border-slate-800/60">
-                <div className="flex justify-between text-[11px] font-medium text-slate-400 mb-1.5">
-                  <span>Window Width</span>
-                  <span className="font-mono text-sky-400">{windowWidth}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="15"
-                  max="200"
-                  value={windowWidth}
-                  onChange={(e) => {
-                    setWindowWidth(Number(e.target.value));
-                    setActivePreset("custom");
-                  }}
-                  className="medical-slider"
-                />
-              </div>
-
+            {/* Essential Sliders Footer: Opacity & Decision Threshold */}
+            <div className="mt-3 pt-2.5 border-t border-slate-800/80 grid grid-cols-2 gap-3 shrink-0">
               {/* Mask Opacity */}
               <div className="p-2 rounded-lg bg-slate-950/40 border border-slate-800/60">
                 <div className="flex justify-between text-[11px] font-medium text-slate-400 mb-1.5">
-                  <span className="text-red-300">Mask Opacity</span>
+                  <span className="text-red-300">Mask Opacity (Overlay)</span>
                   <span className="font-mono text-red-400 font-semibold">{maskOpacity}%</span>
                 </div>
                 <input
@@ -653,7 +555,7 @@ be verified by a certified healthcare professional.
               {/* Sensitivity Threshold */}
               <div className="p-2 rounded-lg bg-slate-950/40 border border-slate-800/60">
                 <div className="flex justify-between text-[11px] font-medium text-slate-400 mb-1.5">
-                  <span>Threshold</span>
+                  <span>Sensitivity Threshold</span>
                   <span className="font-mono text-sky-400">{threshold}%</span>
                 </div>
                 <input
