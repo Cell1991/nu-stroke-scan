@@ -815,7 +815,11 @@ be verified by a certified healthcare professional.
                 onMouseLeave={handleViewportMouseUp}
                 onWheel={handleViewportWheel}
                 className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
-                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
+                  loupe.active
+                    ? "cursor-crosshair"
+                    : isDraggingViewport
+                    ? "cursor-grabbing"
+                    : "cursor-grab"
                 }`}
                 title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
               >
@@ -922,7 +926,11 @@ be verified by a certified healthcare professional.
                 onMouseLeave={handleViewportMouseUp}
                 onWheel={handleViewportWheel}
                 className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
-                  zoom > 1 ? (isDraggingViewport ? "cursor-grabbing" : "cursor-grab") : "cursor-crosshair"
+                  loupe.active
+                    ? "cursor-crosshair"
+                    : isDraggingViewport
+                    ? "cursor-grabbing"
+                    : "cursor-grab"
                 }`}
                 title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
               >
