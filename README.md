@@ -27,9 +27,9 @@
 
 ---
 
-## 📋 Executive Overview
+## Executive Overview
 
-**NU Stroke Scan** is a state-of-the-art **Clinical Decision Support System (CDSS)** developed as an undergraduate graduation research thesis in biomedical artificial intelligence and neuro-radiological computer vision.
+**NU Stroke Scan** is a **Clinical Decision Support System (CDSS)** developed as an undergraduate graduation research thesis in biomedical artificial intelligence and neuro-radiological computer vision.
 
 The system empowers neurologists, radiologists, and emergency clinicians to rapidly detect, delineate, and quantify acute stroke lesions on **Non-Contrast Brain Computed Tomography (NCCT)** scans with sub-millimeter precision. By orchestrating multiple cutting-edge deep learning architectures with an ultra-responsive, zero-latency clinical workspace, **NU Stroke Scan** bridges the critical gap between academic neural networks and frontline diagnostic radiology.
 
@@ -40,26 +40,26 @@ The system empowers neurologists, radiologists, and emergency clinicians to rapi
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## ✨ Clinical Diagnostic Workspace
+## Clinical Diagnostic Workspace
 
 <!-- Custom High-Definition SVG Features Matrix -->
 <img src="docs/assets/features-grid.svg" alt="Clinical Workspace Features" width="100%" />
 
 <br/>
 
-### 🔍 1. Real-Time 2.5× to 8.0× Diagnostic Loupe
+### 1. Real-Time 2.5× to 8.0× Diagnostic Loupe
 - **Cursor Tracking**: Right-click anywhere on the scan to activate an ultra-high-definition circular magnifying loupe that tracks the cursor in real-time.
 - **Vertical Drag Zoom**: Left-click and drag vertically within the active loupe to dynamically scale the magnification from **1.2× up to 8.0×**, allowing meticulous inspection of penumbral microvasculature and low-contrast hypodense borders.
 
-### 🔄 2. 1:1 Synchronized Dual-Pane Viewport
+### 2. 1:1 Synchronized Dual-Pane Viewport
 - **Comparative Side-by-Side**: Dual viewport displaying the raw NCCT slice and the AI-generated lesion probability mask in lockstep.
 - **Synchronized Navigation**: Panning and scaling (0.5× to 4.0×) are bidirectionally synchronized between both viewports with an optional anatomical reticle grid for precise coordinate referencing.
 
-### 🛡️ 3. Clinical Non-Contrast CT Guardrails
+### 3. Clinical Non-Contrast CT Guardrails
 - **Automated Validation**: Multi-stage pre-inference heuristic validation checks for grayscale single-channel integrity, Hounsfield Unit (HU) distribution, and skull contour aspect ratios.
 - **Artifact Rejection**: Instantly rejects corrupted files, colored synthetic illustrations, non-brain anatomical regions, and invalid non-axial slices before passing tensors to neural networks.
 
-### 🎛️ 4. Stepped Neumorphic Windowing & Dynamic Thresholding
+### 4. Stepped Neumorphic Windowing & Dynamic Thresholding
 - **Radiological Windowing**: Tactile stepped slider controls for brightness, contrast, and mask alpha blending.
 - **Zero-Latency Mask Cutoff**: Adjust model decision thresholds (0% to 100%) on the fly with instantaneous client-side Canvas rendering, eliminating redundant server round-trips.
 
@@ -70,7 +70,7 @@ The system empowers neurologists, radiologists, and emergency clinicians to rapi
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 🧠 Deep Learning Architecture Suite
+## Deep Learning Architecture Suite
 
 <!-- Custom High-Definition SVG Models Suite -->
 <img src="docs/assets/models-architecture.svg" alt="Deep Learning Suite Architecture" width="100%" />
@@ -92,7 +92,7 @@ The platform natively supports three research-backed deep learning architectures
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 🏗️ 3-Tier System Architecture
+## 3-Tier System Architecture
 
 <!-- Custom High-Definition SVG System Architecture -->
 <img src="docs/assets/system-architecture.svg" alt="3-Tier Clinical System Architecture" width="100%" />
@@ -115,7 +115,7 @@ The application is structured into three enterprise tiers containerized within a
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 🔄 Clinical Inference Pipeline
+## Clinical Inference Pipeline
 
 <!-- Custom High-Definition SVG Pipeline Flow -->
 <img src="docs/assets/inference-pipeline.svg" alt="Clinical Image Processing Pipeline" width="100%" />
@@ -137,7 +137,7 @@ The end-to-end diagnostic workflow executes seamlessly across five deterministic
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 📡 REST API Reference
+## REST API Reference
 
 ### 1. Perform Stroke Lesion Analysis
 ```http
@@ -178,7 +178,7 @@ GET /api/analysis/models
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## ⚡ Quick Start & Deployment Guide
+## Quick Start & Deployment Guide
 
 ### Prerequisites
 - [Docker Engine](https://docs.docker.com/engine/install/) & Docker Compose (v2.20+)
@@ -200,13 +200,13 @@ docker compose up --build
 
 ### 2. Service Endpoints
 
-| Service | Protocol / Port | Endpoint URL |
+| Service Tier | Protocol & Port | Endpoint URL |
 | :--- | :--- | :--- |
-| 🖥️ **Clinical Web UI** | HTTP / 3000 | [`http://localhost:3000`](http://localhost:3000) |
-| 🚀 **FastAPI Backend Gateway** | HTTP / 8000 | [`http://localhost:8000`](http://localhost:8000) |
-| 📖 **Interactive Swagger UI** | HTTP / 8000 | [`http://localhost:8000/docs`](http://localhost:8000/docs) |
-| 📑 **ReDoc Documentation** | HTTP / 8000 | [`http://localhost:8000/redoc`](http://localhost:8000/redoc) |
-| 🗄️ **PostgreSQL Database** | TCP / 5432 | `localhost:5432` |
+| **Clinical Web UI** | HTTP / 3000 | [`http://localhost:3000`](http://localhost:3000) |
+| **FastAPI Backend Gateway** | HTTP / 8000 | [`http://localhost:8000`](http://localhost:8000) |
+| **Interactive Swagger UI** | HTTP / 8000 | [`http://localhost:8000/docs`](http://localhost:8000/docs) |
+| **ReDoc Documentation** | HTTP / 8000 | [`http://localhost:8000/redoc`](http://localhost:8000/redoc) |
+| **PostgreSQL Database** | TCP / 5432 | `localhost:5432` |
 
 ---
 
@@ -215,10 +215,10 @@ docker compose up --build
   <img src="docs/assets/divider.svg" alt="Divider" width="100%" />
 </div>
 
-## 👥 Research & Development Team
+## Research & Development Team
 
 <div align="center">
-  <p><b>🎓 Undergraduate Graduation Research Project (Senior Thesis)</b><br/>
+  <p><b>Undergraduate Graduation Research Project (Senior Thesis)</b><br/>
   <i>Department of Computer Engineering · Neuro-Radiology &amp; Medical AI</i></p>
 
   <table align="center" style="border: none; background: transparent;">
