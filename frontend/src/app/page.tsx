@@ -236,9 +236,7 @@ function NeuStepSlider({
                 key={stop.value}
                 className={`neu-slider-node ${isActive ? "active" : "inactive"}`}
                 style={{ left: `${nodePct}%` }}
-              >
-                <div className="node-core" />
-              </div>
+              />
             );
           })}
         </div>

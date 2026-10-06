@@ -120,8 +120,8 @@ html, body {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -138,28 +138,18 @@ html, body {
 }
 
 .neu-slider-node.inactive .node-core {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #94a3b8;
-  opacity: 0.6;
+  display: none;
 }
 
 .neu-slider-node.active {
-  background: #ffffff;
+  background: linear-gradient(180deg, #00d2ff 0%, #007aff 100%);
   box-shadow: 
-    0 1px 2px rgba(15, 23, 42, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    0 0 5px rgba(0, 122, 255, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
 }
 
 .neu-slider-node.active .node-core {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #00d2ff 0%, #0284c7 100%);
-  box-shadow: 
-    0 0 4px rgba(2, 132, 199, 0.7),
-    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  display: none;
 }
 
 .neu-range-input {
