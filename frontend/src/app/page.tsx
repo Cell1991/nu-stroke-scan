@@ -93,6 +93,50 @@ function Eye({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+function Sun({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </svg>
+  );
+}
+
+function HalfCircle({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor" opacity="0.35" />
+    </svg>
+  );
+}
+
+function Layers({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <polygon points="12 2 2 7 12 12 22 7 12 2" />
+      <polyline points="2 17 12 22 22 17" />
+      <polyline points="2 12 12 17 22 12" />
+    </svg>
+  );
+}
+
+function Gauge({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <path d="m12 14 4-4" />
+      <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+    </svg>
+  );
+}
+
 type ScanResult = {
   label: string;
   confidence: number;
@@ -443,13 +487,23 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Essential Controls Footer: Brightness, Contrast, Opacity & Sensitivity */}
-            <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2 shrink-0">
-              {/* Brightness */}
-              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
-                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
-                  <span className="text-slate-800">Brightness</span>
-                  <span className="font-mono text-sky-700 font-extrabold">{brightness}%</span>
+            {/* Essential Controls Footer: Brightness, Contrast, Opacity & Sensitivity with Low Cognitive Load UI */}
+            <div className="mt-3 pt-3 border-t border-slate-300 grid grid-cols-4 gap-2.5 shrink-0">
+              
+              {/* 1. Brightness Slider */}
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+                  <span className="flex items-center gap-1.5 text-slate-800">
+                    <Sun className="h-3.5 w-3.5 text-amber-600" />
+                    Brightness
+                  </span>
+                  <button
+                    onClick={() => setBrightness(100)}
+                    title="Click to reset Brightness to 100%"
+                    className="px-2 py-0.5 rounded-md bg-slate-900 text-amber-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                  >
+                    {brightness}%
+                  </button>
                 </div>
                 <input
                   type="range"
@@ -458,14 +512,36 @@ be verified by a certified healthcare professional.
                   value={brightness}
                   onChange={(e) => setBrightness(Number(e.target.value))}
                   className="medical-slider"
+                  style={{
+                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((brightness - 50) / 100) * 100}%, #94a3b8 ${((brightness - 50) / 100) * 100}%, #94a3b8 100%)`,
+                  }}
                 />
+                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
+                  <span>50%</span>
+                  <button
+                    onClick={() => setBrightness(100)}
+                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                  >
+                    100% (Def)
+                  </button>
+                  <span>150%</span>
+                </div>
               </div>
 
-              {/* Contrast */}
-              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
-                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
-                  <span className="text-slate-800">Contrast</span>
-                  <span className="font-mono text-sky-700 font-extrabold">{contrast}%</span>
+              {/* 2. Contrast Slider */}
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+                  <span className="flex items-center gap-1.5 text-slate-800">
+                    <HalfCircle className="h-3.5 w-3.5 text-sky-600" />
+                    Contrast
+                  </span>
+                  <button
+                    onClick={() => setContrast(100)}
+                    title="Click to reset Contrast to 100%"
+                    className="px-2 py-0.5 rounded-md bg-slate-900 text-sky-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                  >
+                    {contrast}%
+                  </button>
                 </div>
                 <input
                   type="range"
@@ -474,14 +550,36 @@ be verified by a certified healthcare professional.
                   value={contrast}
                   onChange={(e) => setContrast(Number(e.target.value))}
                   className="medical-slider"
+                  style={{
+                    background: `linear-gradient(to right, #0284c7 0%, #0284c7 ${((contrast - 50) / 150) * 100}%, #94a3b8 ${((contrast - 50) / 150) * 100}%, #94a3b8 100%)`,
+                  }}
                 />
+                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
+                  <span>50%</span>
+                  <button
+                    onClick={() => setContrast(100)}
+                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                  >
+                    100% (Def)
+                  </button>
+                  <span>200%</span>
+                </div>
               </div>
 
-              {/* Mask Opacity */}
-              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
-                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
-                  <span className="text-red-700">Mask Opacity</span>
-                  <span className="font-mono text-red-600 font-extrabold">{maskOpacity}%</span>
+              {/* 3. Mask Opacity Slider */}
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+                  <span className="flex items-center gap-1.5 text-red-700">
+                    <Layers className="h-3.5 w-3.5 text-red-600" />
+                    Mask Opacity
+                  </span>
+                  <button
+                    onClick={() => setMaskOpacity(85)}
+                    title="Click to reset Opacity to 85%"
+                    className="px-2 py-0.5 rounded-md bg-slate-900 text-rose-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                  >
+                    {maskOpacity}%
+                  </button>
                 </div>
                 <input
                   type="range"
@@ -489,15 +587,40 @@ be verified by a certified healthcare professional.
                   max="100"
                   value={maskOpacity}
                   onChange={(e) => setMaskOpacity(Number(e.target.value))}
-                  className="medical-slider"
+                  className="medical-slider medical-slider-rose"
+                  style={{
+                    background: `linear-gradient(to right, #e11d48 0%, #e11d48 ${maskOpacity}%, #94a3b8 ${maskOpacity}%, #94a3b8 100%)`,
+                  }}
                 />
+                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
+                  <span>0%</span>
+                  <button
+                    onClick={() => setMaskOpacity(85)}
+                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                  >
+                    85% (Def)
+                  </button>
+                  <span>100%</span>
+                </div>
               </div>
 
-              {/* Sensitivity Threshold */}
-              <div className="p-2 rounded-xl bg-slate-300/80 border border-slate-400/50">
-                <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
-                  <span className="text-slate-800">Threshold</span>
-                  <span className="font-mono text-sky-700 font-extrabold">{threshold}%</span>
+              {/* 4. Sensitivity Threshold Slider */}
+              <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
+                  <span className="flex items-center gap-1.5 text-slate-800">
+                    <Gauge className="h-3.5 w-3.5 text-indigo-600" />
+                    Threshold
+                  </span>
+                  <button
+                    onClick={() => {
+                      setThreshold(50);
+                      setResult(null);
+                    }}
+                    title="Click to reset Threshold to 50%"
+                    className="px-2 py-0.5 rounded-md bg-slate-900 text-indigo-400 font-mono text-[11px] font-black cursor-pointer hover:bg-slate-800 shadow-2xs transition-colors"
+                  >
+                    {threshold}%
+                  </button>
                 </div>
                 <input
                   type="range"
@@ -509,7 +632,23 @@ be verified by a certified healthcare professional.
                     setResult(null);
                   }}
                   className="medical-slider"
+                  style={{
+                    background: `linear-gradient(to right, #4f46e5 0%, #4f46e5 ${((threshold - 10) / 85) * 100}%, #94a3b8 ${((threshold - 10) / 85) * 100}%, #94a3b8 100%)`,
+                  }}
                 />
+                <div className="flex justify-between text-[10px] font-bold text-slate-600 mt-1 font-mono">
+                  <span>10%</span>
+                  <button
+                    onClick={() => {
+                      setThreshold(50);
+                      setResult(null);
+                    }}
+                    className="hover:text-slate-950 cursor-pointer underline decoration-dotted"
+                  >
+                    50% (Opt)
+                  </button>
+                  <span>95%</span>
+                </div>
               </div>
             </div>
           </div>
