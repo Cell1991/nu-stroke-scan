@@ -9,7 +9,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "Nu Stroke Scan API"
     database_url: str = "postgresql+psycopg://postgres:postgres@database:5432/nu_stroke_scan"
-    cors_origins: str = "http://localhost:3000"
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000,*"
     vcanet_checkpoint: str = "/checkpoints/vcanet_best.pth"
     dlka_checkpoint: str = "/checkpoints/dlka_best.pth"
     patcher_checkpoint: str = "/checkpoints/patcher_best.ckpt"
@@ -19,7 +19,10 @@ class Settings(BaseSettings):
 
     @property
     def cors_origin_list(self) -> list[str]:
-        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        origins = [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        if "*" in origins:
+            return ["*"]
+        return origins
 
     def resolve_checkpoint(self, model_id: str) -> Path:
         """Find the checkpoint path on disk whether running in Docker or natively."""

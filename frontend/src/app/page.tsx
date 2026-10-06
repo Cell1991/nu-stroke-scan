@@ -513,7 +513,11 @@ export default function HomePage() {
       formData.append("model", modelId);
       formData.append("threshold", String(threshold / 100));
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/analysis`, {
+      const apiEndpoint = process.env.NEXT_PUBLIC_API_URL
+        ? `${process.env.NEXT_PUBLIC_API_URL}/api/analysis`
+        : "/api/analysis";
+
+      const response = await fetch(apiEndpoint, {
         method: "POST",
         body: formData,
       });
