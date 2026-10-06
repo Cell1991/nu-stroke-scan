@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #090d16;
-  --foreground: #f8fafc;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 html, body {
@@ -18,20 +18,20 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbars */
+/* Custom light scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
 
 /* DICOM Medical Image Viewer Canvas */
@@ -39,65 +39,65 @@ html, body {
   background-color: #030712;
   background-image: 
     radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.8) 0%, rgba(3, 7, 18, 0.99) 100%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 100% 100%, 24px 24px, 24px 24px;
 }
 
-/* PACS High-Contrast Range Sliders */
+/* Clean Clinical Range Sliders */
 .medical-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 6px;
   border-radius: 9999px;
-  background: #1e293b;
+  background: #e2e8f0;
   outline: none;
   transition: background 0.15s ease-in-out;
 }
 .medical-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #38bdf8;
-  border: 2px solid #0f172a;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  background: #0284c7;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: transform 0.12s ease, background-color 0.12s ease;
 }
 .medical-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.25);
-  background: #0ea5e9;
+  transform: scale(1.2);
+  background: #0369a1;
 }
 
 .lesion-mask {
   pointer-events: none;
 }
 
-/* Tactile 3D Buttons & Animations */
+/* Tactile 3D Buttons & Animations (Clinical Grade) */
 .btn-tactile-primary {
-  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  border-bottom: 2px solid #0369a1;
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 2px solid #075985;
   box-shadow: 
-    0 4px 14px rgba(2, 132, 199, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    0 3px 10px rgba(2, 132, 199, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-tactile-primary:hover:not(:disabled) {
-  background: linear-gradient(180deg, #60a5fa 0%, #0284c7 100%);
+  background: linear-gradient(180deg, #0369a1 0%, #075985 100%);
   transform: translateY(-1.5px);
   box-shadow: 
-    0 6px 22px rgba(2, 132, 199, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 5px 16px rgba(2, 132, 199, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 .btn-tactile-primary:active:not(:disabled) {
   transform: translateY(1px);
   box-shadow: 
-    0 2px 6px rgba(2, 132, 199, 0.35),
-    inset 0 2px 4px rgba(0, 0, 0, 0.25);
+    0 1px 4px rgba(2, 132, 199, 0.25),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-tactile-emerald {
@@ -105,44 +105,46 @@ html, body {
   border-top: 1px solid rgba(255, 255, 255, 0.35);
   border-bottom: 2px solid #047857;
   box-shadow: 
-    0 3px 10px rgba(16, 185, 129, 0.35),
+    0 2px 8px rgba(16, 185, 129, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-tactile-emerald:hover:not(:disabled) {
-  background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+  background: linear-gradient(180deg, #059669 0%, #047857 100%);
   transform: translateY(-1.5px);
   box-shadow: 
-    0 5px 18px rgba(16, 185, 129, 0.5),
+    0 4px 14px rgba(16, 185, 129, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 .btn-tactile-emerald:active:not(:disabled) {
   transform: translateY(1px);
   box-shadow: 
-    0 1px 4px rgba(16, 185, 129, 0.3),
+    0 1px 3px rgba(16, 185, 129, 0.2),
     inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.btn-tactile-dark {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border: 1px solid #334155;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+.btn-tactile-light {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #cbd5e1;
+  border-top: 1px solid #ffffff;
   box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 #ffffff;
+  color: #334155;
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-tactile-dark:hover:not(:disabled) {
-  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
-  border-color: #64748b;
+.btn-tactile-light:hover:not(:disabled) {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-color: #94a3b8;
+  color: #0f172a;
   transform: translateY(-1.5px);
   box-shadow: 
-    0 4px 14px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    0 3px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 #ffffff;
 }
-.btn-tactile-dark:active:not(:disabled) {
+.btn-tactile-light:active:not(:disabled) {
   transform: translateY(1px);
   box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.3),
-    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
