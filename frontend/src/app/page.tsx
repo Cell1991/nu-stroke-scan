@@ -533,14 +533,14 @@ be verified by a certified healthcare professional.
           </div>
         </div>
 
-        {/* Model Selector Segmented Tabs with centered vertical dividers */}
+        {/* Model Selector Segmented Tabs with prominent centered vertical dividers */}
         <div className="flex items-center bg-slate-300/90 p-1 rounded-lg border border-slate-400/60 shadow-inner">
           {MODELS.map((m, idx) => {
             const isSelected = modelId === m.id;
             return (
               <div key={m.id} className="flex items-center">
                 {idx > 0 && (
-                  <div className="w-[1.5px] h-4.5 mx-1.5 rounded-full bg-slate-400/90" />
+                  <div className="w-[2px] h-[18px] mx-1.5 rounded-full bg-slate-400 shadow-2xs shrink-0" />
                 )}
                 <button
                   onClick={() => {
