@@ -93,47 +93,49 @@ function Eye({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function Sun({ className = "h-4 w-4" }: { className?: string }) {
+function Sun({ className = "h-3 w-3" }: { className?: string }) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2" />
-      <path d="M12 20v2" />
-      <path d="m4.93 4.93 1.41 1.41" />
-      <path d="m17.66 17.66 1.41 1.41" />
-      <path d="M2 12h2" />
-      <path d="M20 12h2" />
-      <path d="m6.34 17.66-1.41 1.41" />
-      <path d="m19.07 4.93-1.41 1.41" />
-    </svg>
+    <div className="w-5 h-5 rounded-md bg-gradient-to-b from-amber-50 to-amber-100/90 border border-amber-300/70 flex items-center justify-center shadow-2xs shrink-0">
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="4" className="fill-amber-500 stroke-amber-600" />
+        <path d="M12 2v2.5M12 19.5V22M4.22 4.22l1.77 1.77M18.01 18.01l1.77 1.77M2 12h2.5M19.5 12H22M4.22 19.78l1.77-1.77M18.01 5.99l1.77-1.77" className="stroke-amber-600" />
+      </svg>
+    </div>
   );
 }
 
-function HalfCircle({ className = "h-4 w-4" }: { className?: string }) {
+function HalfCircle({ className = "h-3 w-3" }: { className?: string }) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor" opacity="0.35" />
-    </svg>
+    <div className="w-5 h-5 rounded-md bg-gradient-to-b from-slate-50 to-slate-200/90 border border-slate-300 flex items-center justify-center shadow-2xs shrink-0">
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="9" className="stroke-slate-700" />
+        <path d="M12 3a9 9 0 0 1 0 18z" className="fill-slate-700 stroke-slate-700" />
+      </svg>
+    </div>
   );
 }
 
-function Layers({ className = "h-4 w-4" }: { className?: string }) {
+function Layers({ className = "h-3 w-3" }: { className?: string }) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <polygon points="12 2 2 7 12 12 22 7 12 2" />
-      <polyline points="2 17 12 22 22 17" />
-      <polyline points="2 12 12 17 22 12" />
-    </svg>
+    <div className="w-5 h-5 rounded-md bg-gradient-to-b from-sky-50 to-sky-100/90 border border-sky-300/70 flex items-center justify-center shadow-2xs shrink-0">
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2" className="fill-sky-400/40 stroke-sky-600" />
+        <polyline points="2 17 12 22 22 17" className="stroke-sky-600" />
+        <polyline points="2 12 12 17 22 12" className="stroke-sky-500" />
+      </svg>
+    </div>
   );
 }
 
-function Gauge({ className = "h-4 w-4" }: { className?: string }) {
+function Gauge({ className = "h-3 w-3" }: { className?: string }) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="m12 14 4-4" />
-      <path d="M3.34 19a10 10 0 1 1 17.32 0" />
-    </svg>
+    <div className="w-5 h-5 rounded-md bg-gradient-to-b from-teal-50 to-teal-100/90 border border-teal-300/70 flex items-center justify-center shadow-2xs shrink-0">
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3.34 19a10 10 0 1 1 17.32 0" className="stroke-teal-700" />
+        <path d="m12 14 3.5-3.5" className="stroke-teal-800" strokeWidth="2.5" />
+        <circle cx="12" cy="14" r="2" className="fill-teal-700 stroke-teal-800" />
+      </svg>
+    </div>
   );
 }
 
@@ -828,9 +830,9 @@ be verified by a certified healthcare professional.
               
               {/* 1. Brightness Slider */}
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <Sun className="h-3.5 w-3.5 text-slate-700" />
+                <div className="flex items-center justify-between text-xs mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-900 font-extrabold tracking-tight">
+                    <Sun />
                     Brightness
                   </span>
                   <button
@@ -858,9 +860,9 @@ be verified by a certified healthcare professional.
 
               {/* 2. Contrast Slider */}
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <HalfCircle className="h-3.5 w-3.5 text-slate-700" />
+                <div className="flex items-center justify-between text-xs mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-900 font-extrabold tracking-tight">
+                    <HalfCircle />
                     Contrast
                   </span>
                   <button
@@ -887,9 +889,9 @@ be verified by a certified healthcare professional.
 
               {/* 3. Mask Opacity Slider */}
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <Layers className="h-3.5 w-3.5 text-slate-700" />
+                <div className="flex items-center justify-between text-xs mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-900 font-extrabold tracking-tight">
+                    <Layers />
                     Mask Opacity
                   </span>
                   <button
@@ -917,9 +919,9 @@ be verified by a certified healthcare professional.
 
               {/* 4. Sensitivity Threshold Slider */}
               <div className="p-2.5 rounded-xl bg-slate-300/80 border border-slate-400/60 shadow-2xs flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-800">
-                    <Gauge className="h-3.5 w-3.5 text-slate-700" />
+                <div className="flex items-center justify-between text-xs mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-900 font-extrabold tracking-tight">
+                    <Gauge />
                     Threshold
                   </span>
                   <button
