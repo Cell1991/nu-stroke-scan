@@ -307,18 +307,6 @@ export default function Home() {
     if (droppedFile) handleFile(droppedFile);
   }
 
-  async function loadDemoCase(caseType: "stroke" | "normal") {
-    try {
-      const filename = caseType === "stroke" ? "sample_stroke_ct.png" : "sample_normal_ct.png";
-      const displayName = caseType === "stroke" ? "DEMO_ACUTE_MCA_STROKE.png" : "DEMO_NORMAL_HEAD_CT.png";
-      const res = await fetch(`/${filename}`);
-      const blob = await res.blob();
-      const demoFile = new File([blob], displayName, { type: "image/png" });
-      handleFile(demoFile);
-    } catch {
-      setError("Failed to load demo CT slice.");
-    }
-  }
 
   function recomputeThreshold(newThreshold: number) {
     setThreshold(newThreshold);
@@ -680,26 +668,6 @@ be verified by a certified healthcare professional.
               )}
             </div>
 
-            {/* Quick Demo Case Selector */}
-            {!file && (
-              <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center gap-2">
-                <span className="text-xs text-slate-400 font-medium shrink-0">Demo Cases:</span>
-                <button
-                  type="button"
-                  onClick={() => loadDemoCase("stroke")}
-                  className="flex-1 py-1.5 px-2.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 border border-rose-500/30 text-xs font-semibold text-rose-300 transition-colors cursor-pointer text-center"
-                >
-                  Stroke (+)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => loadDemoCase("normal")}
-                  className="flex-1 py-1.5 px-2.5 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition-colors cursor-pointer text-center"
-                >
-                  Normal (-)
-                </button>
-              </div>
-            )}
 
             <input
               ref={inputRef}
@@ -893,7 +861,7 @@ be verified by a certified healthcare professional.
                       </div>
                       <div>
                         <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">NO SCAN LOADED</p>
-                        <p className="text-xs text-slate-400 mt-1">Upload an axial brain slice or load a demo case</p>
+                        <p className="text-xs text-slate-400 mt-1">Upload an axial brain slice to begin</p>
                       </div>
                     </div>
                   )}
