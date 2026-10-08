@@ -714,14 +714,9 @@ be verified by a certified healthcare professional.
             />
           </div>
           <div className="flex flex-col justify-center">
-            <div className="flex items-center gap-2.5">
-              <span className="font-black text-lg tracking-tight text-slate-900 block leading-tight">
-                <span className="text-orange-600">NU</span> STROKE SCAN
-              </span>
-              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-orange-50 text-orange-700 border border-orange-200 shadow-xs">
-                ENTERPRISE CLINICAL v1.2
-              </span>
-            </div>
+            <h1 className="font-black text-lg tracking-tight text-slate-900 block leading-tight">
+              <span className="text-orange-600">NU</span> STROKE SCAN
+            </h1>
             <p className="text-xs text-slate-500 font-medium leading-normal mt-0.5">
               Neuro-Imaging Clinical Intelligence · Naresuan University
             </p>
