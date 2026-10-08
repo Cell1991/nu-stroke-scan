@@ -844,25 +844,32 @@ be verified by a certified healthcare professional.
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-28 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden ${
+              className={`h-44 xl:h-48 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-3 ${
                 isDragging
                   ? "border-orange-500 bg-orange-50/90 scale-[1.01] shadow-md shadow-orange-500/20"
                   : "border-slate-300 hover:border-orange-400 bg-slate-50/90 hover:bg-slate-100/90 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
-                <div className="flex flex-col items-center gap-1.5 px-3 w-full">
-                  <img src={imageUrl} alt="Thumbnail" className="h-14 w-14 object-contain rounded-lg border border-slate-200 bg-black shadow-sm" />
+                <div className="flex flex-col items-center gap-2 px-3 w-full">
+                  <img src={imageUrl} alt="Thumbnail" className="h-20 w-20 object-contain rounded-lg border border-slate-200 bg-black shadow-sm" />
                   <div className="text-center w-full">
                     <p className="text-xs font-bold text-slate-900 truncate">{file?.name ?? "Loaded NCCT Slice"}</p>
-                    <p className="text-[10px] font-medium text-orange-600 mt-0.5">Click or drag to replace scan</p>
+                    <p className="text-[11px] font-medium text-orange-600 mt-0.5">Click or drag new slice to replace scan</p>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-1">
-                  <UploadCloud className="h-7 w-7 mx-auto text-orange-500 animate-bounce" />
-                  <p className="text-xs font-bold text-slate-800">Drop CT Scan or Browse</p>
-                  <p className="text-[10px] text-slate-500 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
+                <div className="space-y-2 py-1">
+                  <div className="w-12 h-12 rounded-full bg-orange-100/90 flex items-center justify-center mx-auto shadow-xs border border-orange-200">
+                    <UploadCloud className="h-6 w-6 text-orange-600 animate-bounce" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800">Drop CT Scan or Browse</p>
+                    <p className="text-[11px] text-slate-500 font-medium mt-0.5">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
+                  </div>
+                  <span className="inline-block px-3 py-1 rounded-full bg-white text-orange-600 border border-orange-200 text-[10px] font-bold shadow-xs">
+                    Choose File
+                  </span>
                 </div>
               )}
             </div>
