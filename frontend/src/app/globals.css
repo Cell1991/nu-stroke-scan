@@ -2,177 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Naresuan University Theme: Charcoal Gray & Flame Orange (สีเทา-ส้ม ม.นเรศวร) - High-Tech Edition */
+/* Naresuan University Medical Intelligence Design System */
 :root {
-  --background: #d8dde6;
-  --foreground: #111827;
-  --nu-orange: #f97316;
-  --nu-orange-dark: #ea580c;
-  --nu-orange-glow: rgba(249, 115, 22, 0.4);
-  --nu-gray-light: #f3f4f6;
-  --nu-gray-slate: #4b5563;
-  --nu-gray-dark: #1f2229;
+  --bg-primary: #0b0f17;
+  --bg-surface: #131b26;
+  --bg-card: #182232;
+  --border-subtle: #243042;
+  --border-highlight: #33435c;
+  --orange-primary: #f97316;
+  --orange-hover: #ea580c;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html, body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
 
-html.dark, body.dark {
-  background-color: #090a0f;
-  color: #f4f4f6;
-}
-
-/* Custom Clean Scrollbar */
+/* Precision Clean Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(209, 213, 219, 0.8);
-}
-.dark ::-webkit-scrollbar-track {
-  background: rgba(9, 10, 15, 0.95);
+  background: #0b0f17;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.5);
+  background: #243042;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(249, 115, 22, 0.85);
+  background: #f97316;
 }
 
-/* Naresuan University Clean Gray & Flame Orange Clinical Backdrop */
-.medical-vibrant-backdrop {
-  background-color: #d8dde6;
+/* Deep Workstation Canvas */
+.workstation-bg {
+  background-color: #0b0f17;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.16) 0%, transparent 45%),
-    radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 50% 85%, rgba(156, 163, 175, 0.35) 0%, transparent 50%),
-    linear-gradient(rgba(107, 114, 128, 0.14) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(107, 114, 128, 0.14) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
-}
-
-/* Crisp Frosted White/Gray Glass Panel */
-.glass-panel-vibrant {
-  background: #ffffff;
-  border: 1px solid rgba(209, 213, 219, 0.95);
-  box-shadow: 
-    0 10px 25px -4px rgba(17, 24, 39, 0.08),
-    0 4px 10px -2px rgba(17, 24, 39, 0.04),
-    0 0 0 1px rgba(255, 255, 255, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-}
-
-.glass-panel-subtle {
-  background: #f3f4f6;
-  border: 1px solid rgba(229, 231, 235, 0.95);
-  box-shadow: 
-    0 2px 5px rgba(17, 24, 39, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-}
-
-/* ========================================================================= */
-/* DARK THEME COCKPIT SPECIFICATION - LUXURY OBSIDIAN & FLAME ORANGE ACCENTS */
-/* ========================================================================= */
-.dark .medical-vibrant-backdrop,
-.dark.medical-vibrant-backdrop {
-  background-color: #090a0f;
-  background-image: 
-    radial-gradient(circle at 12% 10%, rgba(249, 115, 22, 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 88% 12%, rgba(245, 158, 11, 0.04) 0%, transparent 35%),
-    radial-gradient(circle at 50% 90%, rgba(15, 23, 42, 0.3) 0%, transparent 60%);
+    radial-gradient(circle at 15% 10%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(30, 41, 59, 0.3) 0%, transparent 60%);
   background-size: 100% 100%;
 }
 
-.dark .glass-panel-vibrant {
-  background: #0f121a;
-  border: 1px solid #1c212c;
-  box-shadow: 
-    0 10px 25px -4px rgba(0, 0, 0, 0.6),
-    0 4px 10px -2px rgba(0, 0, 0, 0.4);
-}
-
-.dark .glass-panel-subtle {
-  background: #11151f;
-  border: 1px solid #1e2432;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-}
-
-.dark .btn-vibrant-subtle {
-  background: #11141c;
-  border: 1px solid #1f2430;
-  color: #e4e4e7;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.dark .btn-vibrant-subtle:hover:not(:disabled) {
-  background: #161b26;
-  border-color: rgba(249, 115, 22, 0.6);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.25);
-}
-
-.dark .neu-slider-track-bg {
-  background: #171b24;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
-}
-
-.dark .text-slate-900 {
-  color: #ffffff;
-}
-.dark .text-slate-800 {
-  color: #f4f4f5;
-}
-.dark .text-slate-700 {
-  color: #e4e4e7;
-}
-.dark .text-slate-600 {
-  color: #a1a1aa;
-}
-.dark .text-slate-500 {
-  color: #71717a;
-}
-.dark .bg-slate-50 {
-  background-color: #0e1118;
-}
-.dark .bg-slate-100 {
-  background-color: #11141c;
-}
-.dark .border-slate-200 {
-  border-color: #1c212c;
-}
-.dark .border-slate-300 {
-  border-color: #272d3b;
-}
-
-/* Deep DICOM Medical Canvas with Precision HUD Frame */
+/* DICOM Canvas */
 .dicom-canvas-bg {
   background-color: #000000;
-  background-image: none;
 }
 
-/* Fine Clinical Measurement Gridlines */
+/* Measurement Fine Grid */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(249, 115, 22, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(249, 115, 22, 0.1) 1px, transparent 1px),
-    linear-gradient(to right, rgba(249, 115, 22, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(249, 115, 22, 0.25) 1px, transparent 1px);
+    linear-gradient(to right, rgba(249, 115, 22, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.12) 1px, transparent 1px),
+    linear-gradient(to right, rgba(249, 115, 22, 0.28) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.28) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
   pointer-events: none;
 }
 
-/* Smooth Clean Gray-White-Orange Sliders */
+/* Sliders */
 .neu-slider-container {
   position: relative;
   width: 100%;
@@ -185,11 +87,8 @@ html.dark, body.dark {
   position: relative;
   width: 100%;
   height: 6px;
-  background: #e2e8f0;
+  background: #1e293b;
   border-radius: 9999px;
-  box-shadow: 
-    inset 0 1px 2px rgba(0, 0, 0, 0.12),
-    0 1px 0 rgba(255, 255, 255, 0.8);
   overflow: hidden;
 }
 
@@ -198,9 +97,9 @@ html.dark, body.dark {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #ea580c 0%, #f97316 60%, #fb923c 100%);
+  background: linear-gradient(90deg, #ea580c 0%, #f97316 100%);
   border-radius: 9999px;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.6);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
   pointer-events: none;
 }
 
@@ -223,145 +122,82 @@ html.dark, body.dark {
 .neu-range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: 
-    radial-gradient(circle at center, #ea580c 0%, #f97316 42%, transparent 46%),
-    linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 2px solid #ffffff;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.18),
-    0 0 10px rgba(249, 115, 22, 0.5);
+  background: #ffffff;
+  border: 2px solid #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.8), 0 2px 4px rgba(0,0,0,0.5);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.12s ease;
 }
 
 .neu-range-input::-webkit-slider-thumb:hover {
-  transform: scale(1.18);
-  box-shadow: 
-    0 3px 10px rgba(0, 0, 0, 0.25),
-    0 0 16px rgba(249, 115, 22, 0.8);
+  transform: scale(1.2);
 }
 
 .neu-range-input::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: 
-    radial-gradient(circle at center, #ea580c 0%, #f97316 42%, transparent 46%),
-    linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border: 2px solid #ffffff;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.18),
-    0 0 10px rgba(249, 115, 22, 0.5);
+  background: #ffffff;
+  border: 2px solid #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.8);
   cursor: pointer;
 }
 
-/* NU Flame Orange Primary CTA Button with Shimmer Sweep */
+/* Primary CTA Button */
 .btn-vibrant-primary {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ea580c 0%, #f97316 45%, #fb923c 100%);
-  border: 1px solid rgba(251, 146, 60, 0.65);
-  box-shadow: 
-    0 6px 20px rgba(234, 88, 12, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fb923c 100%);
+  border: 1px solid rgba(251, 146, 60, 0.6);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
   color: #ffffff;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btn-vibrant-primary::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transform: skewX(-20deg);
-  animation: btn-shimmer 3s infinite;
+  transition: all 0.2s ease;
 }
 .btn-vibrant-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fbbf24 100%);
-  transform: translateY(-2px);
-  box-shadow: 
-    0 8px 26px rgba(249, 115, 22, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  box-shadow: 0 6px 22px rgba(249, 115, 22, 0.5);
+  transform: translateY(-1px);
 }
 .btn-vibrant-primary:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3);
+  transform: translateY(0);
 }
 
+/* Subtle Action Button */
 .btn-vibrant-subtle {
-  background: #ffffff;
-  border: 1px solid rgba(203, 213, 225, 0.85);
-  box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-  color: #334155;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #182232;
+  border: 1px solid #243042;
+  color: #e2e8f0;
+  transition: all 0.18s ease;
 }
 .btn-vibrant-subtle:hover:not(:disabled) {
-  background: #f8fafc;
-  border-color: rgba(249, 115, 22, 0.6);
-  color: #ea580c;
-  transform: translateY(-1.5px);
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
-}
-.btn-vibrant-subtle:active:not(:disabled) {
-  transform: translateY(1px);
+  background: #202b3c;
+  border-color: #f97316;
+  color: #ffffff;
 }
 
+/* Emerald Action Button */
 .btn-vibrant-emerald {
-  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
   border: 1px solid rgba(52, 211, 153, 0.5);
-  box-shadow: 
-    0 3px 12px rgba(16, 185, 129, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
   color: #ffffff;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.18s ease;
 }
 .btn-vibrant-emerald:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 18px rgba(16, 185, 129, 0.45);
-}
-.btn-vibrant-emerald:active:not(:disabled) {
-  transform: translateY(1px);
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
 }
 
-@keyframes btn-shimmer {
-  0% { left: -100%; }
-  40% { left: 150%; }
-  100% { left: 150%; }
-}
-
+/* Laser sweep */
 @keyframes laser-sweep {
-  0% {
-    top: 0%;
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
+  0% { top: 0%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 
 .animate-laser-sweep {
   animation: laser-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
-
-/* Wiper Handle Glow */
-.wiper-divider-handle {
-  box-shadow: 
-    0 0 14px rgba(249, 115, 22, 0.9),
-    0 0 28px rgba(249, 115, 22, 0.5);
-}
-
