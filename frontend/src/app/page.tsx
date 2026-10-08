@@ -1269,9 +1269,6 @@ be verified by a certified healthcare professional.
                 <Activity className="h-4 w-4 text-orange-500" />
                 Diagnostic Assessment
               </span>
-              <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold rounded bg-orange-50 text-orange-700 border border-orange-200">
-                AI REPORT
-              </span>
             </h3>
 
             {/* Outcome Banner */}
