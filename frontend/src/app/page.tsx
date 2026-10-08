@@ -710,25 +710,25 @@ be verified by a certified healthcare professional.
   }
 
   return (
-    <div className={`h-screen w-screen flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none transition-colors duration-300 ${theme === "dark" ? "dark bg-[#12141a] text-gray-100" : "bg-[#d8dde6] text-gray-900"} medical-vibrant-backdrop`}>
+    <div className={`h-screen w-screen flex flex-col overflow-hidden font-sans p-3 gap-2 select-none transition-colors duration-300 ${theme === "dark" ? "dark bg-[#12141a] text-gray-100" : "bg-[#d8dde6] text-gray-900"} medical-vibrant-backdrop`}>
       
-      {/* 1. Ultra-Clean Medical Enterprise Navigation Deck */}
-      <header className="h-16 glass-panel-vibrant rounded-2xl px-6 flex items-center justify-between shrink-0 shadow-sm border border-gray-300/90 dark:border-[#2d333f] bg-white/95 dark:bg-[#1c1f26]/95">
+      {/* 1. Seamless High-Tech Navigation Deck */}
+      <header className="h-14 px-3 flex items-center justify-between shrink-0 border-b border-gray-200/70 dark:border-gray-800/70 bg-transparent">
         {/* Hospital Brand & Node Badge */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3.5">
           <div className="relative flex items-center justify-center">
-            <div className="absolute -inset-1.5 rounded-full bg-orange-500/20 blur-md animate-pulse" />
+            <div className="absolute -inset-1 rounded-full bg-orange-500/20 blur-sm animate-pulse" />
             <img
               src="/brand_icon_trans.png"
               alt="NU Stroke Scan Logo"
-              className="h-11 w-11 object-contain drop-shadow-[0_2px_10px_rgba(249,115,22,0.45)] select-none pointer-events-none relative z-10"
+              className="h-10 w-10 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.4)] select-none pointer-events-none relative z-10"
             />
           </div>
           <div className="flex flex-col justify-center">
-            <h1 className="font-black text-xl tracking-tight text-slate-900 dark:text-white block leading-tight">
+            <h1 className="font-black text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white block leading-tight">
               <span className="text-orange-500">NU</span> STROKE SCAN
             </h1>
-            <p className="text-sm text-slate-500 dark:text-gray-400 font-medium leading-normal mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-gray-400 font-medium leading-tight">
               Neuro-Imaging Clinical Intelligence · Naresuan University
             </p>
           </div>
@@ -738,36 +738,36 @@ be verified by a certified healthcare professional.
         <button
           onClick={toggleTheme}
           title={theme === "dark" ? "Switch to High-Contrast Light Mode" : "Switch to Deep Clinical Dark Mode"}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-gray-300 dark:border-[#383f4e] bg-gray-100/90 dark:bg-[#252933]/90 hover:border-orange-400 dark:hover:border-orange-500 text-slate-700 dark:text-gray-200 font-bold text-xs cursor-pointer shadow-xs transition-all active:scale-95 select-none"
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700/80 bg-gray-100/80 dark:bg-gray-800/60 hover:border-orange-400 dark:hover:border-orange-500 text-slate-700 dark:text-gray-200 font-bold text-xs cursor-pointer shadow-xs transition-all active:scale-95 select-none"
         >
           {theme === "dark" ? (
             <>
-              <Sun className="h-4 w-4 text-amber-400 animate-spin-slow" />
+              <Sun className="h-3.5 w-3.5 text-amber-400 animate-spin-slow" />
               <span>LIGHT MODE</span>
             </>
           ) : (
             <>
-              <Moon className="h-4 w-4 text-orange-600" />
+              <Moon className="h-3.5 w-3.5 text-orange-600" />
               <span>DARK MODE</span>
             </>
           )}
         </button>
       </header>
 
-      {/* 2. Main Workspace Layout: 3-Column Enterprise Radiologist Cockpit */}
-      <main className="flex-1 min-h-0 grid grid-cols-12 gap-2.5 overflow-hidden">
+      {/* 2. Main Workspace Layout: Seamless 3-Column Cockpit Canvas */}
+      <main className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden pt-1">
         
         {/* ========================================================================= */}
-        {/* COLUMN 1 (3 Cols): STEP 1 PATIENT INGESTION + STEP 2 MODEL & INFERENCE */}
+        {/* COLUMN 1 (3 Cols): PATIENT INGESTION + MODEL SELECTOR + INFERENCE CTA */}
         {/* ========================================================================= */}
-        <section className="col-span-3 flex flex-col gap-2.5 min-h-0 overflow-y-auto pr-0.5">
+        <section className="col-span-3 flex flex-col gap-3 min-h-0 overflow-y-auto pr-0.5">
           
           {/* STEP 1: Case Ingestion & Upload */}
-          <div className="glass-panel-vibrant rounded-xl p-3 flex flex-col shrink-0 shadow-sm border border-gray-300/90 dark:border-[#2d333f] bg-white/95 dark:bg-[#1c1f26]/95 relative">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-mono font-extrabold tracking-wider text-orange-600 dark:text-orange-400 uppercase flex items-center gap-1.5">
+          <div className="flex flex-col shrink-0">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs font-mono font-extrabold tracking-wider text-orange-500 uppercase flex items-center gap-1.5">
                 <UploadCloud className="h-4 w-4" />
-                Step 01 · Patient CT Ingestion
+                Step 01 · Ingestion
               </span>
               {file && (
                 <button
@@ -789,30 +789,30 @@ be verified by a certified healthcare professional.
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-44 xl:h-48 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-3 ${
+              className={`h-40 xl:h-44 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-3 ${
                 isDragging
                   ? "border-orange-500 bg-orange-50/90 dark:bg-orange-950/40 scale-[1.01] shadow-md shadow-orange-500/20"
-                  : "border-gray-300 dark:border-[#383f4e] hover:border-orange-400 dark:hover:border-orange-500 bg-gray-50/90 dark:bg-[#252933]/70 hover:bg-gray-100/90 dark:hover:bg-[#2b303c] active:scale-[0.99]"
+                  : "border-gray-300 dark:border-gray-700/80 hover:border-orange-400 dark:hover:border-orange-500 bg-gray-50/60 dark:bg-gray-800/30 hover:bg-gray-100/80 dark:hover:bg-gray-800/50 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
                 <div className="flex flex-col items-center gap-2 px-3 w-full">
-                  <img src={imageUrl} alt="Thumbnail" className="h-20 w-20 object-contain rounded-lg border border-gray-300 dark:border-[#383f4e] bg-black shadow-sm" />
+                  <img src={imageUrl} alt="Thumbnail" className="h-18 w-18 object-contain rounded-lg border border-gray-300 dark:border-gray-700 bg-black shadow-sm" />
                   <div className="text-center w-full">
                     <p className="text-sm font-bold text-slate-900 dark:text-gray-100 truncate">{file?.name ?? "Loaded NCCT Slice"}</p>
                     <p className="text-xs font-medium text-orange-600 dark:text-orange-400 mt-0.5">Click or drag new slice to replace scan</p>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-2 py-1">
-                  <div className="w-12 h-12 rounded-full bg-orange-100/90 dark:bg-orange-950/60 flex items-center justify-center mx-auto shadow-xs border border-orange-200 dark:border-orange-800/80">
-                    <UploadCloud className="h-6 w-6 text-orange-600 dark:text-orange-400 animate-bounce" />
+                <div className="space-y-1.5 py-1">
+                  <div className="w-10 h-10 rounded-full bg-orange-100/90 dark:bg-orange-950/60 flex items-center justify-center mx-auto shadow-xs border border-orange-200 dark:border-orange-800/80">
+                    <UploadCloud className="h-5 w-5 text-orange-600 dark:text-orange-400 animate-bounce" />
                   </div>
                   <div>
-                    <p className="text-base font-bold text-slate-800 dark:text-gray-200">Drop CT Scan or Browse</p>
-                    <p className="text-xs text-slate-500 dark:text-gray-400 font-medium mt-0.5">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
+                    <p className="text-sm font-bold text-slate-800 dark:text-gray-200">Drop Brain CT or Browse</p>
+                    <p className="text-[11px] text-slate-500 dark:text-gray-400 font-medium mt-0.5">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
                   </div>
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-white dark:bg-[#1c1f26] text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/40 text-xs font-bold shadow-xs">
+                  <span className="inline-block px-3 py-0.5 rounded-full bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/40 text-[11px] font-bold shadow-xs">
                     Choose File
                   </span>
                 </div>
@@ -839,14 +839,14 @@ be verified by a certified healthcare professional.
           </div>
 
           {/* STEP 2: Neural Model Architecture & Primary Analysis Action */}
-          <div className="glass-panel-vibrant rounded-xl p-3 flex flex-col flex-1 min-h-0 shadow-sm border border-gray-300/90 dark:border-[#2d333f] bg-white/95 dark:bg-[#1c1f26]/95">
-            <span className="text-xs font-mono font-extrabold tracking-wider text-orange-600 dark:text-orange-400 uppercase flex items-center gap-1.5 mb-2.5">
+          <div className="flex flex-col flex-1 min-h-0">
+            <span className="text-xs font-mono font-extrabold tracking-wider text-orange-500 uppercase flex items-center gap-1.5 mb-2">
               <Brain className="h-4 w-4" />
-              Step 02 · Neural Model & Inference
+              Step 02 · Neural Model
             </span>
 
             {/* Model Architecture Selector Vertical Stack */}
-            <div className="space-y-2 mb-3">
+            <div className="space-y-1.5 mb-3">
               {MODELS.map((m) => {
                 const isSelected = modelId === m.id;
                 return (
@@ -856,10 +856,10 @@ be verified by a certified healthcare professional.
                       setModelId(m.id);
                       setResult(null);
                     }}
-                    className={`w-full py-2.5 px-3 rounded-lg text-left transition-all cursor-pointer select-none border ${
+                    className={`w-full py-2.5 px-3 rounded-xl text-left transition-all cursor-pointer select-none border ${
                       isSelected
                         ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md border-orange-400 font-extrabold"
-                        : "bg-gray-50 dark:bg-[#252933]/90 hover:bg-gray-100 dark:hover:bg-[#2e3442] text-slate-700 dark:text-gray-200 border-gray-200 dark:border-[#383f4e]"
+                        : "bg-gray-50/80 dark:bg-gray-800/40 hover:bg-gray-100/90 dark:hover:bg-gray-800/70 text-slate-700 dark:text-gray-200 border-gray-200/80 dark:border-gray-700/70"
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -880,7 +880,7 @@ be verified by a certified healthcare professional.
               disabled={isScanning || !imageUrl}
               className={`relative overflow-hidden mt-auto h-12 w-full rounded-xl font-black text-sm uppercase tracking-wider text-white transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
                 isScanning || !imageUrl
-                  ? "bg-gray-200 dark:bg-[#252933]/80 text-gray-400 dark:text-gray-500 border border-gray-300 dark:border-[#383f4e] cursor-not-allowed shadow-none"
+                  ? "bg-gray-200 dark:bg-gray-800/60 text-gray-400 dark:text-gray-500 border border-gray-300 dark:border-gray-700/60 cursor-not-allowed shadow-none"
                   : "btn-vibrant-primary shadow-lg shadow-orange-500/25"
               }`}
             >
@@ -903,15 +903,15 @@ be verified by a certified healthcare professional.
         {/* ========================================================================= */}
         <section className="col-span-6 flex flex-col gap-2.5 min-h-0">
           
-          {/* Main DICOM Viewport Stage (Top) */}
-          <div className="flex-1 min-h-0 glass-panel-vibrant rounded-xl p-3 flex flex-col shadow-sm relative border border-gray-300/90 dark:border-[#2d333f] bg-white/95 dark:bg-[#1c1f26]/95">
+          {/* Main DICOM Viewport Section */}
+          <div className="flex-1 min-h-0 flex flex-col relative">
             
             {/* Viewport Top Bar with Synchronized Badge & Medical Tools */}
-            <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-200 dark:border-[#2d333f] shrink-0">
+            <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-gray-200/70 dark:border-gray-800/70 shrink-0">
               
               {/* Synchronized Dual Indicator */}
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-[#252933]/90 px-3 py-1 rounded-lg border border-gray-200 dark:border-[#383f4e] shadow-inner">
-                <span className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]" />
+              <div className="flex items-center gap-2 bg-gray-100/80 dark:bg-gray-800/50 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-700/60">
+                <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]" />
                 <span className="text-xs sm:text-sm font-mono font-black text-slate-800 dark:text-gray-200 uppercase tracking-wider">
                   Synchronized Dual Viewport (512×512)
                 </span>
@@ -921,12 +921,12 @@ be verified by a certified healthcare professional.
               <div className="flex items-center gap-2">
                 
                 {/* Zoom Controls Rect */}
-                <div className="flex items-center bg-gray-50 dark:bg-[#252933]/90 px-1 py-0.5 rounded-md border border-gray-200 dark:border-[#383f4e] shadow-xs">
+                <div className="flex items-center bg-gray-50 dark:bg-gray-800/60 px-1 py-0.5 rounded-md border border-gray-200 dark:border-gray-700/70 shadow-xs">
                   <button
                     onClick={handleZoomOut}
                     disabled={zoom <= 0.5}
                     title="Zoom Out (-25%)"
-                    className="p-1 rounded text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-[#323846] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
+                    className="p-1 rounded text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
                   >
                     <ZoomOut className="h-4 w-4" />
                   </button>
@@ -934,7 +934,7 @@ be verified by a certified healthcare professional.
                   <button
                     onClick={handleResetZoom}
                     title="Click to Reset Zoom to 100%"
-                    className="px-2 py-0.5 rounded text-xs font-mono font-black text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-[#323846] cursor-pointer transition-all active:scale-95"
+                    className="px-2 py-0.5 rounded text-xs font-mono font-black text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-gray-700 cursor-pointer transition-all active:scale-95"
                   >
                     {Math.round(zoom * 100)}%
                   </button>
@@ -943,7 +943,7 @@ be verified by a certified healthcare professional.
                     onClick={handleZoomIn}
                     disabled={zoom >= 4}
                     title="Zoom In (+25%)"
-                    className="p-1 rounded text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
+                    className="p-1 rounded text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-90"
                   >
                     <ZoomIn className="h-4 w-4" />
                   </button>
@@ -987,7 +987,7 @@ be verified by a certified healthcare professional.
                   onMouseUp={handleViewportMouseUp}
                   onMouseLeave={handleViewportMouseUp}
                   onWheel={(e) => handleViewportWheel(e, "left")}
-                  className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
+                  className={`dicom-canvas-bg relative rounded-xl border border-gray-800/80 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                     loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
                   }`}
                   title="Right-click to toggle Diagnostic Loupe · Scroll Wheel to Magnify"
@@ -1085,7 +1085,7 @@ be verified by a certified healthcare professional.
                   onMouseUp={handleViewportMouseUp}
                   onMouseLeave={handleViewportMouseUp}
                   onWheel={(e) => handleViewportWheel(e, "right")}
-                  className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
+                  className={`dicom-canvas-bg relative rounded-xl border border-gray-800/80 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                     loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
                   }`}
                   title="Right-click to toggle Diagnostic Loupe · Scroll Wheel to Magnify"
@@ -1203,20 +1203,20 @@ be verified by a certified healthcare professional.
             </div>
           </div>
 
-          {/* STEP 3: DICOM Calibration Sliders (Directly Under Column 2 Viewports) */}
-          <div className="glass-panel-vibrant rounded-xl p-3 shrink-0 shadow-sm border border-gray-300/90 dark:border-[#2d333f] bg-white/95 dark:bg-[#1c1f26]/95">
-            <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-gray-200 dark:border-[#2d333f] shrink-0">
-              <span className="text-xs font-mono font-extrabold tracking-wider text-orange-600 dark:text-orange-400 uppercase flex items-center gap-1.5">
+          {/* STEP 3: DICOM Calibration Sliders (Directly Under Viewports) */}
+          <div className="shrink-0">
+            <div className="flex items-center justify-between pb-1 mb-1.5 shrink-0">
+              <span className="text-xs font-mono font-extrabold tracking-wider text-orange-500 uppercase flex items-center gap-1.5">
                 <Sun className="h-4 w-4" />
-                Step 03 · DICOM Calibration
+                Step 03 · Calibration
               </span>
             </div>
 
             {/* 4 Sliders Grid (2x2) */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2">
               
               {/* 1. Brightness */}
-              <div className="p-2 px-2.5 rounded-lg glass-panel-subtle bg-gray-50/90 dark:bg-[#252933]/80 flex flex-col justify-between border border-gray-200 dark:border-[#363d4c] hover:border-orange-300 dark:hover:border-orange-500/50 transition-colors shadow-xs">
+              <div className="p-2 px-2.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 flex flex-col justify-between border border-gray-200 dark:border-gray-700/60 hover:border-orange-300 dark:hover:border-orange-500/40 transition-colors shadow-xs">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-gray-200 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-700 dark:text-gray-200 font-bold text-xs">
                     <Sun className="h-3.5 w-3.5 text-orange-500" />
@@ -1234,7 +1234,7 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 2. Contrast */}
-              <div className="p-2 px-2.5 rounded-lg glass-panel-subtle bg-gray-50/90 dark:bg-[#252933]/80 flex flex-col justify-between border border-gray-200 dark:border-[#363d4c] hover:border-orange-300 dark:hover:border-orange-500/50 transition-colors shadow-xs">
+              <div className="p-2 px-2.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 flex flex-col justify-between border border-gray-200 dark:border-gray-700/60 hover:border-orange-300 dark:hover:border-orange-500/40 transition-colors shadow-xs">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-gray-200 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-700 dark:text-gray-200 font-bold text-xs">
                     <HalfCircle className="h-3.5 w-3.5 text-orange-500" />
@@ -1252,7 +1252,7 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 3. Mask Opacity */}
-              <div className="p-2 px-2.5 rounded-lg glass-panel-subtle bg-gray-50/90 dark:bg-[#252933]/80 flex flex-col justify-between border border-gray-200 dark:border-[#363d4c] hover:border-orange-300 dark:hover:border-orange-500/50 transition-colors shadow-xs">
+              <div className="p-2 px-2.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 flex flex-col justify-between border border-gray-200 dark:border-gray-700/60 hover:border-orange-300 dark:hover:border-orange-500/40 transition-colors shadow-xs">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-gray-200 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-700 dark:text-gray-200 font-bold text-xs">
                     <Layers className="h-3.5 w-3.5 text-orange-500" />
@@ -1270,7 +1270,7 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 4. Sensitivity Threshold */}
-              <div className="p-2 px-2.5 rounded-lg glass-panel-subtle bg-gray-50/90 dark:bg-[#252933]/80 flex flex-col justify-between border border-gray-200 dark:border-[#363d4c] hover:border-orange-300 dark:hover:border-orange-500/50 transition-colors shadow-xs">
+              <div className="p-2 px-2.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 flex flex-col justify-between border border-gray-200 dark:border-gray-700/60 hover:border-orange-300 dark:hover:border-orange-500/40 transition-colors shadow-xs">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-gray-200 mb-0.5">
                   <span className="flex items-center gap-1.5 text-slate-700 dark:text-gray-200 font-bold text-xs">
                     <Gauge className="h-3.5 w-3.5 text-orange-500" />
@@ -1291,12 +1291,12 @@ be verified by a certified healthcare professional.
         </section>
 
         {/* ========================================================================= */}
-        {/* COLUMN 3 (3 Cols): STEP 4 DIAGNOSTIC ASSESSMENT & CLINICAL EXPORT PANEL */}
+        {/* COLUMN 3 (3 Cols): DIAGNOSTIC ASSESSMENT & CLINICAL EXPORT PANEL */}
         {/* ========================================================================= */}
         <section className="col-span-3 flex flex-col gap-2.5 min-h-0 overflow-y-auto">
           
-          <div className="glass-panel-vibrant rounded-xl p-3.5 flex-1 flex flex-col shadow-sm relative border border-gray-300/90 dark:border-[#2d333f] bg-white/95 dark:bg-[#1c1f26]/95">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-gray-300 mb-2.5 pb-2 border-b border-gray-200 dark:border-[#2d333f] flex items-center justify-between">
+          <div className="flex-1 flex flex-col relative">
+            <h3 className="text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700 dark:text-gray-300 mb-2 pb-1.5 border-b border-gray-200/70 dark:border-gray-800/70 flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-slate-900 dark:text-white font-extrabold">
                 <Activity className="h-4 w-4 text-orange-500" />
                 Diagnostic Assessment
@@ -1304,10 +1304,10 @@ be verified by a certified healthcare professional.
             </h3>
 
             {/* Outcome Banner */}
-            <div className="mb-3">
+            <div className="mb-2.5">
               {result ? (
                 result.detected ? (
-                  <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border-2 border-red-400 dark:border-red-800 text-red-900 dark:text-red-200 space-y-1.5 shadow-sm">
+                  <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border-2 border-red-400 dark:border-red-800 text-red-900 dark:text-red-200 space-y-1.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <AlertTriangle className="h-4.5 w-4.5 text-red-600 dark:text-red-400 shrink-0 animate-pulse" />
@@ -1321,7 +1321,7 @@ be verified by a certified healthcare professional.
                     <p className="text-xs text-slate-600 dark:text-gray-300 font-medium leading-relaxed">Acute ischemic infarction identified above threshold.</p>
                   </div>
                 ) : (
-                  <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border-2 border-emerald-400 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 space-y-1.5 shadow-sm">
+                  <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-400 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 space-y-1.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -1336,27 +1336,27 @@ be verified by a certified healthcare professional.
                   </div>
                 )
               ) : (
-                <div className="p-4 rounded-xl glass-panel-subtle bg-gray-50 dark:bg-[#252933]/80 border border-gray-200 dark:border-[#363d4c] text-center space-y-2 shadow-xs">
-                  <div className="w-10 h-10 rounded-full bg-orange-100/90 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/80 flex items-center justify-center mx-auto text-orange-600 dark:text-orange-400 shadow-xs">
-                    <Activity className="h-5 w-5 animate-pulse" />
+                <div className="p-3.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700/60 text-center space-y-1.5 shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-orange-100/90 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/80 flex items-center justify-center mx-auto text-orange-600 dark:text-orange-400 shadow-xs">
+                    <Activity className="h-4.5 w-4.5 animate-pulse" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-slate-800 dark:text-gray-200">Neural Engine Standby</p>
-                    <p className="text-xs text-slate-500 dark:text-gray-400 mt-0.5">Upload a CT scan slice on the left and click &quot;Analyze Brain CT Scan&quot;</p>
+                    <p className="text-[11px] text-slate-500 dark:text-gray-400 mt-0.5">Upload a CT scan slice on the left and click &quot;Analyze Brain CT Scan&quot;</p>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Model Confidence Certainty Progress Meter */}
-            <div className="space-y-2 mb-3.5 p-3 rounded-xl bg-gray-50 dark:bg-[#252933]/80 border border-gray-200 dark:border-[#363d4c] shadow-xs">
+            <div className="space-y-1.5 mb-2.5 p-2.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700/60 shadow-xs">
               <div className="flex justify-between text-xs sm:text-sm font-bold text-slate-800 dark:text-gray-200">
                 <span>Model Confidence</span>
                 <span className="font-mono text-orange-600 dark:text-orange-400 font-black text-sm sm:text-base">
                   {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
                 </span>
               </div>
-              <div className="h-3 w-full bg-gray-200 dark:bg-[#363c4a] rounded-full overflow-hidden border border-gray-300 dark:border-[#434b5c] shadow-inner">
+              <div className="h-2.5 w-full bg-gray-200 dark:bg-gray-700/60 rounded-full overflow-hidden border border-gray-300 dark:border-gray-700 shadow-inner">
                 <div
                   className={`h-full transition-all duration-500 ${
                     result?.detected
@@ -1369,12 +1369,12 @@ be verified by a certified healthcare professional.
             </div>
 
             {/* Key Clinical Metrics */}
-            <div className="space-y-2.5 text-xs sm:text-sm bg-gray-50 dark:bg-[#252933]/80 border border-gray-200 dark:border-[#363d4c] rounded-xl p-3.5 text-slate-700 dark:text-gray-200 mb-4 shadow-xs">
-              <div className="flex justify-between py-1 border-b border-gray-200/70 dark:border-[#363d4c]/60">
+            <div className="space-y-2 text-xs sm:text-sm bg-gray-50/70 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700/60 rounded-xl p-3 text-slate-700 dark:text-gray-200 mb-3 shadow-xs">
+              <div className="flex justify-between py-0.5 border-b border-gray-200/70 dark:border-gray-700/50">
                 <span className="text-slate-500 dark:text-gray-400 font-medium">Neural Model:</span>
                 <span className="font-bold text-slate-900 dark:text-gray-100">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-gray-200/70 dark:border-[#363d4c]/60">
+              <div className="flex justify-between py-0.5 border-b border-gray-200/70 dark:border-gray-700/50">
                 <span className="text-slate-500 dark:text-gray-400 font-medium">Lesion ROI Volume:</span>
                 <span className="font-mono text-orange-600 dark:text-orange-400 font-bold">{result ? `${result.lesionArea ?? 0}%` : "—"}</span>
               </div>
@@ -1385,11 +1385,11 @@ be verified by a certified healthcare professional.
             </div>
 
             {/* Clinical Action Buttons */}
-            <div className="space-y-2 mt-auto pt-2.5 border-t border-gray-200 dark:border-[#2d333f]">
+            <div className="space-y-2 mt-auto pt-2 border-t border-gray-200/70 dark:border-gray-800/70">
               <button
                 onClick={copySummaryToClipboard}
                 disabled={!result}
-                className="btn-vibrant-subtle w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-bold rounded-lg flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all active:scale-95"
+                className="btn-vibrant-subtle w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all active:scale-95"
                 title="Copy clinical diagnostic summary to clipboard"
               >
                 {copiedToast ? <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="h-4 w-4 text-slate-600 dark:text-gray-400" />}
@@ -1399,7 +1399,7 @@ be verified by a certified healthcare professional.
               <button
                 onClick={exportAnnotatedImage}
                 disabled={!imageUrl}
-                className="btn-vibrant-subtle w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-bold rounded-lg flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all active:scale-95"
+                className="btn-vibrant-subtle w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all active:scale-95"
                 title="Export high-resolution annotated image composite with lesion mask overlay"
               >
                 {exportedStatus === "image" ? (
@@ -1413,7 +1413,7 @@ be verified by a certified healthcare professional.
               <button
                 onClick={exportReportText}
                 disabled={!result}
-                className="btn-vibrant-emerald w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold rounded-lg flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all active:scale-95"
+                className="btn-vibrant-emerald w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all active:scale-95"
                 title="Download formal clinical diagnostic summary text report"
               >
                 {exportedStatus === "report" ? (
@@ -1429,7 +1429,7 @@ be verified by a certified healthcare professional.
       </main>
 
       {/* 3. Luxury Enterprise Hospital Footer */}
-      <footer className="h-5 flex items-center justify-between text-xs font-medium text-gray-500 px-2 shrink-0">
+      <footer className="h-5 flex items-center justify-between text-xs font-medium text-gray-500 px-2 shrink-0 border-t border-gray-200/50 dark:border-gray-800/50 pt-1">
         <span className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]" />
           NU Stroke Scan Enterprise v1.2 · Naresuan University Neuro-Imaging Research Center
