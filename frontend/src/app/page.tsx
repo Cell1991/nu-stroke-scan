@@ -635,33 +635,33 @@ be verified by a certified healthcare professional.
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-34 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-3 ${
+              className={`h-48 xl:h-56 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-4 ${
                 isDragging
                   ? "border-sky-400 bg-sky-950/40 scale-[1.01]"
                   : "border-slate-700/80 hover:border-sky-400/80 bg-slate-900/50 hover:bg-slate-900/80 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
-                <div className="flex flex-col items-center gap-2 px-2 w-full">
+                <div className="flex flex-col items-center gap-2.5 px-2 w-full">
                   <div className="relative">
-                    <img src={imageUrl} alt="Loaded Scan" className="h-14 w-14 object-contain rounded-xl border border-slate-700 bg-black shadow-md" />
-                    <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-[10px] text-white font-bold">✓</span>
+                    <img src={imageUrl} alt="Loaded Scan" className="h-20 w-20 xl:h-24 xl:w-24 object-contain rounded-xl border border-slate-700 bg-black shadow-md" />
+                    <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-xs text-white font-bold">✓</span>
                   </div>
                   <div className="text-center w-full">
-                    <p className="text-sm font-bold text-white truncate max-w-[210px] mx-auto">{file?.name ?? "Loaded Slice"}</p>
-                    <p className="text-xs font-medium text-sky-400 mt-0.5">Click or drag new slice to replace</p>
+                    <p className="text-sm font-bold text-white truncate max-w-[220px] mx-auto">{file?.name ?? "Loaded Slice"}</p>
+                    <p className="text-xs font-medium text-sky-400 mt-1">Click or drag new slice to replace</p>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-1.5 py-0.5">
-                  <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
-                    <UploadCloud className="h-5 w-5" />
+                <div className="space-y-3 py-1">
+                  <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
+                    <UploadCloud className="h-6 w-6" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-slate-100">Drop Brain CT or Browse</p>
-                    <p className="text-xs text-slate-400 font-medium mt-0.5">Supports DICOM, NIfTI, PNG, JPG (Max 25MB)</p>
+                    <p className="text-xs text-slate-400 font-medium mt-1">Supports DICOM, NIfTI, PNG, JPG (Max 25MB)</p>
                   </div>
-                  <span className="inline-block px-3.5 py-1 rounded-lg bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-xs font-semibold shadow-sm transition-colors mt-1">
+                  <span className="inline-block px-4 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-xs font-semibold shadow-sm transition-colors">
                     Select File
                   </span>
                 </div>
