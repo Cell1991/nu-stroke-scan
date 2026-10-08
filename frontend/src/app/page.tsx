@@ -699,6 +699,89 @@ export default function HomePage() {
     recomputeThreshold(50);
   }
 
+  function loadSampleCase(type: "stroke" | "normal") {
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Dark DICOM background
+    ctx.fillStyle = "#0a0c10";
+    ctx.fillRect(0, 0, 512, 512);
+
+    // Skull outer table
+    ctx.beginPath();
+    ctx.ellipse(256, 256, 178, 215, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#f1f5f9";
+    ctx.fill();
+
+    // Skull diploe / inner margin
+    ctx.beginPath();
+    ctx.ellipse(256, 256, 168, 205, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#cbd5e1";
+    ctx.fill();
+
+    // Brain parenchyma (soft tissue)
+    ctx.beginPath();
+    ctx.ellipse(256, 256, 160, 196, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#475569";
+    ctx.fill();
+
+    // Interhemispheric fissure
+    ctx.strokeStyle = "#1e293b";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(256, 68);
+    ctx.lineTo(256, 444);
+    ctx.stroke();
+
+    // Lateral Ventricles (CSF hypodense)
+    ctx.fillStyle = "#0f172a";
+    ctx.beginPath();
+    ctx.ellipse(236, 240, 14, 44, -0.15, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(276, 240, 14, 44, 0.15, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Basal ganglia / internal capsule subtle shading
+    ctx.fillStyle = "#334155";
+    ctx.beginPath();
+    ctx.ellipse(215, 255, 22, 35, -0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(297, 255, 22, 35, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (type === "stroke") {
+      // Right MCA territory acute hypodensity / infarction
+      const grad = ctx.createRadialGradient(188, 250, 10, 188, 250, 65);
+      grad.addColorStop(0, "#0f172a");
+      grad.addColorStop(0.65, "#1e293b");
+      grad.addColorStop(1, "#475569");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(188, 250, 52, 44, 0.25, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Subtle sulcal effacement
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(170, 230, 20, 0, Math.PI);
+      ctx.stroke();
+    }
+
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const name = type === "stroke" ? "Sample_Acute_MCA_Infarct.png" : "Sample_Normal_Brain_CT.png";
+        const sampleFile = new File([blob], name, { type: "image/png" });
+        handleFile(sampleFile);
+      }
+    }, "image/png");
+  }
+
   function copySummaryToClipboard() {
     if (!result) return;
     const summary = `NU STROKE SCAN REPORT
@@ -798,10 +881,10 @@ be verified by a certified healthcare professional.
   }
 
   return (
-    <div className="h-screen w-screen bg-[#f0f4f9] text-slate-900 flex flex-col overflow-hidden font-sans p-2.5 gap-2.5 select-none medical-vibrant-backdrop">
+    <div className="h-screen w-screen bg-[#f0f4f9] text-slate-900 flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none medical-vibrant-backdrop">
       
       {/* 1. Ultra-Clean Medical Enterprise Navigation Deck */}
-      <header className="h-14 glass-panel-vibrant rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
+      <header className="h-13 glass-panel-vibrant rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
         {/* Hospital Brand & Node Badge */}
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center">
@@ -809,7 +892,7 @@ be verified by a certified healthcare professional.
             <img
               src="/brand_icon_trans.png"
               alt="NU Stroke Scan Logo"
-              className="h-10 w-10 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.4)] select-none pointer-events-none relative z-10"
+              className="h-9 w-9 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.4)] select-none pointer-events-none relative z-10"
             />
           </div>
           <div>
@@ -828,7 +911,7 @@ be verified by a certified healthcare professional.
         </div>
 
         {/* Live PACS Telemetry & Node HUD with Live Animated ECG */}
-        <div className="hidden lg:flex items-center gap-3.5 glass-panel-subtle bg-slate-50/90 px-3.5 py-1.5 rounded-lg text-xs font-mono border border-slate-200/90 shadow-xs">
+        <div className="hidden lg:flex items-center gap-3.5 glass-panel-subtle bg-slate-50/90 px-3.5 py-1 rounded-lg text-xs font-mono border border-slate-200/90 shadow-xs">
           <div className="flex items-center gap-2">
             <ECGMonitor />
             <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
@@ -846,35 +929,268 @@ be verified by a certified healthcare professional.
           </div>
         </div>
 
-        {/* Model Architecture Selector Dock */}
-        <div className="flex items-center glass-panel-subtle bg-slate-100/90 p-1 rounded-lg border border-slate-200 shadow-inner relative gap-1">
-          {MODELS.map((m) => {
-            const isSelected = modelId === m.id;
-            return (
-              <button
-                key={m.id}
-                onClick={() => {
-                  setModelId(m.id);
-                  setResult(null);
-                }}
-                className={`relative px-3.5 py-1.5 rounded-md text-xs font-bold transition-all duration-200 cursor-pointer select-none z-10 active:scale-95 ${
-                  isSelected
-                    ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/30 border border-orange-400"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
-                }`}
-              >
-                <span>{m.name}</span>
-              </button>
-            );
-          })}
+        {/* Quick Help / Info Pill */}
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+          <span className="hidden sm:inline-block px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[11px]">
+            LEFT-TO-RIGHT WORKFLOW
+          </span>
         </div>
       </header>
 
-      {/* 2. Main Workspace Layout */}
+      {/* 2. Main Workspace Layout: LEFT (Controls & Ingestion) -> RIGHT (DICOM Inspection & Diagnosis) */}
       <main className="flex-1 min-h-0 grid grid-cols-12 gap-2.5 overflow-hidden">
         
-        {/* Left/Center Viewport Column (8 Cols) */}
+        {/* ========================================================================= */}
+        {/* LEFT COLUMN (4 Cols): STEP 1 INGESTION + STEP 2 INFERENCE + STEP 3 SLIDERS */}
+        {/* ========================================================================= */}
+        <section className="col-span-4 flex flex-col gap-2 min-h-0 overflow-y-auto pr-0.5">
+          
+          {/* STEP 1: Case Ingestion & Upload */}
+          <div className="glass-panel-vibrant rounded-xl p-3 flex flex-col shrink-0 shadow-sm border border-slate-200/90 bg-white/95 relative">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-mono font-bold tracking-wider text-orange-600 uppercase flex items-center gap-1">
+                <UploadCloud className="h-3.5 w-3.5" />
+                Step 01 · Patient CT Ingestion
+              </span>
+              {file && (
+                <button
+                  onClick={() => {
+                    setFile(null);
+                    setImageUrl(null);
+                    setResult(null);
+                  }}
+                  className="text-[10px] font-bold text-red-600 hover:text-red-700 cursor-pointer"
+                >
+                  Clear Scan
+                </button>
+              )}
+            </div>
+
+            {/* Drag & Drop Box */}
+            <div
+              onClick={() => inputRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
+              onDrop={handleDrop}
+              className={`h-20 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden ${
+                isDragging
+                  ? "border-orange-500 bg-orange-50/90 scale-[1.01] shadow-md shadow-orange-500/20"
+                  : "border-slate-300 hover:border-orange-400 bg-slate-50/90 hover:bg-slate-100/90 active:scale-[0.99]"
+              }`}
+            >
+              {imageUrl ? (
+                <div className="flex items-center gap-2.5 px-3 w-full">
+                  <img src={imageUrl} alt="Thumbnail" className="h-12 w-12 object-contain rounded-lg border border-slate-200 bg-black shadow-sm" />
+                  <div className="text-left flex-1 min-w-0">
+                    <p className="text-xs font-bold text-slate-900 truncate">{file?.name ?? "Loaded NCCT Slice"}</p>
+                    <p className="text-[10px] font-medium text-orange-600 mt-0.5">Click or drag to replace scan</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-0.5">
+                  <UploadCloud className="h-5 w-5 mx-auto text-orange-500 animate-bounce" />
+                  <p className="text-xs font-bold text-slate-800">Drop CT Scan or Click to Browse</p>
+                  <p className="text-[10px] text-slate-500 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
+                </div>
+              )}
+            </div>
+
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleFile(f);
+              }}
+              className="hidden"
+            />
+
+            {/* Quick-Load Sample Scans */}
+            <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5">
+              <span className="text-[10px] font-bold text-slate-500">Quick Samples:</span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => loadSampleCase("stroke")}
+                  className="px-2 py-0.5 rounded bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 text-[10px] font-bold cursor-pointer transition-all active:scale-95"
+                  title="Load sample case with acute MCA stroke infarction"
+                >
+                  ⚡ Sample: MCA Stroke
+                </button>
+                <button
+                  onClick={() => loadSampleCase("normal")}
+                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[10px] font-bold cursor-pointer transition-all active:scale-95"
+                  title="Load normal brain CT scan without acute lesions"
+                >
+                  ✓ Normal CT
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <div className="mt-2 p-2 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 shadow-xs">
+                <AlertTriangle className="h-4 w-4 shrink-0 text-red-500" />
+                <span className="truncate">{error}</span>
+              </div>
+            )}
+          </div>
+
+          {/* STEP 2: Neural Model Architecture & Primary Analysis Action */}
+          <div className="glass-panel-vibrant rounded-xl p-3 flex flex-col shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
+            <span className="text-[10px] font-mono font-bold tracking-wider text-orange-600 uppercase flex items-center gap-1 mb-1.5">
+              <Brain className="h-3.5 w-3.5" />
+              Step 02 · Neural Model & Inference
+            </span>
+
+            {/* Model Architecture Selector */}
+            <div className="grid grid-cols-3 gap-1.5 p-1 rounded-lg bg-slate-100 border border-slate-200 mb-2">
+              {MODELS.map((m) => {
+                const isSelected = modelId === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => {
+                      setModelId(m.id);
+                      setResult(null);
+                    }}
+                    className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all text-center cursor-pointer select-none ${
+                      isSelected
+                        ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-sm border border-orange-400 font-extrabold"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+                    }`}
+                  >
+                    <div>{m.name}</div>
+                    <div className={`text-[8px] font-normal truncate ${isSelected ? "text-orange-100" : "text-slate-400"}`}>
+                      {m.desc}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Primary Action Button - Luminous Gradient Enterprise CTA */}
+            <button
+              onClick={runInference}
+              disabled={isScanning || !imageUrl}
+              className={`relative overflow-hidden h-11 w-full rounded-xl font-black text-xs uppercase tracking-wider text-white transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
+                isScanning || !imageUrl
+                  ? "bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed shadow-none"
+                  : "btn-vibrant-primary shadow-lg shadow-orange-500/25"
+              }`}
+            >
+              {isScanning ? (
+                <div className="flex items-center justify-center gap-2">
+                  <RefreshCw className="h-4 w-4 animate-spin text-white" />
+                  <span>ANALYZING BRAIN CT SCAN...</span>
+                </div>
+              ) : (
+                <span className="text-center drop-shadow flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-amber-200 fill-amber-300" />
+                  ANALYZE BRAIN CT SCAN
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* STEP 3: DICOM Display Calibration Sliders (Essential Controls) */}
+          <div className="glass-panel-vibrant rounded-xl p-3 flex-1 flex flex-col min-h-0 shadow-sm border border-slate-200/90 bg-white/95">
+            <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-slate-200 shrink-0">
+              <span className="text-[10px] font-mono font-bold tracking-wider text-orange-600 uppercase flex items-center gap-1">
+                <Sun className="h-3.5 w-3.5" />
+                Step 03 · DICOM Calibration
+              </span>
+              
+              {/* Window Presets */}
+              <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-md border border-slate-200 text-[10px] font-bold text-slate-600">
+                <button onClick={() => applyPreset("standard")} className="px-1.5 py-0.5 hover:bg-white hover:text-orange-600 rounded cursor-pointer transition-all">Brain</button>
+                <button onClick={() => applyPreset("stroke")} className="px-1.5 py-0.5 hover:bg-white hover:text-orange-600 rounded cursor-pointer transition-all">Stroke</button>
+                <button onClick={() => applyPreset("bone")} className="px-1.5 py-0.5 hover:bg-white hover:text-orange-600 rounded cursor-pointer transition-all">Bone</button>
+              </div>
+            </div>
+
+            {/* Sliders Grid */}
+            <div className="space-y-2 flex-1 overflow-y-auto pr-0.5">
+              {/* 1. Brightness */}
+              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                    <Sun className="h-3.5 w-3.5 text-orange-500" />
+                    Brightness
+                  </span>
+                  <button
+                    onClick={() => setBrightness(100)}
+                    title="Click to reset to 100%"
+                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
+                  >
+                    {brightness}%
+                  </button>
+                </div>
+                <SmoothSlider value={brightness} onChange={setBrightness} min={50} max={150} />
+              </div>
+
+              {/* 2. Contrast */}
+              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                    <HalfCircle className="h-3.5 w-3.5 text-orange-500" />
+                    Contrast
+                  </span>
+                  <button
+                    onClick={() => setContrast(100)}
+                    title="Click to reset to 100%"
+                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
+                  >
+                    {contrast}%
+                  </button>
+                </div>
+                <SmoothSlider value={contrast} onChange={setContrast} min={50} max={200} />
+              </div>
+
+              {/* 3. Mask Opacity */}
+              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                    <Layers className="h-3.5 w-3.5 text-orange-500" />
+                    Lesion Mask Opacity
+                  </span>
+                  <button
+                    onClick={() => setMaskOpacity(85)}
+                    title="Click to reset to 85%"
+                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
+                  >
+                    {maskOpacity}%
+                  </button>
+                </div>
+                <SmoothSlider value={maskOpacity} onChange={setMaskOpacity} min={0} max={100} />
+              </div>
+
+              {/* 4. Sensitivity Threshold */}
+              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
+                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                    <Gauge className="h-3.5 w-3.5 text-orange-500" />
+                    Sensitivity Threshold
+                  </span>
+                  <button
+                    onClick={() => recomputeThreshold(50)}
+                    title="Click to reset to 50%"
+                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
+                  >
+                    {threshold}%
+                  </button>
+                </div>
+                <SmoothSlider value={threshold} onChange={recomputeThreshold} min={10} max={95} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* RIGHT COLUMN (8 Cols): STEP 4 VIEWPORTS + STEP 5 DIAGNOSTIC & CLINICAL EXPORT */}
+        {/* ========================================================================= */}
         <section className="col-span-8 flex flex-col gap-2 min-h-0">
+          
+          {/* Main DICOM Viewport Card */}
           <div className="flex-1 min-h-0 glass-panel-vibrant rounded-xl p-3 flex flex-col shadow-sm relative border border-slate-200/90 bg-white/95">
             
             {/* Viewport Top Bar with Multi-Mode Tabs & Medical Tools */}
@@ -925,13 +1241,6 @@ be verified by a certified healthcare professional.
               {/* Viewport Interactive Tools */}
               <div className="flex items-center gap-1.5">
                 
-                {/* Clinical Window Presets */}
-                <div className="hidden xl:flex items-center gap-1 bg-slate-100 p-0.5 rounded-md border border-slate-200 text-[11px] font-bold text-slate-600">
-                  <button onClick={() => applyPreset("standard")} className="px-2 py-0.5 hover:bg-white hover:text-orange-600 rounded cursor-pointer transition-all">Brain</button>
-                  <button onClick={() => applyPreset("stroke")} className="px-2 py-0.5 hover:bg-white hover:text-orange-600 rounded cursor-pointer transition-all">Stroke</button>
-                  <button onClick={() => applyPreset("bone")} className="px-2 py-0.5 hover:bg-white hover:text-orange-600 rounded cursor-pointer transition-all">Bone</button>
-                </div>
-
                 {/* Zoom Controls Rect */}
                 <div className="flex items-center bg-slate-50 px-1 py-0.5 rounded-md border border-slate-200 shadow-xs">
                   <button
@@ -1045,7 +1354,7 @@ be verified by a certified healthcare professional.
                       <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
                         <Activity className="h-10 w-10 mx-auto text-orange-500/60 animate-pulse" />
                         <p className="text-xs font-bold text-slate-300">NO SCAN LOADED</p>
-                        <p className="text-[11px] text-slate-400">Upload an axial brain slice or pick a sample</p>
+                        <p className="text-[11px] text-slate-400">Upload an axial brain slice or pick a sample on the left</p>
                       </div>
                     )}
 
@@ -1355,288 +1664,119 @@ be verified by a certified healthcare professional.
                 </div>
               )}
             </div>
+          </div>
 
-            {/* Essential Controls Footer: Smooth Luxury Sliders with Click-to-Reset Badges */}
-            <div className="mt-2.5 pt-2 border-t border-slate-200 grid grid-cols-4 gap-2 shrink-0">
+          {/* STEP 5: Diagnostic Intelligence Summary & Action Deck */}
+          <div className="glass-panel-vibrant rounded-xl p-2.5 shrink-0 flex flex-col shadow-sm relative border border-slate-200/90 bg-white/95">
+            <div className="grid grid-cols-12 gap-3 items-center">
               
-              {/* 1. Brightness */}
-              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
-                    <Sun className="h-3.5 w-3.5 text-orange-500" />
-                    Brightness
-                  </span>
-                  <button
-                    onClick={() => setBrightness(100)}
-                    title="Click to reset to 100%"
-                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
-                  >
-                    {brightness}%
-                  </button>
-                </div>
-                <SmoothSlider value={brightness} onChange={setBrightness} min={50} max={150} />
-              </div>
-
-              {/* 2. Contrast */}
-              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
-                    <HalfCircle className="h-3.5 w-3.5 text-orange-500" />
-                    Contrast
-                  </span>
-                  <button
-                    onClick={() => setContrast(100)}
-                    title="Click to reset to 100%"
-                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
-                  >
-                    {contrast}%
-                  </button>
-                </div>
-                <SmoothSlider value={contrast} onChange={setContrast} min={50} max={200} />
-              </div>
-
-              {/* 3. Mask Opacity */}
-              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
-                    <Layers className="h-3.5 w-3.5 text-orange-500" />
-                    Mask Opacity
-                  </span>
-                  <button
-                    onClick={() => setMaskOpacity(85)}
-                    title="Click to reset to 85%"
-                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
-                  >
-                    {maskOpacity}%
-                  </button>
-                </div>
-                <SmoothSlider value={maskOpacity} onChange={setMaskOpacity} min={0} max={100} />
-              </div>
-
-              {/* 4. Sensitivity Threshold */}
-              <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50/90 flex flex-col justify-between border border-slate-200 hover:border-orange-300 transition-colors shadow-xs">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-0.5">
-                  <span className="flex items-center gap-1.5 text-slate-700 font-bold">
-                    <Gauge className="h-3.5 w-3.5 text-orange-500" />
-                    Threshold
-                  </span>
-                  <button
-                    onClick={() => recomputeThreshold(50)}
-                    title="Click to reset to 50%"
-                    className="px-1.5 py-0.5 rounded bg-orange-100/90 border border-orange-200 text-orange-700 font-mono text-[10px] font-bold cursor-pointer hover:bg-orange-200/90 transition-all active:scale-95"
-                  >
-                    {threshold}%
-                  </button>
-                </div>
-                <SmoothSlider value={threshold} onChange={recomputeThreshold} min={10} max={95} />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Right Sidebar: Upload, Diagnosis & Export (4 Cols) */}
-        <section className="col-span-4 flex flex-col gap-2.5 min-h-0">
-          
-          {/* Upload & Primary Action Card */}
-          <div className="glass-panel-vibrant rounded-xl p-3 flex flex-col shrink-0 shadow-sm relative overflow-hidden border border-slate-200/90 bg-white/95">
-            <div
-              onClick={() => inputRef.current?.click()}
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
-              onDrop={handleDrop}
-              className={`h-20 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden ${
-                isDragging
-                  ? "border-orange-500 bg-orange-50/90 scale-[1.01] shadow-md shadow-orange-500/20"
-                  : "border-slate-300 hover:border-orange-400 bg-slate-50/90 hover:bg-slate-100/90 active:scale-[0.99]"
-              }`}
-            >
-              {imageUrl ? (
-                <div className="flex items-center gap-3 px-3 w-full">
-                  <img src={imageUrl} alt="Thumbnail" className="h-12 w-12 object-contain rounded-lg border border-slate-200 bg-black shadow-md" />
-                  <div className="text-left flex-1 min-w-0">
-                    <p className="text-xs font-bold text-slate-900 truncate">{file?.name ?? "Loaded NCCT Slice"}</p>
-                    <p className="text-[10px] font-medium text-orange-600 mt-0.5">Click or drag to replace scan</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-0.5">
-                  <UploadCloud className="h-5 w-5 mx-auto text-orange-500 animate-bounce" />
-                  <p className="text-xs font-bold text-slate-800">Drop CT Scan or Click to Browse</p>
-                  <p className="text-[10px] text-slate-500 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
-                </div>
-              )}
-            </div>
-
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) handleFile(f);
-              }}
-              className="hidden"
-            />
-
-            {error && (
-              <div className="mt-2 p-2 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 shadow-xs">
-                <AlertTriangle className="h-4 w-4 shrink-0 text-red-500" />
-                <span className="truncate">{error}</span>
-              </div>
-            )}
-
-            {/* Primary Action Button - Luminous Gradient Enterprise CTA */}
-            <button
-              onClick={runInference}
-              disabled={isScanning || !imageUrl}
-              className={`relative overflow-hidden mt-2.5 h-11 w-full rounded-xl font-black text-xs uppercase tracking-wider text-white transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
-                isScanning || !imageUrl
-                  ? "bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed shadow-none"
-                  : "btn-vibrant-primary shadow-lg shadow-orange-500/25"
-              }`}
-            >
-              {isScanning ? (
-                <div className="flex items-center justify-center gap-2">
-                  <RefreshCw className="h-4 w-4 animate-spin text-white" />
-                  <span>ANALYZING AXIAL BRAIN CT...</span>
-                </div>
-              ) : (
-                <span className="text-center drop-shadow flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-amber-200 fill-amber-300" />
-                  ANALYZE BRAIN CT SCAN
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Diagnostic Intelligence Summary Card */}
-          <div className="glass-panel-vibrant rounded-xl p-3 flex-1 flex flex-col min-h-0 shadow-sm relative border border-slate-200/90 bg-white/95">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 pb-1.5 border-b border-slate-200 flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-slate-900 font-extrabold">
-                <ShieldCheck className="h-4 w-4 text-orange-500" />
-                Diagnostic Assessment
-              </span>
-              <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-            </h3>
-
-            {/* Outcome Banner */}
-            <div className="mb-2">
-              {result ? (
-                result.detected ? (
-                  <div className="p-2.5 rounded-xl bg-red-50 border-2 border-red-400 text-red-900 space-y-0.5 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <AlertTriangle className="h-4 w-4 text-red-600 shrink-0 animate-pulse" />
-                        <span className="font-extrabold text-xs tracking-tight text-red-700">STROKE LESION DETECTED</span>
+              {/* Outcome Banner (4 cols) */}
+              <div className="col-span-5">
+                {result ? (
+                  result.detected ? (
+                    <div className="p-2 rounded-xl bg-red-50 border-2 border-red-400 text-red-900 space-y-0.5 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <AlertTriangle className="h-4 w-4 text-red-600 shrink-0 animate-pulse" />
+                          <span className="font-extrabold text-xs tracking-tight text-red-700">STROKE LESION DETECTED</span>
+                        </div>
+                        <span className="px-2 py-0.5 text-[9px] font-mono font-extrabold rounded bg-red-600 text-white shadow-xs">
+                          POSITIVE
+                        </span>
                       </div>
-                      <span className="px-2 py-0.5 text-[9px] font-mono font-extrabold rounded bg-red-600 text-white shadow-xs">
-                        POSITIVE
-                      </span>
+                      <p className="text-[11px] font-bold text-red-800 truncate">{result.label}</p>
                     </div>
-                    <p className="text-xs font-bold text-red-800">{result.label}</p>
-                    <p className="text-[10px] text-slate-600 font-medium">Acute ischemic infarction identified above threshold.</p>
-                  </div>
-                ) : (
-                  <div className="p-2.5 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-900 space-y-0.5 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                        <span className="font-extrabold text-xs tracking-tight text-emerald-700">NO ACUTE LESION DETECTED</span>
+                  ) : (
+                    <div className="p-2 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-900 space-y-0.5 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                          <span className="font-extrabold text-xs tracking-tight text-emerald-700">NO ACUTE LESION DETECTED</span>
+                        </div>
+                        <span className="px-2 py-0.5 text-[9px] font-mono font-extrabold rounded bg-emerald-600 text-white shadow-xs">
+                          NEGATIVE
+                        </span>
                       </div>
-                      <span className="px-2 py-0.5 text-[9px] font-mono font-extrabold rounded bg-emerald-600 text-white shadow-xs">
-                        NEGATIVE
-                      </span>
+                      <p className="text-[11px] font-bold text-emerald-800 truncate">{result.label}</p>
                     </div>
-                    <p className="text-xs font-bold text-emerald-800">{result.label}</p>
-                    <p className="text-[10px] text-slate-600 font-medium">No acute ischemic lesion detected above sensitivity threshold.</p>
+                  )
+                ) : (
+                  <div className="p-2 rounded-xl glass-panel-subtle bg-slate-50 border border-slate-200 flex items-center gap-2 shadow-xs">
+                    <Activity className="h-5 w-5 text-orange-500 shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold text-slate-800">Neural Engine Ready</div>
+                      <p className="text-[10px] text-slate-500">Upload CT scan on the left & click Analyze</p>
+                    </div>
                   </div>
-                )
-              ) : (
-                <div className="p-2.5 rounded-xl glass-panel-subtle bg-slate-50 border border-slate-200 text-center space-y-0.5 shadow-xs">
-                  <div className="flex items-center justify-center gap-1 text-orange-600 text-xs font-bold">
-                    <Activity className="h-4 w-4" />
-                    <span>Neural Engine Ready</span>
-                  </div>
-                  <p className="text-[10px] text-slate-500">Load CT scan slice and click &quot;Analyze Brain CT Scan&quot;</p>
+                )}
+              </div>
+
+              {/* Confidence & Metrics (4 cols) */}
+              <div className="col-span-4 flex flex-col justify-center gap-1.5 px-2 border-x border-slate-200">
+                <div className="flex justify-between text-xs font-bold text-slate-800">
+                  <span className="text-[11px]">Model Confidence:</span>
+                  <span className="font-mono text-orange-600 font-black text-xs">
+                    {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
+                  </span>
                 </div>
-              )}
-            </div>
-
-            {/* Confidence Certainty Meter */}
-            <div className="space-y-1 mb-2">
-              <div className="flex justify-between text-xs font-bold text-slate-800">
-                <span>Model Confidence Certainty</span>
-                <span className="font-mono text-orange-600 font-black text-xs">
-                  {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
-                </span>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-slate-300 shadow-inner">
+                  <div
+                    className={`h-full transition-all duration-500 ${
+                      result?.detected
+                        ? "bg-gradient-to-r from-amber-400 via-rose-500 to-red-600 shadow-sm"
+                        : "bg-gradient-to-r from-orange-400 via-amber-400 to-emerald-500 shadow-sm"
+                    }`}
+                    style={{ width: result ? `${result.confidence * 100}%` : "0%" }}
+                  />
+                </div>
+                <div className="flex items-center justify-between text-[10px] text-slate-600 font-semibold">
+                  <span>ROI: <b className="text-orange-600 font-mono">{result ? `${result.lesionArea ?? 0}%` : "—"}</b></span>
+                  <span>Model: <b className="text-slate-800">{MODELS.find((m) => m.id === modelId)?.name}</b></span>
+                  <span>Cutoff: <b className="text-slate-800 font-mono">{threshold}%</b></span>
+                </div>
               </div>
-              <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-slate-300 shadow-inner">
-                <div
-                  className={`h-full transition-all duration-500 ${
-                    result?.detected
-                      ? "bg-gradient-to-r from-amber-400 via-rose-500 to-red-600 shadow-sm"
-                      : "bg-gradient-to-r from-orange-400 via-amber-400 to-emerald-500 shadow-sm"
-                  }`}
-                  style={{ width: result ? `${result.confidence * 100}%` : "0%" }}
-                />
-              </div>
-            </div>
 
-            {/* Key Metrics Table */}
-            <div className="space-y-1 text-xs border-t border-slate-200 pt-2 text-slate-700">
-              <div className="flex justify-between py-0.5 border-b border-slate-100">
-                <span className="text-slate-500">Neural Architecture:</span>
-                <span className="font-bold text-slate-900">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
-              </div>
-              <div className="flex justify-between py-0.5 border-b border-slate-100">
-                <span className="text-slate-500">Lesion ROI Volume:</span>
-                <span className="font-mono text-orange-600 font-bold">{result ? `${result.lesionArea ?? 0}%` : "—"}</span>
-              </div>
-              <div className="flex justify-between py-0.5">
-                <span className="text-slate-500">Sensitivity Threshold:</span>
-                <span className="font-mono text-slate-900 font-bold">{threshold}%</span>
-              </div>
-            </div>
+              {/* Action Buttons (3 cols) */}
+              <div className="col-span-3 flex items-center gap-1.5">
+                <button
+                  onClick={copySummaryToClipboard}
+                  disabled={!result}
+                  className="btn-vibrant-subtle flex-1 h-9 disabled:opacity-30 disabled:cursor-not-allowed text-[11px] font-bold rounded-lg flex flex-col items-center justify-center cursor-pointer shadow-xs transition-all active:scale-95"
+                  title="Copy clinical diagnostic summary to clipboard"
+                >
+                  {copiedToast ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-slate-600" />}
+                  <span className="text-[9px]">{copiedToast ? "Copied!" : "Summary"}</span>
+                </button>
 
-            {/* Clinical Export & Copy Actions */}
-            <div className="grid grid-cols-3 gap-1.5 mt-auto pt-2 border-t border-slate-200">
-              <button
-                onClick={copySummaryToClipboard}
-                disabled={!result}
-                className="btn-vibrant-subtle h-8 disabled:opacity-30 disabled:cursor-not-allowed text-[11px] font-bold rounded-lg flex items-center justify-center gap-1 cursor-pointer shadow-xs transition-all active:scale-95"
-                title="Copy clinical diagnostic summary to clipboard"
-              >
-                {copiedToast ? <Check className="h-3 w-3 text-emerald-600" /> : <Copy className="h-3 w-3 text-slate-600" />}
-                {copiedToast ? "Copied!" : "Summary"}
-              </button>
+                <button
+                  onClick={exportAnnotatedImage}
+                  disabled={!imageUrl}
+                  className="btn-vibrant-subtle flex-1 h-9 disabled:opacity-30 disabled:cursor-not-allowed text-[11px] font-bold rounded-lg flex flex-col items-center justify-center cursor-pointer shadow-xs transition-all active:scale-95"
+                  title="Export high-resolution annotated image composite with lesion mask overlay"
+                >
+                  {exportedStatus === "image" ? (
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                  ) : (
+                    <Download className="h-3.5 w-3.5 text-orange-500" />
+                  )}
+                  <span className="text-[9px]">{exportedStatus === "image" ? "Exported!" : "Image"}</span>
+                </button>
 
-              <button
-                onClick={exportAnnotatedImage}
-                disabled={!imageUrl}
-                className="btn-vibrant-subtle h-8 disabled:opacity-30 disabled:cursor-not-allowed text-[11px] font-bold rounded-lg flex items-center justify-center gap-1 cursor-pointer shadow-xs transition-all active:scale-95"
-                title="Export high-resolution annotated image composite with lesion mask overlay"
-              >
-                {exportedStatus === "image" ? (
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                ) : (
-                  <Download className="h-3 w-3 text-orange-500" />
-                )}
-                {exportedStatus === "image" ? "Exported!" : "Image"}
-              </button>
+                <button
+                  onClick={exportReportText}
+                  disabled={!result}
+                  className="btn-vibrant-emerald flex-1 h-9 disabled:opacity-30 disabled:cursor-not-allowed text-white text-[11px] font-bold rounded-lg flex flex-col items-center justify-center cursor-pointer shadow-xs transition-all active:scale-95"
+                  title="Download formal clinical diagnostic summary text report"
+                >
+                  {exportedStatus === "report" ? (
+                    <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                  ) : (
+                    <FileText className="h-3.5 w-3.5" />
+                  )}
+                  <span className="text-[9px]">{exportedStatus === "report" ? "Saved!" : "Report"}</span>
+                </button>
+              </div>
 
-              <button
-                onClick={exportReportText}
-                disabled={!result}
-                className="btn-vibrant-emerald h-8 disabled:opacity-30 disabled:cursor-not-allowed text-white text-[11px] font-bold rounded-lg flex items-center justify-center gap-1 cursor-pointer shadow-xs transition-all active:scale-95"
-                title="Download formal clinical diagnostic summary text report"
-              >
-                {exportedStatus === "report" ? (
-                  <CheckCircle2 className="h-3 w-3 text-white" />
-                ) : (
-                  <FileText className="h-3 w-3" />
-                )}
-                {exportedStatus === "report" ? "Saved!" : "Report"}
-              </button>
             </div>
           </div>
         </section>
