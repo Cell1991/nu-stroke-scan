@@ -31,6 +31,18 @@ import {
   ZoomOut,
 } from "lucide-react";
 
+type DiseaseClassification = {
+  predicted_class: string;
+  predicted_label: string;
+  confidence: number;
+  classes: Array<{
+    id: string;
+    label: string;
+    probability: number;
+    percentage: number;
+  }>;
+};
+
 type ScanResult = {
   label: string;
   confidence: number;
@@ -39,6 +51,7 @@ type ScanResult = {
   lesionArea?: number;
   modelLabel?: string;
   inputSize?: [number, number];
+  classification?: DiseaseClassification | null;
 };
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
@@ -447,6 +460,7 @@ export default function Home() {
         lesionArea: data.lesion_area ?? data.lesion_area_percentage ?? 0,
         modelLabel: data.model_label || MODELS.find((m) => m.id === modelId)?.name,
         inputSize: data.input_size || [512, 512],
+        classification: data.classification || null,
       });
       recomputeThreshold(threshold);
     } catch (err: unknown) {
@@ -513,14 +527,22 @@ export default function Home() {
 
   function copySummaryToClipboard() {
     if (!result || !file) return;
+    const clsSummary = result.classification
+      ? `Disease Classification: ${result.classification.predicted_label} (${(result.classification.confidence * 100).toFixed(1)}%)
+Class Probabilities:
+${result.classification.classes.map((c) => `  - ${c.label}: ${c.percentage}%`).join("\n")}`
+      : "Disease Classification: N/A";
+
     const summary = `=== NU STROKE SCAN CLINICAL ASSESSMENT ===
 Date/Time: ${new Date().toLocaleString()}
 Patient File: ${file.name}
 Model Architecture: ${result.modelLabel || MODELS.find((m) => m.id === modelId)?.name}
-Classification: ${result.label}
-Confidence: ${(result.confidence * 100).toFixed(1)}%
+Lesion Finding: ${result.label}
+Segmentation Confidence: ${(result.confidence * 100).toFixed(1)}%
 Lesion Volume (ROI): ${result.lesionArea ?? 0}%
-Sensitivity Threshold: ${threshold}%
+Sensitivity Cutoff: ${threshold}%
+------------------------------------------
+${clsSummary}
 ==========================================`;
 
     navigator.clipboard.writeText(summary);
@@ -530,15 +552,24 @@ Sensitivity Threshold: ${threshold}%
 
   function exportReportText() {
     if (!result || !file) return;
+    const clsReport = result.classification
+      ? `Primary Disease Classification: ${result.classification.predicted_label} (${(result.classification.confidence * 100).toFixed(1)}%)
+Probability Breakdown:
+${result.classification.classes.map((c) => `  - ${c.label}: ${c.percentage}%`).join("\n")}`
+      : "Primary Disease Classification: N/A";
+
     const reportText = `=====================================================
     NARESUAN UNIVERSITY HOSPITAL · NEURO-IMAGING CENTER
             STROKE AI CLINICAL DIAGNOSTIC REPORT
 =====================================================
 Timestamp: ${new Date().toISOString()}
-Clinical Decision Support Model: ${result.modelLabel || MODELS.find((m) => m.id === modelId)?.name}
-Diagnostic Finding: ${result.detected ? "ACUTE ISCHEMIC INFARCTION (POSITIVE)" : "NO ACUTE LESION (NEGATIVE)"}
+Segmentation Architecture: ${result.modelLabel || MODELS.find((m) => m.id === modelId)?.name}
+Lesion Segmentation Finding: ${result.detected ? "ACUTE LESION DETECTED (POSITIVE)" : "NO ACUTE LESION (NEGATIVE)"}
 -----------------------------------------------------
-Key Diagnostic Metrics:
+Multi-Class Disease Classification (MaxViT):
+${clsReport}
+-----------------------------------------------------
+Key Segmentation Metrics:
 - Neural Classification: ${result.label}
 - Confidence Certainty: ${(result.confidence * 100).toFixed(1)}%
 - Lesion Area (ROI Volume): ${result.lesionArea ?? 0}%
@@ -1223,33 +1254,47 @@ be verified by a certified healthcare professional.
               {/* Outcome Clinical Banner */}
               <div className="mb-3">
                 {result ? (
-                  result.detected ? (
+                  result.classification?.predicted_class === "hemorrhagic" ? (
                     <div className="p-3.5 rounded-xl bg-red-950/40 border-2 border-red-500 text-red-100 space-y-1.5 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
                           <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-red-200">STROKE DETECTED</span>
+                          <span className="font-extrabold text-xs tracking-tight text-red-200">HEMORRHAGIC STROKE</span>
                         </div>
                         <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-red-600 text-white shadow-sm">
+                          {(result.classification.confidence * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <p className="text-xs font-bold text-white">Acute Hemorrhage Detected</p>
+                      <p className="text-[11px] text-red-300/90 leading-tight">High-attenuation acute hemorrhagic lesion identified.</p>
+                    </div>
+                  ) : result.classification?.predicted_class === "ischemic" || result.detected ? (
+                    <div className="p-3.5 rounded-xl bg-amber-950/40 border-2 border-amber-500 text-amber-100 space-y-1.5 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
+                          <span className="font-extrabold text-xs tracking-tight text-amber-200">ISCHEMIC STROKE</span>
+                        </div>
+                        <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-amber-600 text-white shadow-sm">
                           POSITIVE
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-white">{result.label}</p>
-                      <p className="text-[11px] text-red-300/90 leading-tight">Acute ischemic infarction identified above threshold cutoff.</p>
+                      <p className="text-xs font-bold text-white">Acute Ischemic Infarction</p>
+                      <p className="text-[11px] text-amber-300/90 leading-tight">Low attenuation ischemic territory segmented by neural model.</p>
                     </div>
                   ) : (
                     <div className="p-3.5 rounded-xl bg-emerald-950/40 border-2 border-emerald-500 text-emerald-100 space-y-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
                           <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-emerald-200">NO ACUTE LESION</span>
+                          <span className="font-extrabold text-xs tracking-tight text-emerald-200">NORMAL HEAD CT</span>
                         </div>
                         <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-emerald-600 text-white shadow-sm">
                           NEGATIVE
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-white">{result.label}</p>
-                      <p className="text-[11px] text-emerald-300/90 leading-tight">No acute ischemic lesion detected above threshold cutoff.</p>
+                      <p className="text-xs font-bold text-white">No Acute Stroke Lesion</p>
+                      <p className="text-[11px] text-emerald-300/90 leading-tight">No acute infarction or hemorrhage observed above threshold cutoff.</p>
                     </div>
                   )
                 ) : (
@@ -1265,10 +1310,58 @@ be verified by a certified healthcare professional.
                 )}
               </div>
 
-              {/* Model Confidence Meter */}
+              {/* Multi-Class Disease Classification Breakdown (MaxViT) */}
+              {result?.classification && (
+                <div className="space-y-2 mb-3 p-3 rounded-xl bg-slate-900/60 border border-white/5">
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
+                    <span className="flex items-center gap-1.5 text-sky-400 font-bold">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      Disease Classification
+                    </span>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-400/20">
+                      {result.classification.predicted_label}
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 pt-1">
+                    {result.classification.classes.map((cls) => (
+                      <div key={cls.id} className="space-y-0.5">
+                        <div className="flex justify-between text-[11px] font-medium text-slate-300">
+                          <span className="flex items-center gap-1.5">
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                cls.id === "hemorrhagic"
+                                  ? "bg-red-400"
+                                  : cls.id === "ischemic"
+                                  ? "bg-amber-400"
+                                  : "bg-emerald-400"
+                              }`}
+                            />
+                            {cls.label}
+                          </span>
+                          <span className="font-mono text-slate-200 font-bold">{cls.percentage}%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full transition-all duration-300 ${
+                              cls.id === "hemorrhagic"
+                                ? "bg-red-500"
+                                : cls.id === "ischemic"
+                                ? "bg-amber-500"
+                                : "bg-emerald-500"
+                            }`}
+                            style={{ width: `${cls.percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Segmentation Model Confidence Meter */}
               <div className="space-y-1.5 mb-3 p-3 rounded-xl bg-slate-900/60 border border-white/5">
                 <div className="flex justify-between text-xs font-semibold text-slate-300">
-                  <span>Model Confidence</span>
+                  <span>Segmentation Confidence</span>
                   <span className="font-mono text-sky-400 font-bold text-xs sm:text-sm">
                     {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
                   </span>

@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     vcanet_checkpoint: str = "/checkpoints/vcanet_best.pth"
     dlka_checkpoint: str = "/checkpoints/dlka_best.pth"
     patcher_checkpoint: str = "/checkpoints/patcher_best.ckpt"
+    classification_checkpoint: str = "/checkpoints/classification_best.pth"
     model_threshold: float = 0.5
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
@@ -30,12 +31,14 @@ class Settings(BaseSettings):
             "vcanet": "vcanet_best.pth",
             "dlka": "dlka_best.pth",
             "patcher": "patcher_best.ckpt",
+            "classification": "classification_best.pth",
         }.get(model_id, "vcanet_best.pth")
 
         env_path = {
             "vcanet": self.vcanet_checkpoint,
             "dlka": self.dlka_checkpoint,
             "patcher": self.patcher_checkpoint,
+            "classification": self.classification_checkpoint,
         }.get(model_id, self.vcanet_checkpoint)
 
         candidates = [

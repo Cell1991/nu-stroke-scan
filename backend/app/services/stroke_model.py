@@ -98,6 +98,39 @@ def load_model(spec: ModelSpec, checkpoint_path: Path, device: torch.device) -> 
     return model
 
 
+CLASSIFICATION_CLASSES = [
+    {"id": "hemorrhagic", "label": "Hemorrhagic Stroke"},
+    {"id": "ischemic", "label": "Ischemic Stroke"},
+    {"id": "normal", "label": "Normal (No Stroke)"},
+]
+
+
+def load_classifier(checkpoint_path: Path, device: torch.device) -> nn.Module:
+    import timm
+
+    if not checkpoint_path.is_file():
+        raise RuntimeError(f"Classifier checkpoint not found: {checkpoint_path}")
+
+    model = timm.create_model("maxvit_tiny_tf_224", pretrained=False, num_classes=3)
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
+    sd = checkpoint.get("state_dict", checkpoint)
+    cleaned = strip_orig_mod_prefix(sd)
+    model.load_state_dict(cleaned, strict=True)
+    model.to(device).eval()
+    return model
+
+
+def prepare_image_for_classifier(image: Image.Image, device: torch.device) -> Tensor:
+    imagenet_mean = torch.tensor([0.485, 0.456, 0.406], device=device).view(1, 3, 1, 1)
+    imagenet_std = torch.tensor([0.229, 0.224, 0.225], device=device).view(1, 3, 1, 1)
+
+    grayscale = image.convert("L").resize((224, 224), Image.BILINEAR)
+    arr = np.asarray(grayscale, dtype=np.float32) / 255.0
+    tensor = torch.from_numpy(arr).float().to(device).unsqueeze(0).repeat(3, 1, 1).unsqueeze(0)
+    tensor = (tensor - imagenet_mean) / imagenet_std
+    return tensor
+
+
 def prepare_image(
     image: Image.Image,
     size: int,

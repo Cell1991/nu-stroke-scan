@@ -12,7 +12,14 @@ from fastapi import HTTPException, UploadFile
 from PIL import Image, UnidentifiedImageError
 
 from app.core.config import settings
-from app.services.stroke_model import MODEL_SPECS, load_model, prepare_image
+from app.services.stroke_model import (
+    CLASSIFICATION_CLASSES,
+    MODEL_SPECS,
+    load_classifier,
+    load_model,
+    prepare_image,
+    prepare_image_for_classifier,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +35,13 @@ def get_model(model_id: str):
     checkpoint_path = settings.resolve_checkpoint(model_id)
     logger.info("Loading model %s from %s", model_id, checkpoint_path)
     return load_model(spec, checkpoint_path, torch.device("cpu"))
+
+
+@lru_cache(maxsize=1)
+def get_classifier():
+    checkpoint_path = settings.resolve_checkpoint("classification")
+    logger.info("Loading disease classifier from %s", checkpoint_path)
+    return load_classifier(checkpoint_path, torch.device("cpu"))
 
 
 def _mask_to_rgba(
@@ -121,6 +135,38 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
     prob_pil.save(prob_buf, format="PNG")
     prob_b64 = base64.b64encode(prob_buf.getvalue()).decode("ascii")
 
+    # Multiclass Disease Type Classification (Hemorrhagic vs Ischemic vs Normal)
+    classification_data = None
+    try:
+        classifier = get_classifier()
+        cls_tensor = prepare_image_for_classifier(image, torch.device("cpu"))
+        with torch.inference_mode():
+            cls_logits = classifier(cls_tensor)[0]
+            cls_probs = cls_logits.softmax(dim=0).cpu().numpy().tolist()
+
+        top_idx = int(np.argmax(cls_probs))
+        top_class = CLASSIFICATION_CLASSES[top_idx]
+        classification_data = {
+            "predicted_class": top_class["id"],
+            "predicted_label": top_class["label"],
+            "confidence": round(float(cls_probs[top_idx]), 4),
+            "probabilities": {
+                c["id"]: round(float(p), 4)
+                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs)
+            },
+            "classes": [
+                {
+                    "id": c["id"],
+                    "label": c["label"],
+                    "probability": round(float(p), 4),
+                    "percentage": round(float(p) * 100.0, 1),
+                }
+                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs)
+            ],
+        }
+    except Exception as exc:
+        logger.warning("Classification inference bypassed or failed: %s", exc)
+
     return {
         "filename": upload.filename or "scan.png",
         "model": model_id,
@@ -139,4 +185,5 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         "mask_base64": mask_b64,
         "mask_png_base64": mask_b64,
         "prob_png_base64": prob_b64,
+        "classification": classification_data,
     }

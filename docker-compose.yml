@@ -26,6 +26,7 @@ services:
       VCANET_CHECKPOINT: ${VCANET_CHECKPOINT:-/checkpoints/vcanet_best.pth}
       DLKA_CHECKPOINT: ${DLKA_CHECKPOINT:-/checkpoints/dlka_best.pth}
       PATCHER_CHECKPOINT: ${PATCHER_CHECKPOINT:-/checkpoints/patcher_best.ckpt}
+      CLASSIFICATION_CHECKPOINT: ${CLASSIFICATION_CHECKPOINT:-/checkpoints/classification_best.pth}
       MODEL_THRESHOLD: ${MODEL_THRESHOLD:-0.5}
     volumes:
       - ./backend:/app
