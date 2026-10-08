@@ -194,35 +194,6 @@ function Sparkles({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function Split({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M8 19H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h3" />
-      <path d="M16 5h3c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2h-3" />
-      <line x1="12" x2="12" y1="2" y2="22" />
-    </svg>
-  );
-}
-
-function Columns({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <rect width="18" height="18" x="3" y="3" rx="2" />
-      <path d="M12 3v18" />
-    </svg>
-  );
-}
-
-function Maximize2({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <polyline points="15 3 21 3 21 9" />
-      <polyline points="9 21 3 21 3 15" />
-      <line x1="21" x2="14" y1="3" y2="10" />
-      <line x1="3" x2="10" y1="21" y2="14" />
-    </svg>
-  );
-}
 
 function Copy({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -357,8 +328,6 @@ export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
   const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
-  const wiperRef = useRef<HTMLDivElement>(null);
-  
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
@@ -368,12 +337,6 @@ export default function HomePage() {
   const [isDraggingViewport, setIsDraggingViewport] = useState(false);
   const [exportedStatus, setExportedStatus] = useState<string | null>(null);
   const [copiedToast, setCopiedToast] = useState(false);
-
-  // Viewport Modes: 'dual' | 'split' | 'theater'
-  const [viewportMode, setViewportMode] = useState<"dual" | "split" | "theater">("dual");
-  const [wiperPos, setWiperPos] = useState(50); // 0% to 100%
-  const [isDraggingWiper, setIsDraggingWiper] = useState(false);
-  const [theaterShowOverlay, setTheaterShowOverlay] = useState(true);
 
   // Model & Display Controls
   const [modelId, setModelId] = useState("vcanet");
@@ -394,7 +357,7 @@ export default function HomePage() {
     y: number;
     normX: number;
     normY: number;
-    target: "left" | "right" | "theater" | null;
+    target: "left" | "right" | null;
     scale: number;
     isZoomDragging: boolean;
   }>({
@@ -441,7 +404,7 @@ export default function HomePage() {
     }
   }
 
-  function handleViewportContextMenu(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right" | "theater") {
+  function handleViewportContextMenu(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
     e.preventDefault();
     if (!imageUrl) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -478,17 +441,10 @@ export default function HomePage() {
     dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
   }
 
-  function handleViewportMouseMove(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right" | "theater") {
+  function handleViewportMouseMove(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
-    if (isDraggingWiper && wiperRef.current) {
-      const wRect = wiperRef.current.getBoundingClientRect();
-      const pct = Math.max(5, Math.min(95, ((e.clientX - wRect.left) / wRect.width) * 100));
-      setWiperPos(pct);
-      return;
-    }
 
     if (loupe.active && loupe.target === target && loupe.isZoomDragging && loupeDragStartRef.current) {
       const dy = loupeDragStartRef.current.startY - e.clientY;
@@ -520,7 +476,6 @@ export default function HomePage() {
       setLoupe((prev) => ({ ...prev, isZoomDragging: false }));
     }
     setIsDraggingViewport(false);
-    setIsDraggingWiper(false);
     dragStartRef.current = null;
   }
 
@@ -710,89 +665,6 @@ export default function HomePage() {
     recomputeThreshold(50);
   }
 
-  function loadSampleCase(type: "stroke" | "normal") {
-    const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 512;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Dark DICOM background
-    ctx.fillStyle = "#0a0c10";
-    ctx.fillRect(0, 0, 512, 512);
-
-    // Skull outer table
-    ctx.beginPath();
-    ctx.ellipse(256, 256, 178, 215, 0, 0, Math.PI * 2);
-    ctx.fillStyle = "#f1f5f9";
-    ctx.fill();
-
-    // Skull diploe / inner margin
-    ctx.beginPath();
-    ctx.ellipse(256, 256, 168, 205, 0, 0, Math.PI * 2);
-    ctx.fillStyle = "#cbd5e1";
-    ctx.fill();
-
-    // Brain parenchyma (soft tissue)
-    ctx.beginPath();
-    ctx.ellipse(256, 256, 160, 196, 0, 0, Math.PI * 2);
-    ctx.fillStyle = "#475569";
-    ctx.fill();
-
-    // Interhemispheric fissure
-    ctx.strokeStyle = "#1e293b";
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    ctx.moveTo(256, 68);
-    ctx.lineTo(256, 444);
-    ctx.stroke();
-
-    // Lateral Ventricles (CSF hypodense)
-    ctx.fillStyle = "#0f172a";
-    ctx.beginPath();
-    ctx.ellipse(236, 240, 14, 44, -0.15, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(276, 240, 14, 44, 0.15, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Basal ganglia / internal capsule subtle shading
-    ctx.fillStyle = "#334155";
-    ctx.beginPath();
-    ctx.ellipse(215, 255, 22, 35, -0.2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(297, 255, 22, 35, 0.2, 0, Math.PI * 2);
-    ctx.fill();
-
-    if (type === "stroke") {
-      // Right MCA territory acute hypodensity / infarction
-      const grad = ctx.createRadialGradient(188, 250, 10, 188, 250, 65);
-      grad.addColorStop(0, "#0f172a");
-      grad.addColorStop(0.65, "#1e293b");
-      grad.addColorStop(1, "#475569");
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.ellipse(188, 250, 52, 44, 0.25, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Subtle sulcal effacement
-      ctx.strokeStyle = "#1e293b";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(170, 230, 20, 0, Math.PI);
-      ctx.stroke();
-    }
-
-    canvas.toBlob((blob) => {
-      if (blob) {
-        const name = type === "stroke" ? "Sample_Acute_MCA_Infarct.png" : "Sample_Normal_Brain_CT.png";
-        const sampleFile = new File([blob], name, { type: "image/png" });
-        handleFile(sampleFile);
-      }
-    }, "image/png");
-  }
-
   function copySummaryToClipboard() {
     if (!result) return;
     const summary = `NU STROKE SCAN REPORT
@@ -940,7 +812,7 @@ be verified by a certified healthcare professional.
           </div>
         </div>
 
-        {/* Quick Help / Info Pill */}
+        {/* Quick Info Pill */}
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
           <span className="hidden sm:inline-block px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[11px]">
             LEFT-TO-RIGHT WORKFLOW
@@ -983,23 +855,23 @@ be verified by a certified healthcare professional.
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-20 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden ${
+              className={`h-24 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden ${
                 isDragging
                   ? "border-orange-500 bg-orange-50/90 scale-[1.01] shadow-md shadow-orange-500/20"
                   : "border-slate-300 hover:border-orange-400 bg-slate-50/90 hover:bg-slate-100/90 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
-                <div className="flex items-center gap-2.5 px-3 w-full">
-                  <img src={imageUrl} alt="Thumbnail" className="h-12 w-12 object-contain rounded-lg border border-slate-200 bg-black shadow-sm" />
+                <div className="flex items-center gap-3 px-3 w-full">
+                  <img src={imageUrl} alt="Thumbnail" className="h-14 w-14 object-contain rounded-lg border border-slate-200 bg-black shadow-sm" />
                   <div className="text-left flex-1 min-w-0">
                     <p className="text-xs font-bold text-slate-900 truncate">{file?.name ?? "Loaded NCCT Slice"}</p>
                     <p className="text-[10px] font-medium text-orange-600 mt-0.5">Click or drag to replace scan</p>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-0.5">
-                  <UploadCloud className="h-5 w-5 mx-auto text-orange-500 animate-bounce" />
+                <div className="space-y-1">
+                  <UploadCloud className="h-6 w-6 mx-auto text-orange-500 animate-bounce" />
                   <p className="text-xs font-bold text-slate-800">Drop CT Scan or Click to Browse</p>
                   <p className="text-[10px] text-slate-500 font-medium">DICOM PNG, JPG, WEBP (Max 25 MB)</p>
                 </div>
@@ -1016,27 +888,6 @@ be verified by a certified healthcare professional.
               }}
               className="hidden"
             />
-
-            {/* Quick-Load Sample Scans */}
-            <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5">
-              <span className="text-[10px] font-bold text-slate-500">Quick Samples:</span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => loadSampleCase("stroke")}
-                  className="px-2 py-0.5 rounded bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 text-[10px] font-bold cursor-pointer transition-all active:scale-95"
-                  title="Load sample case with acute MCA stroke infarction"
-                >
-                  ⚡ Sample: MCA Stroke
-                </button>
-                <button
-                  onClick={() => loadSampleCase("normal")}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[10px] font-bold cursor-pointer transition-all active:scale-95"
-                  title="Load normal brain CT scan without acute lesions"
-                >
-                  ✓ Normal CT
-                </button>
-              </div>
-            </div>
 
             {error && (
               <div className="mt-2 p-2 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 shadow-xs">
@@ -1197,56 +1048,22 @@ be verified by a certified healthcare professional.
         </section>
 
         {/* ========================================================================= */}
-        {/* RIGHT COLUMN (8 Cols): STEP 4 VIEWPORTS + STEP 5 DIAGNOSTIC & CLINICAL EXPORT */}
+        {/* RIGHT COLUMN (8 Cols): SYNCHRONIZED DUAL VIEWPORT + DIAGNOSTIC & CLINICAL EXPORT */}
         {/* ========================================================================= */}
         <section className="col-span-8 flex flex-col gap-2 min-h-0">
           
           {/* Main DICOM Viewport Card */}
           <div className="flex-1 min-h-0 glass-panel-vibrant rounded-xl p-3 flex flex-col shadow-sm relative border border-slate-200/90 bg-white/95">
             
-            {/* Viewport Top Bar with Multi-Mode Tabs & Medical Tools */}
+            {/* Viewport Top Bar with Synchronized Badge & Medical Tools */}
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 shrink-0">
               
-              {/* Mode Switcher Dock */}
-              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shadow-inner">
-                <button
-                  onClick={() => setViewportMode("dual")}
-                  className={`px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 ${
-                    viewportMode === "dual"
-                      ? "bg-white text-orange-600 shadow-xs border border-slate-200 font-extrabold"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                  title="Dual Synchronized Viewports (Side-by-side 512×512)"
-                >
-                  <Columns className="h-3.5 w-3.5 text-orange-500" />
-                  <span>Dual View</span>
-                </button>
-
-                <button
-                  onClick={() => setViewportMode("split")}
-                  className={`px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 ${
-                    viewportMode === "split"
-                      ? "bg-white text-orange-600 shadow-xs border border-slate-200 font-extrabold"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                  title="Split Comparison Wiper (Swipe curtain to compare AI mask)"
-                >
-                  <Split className="h-3.5 w-3.5 text-orange-500" />
-                  <span>Curtain Wiper</span>
-                </button>
-
-                <button
-                  onClick={() => setViewportMode("theater")}
-                  className={`px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 ${
-                    viewportMode === "theater"
-                      ? "bg-white text-orange-600 shadow-xs border border-slate-200 font-extrabold"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                  title="Single Cinema Focus Theater"
-                >
-                  <Maximize2 className="h-3.5 w-3.5 text-orange-500" />
-                  <span>Cinema Focus</span>
-                </button>
+              {/* Synchronized Dual Indicator */}
+              <div className="flex items-center gap-2 bg-slate-100 px-3 py-1 rounded-lg border border-slate-200 shadow-inner">
+                <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]" />
+                <span className="text-xs font-mono font-extrabold text-slate-800 uppercase tracking-wider">
+                  Synchronized Dual Viewport (512×512)
+                </span>
               </div>
 
               {/* Viewport Interactive Tools */}
@@ -1307,326 +1124,41 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Viewport Center Canvas: Dynamic Switcher between Dual, Curtain Split, and Cinema Focus */}
+            {/* Viewport Center Canvas: Pure Synchronized Dual View */}
             <div className="flex-1 min-h-0 relative flex overflow-hidden">
-              
-              {/* MODE 1: DUAL VIEW (Synchronized 2-Up) */}
-              {viewportMode === "dual" && (
-                <div className="h-full w-full grid grid-cols-2 gap-2.5 relative">
-                  
-                  {/* Left: Original CT */}
-                  <div
-                    onContextMenu={(e) => handleViewportContextMenu(e, "left")}
-                    onMouseDown={(e) => handleViewportMouseDown(e, "left")}
-                    onMouseMove={(e) => handleViewportMouseMove(e, "left")}
-                    onMouseUp={handleViewportMouseUp}
-                    onMouseLeave={handleViewportMouseUp}
-                    onWheel={handleViewportWheel}
-                    className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
-                      loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
-                    }`}
-                    title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
-                  >
-                    {isScanning && (
-                      <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
-                        <div className="absolute w-full h-[3px] bg-gradient-to-r from-transparent via-orange-400 to-transparent shadow-[0_0_24px_#f97316] animate-laser-sweep" />
-                      </div>
-                    )}
-
-                    {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
-
-                    <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-                    <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-                    <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-                    <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-
-                    <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-black/85 border border-orange-500/30 text-[10px] font-mono font-bold text-slate-200 uppercase tracking-wider pointer-events-none shadow-md">
-                      Original NCCT
-                    </div>
-                    <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">R</span>
-                    <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">L</span>
-
-                    {imageUrl ? (
-                      <div
-                        className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
-                        style={{
-                          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-                          transformOrigin: "center center",
-                        }}
-                      >
-                        <img
-                          src={imageUrl}
-                          alt="Original Scan"
-                          className="w-full h-full object-contain pointer-events-none transition-[filter]"
-                          style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
-                        <Activity className="h-10 w-10 mx-auto text-orange-500/60 animate-pulse" />
-                        <p className="text-xs font-bold text-slate-300">NO SCAN LOADED</p>
-                        <p className="text-[11px] text-slate-400">Upload an axial brain slice or pick a sample on the left</p>
-                      </div>
-                    )}
-
-                    {/* Left Loupe */}
-                    {loupe.active && loupe.target === "left" && (
-                      <div
-                        className="absolute z-50 pointer-events-none rounded-full border-2 border-orange-400 shadow-[0_0_35px_rgba(249,115,22,1)] bg-black overflow-hidden"
-                        style={{
-                          width: "160px",
-                          height: "160px",
-                          left: 0,
-                          top: 0,
-                          transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
-                          willChange: "transform",
-                        }}
-                      >
-                        <div
-                          className="absolute inset-0 w-full h-full flex items-center justify-center"
-                          style={{
-                            transform: `scale(${loupe.scale})`,
-                            transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
-                          }}
-                        >
-                          {imageUrl && (
-                            <img
-                              src={imageUrl}
-                              alt="Loupe Base"
-                              className="w-full h-full object-contain pointer-events-none"
-                              style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                            />
-                          )}
-                        </div>
-                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                          <div className="w-full h-[1px] bg-orange-400/60" />
-                          <div className="h-full w-[1px] bg-orange-400/60 absolute" />
-                          <div className="w-4 h-4 rounded-full border border-orange-300 absolute shadow-[0_0_8px_#f97316]" />
-                        </div>
-                        <div
-                          className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-lg pointer-events-none ${
-                            loupe.isZoomDragging
-                              ? "bg-amber-400 text-black border border-amber-200 animate-pulse"
-                              : "bg-black/95 border border-orange-400 text-orange-300"
-                          }`}
-                        >
-                          {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Right: AI Model Lesion Segmentation */}
-                  <div
-                    onContextMenu={(e) => handleViewportContextMenu(e, "right")}
-                    onMouseDown={(e) => handleViewportMouseDown(e, "right")}
-                    onMouseMove={(e) => handleViewportMouseMove(e, "right")}
-                    onMouseUp={handleViewportMouseUp}
-                    onMouseLeave={handleViewportMouseUp}
-                    onWheel={handleViewportWheel}
-                    className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
-                      loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
-                    }`}
-                    title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
-                  >
-                    {isScanning && (
-                      <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
-                        <div className="absolute w-full h-[3px] bg-gradient-to-r from-transparent via-orange-400 to-transparent shadow-[0_0_24px_#f97316] animate-laser-sweep" />
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-[2px]">
-                          <div className="relative flex items-center justify-center">
-                            <div className="w-14 h-14 rounded-full border-2 border-orange-400 border-t-transparent animate-spin shadow-[0_0_14px_#f97316]" />
-                            <Activity className="h-6 w-6 text-orange-400 absolute" />
-                          </div>
-                          <p className="mt-2 text-xs font-mono font-black text-orange-300 tracking-widest uppercase drop-shadow-[0_0_8px_#f97316]">
-                            NEURAL INFERENCE IN PROGRESS...
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
-
-                    <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-                    <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-                    <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-                    <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
-
-                    <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-black/85 border border-orange-500/30 text-[10px] font-mono font-bold text-orange-300 uppercase tracking-wider pointer-events-none shadow-md">
-                      AI Overlay · {MODELS.find((m) => m.id === modelId)?.name}
-                    </div>
-                    <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">R</span>
-                    <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">L</span>
-
-                    {imageUrl ? (
-                      <div
-                        className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
-                        style={{
-                          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-                          transformOrigin: "center center",
-                        }}
-                      >
-                        <img
-                          src={imageUrl}
-                          alt="Original Slice"
-                          className="w-full h-full object-contain pointer-events-none transition-[filter]"
-                          style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                        />
-                        {result?.maskUrl && (
-                          <img
-                            src={result.maskUrl}
-                            alt="Segmented Mask"
-                            className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-150"
-                            style={{ opacity: maskOpacity / 100 }}
-                          />
-                        )}
-                      </div>
-                    ) : (
-                      <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
-                        <Layers className="h-10 w-10 mx-auto text-orange-400/60 animate-pulse" />
-                        <p className="text-xs font-bold text-slate-300">LESION OVERLAY</p>
-                        <p className="text-[11px] text-slate-400">Segmented heatmap will appear upon analysis</p>
-                      </div>
-                    )}
-
-                    {/* Right Loupe */}
-                    {loupe.active && loupe.target === "right" && (
-                      <div
-                        className="absolute z-50 pointer-events-none rounded-full border-2 border-orange-400 shadow-[0_0_35px_rgba(249,115,22,1)] bg-black overflow-hidden"
-                        style={{
-                          width: "160px",
-                          height: "160px",
-                          left: 0,
-                          top: 0,
-                          transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
-                          willChange: "transform",
-                        }}
-                      >
-                        <div
-                          className="absolute inset-0 w-full h-full flex items-center justify-center"
-                          style={{
-                            transform: `scale(${loupe.scale})`,
-                            transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
-                          }}
-                        >
-                          {imageUrl && (
-                            <img
-                              src={imageUrl}
-                              alt="Loupe Base"
-                              className="w-full h-full object-contain pointer-events-none"
-                              style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                            />
-                          )}
-                          {result?.maskUrl && (
-                            <img
-                              src={result.maskUrl}
-                              alt="Loupe Mask"
-                              className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none"
-                              style={{ opacity: maskOpacity / 100 }}
-                            />
-                          )}
-                        </div>
-                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                          <div className="w-full h-[1px] bg-orange-400/60" />
-                          <div className="h-full w-[1px] bg-orange-400/60 absolute" />
-                          <div className="w-4 h-4 rounded-full border border-orange-300 absolute shadow-[0_0_8px_#f97316]" />
-                        </div>
-                        <div
-                          className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-lg pointer-events-none ${
-                            loupe.isZoomDragging
-                              ? "bg-amber-400 text-black border border-amber-200 animate-pulse"
-                              : "bg-black/95 border border-orange-400 text-orange-300"
-                          }`}
-                        >
-                          {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* MODE 2: SPLIT WIPER CURTAIN (Swipe comparison) */}
-              {viewportMode === "split" && (
+              <div className="h-full w-full grid grid-cols-2 gap-2.5 relative">
+                
+                {/* Left: Original CT */}
                 <div
-                  ref={wiperRef}
-                  onMouseDown={(e) => {
-                    if (e.button === 0) setIsDraggingWiper(true);
-                  }}
-                  onMouseMove={(e) => handleViewportMouseMove(e, "theater")}
-                  onMouseUp={handleViewportMouseUp}
-                  className="h-full w-full dicom-canvas-bg rounded-xl border border-orange-500/25 overflow-hidden relative select-none cursor-ew-resize p-2"
-                >
-                  {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
-
-                  {/* Left Side: Original Image Container */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    {imageUrl && (
-                      <img
-                        src={imageUrl}
-                        alt="Original Base"
-                        className="w-full h-full object-contain pointer-events-none transition-[filter]"
-                        style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                      />
-                    )}
-                  </div>
-
-                  {/* Right Side: AI Overlay with Clip-path curtain */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                    style={{ clipPath: `inset(0 0 0 ${wiperPos}%)` }}
-                  >
-                    {imageUrl && (
-                      <img
-                        src={imageUrl}
-                        alt="AI Base"
-                        className="w-full h-full object-contain pointer-events-none"
-                        style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
-                      />
-                    )}
-                    {result?.maskUrl && (
-                      <img
-                        src={result.maskUrl}
-                        alt="Mask Overlay"
-                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                        style={{ opacity: maskOpacity / 100 }}
-                      />
-                    )}
-                  </div>
-
-                  {/* Draggable Glowing Divider Bar */}
-                  <div
-                    className="absolute top-0 bottom-0 z-30 pointer-events-none flex items-center justify-center"
-                    style={{ left: `${wiperPos}%`, transform: "translateX(-50%)" }}
-                  >
-                    <div className="w-[2px] h-full bg-orange-500 shadow-[0_0_12px_#f97316]" />
-                    <div className="absolute w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white border-2 border-white flex items-center justify-center shadow-lg wiper-divider-handle cursor-ew-resize pointer-events-auto">
-                      <Split className="h-4 w-4" />
-                    </div>
-                  </div>
-
-                  <div className="absolute top-3 left-3 z-20 px-2 py-0.5 rounded bg-black/85 border border-slate-700 text-[10px] font-mono font-bold text-slate-200">
-                    ORIGINAL NCCT ({Math.round(wiperPos)}%)
-                  </div>
-                  <div className="absolute top-3 right-3 z-20 px-2 py-0.5 rounded bg-black/85 border border-orange-500/40 text-[10px] font-mono font-bold text-orange-300">
-                    AI OVERLAY ({Math.round(100 - wiperPos)}%)
-                  </div>
-                </div>
-              )}
-
-              {/* MODE 3: THEATER FOCUS */}
-              {viewportMode === "theater" && (
-                <div
-                  onContextMenu={(e) => handleViewportContextMenu(e, "theater")}
-                  onMouseDown={(e) => handleViewportMouseDown(e, "theater")}
-                  onMouseMove={(e) => handleViewportMouseMove(e, "theater")}
+                  onContextMenu={(e) => handleViewportContextMenu(e, "left")}
+                  onMouseDown={(e) => handleViewportMouseDown(e, "left")}
+                  onMouseMove={(e) => handleViewportMouseMove(e, "left")}
                   onMouseUp={handleViewportMouseUp}
                   onMouseLeave={handleViewportMouseUp}
                   onWheel={handleViewportWheel}
-                  className={`h-full w-full dicom-canvas-bg rounded-xl border border-orange-500/25 overflow-hidden relative flex items-center justify-center p-2 select-none ${
+                  className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                     loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
                   }`}
+                  title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
                 >
+                  {isScanning && (
+                    <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+                      <div className="absolute w-full h-[3px] bg-gradient-to-r from-transparent via-orange-400 to-transparent shadow-[0_0_24px_#f97316] animate-laser-sweep" />
+                    </div>
+                  )}
+
                   {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
+
+                  <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+                  <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+                  <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+                  <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+
+                  <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-black/85 border border-orange-500/30 text-[10px] font-mono font-bold text-slate-200 uppercase tracking-wider pointer-events-none shadow-md">
+                    Original NCCT
+                  </div>
+                  <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">R</span>
+                  <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">L</span>
 
                   {imageUrl ? (
                     <div
@@ -1638,14 +1170,125 @@ be verified by a certified healthcare professional.
                     >
                       <img
                         src={imageUrl}
-                        alt="Theater Scan"
+                        alt="Original Scan"
                         className="w-full h-full object-contain pointer-events-none transition-[filter]"
                         style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                       />
-                      {result?.maskUrl && theaterShowOverlay && (
+                    </div>
+                  ) : (
+                    <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
+                      <Activity className="h-10 w-10 mx-auto text-orange-500/60 animate-pulse" />
+                      <p className="text-xs font-bold text-slate-300">NO SCAN LOADED</p>
+                      <p className="text-[11px] text-slate-400">Upload an axial brain slice on the left</p>
+                    </div>
+                  )}
+
+                  {/* Left Loupe */}
+                  {loupe.active && loupe.target === "left" && (
+                    <div
+                      className="absolute z-50 pointer-events-none rounded-full border-2 border-orange-400 shadow-[0_0_35px_rgba(249,115,22,1)] bg-black overflow-hidden"
+                      style={{
+                        width: "160px",
+                        height: "160px",
+                        left: 0,
+                        top: 0,
+                        transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
+                        willChange: "transform",
+                      }}
+                    >
+                      <div
+                        className="absolute inset-0 w-full h-full flex items-center justify-center"
+                        style={{
+                          transform: `scale(${loupe.scale})`,
+                          transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
+                        }}
+                      >
+                        {imageUrl && (
+                          <img
+                            src={imageUrl}
+                            alt="Loupe Base"
+                            className="w-full h-full object-contain pointer-events-none"
+                            style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                          />
+                        )}
+                      </div>
+                      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                        <div className="w-full h-[1px] bg-orange-400/60" />
+                        <div className="h-full w-[1px] bg-orange-400/60 absolute" />
+                        <div className="w-4 h-4 rounded-full border border-orange-300 absolute shadow-[0_0_8px_#f97316]" />
+                      </div>
+                      <div
+                        className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-lg pointer-events-none ${
+                          loupe.isZoomDragging
+                            ? "bg-amber-400 text-black border border-amber-200 animate-pulse"
+                            : "bg-black/95 border border-orange-400 text-orange-300"
+                        }`}
+                      >
+                        {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: AI Model Lesion Segmentation */}
+                <div
+                  onContextMenu={(e) => handleViewportContextMenu(e, "right")}
+                  onMouseDown={(e) => handleViewportMouseDown(e, "right")}
+                  onMouseMove={(e) => handleViewportMouseMove(e, "right")}
+                  onMouseUp={handleViewportMouseUp}
+                  onMouseLeave={handleViewportMouseUp}
+                  onWheel={handleViewportWheel}
+                  className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
+                    loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
+                  }`}
+                  title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
+                >
+                  {isScanning && (
+                    <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+                      <div className="absolute w-full h-[3px] bg-gradient-to-r from-transparent via-orange-400 to-transparent shadow-[0_0_24px_#f97316] animate-laser-sweep" />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-[2px]">
+                        <div className="relative flex items-center justify-center">
+                          <div className="w-14 h-14 rounded-full border-2 border-orange-400 border-t-transparent animate-spin shadow-[0_0_14px_#f97316]" />
+                          <Activity className="h-6 w-6 text-orange-400 absolute" />
+                        </div>
+                        <p className="mt-2 text-xs font-mono font-black text-orange-300 tracking-widest uppercase drop-shadow-[0_0_8px_#f97316]">
+                          NEURAL INFERENCE IN PROGRESS...
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
+
+                  <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+                  <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+                  <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+                  <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-orange-400/70 pointer-events-none shadow-[0_0_6px_rgba(249,115,22,0.4)]" />
+
+                  <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-black/85 border border-orange-500/30 text-[10px] font-mono font-bold text-orange-300 uppercase tracking-wider pointer-events-none shadow-md">
+                    AI Overlay · {MODELS.find((m) => m.id === modelId)?.name}
+                  </div>
+                  <span className="absolute top-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">R</span>
+                  <span className="absolute bottom-2.5 right-3 z-20 text-xs font-mono text-orange-400/70 font-bold pointer-events-none">L</span>
+
+                  {imageUrl ? (
+                    <div
+                      className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
+                      style={{
+                        transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                        transformOrigin: "center center",
+                      }}
+                    >
+                      <img
+                        src={imageUrl}
+                        alt="Original Slice"
+                        className="w-full h-full object-contain pointer-events-none transition-[filter]"
+                        style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                      />
+                      {result?.maskUrl && (
                         <img
                           src={result.maskUrl}
-                          alt="Theater Mask"
+                          alt="Segmented Mask"
                           className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-150"
                           style={{ opacity: maskOpacity / 100 }}
                         />
@@ -1653,27 +1296,67 @@ be verified by a certified healthcare professional.
                     </div>
                   ) : (
                     <div className="text-center p-6 text-slate-500 space-y-2 pointer-events-none">
-                      <Maximize2 className="h-12 w-12 mx-auto text-orange-500/60 animate-pulse" />
-                      <p className="text-xs font-bold text-slate-300">THEATER VIEWPORT READY</p>
-                      <p className="text-[11px] text-slate-400">Load CT scan for high-resolution single-pane analysis</p>
+                      <Layers className="h-10 w-10 mx-auto text-orange-400/60 animate-pulse" />
+                      <p className="text-xs font-bold text-slate-300">LESION OVERLAY</p>
+                      <p className="text-[11px] text-slate-400">Segmented heatmap will appear upon analysis</p>
                     </div>
                   )}
 
-                  {/* Toggle Overlay Button in Theater */}
-                  {result && (
-                    <button
-                      onClick={() => setTheaterShowOverlay((prev) => !prev)}
-                      className={`absolute bottom-3 right-3 z-30 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all shadow-md active:scale-95 ${
-                        theaterShowOverlay
-                          ? "bg-orange-500 text-white border border-orange-300 shadow-orange-500/40"
-                          : "bg-black/90 text-slate-300 border border-slate-700"
-                      }`}
+                  {/* Right Loupe */}
+                  {loupe.active && loupe.target === "right" && (
+                    <div
+                      className="absolute z-50 pointer-events-none rounded-full border-2 border-orange-400 shadow-[0_0_35px_rgba(249,115,22,1)] bg-black overflow-hidden"
+                      style={{
+                        width: "160px",
+                        height: "160px",
+                        left: 0,
+                        top: 0,
+                        transform: `translate3d(${loupe.x - 80}px, ${loupe.y - 80}px, 0)`,
+                        willChange: "transform",
+                      }}
                     >
-                      AI Lesion Mask: {theaterShowOverlay ? "VISIBLE" : "HIDDEN"}
-                    </button>
+                      <div
+                        className="absolute inset-0 w-full h-full flex items-center justify-center"
+                        style={{
+                          transform: `scale(${loupe.scale})`,
+                          transformOrigin: `${loupe.normX * 100}% ${loupe.normY * 100}%`,
+                        }}
+                      >
+                        {imageUrl && (
+                          <img
+                            src={imageUrl}
+                            alt="Loupe Base"
+                            className="w-full h-full object-contain pointer-events-none"
+                            style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
+                          />
+                        )}
+                        {result?.maskUrl && (
+                          <img
+                            src={result.maskUrl}
+                            alt="Loupe Mask"
+                            className="lesion-mask absolute inset-0 w-full h-full object-contain pointer-events-none"
+                            style={{ opacity: maskOpacity / 100 }}
+                          />
+                        )}
+                      </div>
+                      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                        <div className="w-full h-[1px] bg-orange-400/60" />
+                        <div className="h-full w-[1px] bg-orange-400/60 absolute" />
+                        <div className="w-4 h-4 rounded-full border border-orange-300 absolute shadow-[0_0_8px_#f97316]" />
+                      </div>
+                      <div
+                        className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black shadow-lg pointer-events-none ${
+                          loupe.isZoomDragging
+                            ? "bg-amber-400 text-black border border-amber-200 animate-pulse"
+                            : "bg-black/95 border border-orange-400 text-orange-300"
+                        }`}
+                      >
+                        {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
+                      </div>
+                    </div>
                   )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
