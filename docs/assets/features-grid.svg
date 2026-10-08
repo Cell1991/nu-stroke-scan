@@ -94,47 +94,47 @@
     <text x="482" y="30" text-anchor="middle" fill="#2DD4BF" font-family="monospace" font-size="9" font-weight="700">SYNC PAN</text>
   </g>
 
-  <!-- CARD 3: NON-CONTRAST CT GUARDRAIL (Bottom Left) -->
+  <!-- CARD 3: DUAL COLOR MASK & HARMONIZATION (Bottom Left) -->
   <g transform="translate(45, 222)" filter="url(#feat-shadow)">
-    <rect width="535" height="118" rx="12" fill="url(#feat-card-bg)" stroke="#6366F1" stroke-width="1.2" class="card-glow-3" />
+    <rect width="535" height="118" rx="12" fill="url(#feat-card-bg)" stroke="#EF4444" stroke-width="1.2" class="card-glow-3" />
     
     <!-- Icon -->
-    <rect x="18" y="18" width="46" height="46" rx="10" fill="#4338CA" fill-opacity="0.3" stroke="#6366F1" stroke-width="0.8" />
-    <path d="M 41 26 L 55 33 L 55 45 C 55 53 41 58 41 58 C 41 58 27 53 27 45 L 27 33 Z" fill="none" stroke="#818CF8" stroke-width="1.6" />
+    <rect x="18" y="18" width="46" height="46" rx="10" fill="#450A0A" fill-opacity="0.4" stroke="#EF4444" stroke-width="0.8" />
+    <circle cx="36" cy="41" r="7" fill="#EF4444" />
+    <circle cx="48" cy="38" r="6" fill="#F59E0B" />
 
     <!-- Content -->
     <text x="76" y="34" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13.5" font-weight="700">
-      Multi-Step Clinical Input Guardrails
+      Dual-Color Lesion Mask &amp; CT Density
     </text>
     <text x="76" y="58" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11">
-      Automated heuristic pre-screening for grayscale &amp; HU range.
+      Red mask for Hemorrhagic; Yellow for Ischemic stroke.
     </text>
     <text x="76" y="76" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">
-      Rejects unreadable, colorized, non-axial, or non-brain scans.
+      Harmonized with CT density and MaxViT classification.
     </text>
 
     <!-- Tag -->
-    <rect x="430" y="16" width="89" height="20" rx="4" fill="#6366F1" fill-opacity="0.2" />
-    <text x="474" y="30" text-anchor="middle" fill="#818CF8" font-family="monospace" font-size="9" font-weight="700">GUARDRAIL</text>
+    <rect x="430" y="16" width="89" height="20" rx="4" fill="#EF4444" fill-opacity="0.2" />
+    <text x="474" y="30" text-anchor="middle" fill="#FCA5A5" font-family="monospace" font-size="9" font-weight="700">DUAL-COLOR</text>
   </g>
 
-  <!-- CARD 4: NEUMORPHIC TACTILE CONTROLS (Bottom Right) -->
+  <!-- CARD 4: MEDICAL COMPOSITE EXPORT & TACTILE CONTROLS (Bottom Right) -->
   <g transform="translate(620, 222)" filter="url(#feat-shadow)">
     <rect width="535" height="118" rx="12" fill="url(#feat-card-bg)" stroke="#10B981" stroke-width="1.2" class="card-glow-4" />
     
     <!-- Icon -->
     <rect x="18" y="18" width="46" height="46" rx="10" fill="#064E3B" fill-opacity="0.3" stroke="#10B981" stroke-width="0.8" />
-    <line x1="28" y1="36" x2="54" y2="36" stroke="#34D399" stroke-width="2" stroke-linecap="round" />
-    <circle cx="38" cy="36" r="4" fill="#34D399" />
-    <line x1="28" y1="48" x2="54" y2="48" stroke="#34D399" stroke-width="2" stroke-linecap="round" />
-    <circle cx="46" cy="48" r="4" fill="#34D399" />
+    <rect x="28" y="28" width="26" height="26" rx="4" fill="none" stroke="#34D399" stroke-width="1.5" />
+    <line x1="33" y1="41" x2="49" y2="41" stroke="#34D399" stroke-width="1.5" />
+    <line x1="41" y1="33" x2="41" y2="49" stroke="#34D399" stroke-width="1.5" />
 
     <!-- Content -->
     <text x="76" y="34" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13.5" font-weight="700">
-      Stepped Neumorphic Windowing &amp; Thresholds
+      Medical Composite Export &amp; Windowing
     </text>
     <text x="76" y="58" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11">
-      Stepped windowing with dynamic lesion threshold tuning.
+      Bakes active windowing, threshold, opacity, &amp; metadata.
     </text>
     <text x="76" y="76" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">
       Instant client-side canvas re-rendering without API latency.
@@ -142,6 +142,6 @@
 
     <!-- Tag -->
     <rect x="430" y="16" width="89" height="20" rx="4" fill="#10B981" fill-opacity="0.2" />
-    <text x="474" y="30" text-anchor="middle" fill="#34D399" font-family="monospace" font-size="9" font-weight="700">NEUMORPHIC</text>
+    <text x="474" y="30" text-anchor="middle" fill="#34D399" font-family="monospace" font-size="9" font-weight="700">COMPOSITE</text>
   </g>
 </svg>
