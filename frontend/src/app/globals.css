@@ -27,8 +27,8 @@ html, body {
 }
 
 html.dark, body.dark {
-  background-color: #060709;
-  color: #f8fafc;
+  background-color: #090a0f;
+  color: #f4f4f6;
 }
 
 /* Custom Clean Scrollbar */
@@ -40,14 +40,14 @@ html.dark, body.dark {
   background: rgba(209, 213, 219, 0.8);
 }
 .dark ::-webkit-scrollbar-track {
-  background: rgba(10, 12, 16, 0.95);
+  background: rgba(9, 10, 15, 0.95);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.6);
+  background: rgba(249, 115, 22, 0.5);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(249, 115, 22, 0.95);
+  background: rgba(249, 115, 22, 0.85);
 }
 
 /* Naresuan University Clean Gray & Flame Orange Clinical Backdrop */
@@ -82,97 +82,92 @@ html.dark, body.dark {
 }
 
 /* ========================================================================= */
-/* DARK THEME COCKPIT SPECIFICATION - DEEP ONYX CHARCOAL & HIGH-CONTRAST ORANGE */
+/* DARK THEME COCKPIT SPECIFICATION - LUXURY OBSIDIAN & FLAME ORANGE ACCENTS */
 /* ========================================================================= */
 .dark .medical-vibrant-backdrop,
 .dark.medical-vibrant-backdrop {
-  background-color: #060709;
+  background-color: #090a0f;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+    radial-gradient(circle at 12% 10%, rgba(249, 115, 22, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 12%, rgba(245, 158, 11, 0.04) 0%, transparent 35%),
+    radial-gradient(circle at 50% 90%, rgba(15, 23, 42, 0.3) 0%, transparent 60%);
+  background-size: 100% 100%;
 }
 
 .dark .glass-panel-vibrant {
-  background: #0f1117;
-  border: 1px solid #1f232d;
+  background: #0f121a;
+  border: 1px solid #1c212c;
   box-shadow: 
-    0 10px 25px -4px rgba(0, 0, 0, 0.7),
-    0 4px 10px -2px rgba(0, 0, 0, 0.5);
+    0 10px 25px -4px rgba(0, 0, 0, 0.6),
+    0 4px 10px -2px rgba(0, 0, 0, 0.4);
 }
 
 .dark .glass-panel-subtle {
-  background: #11141c;
-  border: 1px solid #222633;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  background: #11151f;
+  border: 1px solid #1e2432;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .dark .btn-vibrant-subtle {
-  background: #101218;
-  border-color: #222733;
-  color: #f1f5f9;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  background: #11141c;
+  border: 1px solid #1f2430;
+  color: #e4e4e7;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .dark .btn-vibrant-subtle:hover:not(:disabled) {
-  background: #181b24;
-  border-color: #f97316;
-  color: #f97316;
-  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+  background: #161b26;
+  border-color: rgba(249, 115, 22, 0.6);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.25);
 }
 
 .dark .neu-slider-track-bg {
-  background: #1f232d;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
+  background: #171b24;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .dark .text-slate-900 {
   color: #ffffff;
 }
 .dark .text-slate-800 {
-  color: #f8fafc;
+  color: #f4f4f5;
 }
 .dark .text-slate-700 {
-  color: #e2e8f0;
+  color: #e4e4e7;
 }
 .dark .text-slate-600 {
-  color: #cbd5e1;
+  color: #a1a1aa;
 }
 .dark .text-slate-500 {
-  color: #94a3b8;
+  color: #71717a;
 }
 .dark .bg-slate-50 {
-  background-color: #101218;
+  background-color: #0e1118;
 }
 .dark .bg-slate-100 {
-  background-color: #101218;
+  background-color: #11141c;
 }
 .dark .border-slate-200 {
-  border-color: #222733;
+  border-color: #1c212c;
 }
 .dark .border-slate-300 {
-  border-color: #2d3344;
+  border-color: #272d3b;
 }
 
 /* Deep DICOM Medical Canvas with Precision HUD Frame */
 .dicom-canvas-bg {
-  background-color: #030407;
-  background-image: 
-    radial-gradient(circle at 50% 50%, rgba(18, 22, 32, 0.95) 0%, rgba(3, 4, 7, 1) 100%),
-    linear-gradient(to right, rgba(249, 115, 22, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(249, 115, 22, 0.04) 1px, transparent 1px);
-  background-size: 100% 100%, 20px 20px, 20px 20px;
+  background-color: #000000;
+  background-image: none;
 }
 
 /* Fine Clinical Measurement Gridlines */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(249, 115, 22, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(249, 115, 22, 0.12) 1px, transparent 1px),
-    linear-gradient(to right, rgba(249, 115, 22, 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(249, 115, 22, 0.3) 1px, transparent 1px);
+    linear-gradient(to right, rgba(249, 115, 22, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.1) 1px, transparent 1px),
+    linear-gradient(to right, rgba(249, 115, 22, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(249, 115, 22, 0.25) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
   pointer-events: none;
 }
