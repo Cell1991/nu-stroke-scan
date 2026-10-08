@@ -100,6 +100,14 @@ function Sun({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+function Moon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </svg>
+  );
+}
+
 function HalfCircle({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -261,6 +269,22 @@ export default function HomePage() {
   const [isDraggingViewport, setIsDraggingViewport] = useState(false);
   const [exportedStatus, setExportedStatus] = useState<string | null>(null);
   const [copiedToast, setCopiedToast] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("nu_stroke_theme") as "light" | "dark" | null;
+    if (saved === "dark" || saved === "light") {
+      setTheme(saved);
+    }
+  }, []);
+
+  function toggleTheme() {
+    setTheme((prev) => {
+      const next = prev === "light" ? "dark" : "light";
+      localStorage.setItem("nu_stroke_theme", next);
+      return next;
+    });
+  }
 
   // Model & Display Controls
   const [modelId, setModelId] = useState("vcanet");
@@ -676,10 +700,10 @@ be verified by a certified healthcare professional.
   }
 
   return (
-    <div className="h-screen w-screen bg-[#dbe4ef] text-slate-900 flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none medical-vibrant-backdrop">
+    <div className={`h-screen w-screen flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none transition-colors duration-300 ${theme === "dark" ? "dark bg-[#0b0f19] text-slate-100" : "bg-[#dbe4ef] text-slate-900"} medical-vibrant-backdrop`}>
       
       {/* 1. Ultra-Clean Medical Enterprise Navigation Deck */}
-      <header className="h-16 glass-panel-vibrant rounded-2xl px-6 flex items-center justify-between shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
+      <header className="h-16 glass-panel-vibrant rounded-2xl px-6 flex items-center justify-between shrink-0 shadow-sm border border-slate-200/90 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95">
         {/* Hospital Brand & Node Badge */}
         <div className="flex items-center gap-4">
           <div className="relative flex items-center justify-center">
@@ -691,14 +715,33 @@ be verified by a certified healthcare professional.
             />
           </div>
           <div className="flex flex-col justify-center">
-            <h1 className="font-black text-xl tracking-tight text-slate-900 block leading-tight">
+            <h1 className="font-black text-xl tracking-tight text-slate-900 dark:text-white block leading-tight">
               <span className="text-orange-600">NU</span> STROKE SCAN
             </h1>
-            <p className="text-sm text-slate-500 font-medium leading-normal mt-0.5">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-normal mt-0.5">
               Neuro-Imaging Clinical Intelligence · Naresuan University
             </p>
           </div>
         </div>
+
+        {/* Theme Mode Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          title={theme === "dark" ? "Switch to High-Contrast Light Mode" : "Switch to Deep Clinical Dark Mode"}
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100/90 dark:bg-slate-800/90 hover:border-orange-400 dark:hover:border-orange-500 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer shadow-xs transition-all active:scale-95 select-none"
+        >
+          {theme === "dark" ? (
+            <>
+              <Sun className="h-4 w-4 text-amber-400 animate-spin-slow" />
+              <span>LIGHT MODE</span>
+            </>
+          ) : (
+            <>
+              <Moon className="h-4 w-4 text-orange-600" />
+              <span>DARK MODE</span>
+            </>
+          )}
+        </button>
       </header>
 
       {/* 2. Main Workspace Layout: 3-Column Enterprise Radiologist Cockpit */}
