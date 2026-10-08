@@ -658,15 +658,15 @@ be verified by a certified healthcare professional.
     <div className="h-screen w-screen flex flex-col overflow-hidden font-sans p-3 gap-2.5 select-none workstation-bg text-slate-100">
       
       {/* 1. Header Navigation Deck */}
-      <header className="h-13 px-4 flex items-center justify-between shrink-0 rounded-xl bg-[#131b26] border border-[#243042] shadow-sm">
+      <header className="h-14 px-4 flex items-center justify-between shrink-0 rounded-xl bg-[#131b26] border border-[#243042] shadow-sm">
         {/* Brand & Hospital Center */}
         <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center">
+          <div className="relative flex items-center justify-center h-9 w-9 shrink-0">
             <div className="absolute -inset-1 rounded-full bg-orange-500/20 blur-sm animate-pulse" />
             <img
               src="/brand_icon_trans.png"
               alt="NU Stroke Scan Logo"
-              className="h-8.5 w-8.5 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.5)] select-none pointer-events-none relative z-10"
+              className="h-9 w-9 max-h-9 max-w-9 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.5)] select-none pointer-events-none relative z-10 shrink-0"
             />
           </div>
           <div className="flex flex-col justify-center">
