@@ -676,7 +676,7 @@ be verified by a certified healthcare professional.
   }
 
   return (
-    <div className="h-screen w-screen bg-[#f0f4f9] text-slate-900 flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none medical-vibrant-backdrop">
+    <div className="h-screen w-screen bg-[#dbe4ef] text-slate-900 flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none medical-vibrant-backdrop">
       
       {/* 1. Ultra-Clean Medical Enterprise Navigation Deck */}
       <header className="h-16 glass-panel-vibrant rounded-2xl px-6 flex items-center justify-between shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
@@ -1283,18 +1283,20 @@ be verified by a certified healthcare professional.
                   </div>
                 )
               ) : (
-                <div className="p-3.5 rounded-xl glass-panel-subtle bg-slate-50 border border-slate-200 text-center space-y-1 shadow-xs">
-                  <div className="flex items-center justify-center gap-1.5 text-orange-600 text-sm font-bold">
-                    <Activity className="h-4.5 w-4.5" />
-                    <span>Neural Engine Ready</span>
+                <div className="p-4 rounded-xl glass-panel-subtle bg-slate-50 border border-slate-200/90 text-center space-y-2 shadow-xs">
+                  <div className="w-10 h-10 rounded-full bg-orange-100/90 border border-orange-200 flex items-center justify-center mx-auto text-orange-600 shadow-xs">
+                    <Activity className="h-5 w-5 animate-pulse" />
                   </div>
-                  <p className="text-xs text-slate-500">Upload CT scan slice and click &quot;Analyze Brain CT Scan&quot;</p>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800">Neural Engine Standby</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Upload a CT scan slice on the left and click &quot;Analyze Brain CT Scan&quot;</p>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Model Confidence Certainty Progress Meter */}
-            <div className="space-y-2 mb-3.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div className="space-y-2 mb-3.5 p-3 rounded-xl bg-slate-50 border border-slate-200 shadow-xs">
               <div className="flex justify-between text-xs sm:text-sm font-bold text-slate-800">
                 <span>Model Confidence</span>
                 <span className="font-mono text-orange-600 font-black text-sm sm:text-base">
@@ -1314,12 +1316,12 @@ be verified by a certified healthcare professional.
             </div>
 
             {/* Key Clinical Metrics */}
-            <div className="space-y-2.5 text-xs sm:text-sm border-t border-slate-200 pt-3 text-slate-700 mb-4">
-              <div className="flex justify-between py-0.5 border-b border-slate-100">
+            <div className="space-y-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-slate-700 mb-4 shadow-xs">
+              <div className="flex justify-between py-1 border-b border-slate-200/70">
                 <span className="text-slate-500 font-medium">Neural Model:</span>
                 <span className="font-bold text-slate-900">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
               </div>
-              <div className="flex justify-between py-0.5 border-b border-slate-100">
+              <div className="flex justify-between py-1 border-b border-slate-200/70">
                 <span className="text-slate-500 font-medium">Lesion ROI Volume:</span>
                 <span className="font-mono text-orange-600 font-bold">{result ? `${result.lesionArea ?? 0}%` : "—"}</span>
               </div>
