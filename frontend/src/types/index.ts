@@ -1,6 +1,3 @@
-export type HealthResponse = {
-  status: string;
-};
 
 export type StrokeSubtype = "normal" | "hemorrhagic" | "ischemic";
 
