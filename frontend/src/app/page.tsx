@@ -283,7 +283,6 @@ export default function HomePage() {
     normY: number;
     target: "left" | "right" | null;
     scale: number;
-    isZoomDragging: boolean;
   }>({
     active: false,
     x: 0,
@@ -292,10 +291,7 @@ export default function HomePage() {
     normY: 0.5,
     target: null,
     scale: 3.0,
-    isZoomDragging: false,
   });
-
-  const loupeDragStartRef = useRef<{ startY: number; initialScale: number } | null>(null);
 
   function handleZoomIn() {
     setZoom((prev) => Math.min(4, Number((prev + 0.25).toFixed(2))));
@@ -308,14 +304,12 @@ export default function HomePage() {
   function handleResetZoom() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
-    setLoupe((prev) => ({ ...prev, active: false, target: null, scale: 3.0, isZoomDragging: false }));
+    setLoupe((prev) => ({ ...prev, active: false, target: null, scale: 3.0 }));
   }
 
   function toggleGrid() {
     setShowGrid((prev) => !prev);
   }
-
-
 
   function handleViewportContextMenu(e: React.MouseEvent<HTMLDivElement>, target: "left" | "right") {
     e.preventDefault();
@@ -325,7 +319,7 @@ export default function HomePage() {
     const y = e.clientY - rect.top;
     setLoupe((prev) => {
       if (prev.active && prev.target === target) {
-        return { ...prev, active: false, target: null, isZoomDragging: false };
+        return { ...prev, active: false, target: null };
       }
       return {
         active: true,
@@ -335,20 +329,13 @@ export default function HomePage() {
         normY: Math.max(0, Math.min(1, y / rect.height)),
         target,
         scale: 3.0,
-        isZoomDragging: false,
       };
     });
   }
 
-  function handleViewportMouseDown(e: React.MouseEvent, target: "left" | "right" | "theater") {
+  function handleViewportMouseDown(e: React.MouseEvent) {
     if (e.button === 2) return;
     if (e.button !== 0) return;
-
-    if (loupe.active && loupe.target === target) {
-      loupeDragStartRef.current = { startY: e.clientY, initialScale: loupe.scale };
-      setLoupe((prev) => ({ ...prev, isZoomDragging: true }));
-      return;
-    }
 
     setIsDraggingViewport(true);
     dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
@@ -359,14 +346,7 @@ export default function HomePage() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (loupe.active && loupe.target === target && loupe.isZoomDragging && loupeDragStartRef.current) {
-      const dy = loupeDragStartRef.current.startY - e.clientY;
-      const newScale = Math.max(3.0, Math.min(8.0, Number((loupeDragStartRef.current.initialScale + dy * 0.025).toFixed(2))));
-      setLoupe((prev) => ({ ...prev, scale: newScale }));
-      return;
-    }
-
-    if (loupe.active && loupe.target === target && !loupe.isZoomDragging) {
+    if (loupe.active && loupe.target === target) {
       setLoupe((prev) => ({
         ...prev,
         x,
@@ -384,15 +364,29 @@ export default function HomePage() {
   }
 
   function handleViewportMouseUp() {
-    if (loupe.isZoomDragging) {
-      loupeDragStartRef.current = null;
-      setLoupe((prev) => ({ ...prev, isZoomDragging: false }));
-    }
     setIsDraggingViewport(false);
     dragStartRef.current = null;
   }
 
-  function handleViewportWheel(e: React.WheelEvent) {
+  function handleViewportWheel(e: React.WheelEvent, target: "left" | "right") {
+    e.preventDefault();
+    if (loupe.active && loupe.target === target) {
+      // Mouse Wheel Zoom for Diagnostic Loupe Magnification
+      if (e.deltaY < 0) {
+        setLoupe((prev) => ({
+          ...prev,
+          scale: Math.min(8.0, Number((prev.scale + 0.25).toFixed(2))),
+        }));
+      } else {
+        setLoupe((prev) => ({
+          ...prev,
+          scale: Math.max(3.0, Number((prev.scale - 0.25).toFixed(2))),
+        }));
+      }
+      return;
+    }
+
+    // Default Canvas Viewport Zoom
     if (e.deltaY < 0) {
       setZoom((prev) => Math.min(4, Number((prev + 0.15).toFixed(2))));
     } else {
@@ -579,7 +573,7 @@ export default function HomePage() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
-    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null, scale: 3.0, isZoomDragging: false });
+    setLoupe({ active: false, x: 0, y: 0, normX: 0.5, normY: 0.5, target: null, scale: 3.0 });
     recomputeThreshold(50);
   }
 
@@ -935,15 +929,15 @@ be verified by a certified healthcare professional.
                 {/* Left: Original CT */}
                 <div
                   onContextMenu={(e) => handleViewportContextMenu(e, "left")}
-                  onMouseDown={(e) => handleViewportMouseDown(e, "left")}
+                  onMouseDown={handleViewportMouseDown}
                   onMouseMove={(e) => handleViewportMouseMove(e, "left")}
                   onMouseUp={handleViewportMouseUp}
                   onMouseLeave={handleViewportMouseUp}
-                  onWheel={handleViewportWheel}
+                  onWheel={(e) => handleViewportWheel(e, "left")}
                   className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                     loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
                   }`}
-                  title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
+                  title="Right-click to toggle Diagnostic Loupe · Scroll Wheel to Magnify"
                 >
                   {isScanning && (
                     <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
@@ -1022,13 +1016,9 @@ be verified by a certified healthcare professional.
                         <div className="w-4 h-4 rounded-full border border-orange-300 absolute shadow-[0_0_8px_#f97316]" />
                       </div>
                       <div
-                        className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-black shadow-lg pointer-events-none ${
-                          loupe.isZoomDragging
-                            ? "bg-amber-400 text-black border border-amber-200 animate-pulse"
-                            : "bg-black/95 border border-orange-400 text-orange-300"
-                        }`}
+                        className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold shadow-lg pointer-events-none bg-black/95 border border-orange-400 text-orange-300"
                       >
-                        {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
+                        {loupe.scale.toFixed(1)}×
                       </div>
                     </div>
                   )}
@@ -1037,15 +1027,15 @@ be verified by a certified healthcare professional.
                 {/* Right: AI Model Lesion Segmentation */}
                 <div
                   onContextMenu={(e) => handleViewportContextMenu(e, "right")}
-                  onMouseDown={(e) => handleViewportMouseDown(e, "right")}
+                  onMouseDown={handleViewportMouseDown}
                   onMouseMove={(e) => handleViewportMouseMove(e, "right")}
                   onMouseUp={handleViewportMouseUp}
                   onMouseLeave={handleViewportMouseUp}
-                  onWheel={handleViewportWheel}
+                  onWheel={(e) => handleViewportWheel(e, "right")}
                   className={`dicom-canvas-bg relative rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden flex items-center justify-center p-2 shadow-2xl select-none ${
                     loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
                   }`}
-                  title="Right-click to open Diagnostic Loupe · Hold Left-click & Drag Up/Down to Zoom Loupe"
+                  title="Right-click to toggle Diagnostic Loupe · Scroll Wheel to Magnify"
                 >
                   {isScanning && (
                     <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
@@ -1149,13 +1139,9 @@ be verified by a certified healthcare professional.
                         <div className="w-4 h-4 rounded-full border border-orange-300 absolute shadow-[0_0_8px_#f97316]" />
                       </div>
                       <div
-                        className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-black shadow-lg pointer-events-none ${
-                          loupe.isZoomDragging
-                            ? "bg-amber-400 text-black border border-amber-200 animate-pulse"
-                            : "bg-black/95 border border-orange-400 text-orange-300"
-                        }`}
+                        className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold shadow-lg pointer-events-none bg-black/95 border border-orange-400 text-orange-300"
                       >
-                        {loupe.scale.toFixed(1)}× {loupe.isZoomDragging ? "· LOCKED" : ""}
+                        {loupe.scale.toFixed(1)}×
                       </div>
                     </div>
                   )}
