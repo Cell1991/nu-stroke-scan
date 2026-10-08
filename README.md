@@ -308,7 +308,7 @@ docker compose up --build
     <tr style="border: none; background: transparent;">
       <td align="center" style="border: none; padding: 12px; background: transparent;">
         <a href="https://github.com/Cell1991">
-          <img src="docs/assets/author-chu.svg" alt="Thanaphat Jeeju - UI/UX & System Architect" width="380px" />
+          <img src="docs/assets/author-chu.svg" alt="Thanaphat Chichu - UI/UX & System Architect" width="380px" />
         </a>
       </td>
       <td align="center" style="border: none; padding: 12px; background: transparent;">
@@ -331,12 +331,12 @@ docker compose up --build
     </thead>
     <tbody>
       <tr>
-        <td><b>Thanaphat Jeeju</b><br/>(นายธนภัทร จีจู)<br/><code>@Cell1991</code></td>
+        <td><b>Thanaphat Chichu</b><br/><code>@Cell1991</code></td>
         <td><b>66312244</b><br/>B.Sc. (Computer Science)</td>
         <td>Architected the Next.js 15 App Router web application, 2.5×–8.0× diagnostic loupe magnifier, 1:1 synchronized dual-pane viewport, stepped neumorphic windowing system, medical composite image export, FastAPI gateway integration, and deployment infrastructure.</td>
       </tr>
       <tr>
-        <td><b>Kanin Noisiri</b><br/>(นายคณิน น้อยศิริ)<br/><code>@Rednoselittledog</code></td>
+        <td><b>Kanin Noisiri</b><br/><code>@Rednoselittledog</code></td>
         <td><b>66310653</b><br/>B.Sc. (Computer Science)</td>
         <td>Designed and implemented the 5-step preprocessing pipeline, adapted and trained deep learning models (D-LKA Net, VCA-Net, Patcher SegFormer, MaxViT 3-Class Classifier) on NVIDIA A100 GPUs, and conducted quantitative benchmark evaluations.</td>
       </tr>
@@ -356,17 +356,17 @@ docker compose up --build
     <tbody>
       <tr>
         <td><b>Thesis Advisor</b></td>
-        <td><b>Assoc. Prof. Dr. Jakkrit Snae Namahoot</b><br/>(รองศาสตราจารย์ ดร.จักรกฤษณ์ เสน่ห์ นมะหุต)</td>
+        <td><b>Assoc. Prof. Dr. Jakkrit Snae Namahoot</b></td>
         <td>Department of Computer Science and Information Technology, Faculty of Science, Naresuan University</td>
       </tr>
       <tr>
         <td><b>Committee Member</b></td>
-        <td><b>Lect. Phisetphong Suthaphan</b><br/>(อาจารย์พิเศษพงศ์ สุธาพันธ์)</td>
+        <td><b>Lect. Phisetphong Suthaphan</b></td>
         <td>Department of Computer Science and Information Technology, Faculty of Science, Naresuan University</td>
       </tr>
       <tr>
         <td><b>Committee Member</b></td>
-        <td><b>Lect. Wuttipong Ruenthong</b><br/>(อาจารย์วุฒิพงษ์ เรือนทอง)</td>
+        <td><b>Lect. Wuttipong Ruenthong</b></td>
         <td>Department of Computer Science and Information Technology, Faculty of Science, Naresuan University</td>
       </tr>
     </tbody>
