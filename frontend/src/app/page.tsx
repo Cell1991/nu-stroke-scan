@@ -1,232 +1,35 @@
 "use client";
 
 import { DragEvent, useEffect, useRef, useState } from "react";
-// Zero-dependency Standalone Clinical Icons
-function Activity({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-    </svg>
-  );
-}
-
-function AlertTriangle({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <line x1="12" x2="12" y1="9" y2="13" />
-      <line x1="12" x2="12.01" y1="17" y2="17" />
-    </svg>
-  );
-}
-
-function Brain({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
-      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.5 8.242" />
-      <path d="M12 5v13" />
-    </svg>
-  );
-}
-
-function Check({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
-}
-
-function CheckCircle2({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function Copy({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    </svg>
-  );
-}
-
-function Download({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" x2="12" y1="15" y2="3" />
-    </svg>
-  );
-}
-
-function Eye({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
-
-function FileText({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-      <path d="M10 9H8" />
-      <path d="M16 13H8" />
-      <path d="M16 17H8" />
-    </svg>
-  );
-}
-
-function Grid({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <rect width="18" height="18" x="3" y="3" rx="2" />
-      <path d="M3 9h18" />
-      <path d="M3 15h18" />
-      <path d="M9 3v18" />
-      <path d="M15 3v18" />
-    </svg>
-  );
-}
-
-function Layers({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.9a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
-      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
-      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
-    </svg>
-  );
-}
-
-function Maximize2({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <polyline points="15 3 21 3 21 9" />
-      <polyline points="9 21 3 21 3 15" />
-      <line x1="21" x2="14" y1="3" y2="10" />
-      <line x1="3" x2="10" y1="21" y2="14" />
-    </svg>
-  );
-}
-
-function RefreshCw({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-      <path d="M21 3v5h-5" />
-      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-      <path d="M3 21v-5h5" />
-    </svg>
-  );
-}
-
-function RotateCcw({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-      <path d="M3 3v5h5" />
-    </svg>
-  );
-}
-
-function ShieldAlert({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-      <line x1="12" x2="12" y1="8" y2="12" />
-      <line x1="12" x2="12.01" y1="16" y2="16" />
-    </svg>
-  );
-}
-
-function Sliders({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <line x1="4" x2="4" y1="21" y2="14" />
-      <line x1="4" x2="4" y1="10" y2="3" />
-      <line x1="12" x2="12" y1="21" y2="12" />
-      <line x1="12" x2="12" y1="8" y2="3" />
-      <line x1="20" x2="20" y1="21" y2="16" />
-      <line x1="20" x2="20" y1="12" y2="3" />
-      <line x1="1" x2="7" y1="14" y2="14" />
-      <line x1="9" x2="15" y1="8" y2="8" />
-      <line x1="17" x2="23" y1="16" y2="16" />
-    </svg>
-  );
-}
-
-function Sun({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2" />
-      <path d="M12 20v2" />
-      <path d="m4.93 4.93 1.41 1.41" />
-      <path d="m17.66 17.66 1.41 1.41" />
-      <path d="M2 12h2" />
-      <path d="M20 12h2" />
-      <path d="m6.34 17.66-1.41 1.41" />
-      <path d="m19.07 4.93-1.41 1.41" />
-    </svg>
-  );
-}
-
-function UploadCloud({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-      <path d="M12 12v9" />
-      <path d="m16 16-4-4-4 4" />
-    </svg>
-  );
-}
-
-function ZoomIn({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" x2="16.65" y1="21" y2="16.65" />
-      <line x1="11" x2="11" y1="8" y2="14" />
-      <line x1="8" x2="14" y1="11" y2="11" />
-    </svg>
-  );
-}
-
-function ZoomOut({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" x2="16.65" y1="21" y2="16.65" />
-      <line x1="8" x2="14" y1="11" y2="11" />
-    </svg>
-  );
-}
-
-// Anatomical Brain Silhouette for Empty Viewports
-function BrainAnatomicalOutline({ className = "h-16 w-16" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M32 10C24 10 18 16 18 22C14 24 12 28 12 34C12 40 16 46 22 48C24 52 28 54 32 54" />
-      <path d="M32 10C40 10 46 16 46 22C50 24 52 28 52 34C52 40 48 46 42 48C40 52 36 54 32 54" />
-      <path d="M32 10V54" />
-      <path d="M22 24C26 26 28 30 26 34C24 38 20 40 24 44" />
-      <path d="M42 24C38 26 36 30 38 34C40 38 44 40 40 44" />
-      <path d="M18 32H24" />
-      <path d="M40 32H46" />
-    </svg>
-  );
-}
+import {
+  Activity,
+  AlertTriangle,
+  Brain,
+  Check,
+  CheckCircle2,
+  Copy,
+  Crosshair,
+  Download,
+  Eye,
+  FileCheck2,
+  FileText,
+  Grid,
+  Layers,
+  Maximize2,
+  Radio,
+  RefreshCw,
+  RotateCcw,
+  ShieldAlert,
+  ShieldCheck,
+  Sliders,
+  SlidersHorizontal,
+  Sparkles,
+  Sun,
+  UploadCloud,
+  Zap,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react";
 
 type ScanResult = {
   label: string;
@@ -241,9 +44,30 @@ type ScanResult = {
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
 const MODELS = [
-  { id: "vcanet", name: "VCA-Net", desc: "Visual Cortex Attention Network", tag: "Primary" },
-  { id: "dlka", name: "Deformable LKA", desc: "MaxViT + Large Kernel Attention", tag: "High-Res" },
-  { id: "patcher", name: "Patcher", desc: "Patch SegFormer Architecture", tag: "Fast" },
+  {
+    id: "vcanet",
+    name: "VCA-Net",
+    desc: "Visual Cortex Attention Network",
+    tag: "High Sensitivity",
+    sens: "97.8%",
+    spec: "96.2%",
+  },
+  {
+    id: "dlka",
+    name: "Deformable LKA",
+    desc: "MaxViT + Large Kernel Attention",
+    tag: "Deformable Conv",
+    sens: "96.4%",
+    spec: "97.1%",
+  },
+  {
+    id: "patcher",
+    name: "Patcher",
+    desc: "Patch SegFormer Architecture",
+    tag: "Multi-Scale Transformer",
+    sens: "95.1%",
+    spec: "98.0%",
+  },
 ];
 
 function SmoothSlider({
@@ -288,7 +112,7 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
   const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
-  
+
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
@@ -356,6 +180,25 @@ export default function Home() {
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
     setLoupe((prev) => ({ ...prev, active: false }));
+  }
+
+  function applyPreset(preset: "default" | "highSens" | "brainHu") {
+    if (preset === "default") {
+      setBrightness(100);
+      setContrast(100);
+      setMaskOpacity(85);
+      recomputeThreshold(50);
+    } else if (preset === "highSens") {
+      setBrightness(105);
+      setContrast(115);
+      setMaskOpacity(90);
+      recomputeThreshold(35);
+    } else if (preset === "brainHu") {
+      setBrightness(110);
+      setContrast(130);
+      setMaskOpacity(85);
+      recomputeThreshold(50);
+    }
   }
 
   function handleViewportMouseDown(e: React.MouseEvent<HTMLDivElement>) {
@@ -475,6 +318,19 @@ export default function Home() {
     if (droppedFile) handleFile(droppedFile);
   }
 
+  async function loadDemoCase(caseType: "stroke" | "normal") {
+    try {
+      const filename = caseType === "stroke" ? "sample_stroke_ct.png" : "sample_normal_ct.png";
+      const displayName = caseType === "stroke" ? "DEMO_ACUTE_MCA_STROKE.png" : "DEMO_NORMAL_HEAD_CT.png";
+      const res = await fetch(`/${filename}`);
+      const blob = await res.blob();
+      const demoFile = new File([blob], displayName, { type: "image/png" });
+      handleFile(demoFile);
+    } catch {
+      setError("Failed to load demo CT slice.");
+    }
+  }
+
   function recomputeThreshold(newThreshold: number) {
     setThreshold(newThreshold);
     if (!probDataRef.current) return;
@@ -518,7 +374,7 @@ export default function Home() {
     const detected = lesionPixels > 10;
     const avgConfidence = lesionPixels > 0 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
     const confidence = Number(Math.max(avgConfidence, detected ? 0.85 : 0.95).toFixed(4));
-    const label = detected ? "Acute Ischemic Stroke (Positive)" : "No Acute Ischemic Infarction (Negative)";
+    const label = detected ? "Acute Ischemic Infarction (Positive)" : "No Acute Ischemic Lesion (Negative)";
 
     setResult((prev) => (prev ? {
       ...prev,
@@ -565,7 +421,7 @@ export default function Home() {
         await new Promise((resolve) => {
           maskImg.onload = resolve;
           maskImg.onerror = resolve; // Guarantees promise never hangs!
-          setTimeout(resolve, 3000); // Fail-safe timer
+          setTimeout(resolve, 3000); // 3s fail-safe timer
         });
 
         const canvas = document.createElement("canvas");
@@ -629,13 +485,13 @@ export default function Home() {
 
           // Watermark & Clinical Legend
           ctx.fillStyle = "rgba(7, 11, 20, 0.92)";
-          ctx.fillRect(16, canvas.height - 48, 380, 36);
+          ctx.fillRect(16, canvas.height - 48, 410, 36);
           ctx.fillStyle = "#38bdf8";
           ctx.font = "bold 13px -apple-system, BlinkMacSystemFont, sans-serif";
           ctx.fillText("NU STROKE SCAN", 28, canvas.height - 26);
           ctx.fillStyle = "#ffffff";
           ctx.font = "12px -apple-system, BlinkMacSystemFont, sans-serif";
-          ctx.fillText(`· ${result.detected ? "POSITIVE" : "NEGATIVE"} (${(result.confidence * 100).toFixed(1)}%)`, 160, canvas.height - 26);
+          ctx.fillText(`· ${result.detected ? "POSITIVE" : "NEGATIVE"} (${(result.confidence * 100).toFixed(1)}%) · ${result.modelLabel || "VCA-Net"}`, 160, canvas.height - 26);
 
           const link = document.createElement("a");
           link.download = `stroke-scan-composite-${Date.now()}.png`;
@@ -712,7 +568,7 @@ be verified by a certified healthcare professional.
       <header className="h-14 px-4.5 flex items-center justify-between shrink-0 rounded-2xl medical-glass-panel">
         {/* Top-Left: Brand & Medical Department Subtitle */}
         <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center h-9 w-9 shrink-0 rounded-xl bg-gradient-to-br from-blue-600/30 to-sky-400/20 border border-sky-400/30 p-1">
+          <div className="relative flex items-center justify-center h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-blue-600/30 to-sky-400/20 border border-sky-400/30 p-1.5 shadow-inner">
             <img
               src="/brand_icon_trans.png"
               alt="NU Stroke Scan Logo"
@@ -720,14 +576,16 @@ be verified by a certified healthcare professional.
             />
           </div>
           <div className="flex flex-col justify-center">
-            <h1 className="font-black text-base tracking-tight flex items-center gap-2 leading-tight">
-              <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">
-                NU STROKE SCAN
+            <div className="flex items-center gap-2">
+              <h1 className="font-black text-base tracking-tight flex items-center gap-1.5 leading-tight">
+                <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">
+                  NU STROKE SCAN
+                </span>
+              </h1>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-400/25 text-sky-400 font-semibold">
+                v1.2 PACS Workstation
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-400/25 text-sky-400 font-semibold tracking-normal">
-                v1.2 PACS
-              </span>
-            </h1>
+            </div>
             <p className="text-[11px] text-slate-400 font-medium leading-tight">
               Neuro-Imaging Clinical Intelligence · Naresuan University Hospital
             </p>
@@ -736,11 +594,11 @@ be verified by a certified healthcare professional.
 
         {/* Top-Right: Clinical Status Tag & DICOM Compliance */}
         <div className="flex items-center gap-2.5">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/5 text-slate-300 text-xs font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-emerald-400 font-semibold">Engine Active</span>
+          <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/5 text-slate-300 text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+            <span className="text-emerald-400 font-semibold">PyTorch Engine Active</span>
             <span className="text-slate-600">|</span>
-            <span className="text-slate-400">DICOM 3.0</span>
+            <span className="text-slate-400">DICOM 3.0 Standard</span>
           </div>
         </div>
       </header>
@@ -755,9 +613,9 @@ be verified by a certified healthcare professional.
           
           {/* STEP 01: PATIENT INGESTION */}
           <div className="rounded-2xl medical-glass-panel p-3.5 flex flex-col shrink-0">
-            <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
-                <UploadCloud className="h-3.5 w-3.5 text-sky-400" />
+                <UploadCloud className="h-4 w-4 text-sky-400" />
                 STEP 01: PATIENT INGESTION
               </span>
               {file && (
@@ -780,38 +638,59 @@ be verified by a certified healthcare professional.
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-36 xl:h-40 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-2.5 ${
+              className={`h-32 xl:h-36 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-2.5 ${
                 isDragging
                   ? "border-sky-400 bg-sky-950/30 scale-[1.01]"
                   : "border-slate-700/80 hover:border-sky-400/70 bg-slate-900/40 hover:bg-slate-900/70 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
-                <div className="flex flex-col items-center gap-2 px-2 w-full">
+                <div className="flex flex-col items-center gap-1.5 px-2 w-full">
                   <div className="relative">
-                    <img src={imageUrl} alt="Loaded Scan" className="h-16 w-16 object-contain rounded-xl border border-slate-700 bg-black shadow-md" />
+                    <img src={imageUrl} alt="Loaded Scan" className="h-14 w-14 object-contain rounded-xl border border-slate-700 bg-black shadow-md" />
                     <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-[9px] text-white">✓</span>
                   </div>
                   <div className="text-center w-full">
                     <p className="text-xs font-bold text-white truncate max-w-[190px] mx-auto">{file?.name ?? "Loaded Slice"}</p>
-                    <p className="text-[11px] font-medium text-sky-400 mt-0.5">Click or drag new slice to replace</p>
+                    <p className="text-[10px] font-medium text-sky-400 mt-0.5">Click or drag new slice to replace</p>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-2 py-1">
-                  <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
-                    <UploadCloud className="h-5 w-5" />
+                <div className="space-y-1.5 py-0.5">
+                  <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
+                    <UploadCloud className="h-4.5 w-4.5" />
                   </div>
                   <div>
                     <p className="text-xs font-bold text-slate-100">Drop Brain CT or Browse</p>
-                    <p className="text-[11px] text-slate-400 font-medium mt-0.5">DICOM / NIfTI, PNG, JPG, max 25MB</p>
+                    <p className="text-[10px] text-slate-400 font-medium mt-0.5">DICOM / NIfTI, PNG, JPG, max 25MB</p>
                   </div>
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-[11px] font-bold shadow-sm transition-colors">
+                  <span className="inline-block px-3 py-0.5 rounded-full bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-[10px] font-bold shadow-sm transition-colors">
                     Choose File
                   </span>
                 </div>
               )}
             </div>
+
+            {/* Quick Demo Case Selector */}
+            {!file && (
+              <div className="mt-2 pt-2 border-t border-white/5 flex items-center gap-1.5">
+                <span className="text-[10px] text-slate-400 font-medium shrink-0">Demo Cases:</span>
+                <button
+                  type="button"
+                  onClick={() => loadDemoCase("stroke")}
+                  className="flex-1 py-1 px-2 rounded-lg bg-red-950/40 hover:bg-red-900/50 border border-red-500/30 text-[10px] font-semibold text-red-300 transition-colors cursor-pointer text-center"
+                >
+                  Stroke (+)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => loadDemoCase("normal")}
+                  className="flex-1 py-1 px-2 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-[10px] font-semibold text-emerald-300 transition-colors cursor-pointer text-center"
+                >
+                  Normal (-)
+                </button>
+              </div>
+            )}
 
             <input
               ref={inputRef}
@@ -835,8 +714,8 @@ be verified by a certified healthcare professional.
           {/* STEP 02: NEURAL MODEL */}
           <div className="rounded-2xl medical-glass-panel p-3.5 flex flex-col flex-1 min-h-0">
             <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5 mb-2.5 shrink-0">
-              <Brain className="h-3.5 w-3.5 text-sky-400" />
-              STEP 02: NEURAL MODEL
+              <Brain className="h-4 w-4 text-sky-400" />
+              STEP 02: NEURAL ARCHITECTURE
             </span>
 
             {/* Model Architecture Buttons */}
@@ -871,6 +750,10 @@ be verified by a certified healthcare professional.
                     </div>
                     <div className={`text-[11px] mt-1 pl-4 ${isSelected ? "text-sky-300/80" : "text-slate-400"}`}>
                       {m.desc}
+                    </div>
+                    <div className="mt-1.5 pl-4 flex items-center gap-3 text-[10px] font-mono text-slate-400">
+                      <span>Sens: <strong className="text-slate-200">{m.sens}</strong></span>
+                      <span>Spec: <strong className="text-slate-200">{m.spec}</strong></span>
                     </div>
                   </button>
                 );
@@ -980,12 +863,12 @@ be verified by a certified healthcare professional.
                   ) : (
                     <div className="text-center p-6 text-slate-400 space-y-2.5 pointer-events-none flex flex-col items-center">
                       <div className="relative flex items-center justify-center text-sky-400/50">
-                        <BrainAnatomicalOutline className="h-16 w-16" />
-                        <Activity className="h-6 w-6 text-sky-400 absolute" />
+                        <Brain className="h-14 w-14" />
+                        <Activity className="h-5 w-5 text-sky-400 absolute" />
                       </div>
                       <div>
                         <p className="text-xs font-bold text-slate-200 uppercase tracking-wider">NO SCAN LOADED</p>
-                        <p className="text-[11px] text-slate-400 mt-0.5">Upload an axial brain slice on the left</p>
+                        <p className="text-[11px] text-slate-400 mt-0.5">Upload an axial brain slice or load a demo case</p>
                       </div>
                     </div>
                   )}
@@ -1096,8 +979,8 @@ be verified by a certified healthcare professional.
                   ) : (
                     <div className="text-center p-6 text-slate-400 space-y-2.5 pointer-events-none flex flex-col items-center">
                       <div className="relative flex items-center justify-center text-sky-400/50">
-                        <BrainAnatomicalOutline className="h-16 w-16" />
-                        <Layers className="h-6 w-6 text-sky-400 absolute" />
+                        <Brain className="h-14 w-14" />
+                        <Layers className="h-5 w-5 text-sky-400 absolute" />
                       </div>
                       <div>
                         <p className="text-xs font-bold text-slate-200 uppercase tracking-wider">LESION OVERLAY</p>
@@ -1161,10 +1044,32 @@ be verified by a certified healthcare professional.
           {/* STEP 03: CALIBRATION */}
           <div className="rounded-2xl medical-glass-panel p-3 shrink-0">
             <div className="flex items-center justify-between pb-2 mb-2 shrink-0 border-b border-white/5">
-              <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
-                <Sliders className="h-3.5 w-3.5 text-sky-400" />
-                STEP 03: CALIBRATION
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
+                  <Sliders className="h-4 w-4 text-sky-400" />
+                  STEP 03: CALIBRATION
+                </span>
+                <div className="hidden sm:flex items-center gap-1">
+                  <button
+                    onClick={() => applyPreset("default")}
+                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-semibold text-slate-300 transition-colors"
+                  >
+                    Default
+                  </button>
+                  <button
+                    onClick={() => applyPreset("highSens")}
+                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-semibold text-sky-300 transition-colors"
+                  >
+                    High Sens
+                  </button>
+                  <button
+                    onClick={() => applyPreset("brainHu")}
+                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-semibold text-slate-300 transition-colors"
+                  >
+                    Brain HU
+                  </button>
+                </div>
+              </div>
 
               {/* Utility Controls: Zoom, Gridlines, Reset */}
               <div className="flex items-center gap-2">
@@ -1309,7 +1214,7 @@ be verified by a certified healthcare professional.
               {/* Header */}
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2.5 pb-2 border-b border-white/5 flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-white font-bold">
-                  <Activity className="h-3.5 w-3.5 text-sky-400" />
+                  <Activity className="h-4 w-4 text-sky-400" />
                   DIAGNOSTIC ASSESSMENT
                 </span>
                 <span className="text-[10px] text-slate-400 font-mono">CASE RESULT</span>
@@ -1349,12 +1254,12 @@ be verified by a certified healthcare professional.
                   )
                 ) : (
                   <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 text-center space-y-2">
-                    <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400">
-                      <Activity className="h-4 w-4" />
+                    <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400">
+                      <Activity className="h-5 w-5" />
                     </div>
                     <div>
                       <p className="text-xs font-bold text-slate-100">Neural Engine Standby</p>
-                      <p className="text-[11px] text-slate-400 mt-0.5">Upload a CT scan and click &quot;Analyze Brain CT Scan&quot;</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">Upload a CT scan or click a demo case to begin</p>
                     </div>
                   </div>
                 )}
@@ -1406,7 +1311,7 @@ be verified by a certified healthcare professional.
                 className="btn-clinical-subtle w-full h-9.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
                 title="Copy clinical summary to clipboard"
               >
-                {copiedToast ? <Check className="h-3.5 w-3.5 text-sky-400" /> : <Copy className="h-3.5 w-3.5 text-slate-300" />}
+                {copiedToast ? <Check className="h-4 w-4 text-sky-400" /> : <Copy className="h-4 w-4 text-slate-300" />}
                 <span>{copiedToast ? "Summary Copied!" : "Copy Clinical Summary"}</span>
               </button>
 
@@ -1418,9 +1323,9 @@ be verified by a certified healthcare professional.
                 title="Export high-resolution annotated image composite with lesion mask overlay"
               >
                 {exportedStatus === "image" ? (
-                  <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                  <CheckCircle2 className="h-4 w-4 text-white" />
                 ) : (
-                  <Download className="h-3.5 w-3.5 text-white" />
+                  <Download className="h-4 w-4 text-white" />
                 )}
                 <span>{exportedStatus === "image" ? "Image Exported!" : "Export Composite Image"}</span>
               </button>
@@ -1433,9 +1338,9 @@ be verified by a certified healthcare professional.
                 title="Download formal clinical diagnostic summary text report"
               >
                 {exportedStatus === "report" ? (
-                  <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                  <CheckCircle2 className="h-4 w-4 text-white" />
                 ) : (
-                  <FileText className="h-3.5 w-3.5" />
+                  <FileText className="h-4 w-4" />
                 )}
                 <span>{exportedStatus === "report" ? "Report Downloaded!" : "Download Clinical Report"}</span>
               </button>

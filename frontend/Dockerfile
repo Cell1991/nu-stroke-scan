@@ -8,7 +8,7 @@ RUN npm install
 FROM dependencies AS development
 COPY . .
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm install && npm run dev"]
 
 FROM dependencies AS builder
 COPY . .
