@@ -26,6 +26,11 @@ html, body {
   overflow: hidden;
 }
 
+html.dark, body.dark {
+  background-color: #0b0f19;
+  color: #f8fafc;
+}
+
 /* Custom Clean Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
@@ -33,6 +38,9 @@ html, body {
 }
 ::-webkit-scrollbar-track {
   background: rgba(226, 232, 240, 0.8);
+}
+.dark ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.8);
 }
 ::-webkit-scrollbar-thumb {
   background: rgba(249, 115, 22, 0.5);
@@ -76,7 +84,8 @@ html, body {
 /* ========================================================================= */
 /* DARK THEME COCKPIT SPECIFICATION */
 /* ========================================================================= */
-.dark .medical-vibrant-backdrop {
+.dark .medical-vibrant-backdrop,
+.dark.medical-vibrant-backdrop {
   background-color: #0b0f19;
   background-image: 
     radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.12) 0%, transparent 45%),
@@ -91,29 +100,31 @@ html, body {
   background: #0f172a;
   border: 1px solid rgba(51, 65, 85, 0.8);
   box-shadow: 
-    0 10px 25px -4px rgba(0, 0, 0, 0.5),
-    0 4px 10px -2px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 10px 25px -4px rgba(0, 0, 0, 0.6),
+    0 4px 10px -2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .dark .glass-panel-subtle {
   background: #1e293b;
   border: 1px solid rgba(51, 65, 85, 0.7);
   box-shadow: 
-    0 2px 5px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 2px 5px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .dark .btn-vibrant-subtle {
   background: #1e293b;
   border-color: #334155;
   color: #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.dark .btn-vibrant-subtle:hover {
+.dark .btn-vibrant-subtle:hover:not(:disabled) {
   background: #334155;
   border-color: #f97316;
   color: #f97316;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
 }
 
 .dark .neu-slider-track-bg {
