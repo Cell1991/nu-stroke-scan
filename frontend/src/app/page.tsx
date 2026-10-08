@@ -335,11 +335,10 @@ export default function Home() {
       if (prob >= cutoff) {
         lesionPixels++;
         sumProb += prob;
-        const norm = (prob - cutoff) / Math.max(1, 255 - cutoff);
-        out[idx] = Math.round(234 + norm * 21);
-        out[idx + 1] = Math.round(88 + norm * 60);
-        out[idx + 2] = 12;
-        out[idx + 3] = Math.round(160 + norm * 95);
+        out[idx] = 239;
+        out[idx + 1] = 68;
+        out[idx + 2] = 68;
+        out[idx + 3] = 255;
       } else {
         out[idx + 3] = 0;
       }
@@ -351,7 +350,7 @@ export default function Home() {
     const lesionArea = detected ? Number(((lesionPixels / totalPixels) * 100).toFixed(2)) : 0;
     const avgConfidence = lesionPixels >= 15 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
     const confidence = Number(Math.max(avgConfidence, detected ? 0.85 : 0.95).toFixed(4));
-    const label = detected ? "Acute Ischemic Infarction (Positive)" : "No Acute Ischemic Lesion (Negative)";
+    const label = detected ? "Acute Stroke Lesion Detected" : "No Acute Lesion Detected";
 
     setResult((prev) => (prev ? {
       ...prev,
@@ -388,25 +387,27 @@ export default function Home() {
       }
 
       const data = await res.json();
-      const rawB64 = data.mask_base64 || data.mask_png_base64 || data.prob_png_base64;
-      const maskUrl = rawB64 ? `data:image/png;base64,${rawB64}` : "";
+      const probB64 = data.prob_png_base64 || data.mask_base64 || data.mask_png_base64;
+      const initialMaskUrl = (data.mask_base64 || data.mask_png_base64)
+        ? `data:image/png;base64,${data.mask_base64 || data.mask_png_base64}`
+        : "";
 
-      if (maskUrl) {
-        const maskImg = new Image();
-        maskImg.crossOrigin = "anonymous";
-        maskImg.src = maskUrl;
+      if (probB64) {
+        const probImg = new Image();
+        probImg.crossOrigin = "anonymous";
+        probImg.src = `data:image/png;base64,${probB64}`;
         await new Promise((resolve) => {
-          maskImg.onload = resolve;
-          maskImg.onerror = resolve; // Guarantees promise never hangs!
+          probImg.onload = resolve;
+          probImg.onerror = resolve; // Guarantees promise never hangs!
           setTimeout(resolve, 3000); // 3s fail-safe timer
         });
 
         const canvas = document.createElement("canvas");
-        canvas.width = maskImg.width || 512;
-        canvas.height = maskImg.height || 512;
+        canvas.width = probImg.width || 512;
+        canvas.height = probImg.height || 512;
         const ctx = canvas.getContext("2d");
         if (ctx) {
-          ctx.drawImage(maskImg, 0, 0);
+          ctx.drawImage(probImg, 0, 0);
           const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           probDataRef.current = {
             width: canvas.width,
@@ -419,7 +420,7 @@ export default function Home() {
       setResult({
         label: data.label || "Analysis Complete",
         confidence: Number(data.confidence ?? 0.95),
-        maskUrl,
+        maskUrl: initialMaskUrl,
         detected: Boolean(data.detected ?? data.lesion_detected),
         lesionArea: data.lesion_area ?? data.lesion_area_percentage ?? 0,
         modelLabel: data.model_label || MODELS.find((m) => m.id === modelId)?.name,
