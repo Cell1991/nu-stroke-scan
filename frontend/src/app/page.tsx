@@ -62,24 +62,18 @@ const MODELS = [
     name: "VCA-Net",
     desc: "Visual Cortex Attention Network",
     tag: "High Sensitivity",
-    sens: "97.8%",
-    spec: "96.2%",
   },
   {
     id: "dlka",
     name: "Deformable LKA",
     desc: "MaxViT + Large Kernel Attention",
     tag: "Deformable Conv",
-    sens: "96.4%",
-    spec: "97.1%",
   },
   {
     id: "patcher",
     name: "Patcher",
     desc: "Patch SegFormer Architecture",
     tag: "Multi-Scale Transformer",
-    sens: "95.1%",
-    spec: "98.0%",
   },
 ];
 
@@ -195,24 +189,6 @@ export default function Home() {
     setLoupe((prev) => ({ ...prev, active: false }));
   }
 
-  function applyPreset(preset: "default" | "highSens" | "brainHu") {
-    if (preset === "default") {
-      setBrightness(100);
-      setContrast(100);
-      setMaskOpacity(85);
-      recomputeThreshold(50);
-    } else if (preset === "highSens") {
-      setBrightness(105);
-      setContrast(115);
-      setMaskOpacity(90);
-      recomputeThreshold(35);
-    } else if (preset === "brainHu") {
-      setBrightness(110);
-      setContrast(130);
-      setMaskOpacity(85);
-      recomputeThreshold(50);
-    }
-  }
 
   function handleViewportMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === 2) return;
@@ -623,15 +599,6 @@ be verified by a certified healthcare professional.
           </div>
         </div>
 
-        {/* Top-Right: Clinical Status Tag & DICOM Compliance */}
-        <div className="flex items-center gap-2.5">
-          <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/5 text-slate-300 text-xs font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-            <span className="text-emerald-400 font-semibold">PyTorch Engine Active</span>
-            <span className="text-slate-600">|</span>
-            <span className="text-slate-400">DICOM 3.0 Standard</span>
-          </div>
-        </div>
       </header>
 
       {/* 2. Main 3-Column Cockpit Workspace */}
@@ -781,10 +748,6 @@ be verified by a certified healthcare professional.
                     </div>
                     <div className={`text-[11px] mt-1 pl-4 ${isSelected ? "text-sky-300/80" : "text-slate-400"}`}>
                       {m.desc}
-                    </div>
-                    <div className="mt-1.5 pl-4 flex items-center gap-3 text-[10px] font-mono text-slate-400">
-                      <span>Sens: <strong className="text-slate-200">{m.sens}</strong></span>
-                      <span>Spec: <strong className="text-slate-200">{m.spec}</strong></span>
                     </div>
                   </button>
                 );
@@ -1080,26 +1043,6 @@ be verified by a certified healthcare professional.
                   <Sliders className="h-4 w-4 text-sky-400" />
                   STEP 03: CALIBRATION
                 </span>
-                <div className="hidden sm:flex items-center gap-1">
-                  <button
-                    onClick={() => applyPreset("default")}
-                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-semibold text-slate-300 transition-colors"
-                  >
-                    Default
-                  </button>
-                  <button
-                    onClick={() => applyPreset("highSens")}
-                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-semibold text-sky-300 transition-colors"
-                  >
-                    High Sens
-                  </button>
-                  <button
-                    onClick={() => applyPreset("brainHu")}
-                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-semibold text-slate-300 transition-colors"
-                  >
-                    Brain HU
-                  </button>
-                </div>
               </div>
 
               {/* Utility Controls: Zoom, Gridlines, Reset */}
@@ -1443,12 +1386,12 @@ be verified by a certified healthcare professional.
       </main>
 
       {/* 3. Streamlined Clinical Footer */}
-      <footer className="h-4 flex items-center justify-between text-[11px] font-medium text-slate-400 px-3 shrink-0 border-t border-white/5 pt-0.5">
+      <footer className="h-4 flex items-center justify-between text-[11px] font-medium text-slate-500 px-3 shrink-0 border-t border-white/5 pt-0.5">
         <span className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shadow-[0_0_6px_#38bdf8]" />
-          NU Stroke Scan Enterprise v1.2 · Naresuan University Neuro-Imaging Research Center
+          NU Stroke Scan · Naresuan University Hospital
         </span>
-        <span>End-to-End Encrypted DICOM Protocol · ISO 13485 Clinical Intelligence</span>
+        <span>Research & Clinical Intelligence</span>
       </footer>
     </div>
   );
