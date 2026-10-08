@@ -252,61 +252,7 @@ function SmoothSlider({
   );
 }
 
-// Live Canvas ECG Waveform Animation
-function ECGMonitor() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrame: number;
-    let step = 0;
-    const width = canvas.width;
-    const height = canvas.height;
-
-    const render = () => {
-      ctx.fillStyle = "rgba(248, 250, 252, 0.25)";
-      ctx.fillRect(0, 0, width, height);
-
-      ctx.beginPath();
-      ctx.strokeStyle = "#10b981";
-      ctx.lineWidth = 1.5;
-      ctx.shadowColor = "#10b981";
-      ctx.shadowBlur = 4;
-
-      for (let x = 0; x < width; x++) {
-        const offset = (x + step) % width;
-        let y = height / 2;
-
-        // Simulate QRS cardiac spike
-        const pos = offset % 60;
-        if (pos === 20) y -= 3;
-        else if (pos === 24) y += 5;
-        else if (pos === 27) y -= 12;
-        else if (pos === 30) y += 6;
-        else if (pos === 35) y -= 2;
-
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      step = (step + 1.2) % width;
-      animationFrame = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      cancelAnimationFrame(animationFrame);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} width={64} height={20} className="h-5 w-16 rounded bg-slate-100 border border-slate-200" />;
-}
 
 export default function HomePage() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -780,32 +726,6 @@ be verified by a certified healthcare professional.
               Neuro-Imaging Clinical Intelligence · Naresuan University
             </p>
           </div>
-        </div>
-
-        {/* Live PACS Telemetry & Node HUD with Live Animated ECG */}
-        <div className="hidden lg:flex items-center gap-3.5 glass-panel-subtle bg-slate-50/90 px-3.5 py-1 rounded-lg text-xs font-mono border border-slate-200/90 shadow-xs">
-          <div className="flex items-center gap-2">
-            <ECGMonitor />
-            <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-            <span className="font-bold text-emerald-700 text-[11px]">PACS SYNC</span>
-          </div>
-          <div className="w-[1px] h-3.5 bg-slate-300" />
-          <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
-            <span>LATENCY:</span>
-            <span className="text-orange-600 font-bold">12ms</span>
-          </div>
-          <div className="w-[1px] h-3.5 bg-slate-300" />
-          <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
-            <span>NODE:</span>
-            <span className="text-slate-800 font-bold">#04 NEURO-ICU</span>
-          </div>
-        </div>
-
-        {/* Quick Info Pill */}
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
-          <span className="hidden sm:inline-block px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[11px]">
-            LEFT-TO-RIGHT WORKFLOW
-          </span>
         </div>
       </header>
 
