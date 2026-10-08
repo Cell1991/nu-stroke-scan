@@ -6,14 +6,14 @@ services:
     ports:
       - "3000:3000"
     environment:
+      INTERNAL_API_URL: http://backend:8000
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
     volumes:
       - ./frontend:/app
       - frontend_node_modules:/app/node_modules
       - frontend_next:/app/.next
     depends_on:
-      backend:
-        condition: service_started
+      - backend
 
   backend:
     build:
@@ -31,10 +31,11 @@ services:
       - ./checkpoints:/checkpoints:ro
     depends_on:
       database:
-        condition: service_healthy
+        condition: service_started
 
   database:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
@@ -47,7 +48,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 5
 
 volumes:
   postgres_data:
