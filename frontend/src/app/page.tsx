@@ -347,9 +347,9 @@ export default function Home() {
 
     ctx.putImageData(outImgData, 0, 0);
     const newMaskUrl = canvas.toDataURL("image/png");
-    const lesionArea = Number(((lesionPixels / totalPixels) * 100).toFixed(2));
-    const detected = lesionPixels > 10;
-    const avgConfidence = lesionPixels > 0 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
+    const detected = lesionPixels >= 15;
+    const lesionArea = detected ? Number(((lesionPixels / totalPixels) * 100).toFixed(2)) : 0;
+    const avgConfidence = lesionPixels >= 15 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
     const confidence = Number(Math.max(avgConfidence, detected ? 0.85 : 0.95).toFixed(4));
     const label = detected ? "Acute Ischemic Infarction (Positive)" : "No Acute Ischemic Lesion (Negative)";
 
@@ -1212,7 +1212,7 @@ be verified by a certified healthcare professional.
                       <p className="text-sm font-bold text-white">Acute Hemorrhage Detected</p>
                       <p className="text-xs text-red-300/90 leading-relaxed">High-attenuation acute hemorrhagic lesion identified.</p>
                     </div>
-                  ) : result.classification?.predicted_class === "ischemic" || result.detected ? (
+                  ) : result.classification?.predicted_class === "ischemic" || (result.detected && (result.lesionArea ?? 0) >= 0.05) ? (
                     <div className="p-3.5 rounded-xl bg-amber-950/40 border-2 border-amber-500 text-amber-100 space-y-2 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">

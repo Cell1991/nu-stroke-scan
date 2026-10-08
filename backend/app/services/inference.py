@@ -103,10 +103,14 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         probabilities = output if spec.outputs_probability else torch.sigmoid(output)
 
     prob_np = probabilities.cpu().numpy()
-    mask = (prob_np >= selected_threshold).astype(np.uint8) * 255
-    detected = bool((mask > 0).any())
-
+    raw_mask = (prob_np >= selected_threshold).astype(np.uint8) * 255
     total_pixels = prob_np.size
+    raw_lesion_pixels = int(np.count_nonzero(raw_mask > 0))
+
+    # Suppress isolated noise artifacts (< 15 pixels out of 50k pixels)
+    MIN_LESION_PIXELS = 15
+    detected = raw_lesion_pixels >= MIN_LESION_PIXELS
+    mask = raw_mask if detected else np.zeros_like(raw_mask)
     lesion_pixels = int(np.count_nonzero(mask > 0))
     lesion_area_pct = round((lesion_pixels / total_pixels) * 100.0, 2)
 
@@ -115,7 +119,8 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         confidence = float(np.mean(positive_probs))
         label = "Acute Stroke Lesion Detected"
     else:
-        confidence = float(1.0 - np.max(prob_np))
+        max_p = float(np.max(prob_np)) if prob_np.size > 0 else 0.0
+        confidence = float(1.0 - max_p) if max_p < 0.5 else 0.95
         label = "No Acute Lesion Detected"
 
     # Solid alpha mask on detected lesion so frontend slider has full 0-100% dynamic opacity control

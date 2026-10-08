@@ -99,9 +99,9 @@ def load_model(spec: ModelSpec, checkpoint_path: Path, device: torch.device) -> 
 
 
 CLASSIFICATION_CLASSES = [
+    {"id": "normal", "label": "Normal (No Stroke)"},
     {"id": "hemorrhagic", "label": "Hemorrhagic Stroke"},
     {"id": "ischemic", "label": "Ischemic Stroke"},
-    {"id": "normal", "label": "Normal (No Stroke)"},
 ]
 
 
