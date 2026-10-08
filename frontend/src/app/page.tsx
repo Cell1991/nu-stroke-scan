@@ -177,22 +177,6 @@ function Zap({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function ShieldCheck({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function Sparkles({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-    </svg>
-  );
-}
 
 
 function Copy({ className = "h-4 w-4" }: { className?: string }) {
@@ -605,9 +589,9 @@ export default function HomePage() {
         body: formData,
       });
 
-      let payload: any;
+      let payload: Record<string, unknown>;
       try {
-        payload = await response.json();
+        payload = (await response.json()) as Record<string, unknown>;
       } catch {
         if (!response.ok) {
           throw new Error(
@@ -617,7 +601,10 @@ export default function HomePage() {
         throw new Error("Invalid response received from AI server.");
       }
 
-      if (!response.ok) throw new Error(payload.detail ?? payload.message ?? "Inference failed.");
+      if (!response.ok) {
+        const errorDetail = (payload.detail as string | undefined) ?? (payload.message as string | undefined) ?? "Inference failed.";
+        throw new Error(errorDetail);
+      }
 
       if (payload.prob_png_base64) {
         const probImg = new Image();
@@ -636,16 +623,18 @@ export default function HomePage() {
         }
       }
 
-      const isDetected = payload.lesion_detected ?? payload.confidence >= threshold / 100;
+      const isDetected =
+        (payload.lesion_detected as boolean | undefined) ??
+        ((payload.confidence as number) >= threshold / 100);
 
       setResult({
-        label: payload.label,
-        confidence: payload.confidence,
-        maskUrl: `data:image/png;base64,${payload.mask_png_base64}`,
+        label: (payload.label as string) || "Diagnostic Complete",
+        confidence: typeof payload.confidence === "number" ? payload.confidence : 0,
+        maskUrl: `data:image/png;base64,${(payload.mask_png_base64 as string) || ""}`,
         detected: isDetected,
-        lesionArea: payload.lesion_area_percentage,
-        modelLabel: payload.model_label,
-        inputSize: payload.input_size,
+        lesionArea: payload.lesion_area_percentage as number | undefined,
+        modelLabel: payload.model_label as string | undefined,
+        inputSize: payload.input_size as [number, number] | undefined,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Analysis request failed.");
