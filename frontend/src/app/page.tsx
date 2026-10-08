@@ -702,27 +702,27 @@ be verified by a certified healthcare professional.
     <div className="h-screen w-screen bg-[#f0f4f9] text-slate-900 flex flex-col overflow-hidden font-sans p-2.5 gap-2 select-none medical-vibrant-backdrop">
       
       {/* 1. Ultra-Clean Medical Enterprise Navigation Deck */}
-      <header className="h-13 glass-panel-vibrant rounded-xl px-4 flex items-center justify-between gap-4 shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
+      <header className="h-16 glass-panel-vibrant rounded-2xl px-6 flex items-center justify-between shrink-0 shadow-sm border border-slate-200/90 bg-white/95">
         {/* Hospital Brand & Node Badge */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="relative flex items-center justify-center">
-            <div className="absolute -inset-1 rounded-full bg-orange-500/20 blur-sm animate-pulse" />
+            <div className="absolute -inset-1.5 rounded-full bg-orange-500/20 blur-md animate-pulse" />
             <img
               src="/brand_icon_trans.png"
               alt="NU Stroke Scan Logo"
-              className="h-9 w-9 object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.4)] select-none pointer-events-none relative z-10"
+              className="h-11 w-11 object-contain drop-shadow-[0_2px_10px_rgba(249,115,22,0.45)] select-none pointer-events-none relative z-10"
             />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-slate-900 block leading-tight">
-                <span className="text-orange-600 font-black">NU</span> STROKE SCAN
+          <div className="flex flex-col justify-center">
+            <div className="flex items-center gap-2.5">
+              <span className="font-black text-lg tracking-tight text-slate-900 block leading-tight">
+                <span className="text-orange-600">NU</span> STROKE SCAN
               </span>
-              <span className="px-2 py-0.5 rounded text-[9px] font-mono font-black bg-orange-50 text-orange-700 border border-orange-200 shadow-xs">
+              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-orange-50 text-orange-700 border border-orange-200 shadow-xs">
                 ENTERPRISE CLINICAL v1.2
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">
+            <p className="text-xs text-slate-500 font-medium leading-normal mt-0.5">
               Neuro-Imaging Clinical Intelligence · Naresuan University
             </p>
           </div>
