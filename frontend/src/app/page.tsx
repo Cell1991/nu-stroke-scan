@@ -650,8 +650,19 @@ export default function HomePage() {
         body: formData,
       });
 
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.detail ?? "Inference failed.");
+      let payload: any;
+      try {
+        payload = await response.json();
+      } catch {
+        if (!response.ok) {
+          throw new Error(
+            `Backend connection failed (${response.status}). Please make sure FastAPI backend is running on port 8000.`
+          );
+        }
+        throw new Error("Invalid response received from AI server.");
+      }
+
+      if (!response.ok) throw new Error(payload.detail ?? payload.message ?? "Inference failed.");
 
       if (payload.prob_png_base64) {
         const probImg = new Image();
