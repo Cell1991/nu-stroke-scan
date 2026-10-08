@@ -572,8 +572,8 @@ be verified by a certified healthcare professional.
     <div className="h-screen w-screen flex flex-col overflow-hidden font-sans p-3 gap-2.5 select-none medical-ambient-backdrop text-slate-100">
       
       {/* 1. Top Header Navigation Bar */}
-      <header className="h-14 px-4.5 flex items-center justify-between shrink-0 rounded-2xl medical-glass-panel">
-        {/* Top-Left: Brand & Medical Department Subtitle */}
+      <header className="h-14 px-5 flex items-center justify-between shrink-0 rounded-2xl medical-glass-panel">
+        {/* Top-Left: Brand & Subtitle */}
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-blue-600/30 to-sky-400/20 border border-sky-400/30 p-1.5 shadow-inner">
             <img
@@ -583,38 +583,49 @@ be verified by a certified healthcare professional.
             />
           </div>
           <div className="flex flex-col justify-center">
-            <div className="flex items-center gap-2">
-              <h1 className="font-black text-base tracking-tight flex items-center gap-1.5 leading-tight">
-                <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">
+            <div className="flex items-center gap-2.5">
+              <h1 className="font-bold text-base tracking-tight flex items-center gap-1.5 leading-tight">
+                <span className="bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent">
                   NU STROKE SCAN
                 </span>
               </h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-400/25 text-sky-400 font-semibold">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 font-semibold">
                 v1.2 PACS Workstation
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium leading-tight">
+            <p className="text-xs text-slate-400 font-medium leading-tight">
               Neuro-Imaging Clinical Intelligence · Naresuan University Hospital
             </p>
           </div>
         </div>
 
+        {/* Top-Right: Symmetrical Status Pills */}
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs font-medium text-emerald-300 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+            <span>Diagnostic Engine Ready</span>
+          </div>
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-300 font-mono">
+            <span className="text-slate-400">Model:</span>
+            <span className="text-sky-300 font-bold">{MODELS.find((m) => m.id === modelId)?.name}</span>
+          </div>
+        </div>
       </header>
 
       {/* 2. Main 3-Column Cockpit Workspace */}
       <main className="flex-1 min-h-0 grid grid-cols-12 gap-2.5 overflow-hidden">
         
         {/* ========================================================================= */}
-        {/* COLUMN 1 (3 Cols): PATIENT INGESTION + MODEL SELECTOR + CTA */}
+        {/* COLUMN 1 (3 Cols): PATIENT SCAN INGESTION + MODEL SELECTOR + CTA */}
         {/* ========================================================================= */}
         <section className="col-span-3 flex flex-col gap-2.5 min-h-0 overflow-y-auto pr-0.5">
           
-          {/* STEP 01: PATIENT INGESTION */}
-          <div className="rounded-2xl medical-glass-panel p-3.5 flex flex-col shrink-0">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
-                <UploadCloud className="h-4 w-4 text-sky-400" />
-                STEP 01: PATIENT INGESTION
+          {/* Section 1: Patient Scan Ingestion */}
+          <div className="rounded-2xl medical-glass-panel p-4 flex flex-col shrink-0">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-sm font-bold tracking-wider text-sky-400 uppercase flex items-center gap-2">
+                <UploadCloud className="h-4.5 w-4.5 text-sky-400" />
+                Patient CT Scan
               </span>
               {file && (
                 <button
@@ -623,7 +634,7 @@ be verified by a certified healthcare professional.
                     setImageUrl(null);
                     setResult(null);
                   }}
-                  className="text-xs font-bold text-red-400 hover:text-red-300 cursor-pointer transition-colors"
+                  className="text-xs font-semibold text-rose-400 hover:text-rose-300 cursor-pointer transition-colors px-2 py-0.5 rounded-lg hover:bg-rose-950/40"
                 >
                   Clear Scan
                 </button>
@@ -636,34 +647,34 @@ be verified by a certified healthcare professional.
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
               onDrop={handleDrop}
-              className={`h-32 xl:h-36 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-2.5 ${
+              className={`h-34 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-3 ${
                 isDragging
-                  ? "border-sky-400 bg-sky-950/30 scale-[1.01]"
-                  : "border-slate-700/80 hover:border-sky-400/70 bg-slate-900/40 hover:bg-slate-900/70 active:scale-[0.99]"
+                  ? "border-sky-400 bg-sky-950/40 scale-[1.01]"
+                  : "border-slate-700/80 hover:border-sky-400/80 bg-slate-900/50 hover:bg-slate-900/80 active:scale-[0.99]"
               }`}
             >
               {imageUrl ? (
-                <div className="flex flex-col items-center gap-1.5 px-2 w-full">
+                <div className="flex flex-col items-center gap-2 px-2 w-full">
                   <div className="relative">
                     <img src={imageUrl} alt="Loaded Scan" className="h-14 w-14 object-contain rounded-xl border border-slate-700 bg-black shadow-md" />
-                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-[9px] text-white">✓</span>
+                    <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-[10px] text-white font-bold">✓</span>
                   </div>
                   <div className="text-center w-full">
-                    <p className="text-xs font-bold text-white truncate max-w-[190px] mx-auto">{file?.name ?? "Loaded Slice"}</p>
-                    <p className="text-[10px] font-medium text-sky-400 mt-0.5">Click or drag new slice to replace</p>
+                    <p className="text-sm font-bold text-white truncate max-w-[210px] mx-auto">{file?.name ?? "Loaded Slice"}</p>
+                    <p className="text-xs font-medium text-sky-400 mt-0.5">Click or drag new slice to replace</p>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-1.5 py-0.5">
-                  <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
-                    <UploadCloud className="h-4.5 w-4.5" />
+                  <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
+                    <UploadCloud className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-100">Drop Brain CT or Browse</p>
-                    <p className="text-[10px] text-slate-400 font-medium mt-0.5">DICOM / NIfTI, PNG, JPG, max 25MB</p>
+                    <p className="text-sm font-bold text-slate-100">Drop Brain CT or Browse</p>
+                    <p className="text-xs text-slate-400 font-medium mt-0.5">Supports DICOM, NIfTI, PNG, JPG (Max 25MB)</p>
                   </div>
-                  <span className="inline-block px-3 py-0.5 rounded-full bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-[10px] font-bold shadow-sm transition-colors">
-                    Choose File
+                  <span className="inline-block px-3.5 py-1 rounded-lg bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-xs font-semibold shadow-sm transition-colors mt-1">
+                    Select File
                   </span>
                 </div>
               )}
@@ -671,19 +682,19 @@ be verified by a certified healthcare professional.
 
             {/* Quick Demo Case Selector */}
             {!file && (
-              <div className="mt-2 pt-2 border-t border-white/5 flex items-center gap-1.5">
-                <span className="text-[10px] text-slate-400 font-medium shrink-0">Demo Cases:</span>
+              <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center gap-2">
+                <span className="text-xs text-slate-400 font-medium shrink-0">Demo Cases:</span>
                 <button
                   type="button"
                   onClick={() => loadDemoCase("stroke")}
-                  className="flex-1 py-1 px-2 rounded-lg bg-red-950/40 hover:bg-red-900/50 border border-red-500/30 text-[10px] font-semibold text-red-300 transition-colors cursor-pointer text-center"
+                  className="flex-1 py-1.5 px-2.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 border border-rose-500/30 text-xs font-semibold text-rose-300 transition-colors cursor-pointer text-center"
                 >
                   Stroke (+)
                 </button>
                 <button
                   type="button"
                   onClick={() => loadDemoCase("normal")}
-                  className="flex-1 py-1 px-2 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-[10px] font-semibold text-emerald-300 transition-colors cursor-pointer text-center"
+                  className="flex-1 py-1.5 px-2.5 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition-colors cursor-pointer text-center"
                 >
                   Normal (-)
                 </button>
@@ -702,100 +713,120 @@ be verified by a certified healthcare professional.
             />
 
             {error && (
-              <div className="mt-2.5 p-2 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-semibold flex items-center gap-2">
+              <div className="mt-2.5 p-2.5 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-semibold flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4 shrink-0 text-red-400" />
                 <span className="truncate">{error}</span>
               </div>
             )}
           </div>
 
-          {/* STEP 02: NEURAL MODEL */}
-          <div className="rounded-2xl medical-glass-panel p-3.5 flex flex-col flex-1 min-h-0">
-            <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5 mb-2.5 shrink-0">
-              <Brain className="h-4 w-4 text-sky-400" />
-              STEP 02: NEURAL ARCHITECTURE
-            </span>
+          {/* Section 2: Neural Architecture & Inference */}
+          <div className="rounded-2xl medical-glass-panel p-4 flex flex-col flex-1 min-h-0 justify-between">
+            <div>
+              <span className="text-sm font-bold tracking-wider text-sky-400 uppercase flex items-center gap-2 mb-3 shrink-0">
+                <Brain className="h-4.5 w-4.5 text-sky-400" />
+                Neural Architecture
+              </span>
 
-            {/* Model Architecture Buttons */}
-            <div className="space-y-2 mb-3 overflow-y-auto">
-              {MODELS.map((m) => {
-                const isSelected = modelId === m.id;
-                return (
-                  <button
-                    key={m.id}
-                    onClick={() => {
-                      setModelId(m.id);
-                      setResult(null);
-                    }}
-                    className={`w-full py-2.5 px-3 rounded-xl text-left transition-all cursor-pointer select-none border ${
-                      isSelected
-                        ? "bg-slate-800/90 border-sky-400/80 text-white shadow-lg shadow-sky-500/10 font-bold"
-                        : "bg-slate-900/50 hover:bg-slate-800/60 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${isSelected ? "bg-sky-400 shadow-[0_0_8px_#38bdf8]" : "bg-slate-600"}`} />
-                        <span className="text-xs font-bold">{m.name}</span>
+              {/* Model Architecture Buttons */}
+              <div className="space-y-2.5 mb-3 overflow-y-auto">
+                {MODELS.map((m) => {
+                  const isSelected = modelId === m.id;
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => {
+                        setModelId(m.id);
+                        setResult(null);
+                      }}
+                      className={`w-full py-3 px-3.5 rounded-xl text-left transition-all cursor-pointer select-none border ${
+                        isSelected
+                          ? "bg-slate-800/95 border-sky-400/80 text-white shadow-lg shadow-sky-500/10 font-bold"
+                          : "bg-slate-900/50 hover:bg-slate-800/60 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <span className={`w-2.5 h-2.5 rounded-full ${isSelected ? "bg-sky-400 shadow-[0_0_8px_#38bdf8]" : "bg-slate-600"}`} />
+                          <span className="text-sm font-bold">{m.name}</span>
+                        </div>
+                        <span className={`text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold ${
+                          isSelected 
+                            ? "bg-sky-500/20 text-sky-300 border border-sky-400/30" 
+                            : "bg-slate-800 text-slate-400"
+                        }`}>
+                          {isSelected ? "ACTIVE" : m.tag}
+                        </span>
                       </div>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-semibold ${
-                        isSelected 
-                          ? "bg-sky-500/20 text-sky-300 border border-sky-400/30" 
-                          : "bg-slate-800 text-slate-400"
-                      }`}>
-                        {isSelected ? "ACTIVE" : m.tag}
-                      </span>
-                    </div>
-                    <div className={`text-[11px] mt-1 pl-4 ${isSelected ? "text-sky-300/80" : "text-slate-400"}`}>
-                      {m.desc}
-                    </div>
-                  </button>
-                );
-              })}
+                      <div className={`text-xs mt-1 pl-5 ${isSelected ? "text-sky-300/90 font-medium" : "text-slate-400"}`}>
+                        {m.desc}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Primary Action Button */}
-            <button
-              onClick={runInference}
-              disabled={isScanning || !imageUrl}
-              className={`relative overflow-hidden mt-auto h-12 w-full rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] ${
-                isScanning || !imageUrl
-                  ? "bg-slate-800/60 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
-                  : "btn-clinical-primary text-white"
-              }`}
-            >
-              {isScanning ? (
-                <div className="flex items-center justify-center gap-2.5">
-                  <RefreshCw className="h-4 w-4 animate-spin text-white" />
-                  <span>ANALYZING CT SCAN...</span>
+            {/* Bottom Group: Telemetry Info + Primary CTA Button */}
+            <div className="space-y-3 pt-2">
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-300 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Analysis Matrix:</span>
+                  <span className="font-mono text-slate-200 font-semibold">512 × 512 DICOM</span>
                 </div>
-              ) : (
-                <span className="flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-sky-200" />
-                  ANALYZE BRAIN CT SCAN
-                </span>
-              )}
-            </button>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Classifier:</span>
+                  <span className="text-sky-300 font-semibold">MaxViT Multi-Class</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Lesion Segmentation:</span>
+                  <span className="text-emerald-300 font-semibold">Dense Attention Mask</span>
+                </div>
+              </div>
+
+              {/* Primary Action Button */}
+              <button
+                onClick={runInference}
+                disabled={isScanning || !imageUrl}
+                className={`relative overflow-hidden h-12 w-full rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] shadow-md ${
+                  isScanning || !imageUrl
+                    ? "bg-slate-800/60 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
+                    : "btn-clinical-primary text-white"
+                }`}
+              >
+                {isScanning ? (
+                  <div className="flex items-center justify-center gap-2.5">
+                    <RefreshCw className="h-4.5 w-4.5 animate-spin text-white" />
+                    <span>ANALYZING CT SCAN...</span>
+                  </div>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Activity className="h-4.5 w-4.5 text-sky-200" />
+                    ANALYZE BRAIN CT SCAN
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </section>
 
         {/* ========================================================================= */}
-        {/* COLUMN 2 (6 Cols): SYNCHRONIZED DUAL VIEWPORT + STEP 03 CALIBRATION */}
+        {/* COLUMN 2 (6 Cols): SYNCHRONIZED DUAL VIEWPORT + DISPLAY CALIBRATION */}
         {/* ========================================================================= */}
         <section className="col-span-6 flex flex-col gap-2.5 min-h-0">
           
           {/* Main DICOM Dual Viewport Card */}
-          <div className="flex-1 min-h-0 rounded-2xl medical-glass-panel p-3 flex flex-col relative">
+          <div className="flex-1 min-h-0 rounded-2xl medical-glass-panel p-3.5 flex flex-col relative">
             
             {/* Viewport Top Header */}
-            <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5 shrink-0">
-              <div className="flex items-center gap-2 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-white/5">
-                <span className="w-2 h-2 rounded-full bg-sky-400" />
-                <span className="text-xs font-mono font-bold text-slate-200 tracking-wider">
-                  SYNCHRONIZED DUAL VIEWPORT (512×512)
+            <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-white/5 shrink-0">
+              <div className="flex items-center gap-2.5 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-white/5">
+                <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]" />
+                <span className="text-sm font-semibold text-slate-200 tracking-wide">
+                  Synchronized Dual Viewport (512×512)
                 </span>
               </div>
-              <div className="text-[11px] font-mono text-slate-400 flex items-center gap-2">
+              <div className="text-xs font-medium text-slate-400 flex items-center gap-2">
                 <span>Right-Click: Loupe</span>
                 <span className="text-slate-600">·</span>
                 <span>Scroll: Zoom</span>
@@ -804,7 +835,7 @@ be verified by a certified healthcare professional.
 
             {/* Dual Viewport Canvas Container */}
             <div className="flex-1 min-h-0 relative flex overflow-hidden">
-              <div className="h-full w-full grid grid-cols-2 gap-2.5 relative">
+              <div className="h-full w-full grid grid-cols-2 gap-3 relative">
                 
                 {/* Left Display: ORIGINAL NCCT */}
                 <div
@@ -828,16 +859,16 @@ be verified by a certified healthcare professional.
                   {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
 
                   {/* Corner HUD Brackets */}
-                  <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-sky-400/50 pointer-events-none" />
-                  <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-sky-400/50 pointer-events-none" />
-                  <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-sky-400/50 pointer-events-none" />
-                  <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-sky-400/50 pointer-events-none" />
 
-                  <div className="absolute top-3 left-3 z-20 px-2 py-0.5 rounded-md bg-black/80 border border-white/10 text-[10px] font-mono font-bold text-slate-200 uppercase tracking-wider pointer-events-none">
+                  <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-md bg-black/80 border border-white/10 text-xs font-mono font-bold text-slate-200 uppercase tracking-wider pointer-events-none">
                     ORIGINAL NCCT
                   </div>
-                  <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">R</span>
-                  <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">L</span>
+                  <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">R</span>
+                  <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">L</span>
 
                   {imageUrl ? (
                     <div
@@ -855,14 +886,14 @@ be verified by a certified healthcare professional.
                       />
                     </div>
                   ) : (
-                    <div className="text-center p-6 text-slate-400 space-y-2.5 pointer-events-none flex flex-col items-center">
+                    <div className="text-center p-6 text-slate-400 space-y-3 pointer-events-none flex flex-col items-center">
                       <div className="relative flex items-center justify-center text-sky-400/50">
                         <Brain className="h-14 w-14" />
                         <Activity className="h-5 w-5 text-sky-400 absolute" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-slate-200 uppercase tracking-wider">NO SCAN LOADED</p>
-                        <p className="text-[11px] text-slate-400 mt-0.5">Upload an axial brain slice or load a demo case</p>
+                        <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">NO SCAN LOADED</p>
+                        <p className="text-xs text-slate-400 mt-1">Upload an axial brain slice or load a demo case</p>
                       </div>
                     </div>
                   )}
@@ -901,7 +932,7 @@ be verified by a certified healthcare professional.
                         <div className="h-full w-[1px] bg-sky-400/60 absolute" />
                         <div className="w-4 h-4 rounded-full border border-sky-400 absolute" />
                       </div>
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-black/90 border border-sky-400 text-sky-400">
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-black/90 border border-sky-400 text-sky-400">
                         {loupe.scale.toFixed(1)}×
                       </div>
                     </div>
@@ -936,16 +967,16 @@ be verified by a certified healthcare professional.
                   {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
 
                   {/* Corner HUD Brackets */}
-                  <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-sky-400/50 pointer-events-none" />
-                  <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-sky-400/50 pointer-events-none" />
-                  <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-sky-400/50 pointer-events-none" />
-                  <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-sky-400/50 pointer-events-none" />
+                  <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-sky-400/50 pointer-events-none" />
 
-                  <div className="absolute top-3 left-3 z-20 px-2 py-0.5 rounded-md bg-black/80 border border-sky-400/40 text-[10px] font-mono font-bold text-sky-400 uppercase tracking-wider pointer-events-none">
+                  <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-md bg-black/80 border border-sky-400/40 text-xs font-mono font-bold text-sky-400 uppercase tracking-wider pointer-events-none">
                     AI OVERLAY - {MODELS.find((m) => m.id === modelId)?.name.toUpperCase()}
                   </div>
-                  <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">R</span>
-                  <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-500 font-bold pointer-events-none">L</span>
+                  <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">R</span>
+                  <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">L</span>
 
                   {imageUrl ? (
                     <div
@@ -971,14 +1002,14 @@ be verified by a certified healthcare professional.
                       )}
                     </div>
                   ) : (
-                    <div className="text-center p-6 text-slate-400 space-y-2.5 pointer-events-none flex flex-col items-center">
+                    <div className="text-center p-6 text-slate-400 space-y-3 pointer-events-none flex flex-col items-center">
                       <div className="relative flex items-center justify-center text-sky-400/50">
                         <Brain className="h-14 w-14" />
                         <Layers className="h-5 w-5 text-sky-400 absolute" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-slate-200 uppercase tracking-wider">LESION OVERLAY</p>
-                        <p className="text-[11px] text-slate-400 mt-0.5">Segmentation overlays will appear upon analysis</p>
+                        <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">LESION OVERLAY</p>
+                        <p className="text-xs text-slate-400 mt-1">Segmentation overlays will appear upon analysis</p>
                       </div>
                     </div>
                   )}
@@ -1025,7 +1056,7 @@ be verified by a certified healthcare professional.
                         <div className="h-full w-[1px] bg-sky-400/60 absolute" />
                         <div className="w-4 h-4 rounded-full border border-sky-400 absolute" />
                       </div>
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-black/90 border border-sky-400 text-sky-400">
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-black/90 border border-sky-400 text-sky-400">
                         {loupe.scale.toFixed(1)}×
                       </div>
                     </div>
@@ -1035,32 +1066,32 @@ be verified by a certified healthcare professional.
             </div>
           </div>
 
-          {/* STEP 03: CALIBRATION */}
-          <div className="rounded-2xl medical-glass-panel p-3 shrink-0">
-            <div className="flex items-center justify-between pb-2 mb-2 shrink-0 border-b border-white/5">
+          {/* DISPLAY CALIBRATION CONTROLS */}
+          <div className="rounded-2xl medical-glass-panel p-3.5 shrink-0">
+            <div className="flex items-center justify-between pb-2.5 mb-2.5 shrink-0 border-b border-white/5">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
-                  <Sliders className="h-4 w-4 text-sky-400" />
-                  STEP 03: CALIBRATION
+                <span className="text-sm font-bold tracking-wider text-sky-400 uppercase flex items-center gap-2">
+                  <Sliders className="h-4.5 w-4.5 text-sky-400" />
+                  Display Calibration
                 </span>
               </div>
 
               {/* Utility Controls: Zoom, Gridlines, Reset */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 {/* Zoom Level Indicator */}
-                <div className="flex items-center bg-slate-900/80 px-1 py-0.5 rounded-lg border border-white/5">
+                <div className="flex items-center bg-slate-900/80 px-1.5 py-1 rounded-xl border border-white/5">
                   <button
                     onClick={handleZoomOut}
                     disabled={zoom <= 0.5}
                     title="Zoom Out (-25%)"
                     className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                   >
-                    <ZoomOut className="h-3.5 w-3.5" />
+                    <ZoomOut className="h-4 w-4" />
                   </button>
                   <button
                     onClick={handleResetZoom}
                     title="Reset Zoom to 100%"
-                    className="px-2 py-0.5 rounded text-xs font-mono font-bold text-sky-400 hover:text-white hover:bg-slate-800 cursor-pointer transition-colors"
+                    className="px-2.5 py-0.5 rounded text-xs font-mono font-bold text-sky-400 hover:text-white hover:bg-slate-800 cursor-pointer transition-colors"
                   >
                     {Math.round(zoom * 100)}%
                   </button>
@@ -1070,7 +1101,7 @@ be verified by a certified healthcare professional.
                     title="Zoom In (+25%)"
                     className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                   >
-                    <ZoomIn className="h-3.5 w-3.5" />
+                    <ZoomIn className="h-4 w-4" />
                   </button>
                 </div>
 
@@ -1078,7 +1109,7 @@ be verified by a certified healthcare professional.
                 <button
                   onClick={toggleGrid}
                   title="Toggle Fine Medical Measurement Gridlines"
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                  className={`h-8 px-3 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ${
                     showGrid
                       ? "bg-sky-500 text-white border border-sky-400 shadow-sm"
                       : "btn-clinical-subtle"
@@ -1091,7 +1122,7 @@ be verified by a certified healthcare professional.
                 {/* Reset View Button */}
                 <button
                   onClick={resetControls}
-                  className="btn-clinical-subtle px-2.5 py-1 text-xs font-bold hover:text-sky-300 hover:border-sky-400/50 flex items-center gap-1.5 cursor-pointer"
+                  className="btn-clinical-subtle h-8 px-3 rounded-xl text-xs font-semibold hover:text-sky-300 hover:border-sky-400/50 flex items-center gap-1.5 cursor-pointer"
                   title="Reset viewport and slider adjustments"
                 >
                   <RotateCcw className="h-3.5 w-3.5 text-sky-400" />
@@ -1101,19 +1132,19 @@ be verified by a certified healthcare professional.
             </div>
 
             {/* 4 Soft Blue Circular Knob Sliders (2x2 Grid) */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-3">
               
               {/* 1. Brightness */}
-              <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-200 mb-1">
-                  <span className="flex items-center gap-1.5 text-slate-300 text-xs">
-                    <Sun className="h-3.5 w-3.5 text-sky-400" />
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
+                <div className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-1.5">
+                  <span className="flex items-center gap-2 text-slate-300">
+                    <Sun className="h-4 w-4 text-sky-400" />
                     Brightness
                   </span>
                   <button
                     onClick={() => setBrightness(100)}
                     title="Reset to 100%"
-                    className="px-2 py-0.5 rounded bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-slate-700"
+                    className="px-2.5 py-0.5 rounded-lg bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-xs font-bold cursor-pointer hover:bg-slate-700"
                   >
                     {brightness}%
                   </button>
@@ -1122,16 +1153,16 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 2. Contrast */}
-              <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-200 mb-1">
-                  <span className="flex items-center gap-1.5 text-slate-300 text-xs">
-                    <Eye className="h-3.5 w-3.5 text-sky-400" />
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
+                <div className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-1.5">
+                  <span className="flex items-center gap-2 text-slate-300">
+                    <Eye className="h-4 w-4 text-sky-400" />
                     Contrast
                   </span>
                   <button
                     onClick={() => setContrast(100)}
                     title="Reset to 100%"
-                    className="px-2 py-0.5 rounded bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-slate-700"
+                    className="px-2.5 py-0.5 rounded-lg bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-xs font-bold cursor-pointer hover:bg-slate-700"
                   >
                     {contrast}%
                   </button>
@@ -1140,16 +1171,16 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 3. Mask Opacity */}
-              <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-200 mb-1">
-                  <span className="flex items-center gap-1.5 text-slate-300 text-xs">
-                    <Layers className="h-3.5 w-3.5 text-sky-400" />
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
+                <div className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-1.5">
+                  <span className="flex items-center gap-2 text-slate-300">
+                    <Layers className="h-4 w-4 text-sky-400" />
                     Mask Opacity
                   </span>
                   <button
                     onClick={() => setMaskOpacity(85)}
                     title="Reset to 85%"
-                    className="px-2 py-0.5 rounded bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-slate-700"
+                    className="px-2.5 py-0.5 rounded-lg bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-xs font-bold cursor-pointer hover:bg-slate-700"
                   >
                     {maskOpacity}%
                   </button>
@@ -1158,16 +1189,16 @@ be verified by a certified healthcare professional.
               </div>
 
               {/* 4. Sensitivity Threshold */}
-              <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-200 mb-1">
-                  <span className="flex items-center gap-1.5 text-slate-300 text-xs">
-                    <Activity className="h-3.5 w-3.5 text-sky-400" />
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 hover:border-sky-400/30 transition-colors flex flex-col justify-between">
+                <div className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-1.5">
+                  <span className="flex items-center gap-2 text-slate-300">
+                    <Activity className="h-4 w-4 text-sky-400" />
                     Sensitivity Threshold
                   </span>
                   <button
                     onClick={() => recomputeThreshold(50)}
                     title="Reset to 50%"
-                    className="px-2 py-0.5 rounded bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-[11px] font-bold cursor-pointer hover:bg-slate-700"
+                    className="px-2.5 py-0.5 rounded-lg bg-slate-800 border border-sky-400/30 text-sky-300 font-mono text-xs font-bold cursor-pointer hover:bg-slate-700"
                   >
                     {threshold}%
                   </button>
@@ -1181,73 +1212,98 @@ be verified by a certified healthcare professional.
         {/* ========================================================================= */}
         {/* COLUMN 3 (3 Cols): DIAGNOSTIC ASSESSMENT & CLINICAL EXPORT */}
         {/* ========================================================================= */}
-        <section className="col-span-3 flex flex-col gap-2 min-h-0 overflow-y-auto">
+        <section className="col-span-3 flex flex-col gap-2.5 min-h-0 overflow-y-auto">
           
-          <div className="rounded-2xl medical-glass-panel p-3.5 flex-1 flex flex-col justify-between">
-            <div>
+          <div className="rounded-2xl medical-glass-panel p-4 flex-1 flex flex-col justify-between">
+            <div className="space-y-3">
               {/* Header */}
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2.5 pb-2 border-b border-white/5 flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-white font-bold">
-                  <Activity className="h-4 w-4 text-sky-400" />
-                  DIAGNOSTIC ASSESSMENT
+              <div className="flex items-center justify-between pb-2.5 border-b border-white/5">
+                <span className="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+                  <Activity className="h-4.5 w-4.5 text-sky-400" />
+                  Diagnostic Assessment
                 </span>
-                <span className="text-[10px] text-slate-400 font-mono">CASE RESULT</span>
-              </h3>
+                <span className="text-xs text-slate-400 font-mono px-2 py-0.5 rounded-md bg-slate-900/60 border border-white/5">
+                  CASE REPORT
+                </span>
+              </div>
 
-              {/* Outcome Clinical Banner */}
-              <div className="mb-3">
+              {/* Outcome Clinical Banner / Standby State */}
+              <div>
                 {result ? (
                   result.classification?.predicted_class === "hemorrhagic" ? (
-                    <div className="p-3.5 rounded-xl bg-red-950/40 border-2 border-red-500 text-red-100 space-y-1.5 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                    <div className="p-3.5 rounded-xl bg-red-950/40 border-2 border-red-500 text-red-100 space-y-2 shadow-[0_0_20px_rgba(239,68,68,0.25)]">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-red-200">HEMORRHAGIC STROKE</span>
+                        <div className="flex items-center gap-2">
+                          <AlertTriangle className="h-4.5 w-4.5 text-red-400 shrink-0" />
+                          <span className="font-extrabold text-sm tracking-tight text-red-200">HEMORRHAGIC STROKE</span>
                         </div>
-                        <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-red-600 text-white shadow-sm">
+                        <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-full bg-red-600 text-white shadow-sm">
                           {(result.classification.confidence * 100).toFixed(1)}%
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-white">Acute Hemorrhage Detected</p>
-                      <p className="text-[11px] text-red-300/90 leading-tight">High-attenuation acute hemorrhagic lesion identified.</p>
+                      <p className="text-sm font-bold text-white">Acute Hemorrhage Detected</p>
+                      <p className="text-xs text-red-300/90 leading-relaxed">High-attenuation acute hemorrhagic lesion identified.</p>
                     </div>
                   ) : result.classification?.predicted_class === "ischemic" || result.detected ? (
-                    <div className="p-3.5 rounded-xl bg-amber-950/40 border-2 border-amber-500 text-amber-100 space-y-1.5 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+                    <div className="p-3.5 rounded-xl bg-amber-950/40 border-2 border-amber-500 text-amber-100 space-y-2 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-amber-200">ISCHEMIC STROKE</span>
+                        <div className="flex items-center gap-2">
+                          <AlertTriangle className="h-4.5 w-4.5 text-amber-400 shrink-0" />
+                          <span className="font-extrabold text-sm tracking-tight text-amber-200">ISCHEMIC STROKE</span>
                         </div>
-                        <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-amber-600 text-white shadow-sm">
+                        <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-full bg-amber-600 text-white shadow-sm">
                           POSITIVE
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-white">Acute Ischemic Infarction</p>
-                      <p className="text-[11px] text-amber-300/90 leading-tight">Low attenuation ischemic territory segmented by neural model.</p>
+                      <p className="text-sm font-bold text-white">Acute Ischemic Infarction</p>
+                      <p className="text-xs text-amber-300/90 leading-relaxed">Low attenuation ischemic territory segmented by neural model.</p>
                     </div>
                   ) : (
-                    <div className="p-3.5 rounded-xl bg-emerald-950/40 border-2 border-emerald-500 text-emerald-100 space-y-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                    <div className="p-3.5 rounded-xl bg-emerald-950/40 border-2 border-emerald-500 text-emerald-100 space-y-2 shadow-[0_0_20px_rgba(16,185,129,0.25)]">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                          <span className="font-extrabold text-xs tracking-tight text-emerald-200">NORMAL HEAD CT</span>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
+                          <span className="font-extrabold text-sm tracking-tight text-emerald-200">NORMAL HEAD CT</span>
                         </div>
-                        <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-emerald-600 text-white shadow-sm">
+                        <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-full bg-emerald-600 text-white shadow-sm">
                           NEGATIVE
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-white">No Acute Stroke Lesion</p>
-                      <p className="text-[11px] text-emerald-300/90 leading-tight">No acute infarction or hemorrhage observed above threshold cutoff.</p>
+                      <p className="text-sm font-bold text-white">No Acute Stroke Lesion</p>
+                      <p className="text-xs text-emerald-300/90 leading-relaxed">No acute infarction or hemorrhage observed above threshold cutoff.</p>
                     </div>
                   )
                 ) : (
-                  <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 text-center space-y-2">
-                    <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400">
-                      <Activity className="h-5 w-5" />
+                  <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <div className="flex flex-col items-center text-center space-y-2">
+                      <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-400/25 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
+                        <Activity className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-slate-100">Diagnostic Engine Standby</p>
+                        <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                          Upload a brain CT scan and click Analyze to generate deep learning lesion segmentation, acute stroke probability, and volumetric quantification.
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-slate-100">Neural Engine Standby</p>
-                      <p className="text-[11px] text-slate-400 mt-0.5">Upload a CT scan or click a demo case to begin</p>
+
+                    {/* Pre-Analysis Status Overview */}
+                    <div className="pt-2 border-t border-white/5 space-y-2 text-xs">
+                      <div className="flex justify-between py-1 border-b border-white/5">
+                        <span className="text-slate-400 font-medium">Selected Model:</span>
+                        <span className="text-sky-300 font-semibold">{MODELS.find((m) => m.id === modelId)?.name}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-white/5">
+                        <span className="text-slate-400 font-medium">Sensitivity Threshold:</span>
+                        <span className="font-mono text-slate-200 font-semibold">{threshold}%</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-slate-400 font-medium">Engine Status:</span>
+                        <span className="text-emerald-400 font-medium flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          Ready for Input
+                        </span>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1255,23 +1311,23 @@ be verified by a certified healthcare professional.
 
               {/* Multi-Class Disease Classification Breakdown (MaxViT) */}
               {result?.classification && (
-                <div className="space-y-2 mb-3 p-3 rounded-xl bg-slate-900/60 border border-white/5">
+                <div className="space-y-2.5 p-3.5 rounded-xl bg-slate-900/60 border border-white/5">
                   <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
-                    <span className="flex items-center gap-1.5 text-sky-400 font-bold">
-                      <Sparkles className="h-3.5 w-3.5" />
-                      Disease Classification
+                    <span className="flex items-center gap-1.5 text-sky-400 font-bold uppercase tracking-wider">
+                      <Sparkles className="h-4 w-4" />
+                      Disease Classification (MaxViT)
                     </span>
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-400/20">
+                    <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/25">
                       {result.classification.predicted_label}
                     </span>
                   </div>
-                  <div className="space-y-1.5 pt-1">
+                  <div className="space-y-2 pt-1">
                     {result.classification.classes.map((cls) => (
-                      <div key={cls.id} className="space-y-0.5">
-                        <div className="flex justify-between text-[11px] font-medium text-slate-300">
-                          <span className="flex items-center gap-1.5">
+                      <div key={cls.id} className="space-y-1">
+                        <div className="flex justify-between text-xs font-medium text-slate-300">
+                          <span className="flex items-center gap-2">
                             <span
-                              className={`w-1.5 h-1.5 rounded-full ${
+                              className={`w-2 h-2 rounded-full ${
                                 cls.id === "hemorrhagic"
                                   ? "bg-red-400"
                                   : cls.id === "ischemic"
@@ -1281,9 +1337,9 @@ be verified by a certified healthcare professional.
                             />
                             {cls.label}
                           </span>
-                          <span className="font-mono text-slate-200 font-bold">{cls.percentage}%</span>
+                          <span className="font-mono text-white font-bold">{cls.percentage}%</span>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                           <div
                             className={`h-full transition-all duration-300 ${
                               cls.id === "hemorrhagic"
@@ -1302,29 +1358,31 @@ be verified by a certified healthcare professional.
               )}
 
               {/* Segmentation Model Confidence Meter */}
-              <div className="space-y-1.5 mb-3 p-3 rounded-xl bg-slate-900/60 border border-white/5">
-                <div className="flex justify-between text-xs font-semibold text-slate-300">
-                  <span>Segmentation Confidence</span>
-                  <span className="font-mono text-sky-400 font-bold text-xs sm:text-sm">
-                    {result ? `${(result.confidence * 100).toFixed(1)}%` : "—"}
-                  </span>
+              {result && (
+                <div className="space-y-2 p-3.5 rounded-xl bg-slate-900/60 border border-white/5">
+                  <div className="flex justify-between text-xs font-semibold text-slate-300">
+                    <span className="text-sm font-semibold text-slate-200">Segmentation Confidence</span>
+                    <span className="font-mono text-sky-400 font-bold text-sm">
+                      {(result.confidence * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        result?.detected
+                          ? "bg-gradient-to-r from-amber-400 to-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                          : "bg-gradient-to-r from-blue-500 to-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]"
+                      }`}
+                      style={{ width: `${result.confidence * 100}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
-                  <div
-                    className={`h-full transition-all duration-300 ${
-                      result?.detected
-                        ? "bg-gradient-to-r from-amber-400 to-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-                        : "bg-gradient-to-r from-blue-500 to-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]"
-                    }`}
-                    style={{ width: result ? `${result.confidence * 100}%` : "0%" }}
-                  />
-                </div>
-              </div>
+              )}
 
               {/* Key Clinical Metrics Table */}
-              <div className="space-y-1.5 text-xs bg-slate-900/60 border border-white/5 rounded-xl p-3 text-slate-300 mb-2">
+              <div className="space-y-2 text-xs sm:text-sm bg-slate-900/60 border border-white/5 rounded-xl p-3.5 text-slate-300">
                 <div className="flex justify-between py-1 border-b border-white/5">
-                  <span className="text-slate-400 font-medium">Neural Model:</span>
+                  <span className="text-slate-400 font-medium">Neural Architecture:</span>
                   <span className="font-semibold text-white">{result?.modelLabel ?? MODELS.find((m) => m.id === modelId)?.name}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-white/5">
@@ -1338,13 +1396,13 @@ be verified by a certified healthcare professional.
               </div>
             </div>
 
-            {/* Bottom-Right Stacked CTAs: Blue, Dark Cyan, Teal */}
-            <div className="space-y-2 pt-2.5 border-t border-white/5">
+            {/* Bottom-Right Stacked CTAs: Subtle, Cyan, Teal */}
+            <div className="space-y-2.5 pt-3 border-t border-white/5">
               {/* Copy Clinical Summary */}
               <button
                 onClick={copySummaryToClipboard}
                 disabled={!result}
-                className="btn-clinical-subtle w-full h-9.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
+                className="btn-clinical-subtle w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
                 title="Copy clinical summary to clipboard"
               >
                 {copiedToast ? <Check className="h-4 w-4 text-sky-400" /> : <Copy className="h-4 w-4 text-slate-300" />}
@@ -1355,7 +1413,7 @@ be verified by a certified healthcare professional.
               <button
                 onClick={exportAnnotatedImage}
                 disabled={!imageUrl}
-                className="btn-clinical-cyan w-full h-9.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm"
+                className="btn-clinical-cyan w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm"
                 title="Export high-resolution annotated image composite with lesion mask overlay"
               >
                 {exportedStatus === "image" ? (
@@ -1370,7 +1428,7 @@ be verified by a certified healthcare professional.
               <button
                 onClick={exportReportText}
                 disabled={!result}
-                className="btn-clinical-teal w-full h-10 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm"
+                className="btn-clinical-teal w-full h-11 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm"
                 title="Download formal clinical diagnostic summary text report"
               >
                 {exportedStatus === "report" ? (
@@ -1386,12 +1444,12 @@ be verified by a certified healthcare professional.
       </main>
 
       {/* 3. Streamlined Clinical Footer */}
-      <footer className="h-4 flex items-center justify-between text-[11px] font-medium text-slate-500 px-3 shrink-0 border-t border-white/5 pt-0.5">
-        <span className="flex items-center gap-1.5">
+      <footer className="h-5 flex items-center justify-between text-xs font-medium text-slate-500 px-3 shrink-0 border-t border-white/5 pt-0.5">
+        <span className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shadow-[0_0_6px_#38bdf8]" />
-          NU Stroke Scan · Naresuan University Hospital
+          NU Stroke Scan · Naresuan University Hospital Neuro-Imaging Research Center
         </span>
-        <span>Research & Clinical Intelligence</span>
+        <span>DICOM 3.0 Compatible · Clinical AI Workstation</span>
       </footer>
     </div>
   );
