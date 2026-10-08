@@ -571,31 +571,16 @@ be verified by a certified healthcare professional.
             />
           </div>
           <div className="flex flex-col justify-center">
-            <div className="flex items-center gap-2.5">
+            <div>
               <h1 className="font-bold text-base tracking-tight flex items-center gap-1.5 leading-tight">
                 <span className="bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent">
                   NU STROKE SCAN
                 </span>
               </h1>
-              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 font-semibold">
-                v1.2 PACS Workstation
-              </span>
             </div>
             <p className="text-xs text-slate-400 font-medium leading-tight">
               Neuro-Imaging Clinical Intelligence · Naresuan University Hospital
             </p>
-          </div>
-        </div>
-
-        {/* Top-Right: Symmetrical Status Pills */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs font-medium text-emerald-300 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-            <span>Diagnostic Engine Ready</span>
-          </div>
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-300 font-mono">
-            <span className="text-slate-400">Model:</span>
-            <span className="text-sky-300 font-bold">{MODELS.find((m) => m.id === modelId)?.name}</span>
           </div>
         </div>
       </header>
