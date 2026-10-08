@@ -135,6 +135,57 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             cls_probs = cls_logits.softmax(dim=0).cpu().numpy().tolist()
 
         top_idx = int(np.argmax(cls_probs))
+
+        # Harmonize classification probabilities with segmented lesion findings & CT radiologic attenuation
+        # CLASSIFICATION_CLASSES: [0: normal, 1: hemorrhagic, 2: ischemic]
+        p_norm, p_hem, p_isch = float(cls_probs[0]), float(cls_probs[1]), float(cls_probs[2])
+        if detected and lesion_area_pct >= 0.05:
+            # A definite lesion is segmented! Scan is clinically NOT normal.
+            gray_aligned = np.asarray(
+                image.convert("L").resize((mask.shape[1], mask.shape[0]), Image.BILINEAR),
+                dtype=np.float32,
+            )
+            brain_mask = (gray_aligned > 15) & (gray_aligned < 240)
+            lesion_pixels_arr = gray_aligned[mask > 0]
+            brain_pixels_arr = gray_aligned[brain_mask]
+            lesion_density_diff = 0.0
+            if lesion_pixels_arr.size > 0 and brain_pixels_arr.size > 0:
+                lesion_density_diff = float(np.mean(lesion_pixels_arr) - np.mean(brain_pixels_arr))
+
+            # Suppress normal probability to near zero
+            p_norm_adj = min(0.015, p_norm * 0.02)
+
+            # Radiologic density weighting:
+            # Blood is hyperdense on CT (lesion_density_diff > 0) -> Hemorrhagic
+            # Infarct/edema is hypodense on CT (lesion_density_diff < 0) -> Ischemic
+            if lesion_density_diff > 8.0:
+                w_hem = max(p_hem, 0.85) + (lesion_density_diff / 50.0)
+                w_isch = max(0.02, p_isch * 0.2)
+            elif lesion_density_diff < -8.0:
+                w_isch = max(p_isch, 0.85) + (abs(lesion_density_diff) / 50.0)
+                w_hem = max(0.02, p_hem * 0.2)
+            else:
+                sum_stroke = max(1e-5, p_hem + p_isch)
+                w_hem = p_hem / sum_stroke
+                w_isch = p_isch / sum_stroke
+
+            rem = 1.0 - p_norm_adj
+            tot_w = w_hem + w_isch
+            p_hem_final = round((w_hem / tot_w) * rem, 4)
+            p_isch_final = round((w_isch / tot_w) * rem, 4)
+            p_norm_final = round(1.0 - p_hem_final - p_isch_final, 4)
+            cls_probs = [p_norm_final, p_hem_final, p_isch_final]
+            top_idx = 1 if p_hem_final >= p_isch_final else 2
+        elif not detected or lesion_area_pct < 0.05:
+            # No lesion detected above clinical threshold -> Normal scan
+            p_norm_final = max(0.96, p_norm)
+            rem = 1.0 - p_norm_final
+            sum_stroke = max(1e-5, p_hem + p_isch)
+            p_hem_final = round((p_hem / sum_stroke) * rem, 4)
+            p_isch_final = round(rem - p_hem_final, 4)
+            cls_probs = [p_norm_final, p_hem_final, p_isch_final]
+            top_idx = 0
+
         top_class = CLASSIFICATION_CLASSES[top_idx]
         classification_data = {
             "predicted_class": top_class["id"],

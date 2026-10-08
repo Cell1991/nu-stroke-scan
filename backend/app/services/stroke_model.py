@@ -126,7 +126,7 @@ def prepare_image_for_classifier(image: Image.Image, device: torch.device) -> Te
 
     grayscale = image.convert("L").resize((224, 224), Image.BILINEAR)
     arr = np.asarray(grayscale, dtype=np.float32) / 255.0
-    tensor = torch.from_numpy(arr).float().to(device).unsqueeze(0).repeat(3, 1, 1).unsqueeze(0)
+    tensor = torch.from_numpy(arr).float().to(device).unsqueeze(0).unsqueeze(0).repeat(1, 3, 1, 1)
     tensor = (tensor - imagenet_mean) / imagenet_std
     return tensor
 

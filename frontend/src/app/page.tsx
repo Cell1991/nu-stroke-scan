@@ -1363,7 +1363,7 @@ be verified by a certified healthcare professional.
                       <p className="text-sm font-bold text-white">Acute Hemorrhage Detected</p>
                       <p className="text-xs text-red-300/90 leading-relaxed">High-attenuation acute hemorrhagic lesion identified.</p>
                     </div>
-                  ) : result.classification?.predicted_class === "ischemic" || (result.detected && (result.lesionArea ?? 0) >= 0.05) ? (
+                  ) : result.classification?.predicted_class === "ischemic" ? (
                     <div className="p-3.5 rounded-xl bg-amber-950/40 border-2 border-amber-500 text-amber-100 space-y-2 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -1371,7 +1371,7 @@ be verified by a certified healthcare professional.
                           <span className="font-extrabold text-sm tracking-tight text-amber-200">ISCHEMIC STROKE</span>
                         </div>
                         <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-full bg-amber-600 text-white shadow-sm">
-                          POSITIVE
+                          {result.classification ? `${(result.classification.confidence * 100).toFixed(1)}%` : "POSITIVE"}
                         </span>
                       </div>
                       <p className="text-sm font-bold text-white">Acute Ischemic Infarction</p>
@@ -1385,7 +1385,7 @@ be verified by a certified healthcare professional.
                           <span className="font-extrabold text-sm tracking-tight text-emerald-200">NORMAL HEAD CT</span>
                         </div>
                         <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-full bg-emerald-600 text-white shadow-sm">
-                          NEGATIVE
+                          {result.classification ? `${(result.classification.confidence * 100).toFixed(1)}%` : "NEGATIVE"}
                         </span>
                       </div>
                       <p className="text-sm font-bold text-white">No Acute Stroke Lesion</p>
