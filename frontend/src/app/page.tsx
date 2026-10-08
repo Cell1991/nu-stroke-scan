@@ -308,7 +308,7 @@ export default function Home() {
   }
 
 
-  function recomputeThreshold(newThreshold: number) {
+  function recomputeThreshold(newThreshold: number, overrideClass?: string) {
     setThreshold(newThreshold);
     if (!probDataRef.current) return;
     const { width, height, data } = probDataRef.current;
@@ -327,6 +327,13 @@ export default function Home() {
     let maxProb = 0;
     const totalPixels = width * height;
 
+    const currentClass = overrideClass ?? result?.classification?.predicted_class;
+    const isIschemic = currentClass === "ischemic";
+    // Hemorrhagic: Red (239, 68, 68), Ischemic: Yellow / Amber (234, 179, 8)
+    const maskR = isIschemic ? 234 : 239;
+    const maskG = isIschemic ? 179 : 68;
+    const maskB = isIschemic ? 8 : 68;
+
     for (let i = 0; i < totalPixels; i++) {
       const idx = i * 4;
       const prob = data[idx];
@@ -335,9 +342,9 @@ export default function Home() {
       if (prob >= cutoff) {
         lesionPixels++;
         sumProb += prob;
-        out[idx] = 239;
-        out[idx + 1] = 68;
-        out[idx + 2] = 68;
+        out[idx] = maskR;
+        out[idx + 1] = maskG;
+        out[idx + 2] = maskB;
         out[idx + 3] = 255;
       } else {
         out[idx + 3] = 0;
@@ -350,7 +357,9 @@ export default function Home() {
     const lesionArea = detected ? Number(((lesionPixels / totalPixels) * 100).toFixed(2)) : 0;
     const avgConfidence = lesionPixels >= 15 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
     const confidence = Number(Math.max(avgConfidence, detected ? 0.85 : 0.95).toFixed(4));
-    const label = detected ? "Acute Stroke Lesion Detected" : "No Acute Lesion Detected";
+    const label = detected
+      ? (isIschemic ? "Acute Ischemic Infarction (Yellow Mask)" : "Acute Hemorrhagic Stroke (Red Mask)")
+      : "No Acute Lesion Detected";
 
     setResult((prev) => (prev ? {
       ...prev,
@@ -427,7 +436,7 @@ export default function Home() {
         inputSize: data.input_size || [512, 512],
         classification: data.classification || null,
       });
-      recomputeThreshold(threshold);
+      recomputeThreshold(threshold, data.classification?.predicted_class);
     } catch (err: unknown) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Inference failed. Please ensure the backend is running.");
@@ -538,11 +547,13 @@ export default function Home() {
 
         const isPositive = Boolean(result?.detected && result.classification?.predicted_class !== "normal");
 
+        const isIschemic = isPositive && result?.classification?.predicted_class === "ischemic";
+
         // Status Pill Badge (Top of footer)
         const pillX = pad;
         const pillY = footerY;
         const pillH = 26;
-        const pillW = isPositive ? 210 : 220;
+        const pillW = !isPositive ? 220 : isIschemic ? 240 : 250;
         const pillRadius = 6;
 
         ctx.beginPath();
@@ -551,16 +562,28 @@ export default function Home() {
         } else {
           ctx.rect(pillX, pillY, pillW, pillH);
         }
-        ctx.fillStyle = isPositive ? "rgba(239, 68, 68, 0.15)" : "rgba(16, 185, 129, 0.15)";
+        ctx.fillStyle = !isPositive
+          ? "rgba(16, 185, 129, 0.15)"
+          : isIschemic
+            ? "rgba(234, 179, 8, 0.15)"
+            : "rgba(239, 68, 68, 0.15)";
         ctx.fill();
-        ctx.strokeStyle = isPositive ? "rgba(239, 68, 68, 0.5)" : "rgba(16, 185, 129, 0.5)";
+        ctx.strokeStyle = !isPositive
+          ? "rgba(16, 185, 129, 0.5)"
+          : isIschemic
+            ? "rgba(234, 179, 8, 0.5)"
+            : "rgba(239, 68, 68, 0.5)";
         ctx.lineWidth = 1;
         ctx.stroke();
 
         ctx.font = "bold 11px -apple-system, BlinkMacSystemFont, sans-serif";
-        ctx.fillStyle = isPositive ? "#f87171" : "#34d399";
+        ctx.fillStyle = !isPositive ? "#34d399" : isIschemic ? "#facc15" : "#f87171";
         ctx.fillText(
-          isPositive ? "● ACUTE STROKE DETECTED" : "● NORMAL HEAD CT (NEGATIVE)",
+          !isPositive
+            ? "● NORMAL HEAD CT (NEGATIVE)"
+            : isIschemic
+              ? "● ISCHEMIC INFARCT (YELLOW MASK)"
+              : "● HEMORRHAGIC STROKE (RED MASK)",
           pillX + 12,
           pillY + 17
         );
@@ -1054,8 +1077,22 @@ be verified by a certified healthcare professional.
                   <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-sky-400/50 pointer-events-none" />
                   <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-sky-400/50 pointer-events-none" />
 
-                  <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-md bg-black/80 border border-sky-400/40 text-xs font-mono font-bold text-sky-400 uppercase tracking-wider pointer-events-none">
-                    AI OVERLAY - {MODELS.find((m) => m.id === modelId)?.name.toUpperCase()}
+                  <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 pointer-events-none">
+                    <div className="px-2.5 py-1 rounded-md bg-black/80 border border-sky-400/40 text-xs font-mono font-bold text-sky-400 uppercase tracking-wider">
+                      AI OVERLAY - {MODELS.find((m) => m.id === modelId)?.name.toUpperCase()}
+                    </div>
+                    {result?.detected && (
+                      <div className={`px-2 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider border flex items-center gap-1.5 ${
+                        result.classification?.predicted_class === "ischemic"
+                          ? "bg-amber-950/80 border-amber-500/50 text-amber-300"
+                          : "bg-rose-950/80 border-rose-500/50 text-rose-300"
+                      }`}>
+                        <span className={`w-2 h-2 rounded-full ${
+                          result.classification?.predicted_class === "ischemic" ? "bg-amber-400" : "bg-rose-500"
+                        }`} />
+                        <span>{result.classification?.predicted_class === "ischemic" ? "ISCHEMIC (YELLOW)" : "HEMORRHAGIC (RED)"}</span>
+                      </div>
+                    )}
                   </div>
                   <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">R</span>
                   <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">L</span>

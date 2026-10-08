@@ -23,8 +23,10 @@ from app.services.stroke_model import (
 
 logger = logging.getLogger(__name__)
 
-# Medical PACS highlight color (Carmine / Deep Red: 239, 68, 68)
-_MASK_COLOR = (239, 68, 68)
+# Medical PACS highlight colors
+_HEMORRHAGIC_COLOR = (239, 68, 68)  # Deep Carmine Red for Hemorrhagic
+_ISCHEMIC_COLOR = (234, 179, 8)     # Clinical Amber / Yellow for Ischemic
+_MASK_COLOR = _HEMORRHAGIC_COLOR
 
 
 @lru_cache(maxsize=4)
@@ -123,23 +125,6 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         confidence = float(1.0 - max_p) if max_p < 0.5 else 0.95
         label = "No Acute Lesion Detected"
 
-    # Solid alpha mask on detected lesion so frontend slider has full 0-100% dynamic opacity control
-    rgba_image = _mask_to_rgba(mask, color=_MASK_COLOR)
-    mask_pil = Image.fromarray(rgba_image, mode="RGBA")
-
-    # Resize mask to original uploaded image dimensions with crisp NEAREST interpolation
-    mask_resized = mask_pil.resize((image.width, image.height), Image.NEAREST)
-    mask_buffer = io.BytesIO()
-    mask_resized.save(mask_buffer, format="PNG")
-    mask_b64 = base64.b64encode(mask_buffer.getvalue()).decode("ascii")
-
-    # Probability map encoded as 8-bit grayscale PNG (0-255 representing 0.0-1.0 probability)
-    prob_uint8 = (prob_np * 255.0).clip(0, 255).astype(np.uint8)
-    prob_pil = Image.fromarray(prob_uint8, mode="L").resize((image.width, image.height), Image.BILINEAR)
-    prob_buf = io.BytesIO()
-    prob_pil.save(prob_buf, format="PNG")
-    prob_b64 = base64.b64encode(prob_buf.getvalue()).decode("ascii")
-
     # Multiclass Disease Type Classification (Hemorrhagic vs Ischemic vs Normal)
     classification_data = None
     try:
@@ -171,6 +156,31 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         }
     except Exception as exc:
         logger.warning("Classification inference bypassed or failed: %s", exc)
+
+    # Dynamic Mask Color:
+    # Hemorrhagic: Red (239, 68, 68)
+    # Ischemic: Yellow / Amber (234, 179, 8)
+    if classification_data and classification_data["predicted_class"] == "ischemic":
+        active_mask_color = _ISCHEMIC_COLOR
+    else:
+        active_mask_color = _HEMORRHAGIC_COLOR
+
+    # Solid alpha mask on detected lesion so frontend slider has full 0-100% dynamic opacity control
+    rgba_image = _mask_to_rgba(mask, color=active_mask_color)
+    mask_pil = Image.fromarray(rgba_image, mode="RGBA")
+
+    # Resize mask to original uploaded image dimensions with crisp NEAREST interpolation
+    mask_resized = mask_pil.resize((image.width, image.height), Image.NEAREST)
+    mask_buffer = io.BytesIO()
+    mask_resized.save(mask_buffer, format="PNG")
+    mask_b64 = base64.b64encode(mask_buffer.getvalue()).decode("ascii")
+
+    # Probability map encoded as 8-bit grayscale PNG (0-255 representing 0.0-1.0 probability)
+    prob_uint8 = (prob_np * 255.0).clip(0, 255).astype(np.uint8)
+    prob_pil = Image.fromarray(prob_uint8, mode="L").resize((image.width, image.height), Image.BILINEAR)
+    prob_buf = io.BytesIO()
+    prob_pil.save(prob_buf, format="PNG")
+    prob_b64 = base64.b64encode(prob_buf.getvalue()).decode("ascii")
 
     return {
         "filename": upload.filename or "scan.png",
