@@ -1,21 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_CANDIDATES = [
-  process.env.INTERNAL_API_URL,
-  "http://backend:8000",
-  process.env.NEXT_PUBLIC_API_URL,
-  "http://127.0.0.1:8000",
-  "http://localhost:8000",
-].filter(Boolean) as string[];
+function getCandidates(): string[] {
+  if (process.env.INTERNAL_API_URL) {
+    return [
+      process.env.INTERNAL_API_URL,
+      "http://backend:8000",
+      "http://127.0.0.1:8000",
+      "http://localhost:8000",
+    ];
+  }
+  return [
+    process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://backend:8000",
+  ];
+}
 
 async function forwardToBackend(req: NextRequest, endpoint: string) {
   const url = new URL(req.url);
   const search = url.search;
   const formData = await req.formData();
+  const candidates = Array.from(new Set(getCandidates()));
 
   let lastError: unknown = null;
 
-  for (const baseUrl of BACKEND_CANDIDATES) {
+  for (const baseUrl of candidates) {
     try {
       const targetUrl = `${baseUrl.replace(/\/$/, "")}${endpoint}${search}`;
       
@@ -24,10 +34,15 @@ async function forwardToBackend(req: NextRequest, endpoint: string) {
         outboundFormData.append(key, value);
       }
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
       const res = await fetch(targetUrl, {
         method: "POST",
         body: outboundFormData,
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       if (res.ok || res.status < 500) {
         const data = await res.json();

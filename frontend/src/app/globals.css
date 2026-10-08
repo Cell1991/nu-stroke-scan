@@ -2,16 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* NU Stroke Scan - Medical Blue & Navy Clinical Theme */
+/* NU Stroke Scan - Ultra-Modern PACS / Medical AI Theme */
 :root {
-  --bg-navy-deep: #0a1124;
-  --bg-navy-panel: #121d38;
-  --bg-navy-card: #182648;
-  --border-clinical: #21355f;
-  --border-active: #3b82f6;
-  --blue-bright: #2196F3;
-  --blue-soft: #38bdf8;
-  --cyan-clinical: #06b6d4;
+  --bg-deep: #070b14;
+  --bg-panel: rgba(13, 21, 38, 0.75);
+  --bg-panel-solid: #0d1526;
+  --bg-card: rgba(17, 28, 51, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(56, 189, 248, 0.2);
+  --border-glow: rgba(56, 189, 248, 0.45);
+  --blue-primary: #0284c7;
+  --blue-accent: #38bdf8;
+  --cyan-bright: #06b6d4;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
@@ -25,60 +27,71 @@ html, body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--bg-navy-deep);
+  background-color: var(--bg-deep);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
 
-/* Clean Medical Scrollbar */
+/* Modern Clinical Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a1124;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #21355f;
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;
+  background: rgba(56, 189, 248, 0.4);
 }
 
-/* Clinical Grid Backdrop */
-.medical-grid-backdrop {
-  background-color: #0a1124;
+/* Medical Ambient Backdrop */
+.medical-ambient-backdrop {
+  background-color: #070b14;
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
-  background-size: 28px 28px;
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(14, 165, 233, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 90%, rgba(2, 132, 199, 0.06), transparent),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
 }
 
-/* DICOM Medical Canvas */
+/* Glassmorphism Panel */
+.medical-glass-panel {
+  background: rgba(12, 19, 35, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* DICOM Medical Viewport Canvas */
 .dicom-canvas-bg {
-  background-color: #020611;
+  background-color: #03060d;
 }
 
-/* Fine Measurement Grid */
+/* Fine DICOM Calibration Grid */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-    linear-gradient(to right, rgba(56, 189, 248, 0.28) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.28) 1px, transparent 1px);
+    linear-gradient(to right, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+    linear-gradient(to right, rgba(56, 189, 248, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.25) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
   pointer-events: none;
 }
 
-/* Clinical Soft-Blue Sliders */
+/* Ultra-Clean Modern Sliders */
 .neu-slider-container {
   position: relative;
   width: 100%;
-  padding: 3px 0;
+  padding: 4px 0;
   display: flex;
   align-items: center;
 }
@@ -86,9 +99,9 @@ html, body {
 .neu-slider-track-bg {
   position: relative;
   width: 100%;
-  height: 6px;
-  background: #182648;
-  border: 1px solid #21355f;
+  height: 5px;
+  background: #111a2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -122,41 +135,43 @@ html, body {
 .neu-range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background: #38bdf8;
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
   cursor: pointer;
-  transition: transform 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .neu-range-input::-webkit-slider-thumb:hover {
-  transform: scale(1.18);
+  transform: scale(1.22);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.85);
 }
 
 .neu-range-input::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background: #38bdf8;
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
   cursor: pointer;
 }
 
 /* Primary Clinical Blue CTA Button */
 .btn-clinical-primary {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-  border: 1px solid #38bdf8;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #0284c7 100%);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  transition: all 0.18s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-clinical-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.45);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
 }
 .btn-clinical-primary:active:not(:disabled) {
   transform: translateY(1px);
@@ -164,14 +179,14 @@ html, body {
 
 /* Subtle Action Button */
 .btn-clinical-subtle {
-  background: #182648;
-  border: 1px solid #21355f;
-  color: #f1f5f9;
+  background: rgba(18, 28, 49, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
   transition: all 0.18s ease;
 }
 .btn-clinical-subtle:hover:not(:disabled) {
-  background: #21355f;
-  border-color: #38bdf8;
+  background: rgba(30, 45, 78, 0.8);
+  border-color: rgba(56, 189, 248, 0.4);
   color: #ffffff;
 }
 .btn-clinical-subtle:active:not(:disabled) {
@@ -180,24 +195,28 @@ html, body {
 
 /* Cyan Action Button */
 .btn-clinical-cyan {
-  background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
-  border: 1px solid #22d3ee;
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  box-shadow: 0 3px 12px rgba(8, 145, 178, 0.3);
   color: #ffffff;
   transition: all 0.18s ease;
 }
 .btn-clinical-cyan:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  box-shadow: 0 5px 16px rgba(8, 145, 178, 0.45);
 }
 
 /* Teal/Report Action Button */
 .btn-clinical-teal {
-  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
-  border: 1px solid #2dd4bf;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  border: 1px solid rgba(45, 212, 191, 0.4);
+  box-shadow: 0 3px 12px rgba(13, 148, 136, 0.3);
   color: #ffffff;
   transition: all 0.18s ease;
 }
 .btn-clinical-teal:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  box-shadow: 0 5px 16px rgba(13, 148, 136, 0.45);
 }
 
 /* Laser sweep */
@@ -209,5 +228,15 @@ html, body {
 }
 
 .animate-laser-sweep {
-  animation: laser-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: laser-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Medical Pulse Radar Animation */
+@keyframes radar-ring {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.animate-radar-ring {
+  animation: radar-ring 2.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
