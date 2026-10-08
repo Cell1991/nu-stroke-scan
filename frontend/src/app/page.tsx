@@ -753,12 +753,6 @@ be verified by a certified healthcare professional.
             <RotateCcwIcon className="h-3.5 w-3.5 text-[#38bdf8]" />
             Reset
           </button>
-
-          {/* Clinical Workstation Dark Mode Badge */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#182648] border border-[#21355f] text-slate-300 font-bold text-xs">
-            <MoonIcon className="h-3.5 w-3.5 text-[#38bdf8]" />
-            <span>DARK MODE</span>
-          </div>
         </div>
       </header>
 
