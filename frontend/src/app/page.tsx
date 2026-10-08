@@ -701,58 +701,12 @@ be verified by a certified healthcare professional.
           </div>
         </div>
 
-        {/* Top-Right: Clinical Utility Controls + Mode Pill */}
+        {/* Top-Right: Clinical Status Tag */}
         <div className="flex items-center gap-2">
-          {/* Zoom Level Indicator */}
-          <div className="flex items-center bg-[#182648] px-1 py-0.5 rounded-lg border border-[#21355f]">
-            <button
-              onClick={handleZoomOut}
-              disabled={zoom <= 0.5}
-              title="Zoom Out (-25%)"
-              className="p-1 rounded text-slate-300 hover:text-white hover:bg-[#21355f] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-            >
-              <ZoomOutIcon className="h-3.5 w-3.5" />
-            </button>
-            <button
-              onClick={handleResetZoom}
-              title="Reset Zoom to 100%"
-              className="px-2 py-0.5 rounded text-xs font-mono font-bold text-[#38bdf8] hover:text-white hover:bg-[#21355f] cursor-pointer"
-            >
-              {Math.round(zoom * 100)}%
-            </button>
-            <button
-              onClick={handleZoomIn}
-              disabled={zoom >= 4}
-              title="Zoom In (+25%)"
-              className="p-1 rounded text-slate-300 hover:text-white hover:bg-[#21355f] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-            >
-              <ZoomInIcon className="h-3.5 w-3.5" />
-            </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0a1124] border border-[#21355f] text-slate-300 text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse" />
+            <span>Clinical Workstation Active</span>
           </div>
-
-          {/* Gridlines Button */}
-          <button
-            onClick={toggleGrid}
-            title="Toggle Fine Medical Measurement Gridlines"
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors ${
-              showGrid
-                ? "bg-[#0284c7] text-white border border-[#38bdf8]"
-                : "btn-clinical-subtle"
-            }`}
-          >
-            <GridIcon className={`h-3.5 w-3.5 ${showGrid ? "text-white" : "text-slate-300"}`} />
-            Grid {showGrid ? "ON" : "OFF"}
-          </button>
-
-          {/* Reset View Button */}
-          <button
-            onClick={resetControls}
-            className="btn-clinical-subtle px-3 py-1.5 text-xs font-bold hover:text-[#38bdf8] hover:border-[#38bdf8] flex items-center gap-1.5 cursor-pointer"
-            title="Reset viewport and slider adjustments"
-          >
-            <RotateCcwIcon className="h-3.5 w-3.5 text-[#38bdf8]" />
-            Reset
-          </button>
         </div>
       </header>
 
@@ -1162,11 +1116,65 @@ be verified by a certified healthcare professional.
 
           {/* STEP 03: CALIBRATION */}
           <div className="rounded-xl bg-[#121d38] border border-[#21355f] p-2.5 shrink-0 shadow-sm">
-            <div className="flex items-center justify-between pb-1 mb-1.5 shrink-0">
+            <div className="flex items-center justify-between pb-1.5 mb-1.5 shrink-0 border-b border-[#21355f]/60">
               <span className="text-xs font-bold tracking-wider text-[#38bdf8] uppercase flex items-center gap-1.5">
                 <SunIcon className="h-3.5 w-3.5 text-[#38bdf8]" />
                 STEP 03: CALIBRATION
               </span>
+
+              {/* Utility Controls: Zoom, Gridlines, Reset */}
+              <div className="flex items-center gap-1.5">
+                {/* Zoom Level Indicator */}
+                <div className="flex items-center bg-[#0a1124] px-1 py-0.5 rounded-lg border border-[#21355f]">
+                  <button
+                    onClick={handleZoomOut}
+                    disabled={zoom <= 0.5}
+                    title="Zoom Out (-25%)"
+                    className="p-1 rounded text-slate-300 hover:text-white hover:bg-[#21355f] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <ZoomOutIcon className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={handleResetZoom}
+                    title="Reset Zoom to 100%"
+                    className="px-2 py-0.5 rounded text-xs font-mono font-bold text-[#38bdf8] hover:text-white hover:bg-[#21355f] cursor-pointer"
+                  >
+                    {Math.round(zoom * 100)}%
+                  </button>
+                  <button
+                    onClick={handleZoomIn}
+                    disabled={zoom >= 4}
+                    title="Zoom In (+25%)"
+                    className="p-1 rounded text-slate-300 hover:text-white hover:bg-[#21355f] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <ZoomInIcon className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                {/* Gridlines Button */}
+                <button
+                  onClick={toggleGrid}
+                  title="Toggle Fine Medical Measurement Gridlines"
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                    showGrid
+                      ? "bg-[#0284c7] text-white border border-[#38bdf8]"
+                      : "btn-clinical-subtle"
+                  }`}
+                >
+                  <GridIcon className={`h-3.5 w-3.5 ${showGrid ? "text-white" : "text-slate-300"}`} />
+                  Grid {showGrid ? "ON" : "OFF"}
+                </button>
+
+                {/* Reset View Button */}
+                <button
+                  onClick={resetControls}
+                  className="btn-clinical-subtle px-2.5 py-1 text-xs font-bold hover:text-[#38bdf8] hover:border-[#38bdf8] flex items-center gap-1.5 cursor-pointer"
+                  title="Reset viewport and slider adjustments"
+                >
+                  <RotateCcwIcon className="h-3.5 w-3.5 text-[#38bdf8]" />
+                  Reset
+                </button>
+              </div>
             </div>
 
             {/* 4 Soft Blue Circular Knob Sliders (2x2 Grid) */}
