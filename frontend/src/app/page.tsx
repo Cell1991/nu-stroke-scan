@@ -244,7 +244,12 @@ export default function Home() {
 
       if (!res.ok) {
         const errPayload = await res.json().catch(() => ({}));
-        throw new Error(errPayload.error || errPayload.detail || `Server returned ${res.status}`);
+        const message =
+          errPayload.detail?.message ||
+          errPayload.detail ||
+          errPayload.error ||
+          `Server returned ${res.status}`;
+        throw new Error(typeof message === "string" ? message : JSON.stringify(message));
       }
 
       const data = await res.json();
@@ -287,6 +292,7 @@ export default function Home() {
         modelLabel: data.model_label || activeModel.name,
         inputSize: data.input_size || [512, 512],
         classification: data.classification || null,
+        modality: data.modality || null,
       });
 
       applyThreshold(threshold, data.classification?.predicted_class);

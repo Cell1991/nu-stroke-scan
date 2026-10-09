@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     dlka_checkpoint: str = "/checkpoints/dlka_best.pth"
     patcher_checkpoint: str = "/checkpoints/patcher_best.ckpt"
     classification_checkpoint: str = "/checkpoints/classification_best.pth"
+    modality_checkpoint: str = "/checkpoints/modality.pth"
     model_threshold: float = 0.5
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
@@ -32,6 +33,7 @@ class Settings(BaseSettings):
             "dlka": "dlka_best.pth",
             "patcher": "patcher_best.ckpt",
             "classification": "classification_best.pth",
+            "modality": "modality.pth",
         }.get(model_id, "vcanet_best.pth")
 
         env_path = {
@@ -39,6 +41,7 @@ class Settings(BaseSettings):
             "dlka": self.dlka_checkpoint,
             "patcher": self.patcher_checkpoint,
             "classification": self.classification_checkpoint,
+            "modality": self.modality_checkpoint,
         }.get(model_id, self.vcanet_checkpoint)
 
         candidates = [
@@ -47,6 +50,9 @@ class Settings(BaseSettings):
             Path(f"checkpoints/{target_name}"),
             Path(f"../checkpoints/{target_name}"),
             Path(__file__).parents[3] / "checkpoints" / target_name,
+            Path(__file__).parents[3] / target_name,
+            Path(target_name),
+            Path(f"../{target_name}"),
             Path(f"D:/UT/{model_id}_results/checkpoints/best.pth" if model_id != "patcher" else "D:/UT/patcher_results/checkpoints/best.ckpt"),
         ]
 

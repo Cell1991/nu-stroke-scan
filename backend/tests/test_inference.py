@@ -18,13 +18,25 @@ def test_list_models() -> None:
     assert "patcher" in model_ids
 
 
-def test_analyze_image_vcanet() -> None:
-    # Create a small 224x224 grayscale test image
-    img = Image.new("L", (224, 224), color=128)
+def create_synthetic_brain_ct() -> io.BytesIO:
+    from PIL import ImageDraw
+
+    img = Image.new("RGB", (224, 224), color=(0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    # Skull outer ring
+    draw.ellipse([30, 20, 194, 204], fill=(220, 220, 220))
+    # Brain tissue
+    draw.ellipse([36, 26, 188, 198], fill=(90, 90, 90))
+    # Ventricles
+    draw.ellipse([100, 90, 124, 134], fill=(20, 20, 20))
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     buf.seek(0)
+    return buf
 
+
+def test_analyze_image_vcanet() -> None:
+    buf = create_synthetic_brain_ct()
     response = client.post(
         "/api/analysis",
         files={"file": ("test_scan.png", buf, "image/png")},
@@ -36,3 +48,22 @@ def test_analyze_image_vcanet() -> None:
     assert "confidence" in payload
     assert "mask_png_base64" in payload
     assert payload["model"] == "vcanet"
+    assert "modality" in payload
+    assert payload["modality"]["is_valid"] is True
+
+
+def test_reject_invalid_modality() -> None:
+    # A flat gray or white image is not a brain CT scan and must be rejected with 422
+    img = Image.new("RGB", (224, 224), color=(255, 255, 255))
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
+
+    response = client.post(
+        "/api/analysis",
+        files={"file": ("invalid_photo.png", buf, "image/png")},
+        data={"model": "vcanet", "threshold": "0.5"},
+    )
+    assert response.status_code == 422
+    detail = response.json().get("detail", "")
+    assert "Brain CT" in str(detail)

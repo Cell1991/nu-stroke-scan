@@ -23,6 +23,15 @@ export interface ClassificationData {
   classes: ClassificationClass[];
 }
 
+export interface ModalityValidation {
+  is_valid: boolean;
+  predicted_class: "brain_ct" | "non_brain_ct";
+  label: string;
+  brain_ct_probability: number;
+  non_ct_probability: number;
+  confidence: number;
+}
+
 export interface PredictionResult {
   label: string;
   confidence: number;
@@ -32,6 +41,7 @@ export interface PredictionResult {
   modelLabel?: string;
   inputSize?: [number, number];
   classification?: ClassificationData | null;
+  modality?: ModalityValidation | null;
 }
 
 export interface DisplayCalibration {

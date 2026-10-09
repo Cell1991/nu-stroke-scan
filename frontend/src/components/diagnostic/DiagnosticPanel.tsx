@@ -7,6 +7,7 @@ import {
   Copy,
   Download,
   FileText,
+  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { PredictionResult } from "@/types";
@@ -230,10 +231,19 @@ export function DiagnosticPanel({
                 {result ? `${result.lesionArea ?? 0}%` : "—"}
               </span>
             </div>
-            <div className="flex justify-between py-1">
+            <div className="flex justify-between py-1 border-b border-white/5">
               <span className="text-slate-400 font-medium">Sensitivity Cutoff:</span>
               <span className="font-mono text-slate-200 font-semibold">{threshold}%</span>
             </div>
+            {result?.modality && (
+              <div className="flex justify-between py-1">
+                <span className="text-slate-400 font-medium">Modality Gate:</span>
+                <span className="font-semibold text-emerald-400 flex items-center gap-1.5 text-xs">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                  Verified Brain CT ({(result.modality.confidence * 100).toFixed(1)}%)
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

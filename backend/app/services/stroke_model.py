@@ -145,3 +145,32 @@ def prepare_image(
         std_t = torch.tensor(std, dtype=torch.float32).view(1, -1, 1, 1)
         tensor = (tensor - mean_t) / std_t
     return tensor
+
+
+def load_modality_screener(checkpoint_path: Path, device: torch.device) -> nn.Module:
+    """Load ResNet-18 modality verification gatekeeper checkpoint."""
+    import torchvision.models as models
+
+    if not checkpoint_path.is_file():
+        raise RuntimeError(f"Modality screener checkpoint not found: {checkpoint_path}")
+
+    model = models.resnet18(weights=None)
+    model.fc = nn.Linear(512, 2)
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
+    sd = checkpoint.get("state_dict", checkpoint)
+    cleaned = strip_orig_mod_prefix(sd)
+    model.load_state_dict(cleaned, strict=True)
+    model.to(device).eval()
+    return model
+
+
+def prepare_image_for_modality(image: Image.Image, device: torch.device) -> Tensor:
+    """Prepare RGB image normalized with ImageNet stats for ResNet-18 modality screener."""
+    imagenet_mean = torch.tensor([0.485, 0.456, 0.406], device=device).view(1, 3, 1, 1)
+    imagenet_std = torch.tensor([0.229, 0.224, 0.225], device=device).view(1, 3, 1, 1)
+
+    rgb = image.convert("RGB").resize((224, 224), Image.BILINEAR)
+    arr = np.asarray(rgb, dtype=np.float32) / 255.0  # (224, 224, 3)
+    tensor = torch.from_numpy(arr).permute(2, 0, 1).float().to(device).unsqueeze(0)  # (1, 3, 224, 224)
+    tensor = (tensor - imagenet_mean) / imagenet_std
+    return tensor

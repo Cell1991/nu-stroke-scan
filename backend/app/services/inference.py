@@ -16,9 +16,11 @@ from app.services.stroke_model import (
     CLASSIFICATION_CLASSES,
     MODEL_SPECS,
     load_classifier,
+    load_modality_screener,
     load_model,
     prepare_image,
     prepare_image_for_classifier,
+    prepare_image_for_modality,
 )
 
 logger = logging.getLogger(__name__)
@@ -44,6 +46,13 @@ def get_classifier():
     checkpoint_path = settings.resolve_checkpoint("classification")
     logger.info("Loading disease classifier from %s", checkpoint_path)
     return load_classifier(checkpoint_path, torch.device("cpu"))
+
+
+@lru_cache(maxsize=1)
+def get_modality_screener():
+    checkpoint_path = settings.resolve_checkpoint("modality")
+    logger.info("Loading modality screener from %s", checkpoint_path)
+    return load_modality_screener(checkpoint_path, torch.device("cpu"))
 
 
 def _mask_to_rgba(
@@ -83,6 +92,42 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
 
     raw, image = await _read_and_validate_upload(upload)
     selected_threshold = settings.model_threshold if threshold is None else max(0.01, min(0.99, float(threshold)))
+
+    # Modality Verification Gatekeeper (Valid Non-Contrast Brain CT vs Other/Invalid Image)
+    modality_info = None
+    try:
+        screener = get_modality_screener()
+        mod_tensor = prepare_image_for_modality(image, torch.device("cpu"))
+        with torch.inference_mode():
+            mod_logits = screener(mod_tensor)[0]
+            mod_probs = mod_logits.softmax(dim=0).cpu().numpy().tolist()
+
+        p_non_ct, p_brain_ct = float(mod_probs[0]), float(mod_probs[1])
+        is_valid_modality = p_brain_ct >= 0.50
+
+        modality_info = {
+            "is_valid": is_valid_modality,
+            "predicted_class": "brain_ct" if is_valid_modality else "non_brain_ct",
+            "label": "Non-Contrast Brain CT" if is_valid_modality else "Non-Brain CT Image",
+            "brain_ct_probability": round(p_brain_ct, 4),
+            "non_ct_probability": round(p_non_ct, 4),
+            "confidence": round(p_brain_ct if is_valid_modality else p_non_ct, 4),
+        }
+
+        if not is_valid_modality:
+            logger.warning(
+                "Upload '%s' failed modality verification: p_brain_ct=%.4f, p_non_ct=%.4f",
+                upload.filename, p_brain_ct, p_non_ct,
+            )
+            pct = round(p_non_ct * 100.0, 1)
+            raise HTTPException(
+                status_code=422,
+                detail=f"ภาพที่อัปโหลดไม่ใช่ภาพ Non-Contrast Brain CT Scan (ตรวจพบภาพทั่วไป/ผิดประเภท {pct}%) กรุณาอัปโหลดภาพเอกซเรย์คอมพิวเตอร์สมองใหม่อีกครั้ง",
+            )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.warning("Modality verification bypassed or checkpoint error: %s", exc)
 
     spec = MODEL_SPECS[model_id]
     try:
@@ -252,4 +297,5 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         "mask_png_base64": mask_b64,
         "prob_png_base64": prob_b64,
         "classification": classification_data,
+        "modality": modality_info,
     }

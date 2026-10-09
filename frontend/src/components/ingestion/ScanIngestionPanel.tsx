@@ -1,5 +1,5 @@
 import React, { DragEvent, useRef, useState } from "react";
-import { Activity, AlertTriangle, Brain, RefreshCw, UploadCloud } from "lucide-react";
+import { Activity, AlertTriangle, Brain, RefreshCw, ShieldAlert, ShieldCheck, UploadCloud } from "lucide-react";
 import { MODELS } from "@/constants/models";
 
 interface ScanIngestionPanelProps {
@@ -124,9 +124,42 @@ export function ScanIngestionPanel({
         />
 
         {error && (
-          <div className="mt-2.5 p-2.5 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-semibold flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 shrink-0 text-red-400" />
-            <span className="truncate">{error}</span>
+          <div
+            className={`mt-2.5 p-3 rounded-xl border text-xs font-medium space-y-2.5 transition-all ${
+              error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")
+                ? "bg-rose-950/80 border-rose-500/80 text-rose-200 shadow-[0_0_20px_rgba(244,63,94,0.3)] animate-pulse"
+                : "bg-red-950/60 border-red-500/50 text-red-200"
+            }`}
+          >
+            <div className="flex items-start gap-2.5">
+              {error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ") ? (
+                <ShieldAlert className="h-5 w-5 shrink-0 text-rose-400 mt-0.5" />
+              ) : (
+                <AlertTriangle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-sm text-white flex items-center gap-1.5">
+                  {error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")
+                    ? "ตรวจพบภาพไม่ถูกต้อง (Invalid Modality)"
+                    : "เกิดข้อผิดพลาดในการประมวลผล"}
+                </p>
+                <p className="text-xs text-rose-300 mt-1 leading-relaxed">{error}</p>
+              </div>
+            </div>
+            {(error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")) && (
+              <div className="flex justify-end pt-1">
+                <button
+                  onClick={() => {
+                    onClearScan();
+                    inputRef.current?.click();
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-colors cursor-pointer shadow-md flex items-center gap-1.5"
+                >
+                  <UploadCloud className="h-3.5 w-3.5" />
+                  เลือกภาพ Brain CT ใหม่
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -195,6 +228,13 @@ export function ScanIngestionPanel({
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Classifier:</span>
               <span className="text-sky-300 font-semibold">MaxViT Multi-Class</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400">Modality Screening:</span>
+              <span className="text-sky-300 font-semibold flex items-center gap-1">
+                <ShieldCheck className="h-3.5 w-3.5 text-sky-400" />
+                ResNet-18 Gatekeeper
+              </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Lesion Segmentation:</span>
