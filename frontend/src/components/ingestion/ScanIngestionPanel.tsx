@@ -41,14 +41,14 @@ export function ScanIngestionPanel({
       {/* Patient Scan Ingestion */}
       <div className="rounded-2xl medical-glass-panel p-3 flex flex-col shrink-0">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
-            <UploadCloud className="h-4 w-4 text-sky-400" />
+          <span className="text-xs font-semibold tracking-wider text-slate-300 uppercase flex items-center gap-1.5">
+            <UploadCloud className="h-4 w-4 text-slate-400" />
             Patient CT Scan
           </span>
           {file && (
             <button
               onClick={onClearScan}
-              className="text-[11px] font-semibold text-rose-400 hover:text-rose-300 cursor-pointer transition-colors px-1.5 py-0.5 rounded-lg hover:bg-rose-950/40"
+              className="text-[11px] font-medium text-rose-400 hover:text-rose-300 cursor-pointer transition-colors px-1.5 py-0.5 rounded-md hover:bg-rose-950/30"
             >
               Clear Scan
             </button>
@@ -67,10 +67,10 @@ export function ScanIngestionPanel({
             setIsDragging(false);
           }}
           onDrop={handleDrop}
-          className={`h-28 xl:h-32 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-2 ${
+          className={`h-28 xl:h-32 border border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 relative overflow-hidden p-2 ${
             isDragging
-              ? "border-sky-400 bg-sky-950/40 scale-[1.01]"
-              : "border-slate-700/80 hover:border-sky-400/80 bg-slate-900/50 hover:bg-slate-900/80 active:scale-[0.99]"
+              ? "border-blue-500 bg-blue-950/20"
+              : "border-slate-800 hover:border-slate-600 bg-slate-900/40 hover:bg-slate-900/70"
           }`}
         >
           {imageUrl ? (
@@ -79,33 +79,33 @@ export function ScanIngestionPanel({
                 <img
                   src={imageUrl}
                   alt="Loaded Scan"
-                  className="h-16 w-16 xl:h-20 xl:w-20 object-contain rounded-lg border border-slate-700 bg-black shadow-md"
+                  className="h-16 w-16 xl:h-20 xl:w-20 object-contain rounded-lg border border-slate-700/80 bg-black shadow-sm"
                 />
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border border-slate-900 flex items-center justify-center text-[10px] text-white font-bold">
                   ✓
                 </span>
               </div>
               <div className="text-left flex-1 min-w-0">
-                <p className="text-xs font-bold text-white truncate max-w-[180px]">
+                <p className="text-xs font-semibold text-slate-200 truncate max-w-[180px]">
                   {file?.name ?? "Loaded Slice"}
                 </p>
-                <p className="text-[11px] font-medium text-sky-400 mt-0.5">
+                <p className="text-[11px] text-slate-400 mt-0.5">
                   Click to replace slice
                 </p>
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-1.5 py-1">
-              <div className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 shadow-sm">
+              <div className="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 shadow-sm">
                 <UploadCloud className="h-4.5 w-4.5" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-100">Drop Brain CT or Browse</p>
-                <p className="text-[10px] text-slate-400 font-medium mt-0.5">
+                <p className="text-xs font-semibold text-slate-200">Drop Brain CT or Browse</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">
                   DICOM, NIfTI, PNG, JPG (Max 25MB)
                 </p>
               </div>
-              <span className="inline-block px-3 py-0.5 rounded-md bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-[11px] font-semibold shadow-sm transition-colors mt-0.5">
+              <span className="inline-block px-3 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-medium shadow-sm transition-colors mt-0.5">
                 Select File
               </span>
             </div>
@@ -125,35 +125,35 @@ export function ScanIngestionPanel({
 
         {error && (
           <div
-            className={`mt-2.5 p-3 rounded-xl border text-xs font-medium space-y-2.5 transition-all ${
+            className={`mt-2 p-2.5 rounded-xl border text-xs font-medium space-y-2 transition-all ${
               error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")
-                ? "bg-rose-950/80 border-rose-500/80 text-rose-200 shadow-[0_0_20px_rgba(244,63,94,0.3)] animate-pulse"
-                : "bg-red-950/60 border-red-500/50 text-red-200"
+                ? "bg-rose-950/50 border-rose-600/60 text-rose-200"
+                : "bg-red-950/40 border-red-600/40 text-red-200"
             }`}
           >
-            <div className="flex items-start gap-2.5">
+            <div className="flex items-start gap-2">
               {error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ") ? (
-                <ShieldAlert className="h-5 w-5 shrink-0 text-rose-400 mt-0.5" />
+                <ShieldAlert className="h-4.5 w-4.5 shrink-0 text-rose-400 mt-0.5" />
               ) : (
                 <AlertTriangle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-sm text-white flex items-center gap-1.5">
+                <p className="font-semibold text-xs text-white">
                   {error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")
                     ? "ตรวจพบภาพไม่ถูกต้อง (Invalid Modality)"
                     : "เกิดข้อผิดพลาดในการประมวลผล"}
                 </p>
-                <p className="text-xs text-rose-300 mt-1 leading-relaxed">{error}</p>
+                <p className="text-[11px] text-rose-300 mt-0.5 leading-relaxed">{error}</p>
               </div>
             </div>
             {(error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")) && (
-              <div className="flex justify-end pt-1">
+              <div className="flex justify-end pt-0.5">
                 <button
                   onClick={() => {
                     onClearScan();
                     inputRef.current?.click();
                   }}
-                  className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-colors cursor-pointer shadow-md flex items-center gap-1.5"
+                  className="px-2.5 py-1 rounded-md bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs transition-colors cursor-pointer shadow-sm flex items-center gap-1.5"
                 >
                   <UploadCloud className="h-3.5 w-3.5" />
                   เลือกภาพ Brain CT ใหม่
@@ -167,8 +167,8 @@ export function ScanIngestionPanel({
       {/* Neural Architecture & Inference */}
       <div className="rounded-2xl medical-glass-panel p-3 flex flex-col flex-1 min-h-0 justify-between">
         <div>
-          <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5 mb-2 shrink-0">
-            <Brain className="h-4 w-4 text-sky-400" />
+          <span className="text-xs font-semibold tracking-wider text-slate-300 uppercase flex items-center gap-1.5 mb-2 shrink-0">
+            <Brain className="h-4 w-4 text-slate-400" />
             Neural Architecture
           </span>
 
@@ -182,23 +182,23 @@ export function ScanIngestionPanel({
                   onClick={() => onModelChange(m.id)}
                   className={`w-full py-2 px-3 rounded-xl text-left transition-all cursor-pointer select-none border ${
                     isSelected
-                      ? "bg-slate-800/95 border-sky-400/80 text-white shadow-md shadow-sky-500/10 font-bold"
-                      : "bg-slate-900/50 hover:bg-slate-800/60 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
+                      ? "bg-slate-800/90 border-blue-500/50 text-white shadow-sm"
+                      : "bg-slate-900/40 hover:bg-slate-800/50 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span
                         className={`w-2 h-2 rounded-full ${
-                          isSelected ? "bg-sky-400 shadow-[0_0_6px_#38bdf8]" : "bg-slate-600"
+                          isSelected ? "bg-blue-500" : "bg-slate-600"
                         }`}
                       />
-                      <span className="text-xs font-bold">{m.name}</span>
+                      <span className="text-xs font-semibold">{m.name}</span>
                     </div>
                     <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-semibold ${
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${
                         isSelected
-                          ? "bg-sky-500/20 text-sky-300 border border-sky-400/30"
+                          ? "bg-blue-500/15 text-blue-300 border border-blue-500/30"
                           : "bg-slate-800 text-slate-400"
                       }`}
                     >
@@ -207,7 +207,7 @@ export function ScanIngestionPanel({
                   </div>
                   <div
                     className={`text-[11px] pl-4 leading-tight mt-0.5 ${
-                      isSelected ? "text-sky-300/90 font-medium" : "text-slate-400"
+                      isSelected ? "text-slate-300 font-normal" : "text-slate-400"
                     }`}
                   >
                     {m.desc}
@@ -220,25 +220,25 @@ export function ScanIngestionPanel({
 
         {/* Bottom Group: Telemetry Info + Primary CTA Button */}
         <div className="space-y-2 pt-1.5">
-          <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 text-[11px] text-slate-300 space-y-1">
+          <div className="p-2.5 rounded-xl bg-slate-900/50 border border-white/5 text-[11px] text-slate-300 space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Analysis Matrix:</span>
-              <span className="font-mono text-slate-200 font-semibold">512 × 512 DICOM</span>
+              <span className="font-mono text-slate-200 font-medium">512 × 512 DICOM</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Classifier:</span>
-              <span className="text-sky-300 font-semibold">MaxViT Multi-Class</span>
+              <span className="text-slate-200 font-medium">MaxViT Multi-Class</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Modality Screening:</span>
-              <span className="text-sky-300 font-semibold flex items-center gap-1">
-                <ShieldCheck className="h-3.5 w-3.5 text-sky-400" />
+              <span className="text-slate-200 font-medium flex items-center gap-1">
+                <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
                 ResNet-18 Gatekeeper
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Lesion Segmentation:</span>
-              <span className="text-emerald-300 font-semibold">Dense Attention Mask</span>
+              <span className="text-emerald-400 font-medium">Dense Attention Mask</span>
             </div>
           </div>
 
@@ -246,9 +246,9 @@ export function ScanIngestionPanel({
           <button
             onClick={onRunInference}
             disabled={isScanning || !imageUrl}
-            className={`relative overflow-hidden h-11 w-full shrink-0 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] shadow-md ${
+            className={`relative overflow-hidden h-11 w-full shrink-0 rounded-xl font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer select-none active:scale-[0.99] shadow-sm ${
               isScanning || !imageUrl
-                ? "bg-slate-800/60 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
+                ? "bg-slate-800/50 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
                 : "btn-clinical-primary text-white"
             }`}
           >
@@ -259,7 +259,7 @@ export function ScanIngestionPanel({
               </div>
             ) : (
               <span className="flex items-center gap-1.5">
-                <Activity className="h-4 w-4 text-sky-200" />
+                <Activity className="h-4 w-4 text-blue-200" />
                 ANALYZE BRAIN CT SCAN
               </span>
             )}

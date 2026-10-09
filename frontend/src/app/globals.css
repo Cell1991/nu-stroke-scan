@@ -2,18 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* NU Stroke Scan - Ultra-Modern PACS / Medical AI Theme */
+/* NU Stroke Scan - Modern Minimal Medical PACS Theme */
 :root {
-  --bg-deep: #070b14;
-  --bg-panel: rgba(13, 21, 38, 0.75);
-  --bg-panel-solid: #0d1526;
-  --bg-card: rgba(17, 28, 51, 0.65);
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-medium: rgba(56, 189, 248, 0.2);
-  --border-glow: rgba(56, 189, 248, 0.45);
-  --blue-primary: #0284c7;
-  --blue-accent: #38bdf8;
-  --cyan-bright: #06b6d4;
+  --bg-deep: #090b0e;
+  --bg-panel: rgba(16, 20, 26, 0.85);
+  --bg-panel-solid: #11141b;
+  --bg-card: rgba(21, 26, 35, 0.7);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --blue-primary: #2563eb;
+  --blue-accent: #3b82f6;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
@@ -35,59 +33,54 @@ html, body {
   overflow: hidden;
 }
 
-/* Modern Clinical Scrollbar */
+/* Modern Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.2);
+  background: rgba(148, 163, 184, 0.15);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.4);
+  background: rgba(148, 163, 184, 0.3);
 }
 
-/* Medical Ambient Backdrop */
+/* Modern Minimal Backdrop: Matte deep graphite without sci-fi grid */
 .medical-ambient-backdrop {
-  background-color: #070b14;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(14, 165, 233, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 90% 90%, rgba(2, 132, 199, 0.06), transparent),
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  background-color: #090b0e;
+  background-image: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.25) 0%, transparent 75%);
 }
 
-/* Glassmorphism Panel */
+/* Modern Minimal Panel: Clean dark slate, subtle razor border */
 .medical-glass-panel {
-  background: rgba(12, 19, 35, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: rgba(15, 18, 25, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
 }
 
 /* DICOM Medical Viewport Canvas */
 .dicom-canvas-bg {
-  background-color: #03060d;
+  background-color: #030407;
 }
 
-/* Fine DICOM Calibration Grid */
+/* Subtle Minimal Calibration Grid (Neutral, non-neon) */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-    linear-gradient(to right, rgba(56, 189, 248, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.25) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
   pointer-events: none;
 }
 
-/* Ultra-Clean Modern Sliders */
+/* Clean Minimal Slider: Apple / Linear Style */
 .neu-slider-container {
   position: relative;
   width: 100%;
@@ -99,9 +92,8 @@ html, body {
 .neu-slider-track-bg {
   position: relative;
   width: 100%;
-  height: 5px;
-  background: #111a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 4px;
+  background: #181d26;
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -111,7 +103,7 @@ html, body {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%);
+  background: #3b82f6;
   border-radius: 9999px;
   pointer-events: none;
 }
@@ -124,7 +116,7 @@ html, body {
   left: 0;
   transform: translateY(-50%);
   width: 100%;
-  height: 20px;
+  height: 18px;
   background: transparent;
   outline: none;
   cursor: pointer;
@@ -135,99 +127,89 @@ html, body {
 .neu-range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: #38bdf8;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.1s ease;
 }
 
 .neu-range-input::-webkit-slider-thumb:hover {
-  transform: scale(1.22);
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.85);
+  transform: scale(1.15);
 }
 
 .neu-range-input::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: #38bdf8;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   cursor: pointer;
 }
 
-/* Primary Clinical Blue CTA Button */
+/* Primary Medical Action Button: Solid, Confident, Modern */
 .btn-clinical-primary {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #0284c7 100%);
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: #2563eb;
+  border: 1px solid rgba(59, 130, 246, 0.4);
   color: #ffffff;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  transition: all 0.15s ease;
 }
 .btn-clinical-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
-  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
+  background: #1d4ed8;
+  border-color: rgba(59, 130, 246, 0.6);
 }
 .btn-clinical-primary:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: scale(0.99);
 }
 
-/* Subtle Action Button */
+/* Minimal Subtle Action Button */
 .btn-clinical-subtle {
-  background: rgba(18, 28, 49, 0.6);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
-  transition: all 0.18s ease;
+  color: #cbd5e1;
+  transition: all 0.15s ease;
 }
 .btn-clinical-subtle:hover:not(:disabled) {
-  background: rgba(30, 45, 78, 0.8);
-  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
   color: #ffffff;
 }
 .btn-clinical-subtle:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: scale(0.99);
 }
 
-/* Cyan Action Button */
+/* Modern Minimal Action Button (Composite Export) */
 .btn-clinical-cyan {
-  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
-  border: 1px solid rgba(34, 211, 238, 0.4);
-  box-shadow: 0 3px 12px rgba(8, 145, 178, 0.3);
-  color: #ffffff;
-  transition: all 0.18s ease;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  transition: all 0.15s ease;
 }
 .btn-clinical-cyan:hover:not(:disabled) {
-  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-  box-shadow: 0 5px 16px rgba(8, 145, 178, 0.45);
+  background: rgba(51, 65, 85, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+.btn-clinical-cyan:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
-/* Teal/Report Action Button */
+/* Modern Minimal Action Button (Report Download) */
 .btn-clinical-teal {
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-  border: 1px solid rgba(45, 212, 191, 0.4);
-  box-shadow: 0 3px 12px rgba(13, 148, 136, 0.3);
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
 }
 .btn-clinical-teal:hover:not(:disabled) {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-  box-shadow: 0 5px 16px rgba(13, 148, 136, 0.45);
+  background: #334155;
+  border-color: rgba(255, 255, 255, 0.25);
 }
-
-/* Laser sweep */
-@keyframes laser-sweep {
-  0% { top: 0%; opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+.btn-clinical-teal:active:not(:disabled) {
+  transform: scale(0.99);
 }
-
-.animate-laser-sweep {
-  animation: laser-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-

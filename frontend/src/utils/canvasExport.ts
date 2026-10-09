@@ -45,21 +45,17 @@ export function exportMedicalComposite({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // 1. Sleek Medical Dark Slate Backdrop (#080c15)
-    ctx.fillStyle = "#080c15";
+    // 1. Sleek Medical Dark Slate Backdrop (#090b0e)
+    ctx.fillStyle = "#090b0e";
     ctx.fillRect(0, 0, canvasW, canvasH);
 
-    // Top Accent Line (Sky blue gradient)
-    const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
-    grad.addColorStop(0, "#0284c7");
-    grad.addColorStop(0.5, "#38bdf8");
-    grad.addColorStop(1, "#6366f1");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, canvasW, 3);
+    // Top Accent Line (Modern Solid Medical Blue)
+    ctx.fillStyle = "#2563eb";
+    ctx.fillRect(0, 0, canvasW, 2);
 
     // 2. Header Section
     ctx.font = "bold 15px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillStyle = "#38bdf8";
+    ctx.fillStyle = "#f8fafc";
     ctx.fillText("NU STROKE SCAN", pad, 28);
 
     ctx.font = "500 12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -222,7 +218,7 @@ export function exportMedicalComposite({
     // Right side: AI Model info & Clinical disclaimer
     ctx.textAlign = "right";
     ctx.font = "bold 12px -apple-system, BlinkMacSystemFont, sans-serif";
-    ctx.fillStyle = "#38bdf8";
+    ctx.fillStyle = "#f8fafc";
     ctx.fillText(`Model: ${result?.modelLabel || modelName}`, canvasW - pad, footerY + 18);
 
     ctx.font = "500 11px -apple-system, BlinkMacSystemFont, sans-serif";
