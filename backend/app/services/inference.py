@@ -216,32 +216,47 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         p_norm, p_hem, p_isch = float(base_cls_probs[0]), float(base_cls_probs[1]), float(base_cls_probs[2])
 
         if is_detected and lesion_pct >= 0.05:
-            # Lesion is present in intracranial parenchyma
-            # If the classifier has an ambiguous split between hemorrhagic and ischemic, use density as a tiebreaker
-            if abs(p_hem - p_isch) < 0.25:
-                gray_aligned = np.asarray(
-                    image.convert("L").resize((mask_arr.shape[1], mask_arr.shape[0]), Image.BILINEAR),
-                    dtype=np.float32,
-                )
-                brain_parenchyma = (gray_aligned > 20) & (gray_aligned < 160)
-                lesion_in_brain = (mask_arr > 0) & (gray_aligned < 185)
-                if np.count_nonzero(lesion_in_brain) > 0 and np.count_nonzero(brain_parenchyma) > 0:
-                    density_diff = float(np.mean(gray_aligned[lesion_in_brain]) - np.mean(gray_aligned[brain_parenchyma]))
-                    if density_diff > 6.0:
-                        p_hem = max(p_hem, p_isch + 0.15)
-                    elif density_diff < -6.0:
-                        p_isch = max(p_isch, p_hem + 0.15)
+            gray_aligned = np.asarray(
+                image.convert("L").resize((mask_arr.shape[1], mask_arr.shape[0]), Image.BILINEAR),
+                dtype=np.float32,
+            )
+            # Brain parenchyma: tissue between air (< 20) and skull bone (> 160)
+            brain_parenchyma = (gray_aligned > 20) & (gray_aligned < 160)
+            # Lesion pixels strictly inside brain (exclude calvarium/skull bone > 185)
+            lesion_in_brain = (mask_arr > 0) & (gray_aligned < 185)
 
-            # Suppress normal probability appropriately since lesion is clinically present
-            p_norm_final = min(0.02, p_norm * 0.1)
+            if np.count_nonzero(lesion_in_brain) > 0 and np.count_nonzero(brain_parenchyma) > 0:
+                density_diff = float(np.mean(gray_aligned[lesion_in_brain]) - np.mean(gray_aligned[brain_parenchyma]))
+            else:
+                density_diff = 0.0
+
+            # Physiological radiologic attenuation weighting (Blood is hyperdense, infarct is hypodense)
+            if density_diff > 10.0:
+                # Acute hemorrhage (hyperdense blood)
+                boost = min(0.96, 0.78 + (density_diff / 75.0))
+                w_hem = max(p_hem, boost)
+                w_isch = min(p_isch, 1.0 - w_hem)
+            elif density_diff < -10.0:
+                # Acute ischemic infarction (hypodense edema)
+                boost = min(0.96, 0.78 + (abs(density_diff) / 75.0))
+                w_isch = max(p_isch, boost)
+                w_hem = min(p_hem, 1.0 - w_isch)
+            else:
+                # Intermediate/subacute: combine classifier with density trend
+                diff_weight = density_diff / 40.0
+                w_hem = max(0.05, p_hem + diff_weight)
+                w_isch = max(0.05, p_isch - diff_weight)
+
+            # Suppress normal probability appropriately since lesion is clinically confirmed
+            p_norm_final = min(0.015, p_norm * 0.05)
             rem = 1.0 - p_norm_final
-            stroke_tot = max(1e-5, p_hem + p_isch)
-            p_hem_final = round((p_hem / stroke_tot) * rem, 4)
+            s = max(1e-5, w_hem + w_isch)
+            p_hem_final = round((w_hem / s) * rem, 4)
             p_isch_final = round(rem - p_hem_final, 4)
             cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
             top_idx = 1 if p_hem_final >= p_isch_final else 2
         else:
-            # Clinically normal head CT (no lesion segmented in parenchyma)
+            # Clinically normal head CT (no acute lesion in brain parenchyma)
             p_norm_final = max(0.96, p_norm)
             rem = 1.0 - p_norm_final
             stroke_tot = max(1e-5, p_hem + p_isch)
