@@ -70,7 +70,53 @@ def _mask_to_rgba(
 
 def validate_brain_ct(image: Image.Image) -> None:
     if image.width < 64 or image.height < 64:
-        raise HTTPException(status_code=422, detail="Invalid brain CT image: resolution is too low.")
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid brain CT image: resolution is too low (< 64x64). Please upload an authentic axial head CT slice.",
+        )
+
+    # 1. Chromatic / Color Screening: Non-contrast head CT is strictly scalar grayscale (HU values).
+    if image.mode not in ("1", "L", "I", "F"):
+        rgb = image.convert("RGB")
+        arr_rgb = np.asarray(rgb, dtype=np.float32)
+        r, g, b = arr_rgb[..., 0], arr_rgb[..., 1], arr_rgb[..., 2]
+        channel_diff = np.maximum(np.maximum(np.abs(r - g), np.abs(r - b)), np.abs(g - b))
+        # Real CT scans have channel_diff == 0 (with rare JPEG lossy compression artifact < 20).
+        color_ratio = float(np.mean(channel_diff > 22.0))
+        if color_ratio > 0.015:
+            logger.warning("Rejected upload with chromatic color information: color_ratio=%.4f", color_ratio)
+            raise HTTPException(
+                status_code=422,
+                detail="Invalid Modality Detected: The uploaded image contains chromatic color information. Authentic Non-Contrast Brain CT scans are grayscale only. Please upload an authentic axial head CT slice.",
+            )
+
+    # 2. Ambient Air (Corner Luminance) Screening: Gantry air outside the head is near-black (< 50).
+    gray = image.convert("L")
+    arr_gray = np.asarray(gray, dtype=np.float32)
+    h, w = arr_gray.shape
+    pw = max(4, int(w * 0.06))
+    ph = max(4, int(h * 0.06))
+    corners_mean = float((
+        arr_gray[:ph, :pw].mean() +
+        arr_gray[:ph, -pw:].mean() +
+        arr_gray[-ph:, :pw].mean() +
+        arr_gray[-ph:, -pw:].mean()
+    ) / 4.0)
+    if corners_mean > 130.0:
+        logger.warning("Rejected upload with bright/inverted background: corners_mean=%.1f", corners_mean)
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid Modality Detected: The uploaded image has a bright/inverted non-radiological background. Authentic axial Brain CT scans must have dark ambient air surrounding the skull. Please upload an authentic axial Brain CT slice.",
+        )
+
+    # 3. Soft Tissue Parenchyma Density Screening: Real axial CT contains soft brain tissue densities.
+    parenchyma_ratio = float(np.mean((arr_gray >= 20) & (arr_gray <= 125)))
+    if parenchyma_ratio < 0.04:
+        logger.warning("Rejected upload lacking brain tissue densities: parenchyma_ratio=%.4f", parenchyma_ratio)
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid Modality Detected: The uploaded image does not contain brain parenchyma tissue densities. Please upload an authentic axial Brain CT slice.",
+        )
 
 
 async def _read_and_validate_upload(upload: UploadFile) -> tuple[bytes, Image.Image]:
@@ -103,7 +149,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             mod_probs = mod_logits.softmax(dim=0).cpu().numpy().tolist()
 
         p_non_ct, p_brain_ct = float(mod_probs[0]), float(mod_probs[1])
-        is_valid_modality = p_brain_ct >= 0.50
+        is_valid_modality = p_brain_ct >= 0.70
 
         modality_info = {
             "is_valid": is_valid_modality,

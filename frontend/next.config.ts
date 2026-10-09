@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  devIndicators: false,
   async rewrites() {
     const backendUrl =
       process.env.INTERNAL_API_URL ||

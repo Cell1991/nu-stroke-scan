@@ -67,3 +67,25 @@ def test_reject_invalid_modality() -> None:
     assert response.status_code == 422
     detail = response.json().get("detail", "")
     assert "Brain CT" in str(detail)
+
+
+def test_reject_color_logo() -> None:
+    # A color graphic / university logo with bright colors must be rejected with 422
+    from PIL import ImageDraw
+    img = Image.new("RGB", (256, 256), color=(255, 255, 255))
+    draw = ImageDraw.Draw(img)
+    draw.ellipse([30, 30, 226, 226], fill=(0, 128, 0))
+    draw.rectangle([60, 60, 196, 196], fill=(255, 200, 0))
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
+
+    response = client.post(
+        "/api/analysis",
+        files={"file": ("RRU_logo.png", buf, "image/png")},
+        data={"model": "vcanet", "threshold": "0.5"},
+    )
+    assert response.status_code == 422
+    detail = response.json().get("detail", "")
+    assert "Brain CT" in str(detail)
+
