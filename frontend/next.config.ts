@@ -3,6 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   devIndicators: false,
+  allowedDevOrigins: [
+    "*.trycloudflare.com",
+    "**.trycloudflare.com",
+    "localhost",
+    "127.0.0.1",
+  ],
   async rewrites() {
     const backendUrl =
       process.env.INTERNAL_API_URL ||
