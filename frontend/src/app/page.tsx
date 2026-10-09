@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import confetti from "canvas-confetti";
 import { MODELS, MAX_FILE_SIZE } from "@/constants/models";
 import { PanOffset, PredictionResult } from "@/types";
 import { exportMedicalComposite } from "@/utils/canvasExport";
@@ -351,6 +352,15 @@ export default function Home() {
           activeAnalysis.probData,
           activeAnalysis.result
         );
+
+        // Subtle medical particle feedback upon successful analysis
+        confetti({
+          particleCount: 28,
+          spread: 55,
+          origin: { y: 0.85 },
+          colors: ["#3b82f6", "#10b981", "#60a5fa"],
+          disableForReducedMotion: true,
+        });
       }
     } catch (err: unknown) {
       console.error(err);

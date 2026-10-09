@@ -1,5 +1,6 @@
 import React, { DragEvent, useRef, useState } from "react";
 import { Activity, AlertTriangle, Brain, RefreshCw, ShieldAlert, ShieldCheck, UploadCloud } from "lucide-react";
+import { motion } from "motion/react";
 import { MODELS } from "@/constants/models";
 
 interface ScanIngestionPanelProps {
@@ -177,28 +178,38 @@ export function ScanIngestionPanel({
             {MODELS.map((m) => {
               const isSelected = modelId === m.id;
               return (
-                <button
+                <motion.button
                   key={m.id}
+                  whileHover={{ scale: 1.012, x: 2 }}
+                  whileTap={{ scale: 0.985 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 28 }}
                   onClick={() => onModelChange(m.id)}
-                  className={`w-full py-2 px-3 rounded-xl text-left transition-all cursor-pointer select-none border ${
+                  className={`w-full py-2 px-3 rounded-xl text-left transition-colors cursor-pointer select-none border relative overflow-hidden ${
                     isSelected
-                      ? "bg-slate-800/90 border-blue-500/50 text-white shadow-sm"
+                      ? "bg-slate-800/90 border-blue-500/60 text-white shadow-md"
                       : "bg-slate-900/40 hover:bg-slate-800/50 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
                   }`}
                 >
-                  <div className="flex items-center justify-between">
+                  {isSelected && (
+                    <motion.div
+                      layoutId="activeModelGlider"
+                      className="absolute inset-0 bg-blue-500/10 pointer-events-none rounded-xl border-l-2 border-blue-500"
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  <div className="flex items-center justify-between relative z-10">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`w-2 h-2 rounded-full ${
-                          isSelected ? "bg-blue-500" : "bg-slate-600"
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          isSelected ? "bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]" : "bg-slate-600"
                         }`}
                       />
                       <span className="text-xs font-semibold">{m.name}</span>
                     </div>
                     <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium transition-colors ${
                         isSelected
-                          ? "bg-blue-500/15 text-blue-300 border border-blue-500/30"
+                          ? "bg-blue-500/20 text-blue-300 border border-blue-400/30"
                           : "bg-slate-800 text-slate-400"
                       }`}
                     >
@@ -206,13 +217,13 @@ export function ScanIngestionPanel({
                     </span>
                   </div>
                   <div
-                    className={`text-[11px] pl-4 leading-tight mt-0.5 ${
-                      isSelected ? "text-slate-300 font-normal" : "text-slate-400"
+                    className={`text-[11px] pl-4 leading-tight mt-0.5 relative z-10 transition-colors ${
+                      isSelected ? "text-slate-200 font-normal" : "text-slate-400"
                     }`}
                   >
                     {m.desc}
                   </div>
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -243,13 +254,16 @@ export function ScanIngestionPanel({
           </div>
 
           {/* Primary Action Button */}
-          <button
+          <motion.button
+            whileHover={!isScanning && imageUrl ? { scale: 1.018, y: -1 } : {}}
+            whileTap={!isScanning && imageUrl ? { scale: 0.985 } : {}}
+            transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onRunInference}
             disabled={isScanning || !imageUrl}
-            className={`relative overflow-hidden h-11 w-full shrink-0 rounded-xl font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer select-none active:scale-[0.99] shadow-sm ${
+            className={`relative overflow-hidden h-11 w-full shrink-0 rounded-xl font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer select-none shadow-md ${
               isScanning || !imageUrl
                 ? "bg-slate-800/50 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
-                : "btn-clinical-primary text-white"
+                : "btn-clinical-primary btn-shimmer-sweep text-white"
             }`}
           >
             {isScanning ? (
@@ -263,7 +277,7 @@ export function ScanIngestionPanel({
                 ANALYZE BRAIN CT SCAN
               </span>
             )}
-          </button>
+          </motion.button>
         </div>
       </div>
     </section>

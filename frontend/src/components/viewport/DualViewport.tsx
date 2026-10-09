@@ -1,6 +1,7 @@
 import React from "react";
 import { Activity, Brain, Layers } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
+import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
 
 interface LoupeState {
   active: boolean;
@@ -190,17 +191,7 @@ export function DualViewport({
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
           >
-            {isScanning && (
-              <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
-                <div className="absolute w-full h-[1.5px] bg-blue-500/80 animate-laser-sweep" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm">
-                  <div className="w-9 h-9 rounded-full border-2 border-slate-700 border-t-blue-500 animate-spin mb-3" />
-                  <p className="text-xs font-mono font-bold text-slate-200 tracking-wider uppercase">
-                    NEURAL INFERENCE IN PROGRESS...
-                  </p>
-                </div>
-              </div>
-            )}
+            {isScanning && <ScanningPipelineHUD />}
 
             {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
 

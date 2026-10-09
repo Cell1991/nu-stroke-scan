@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+import { motion } from "motion/react";
 import { PredictionResult } from "@/types";
 
 interface DiagnosticPanelProps {
@@ -54,10 +55,15 @@ export function DiagnosticPanel({
           <div className="shrink-0">
             {result ? (
               result.classification?.predicted_class === "hemorrhagic" ? (
-                <div className="p-2.5 rounded-xl bg-rose-950/30 border border-rose-500/80 text-rose-100 space-y-1">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96, y: 4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="p-2.5 rounded-xl bg-rose-950/40 border border-rose-500/80 text-rose-100 space-y-1 glow-alert-red"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <AlertTriangle className="h-4 w-4 text-rose-400 shrink-0" />
+                      <AlertTriangle className="h-4 w-4 text-rose-400 shrink-0 animate-pulse" />
                       <span className="font-bold text-xs tracking-tight text-rose-200">
                         HEMORRHAGIC STROKE
                       </span>
@@ -70,12 +76,17 @@ export function DiagnosticPanel({
                   <p className="text-[11px] text-rose-300/80 leading-tight">
                     High-attenuation acute hemorrhagic lesion identified.
                   </p>
-                </div>
+                </motion.div>
               ) : result.classification?.predicted_class === "ischemic" ? (
-                <div className="p-2.5 rounded-xl bg-amber-950/30 border border-amber-500/80 text-amber-100 space-y-1">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96, y: 4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/80 text-amber-100 space-y-1 glow-alert-amber"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
+                      <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0 animate-pulse" />
                       <span className="font-bold text-xs tracking-tight text-amber-200">
                         ISCHEMIC STROKE
                       </span>
@@ -90,9 +101,14 @@ export function DiagnosticPanel({
                   <p className="text-[11px] text-amber-300/80 leading-tight">
                     Low attenuation ischemic territory segmented by neural model.
                   </p>
-                </div>
+                </motion.div>
               ) : (
-                <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/80 text-emerald-100 space-y-1">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96, y: 4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/80 text-emerald-100 space-y-1 glow-alert-emerald"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
@@ -110,7 +126,7 @@ export function DiagnosticPanel({
                   <p className="text-[11px] text-emerald-300/80 leading-tight">
                     No acute infarction or hemorrhage observed above cutoff.
                   </p>
-                </div>
+                </motion.div>
               )
             ) : (
               <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 space-y-2">
@@ -140,7 +156,7 @@ export function DiagnosticPanel({
                   <div className="flex justify-between py-0.5">
                     <span className="text-slate-400 font-medium">Engine Status:</span>
                     <span className="text-emerald-400 font-medium flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       Ready for Input
                     </span>
                   </div>
@@ -151,7 +167,12 @@ export function DiagnosticPanel({
 
           {/* Multi-Class Disease Classification Breakdown (MaxViT) */}
           {result?.classification && (
-            <div className="space-y-1.5 p-2.5 rounded-xl bg-slate-900/60 border border-white/5 shrink-0">
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="space-y-1.5 p-2.5 rounded-xl bg-slate-900/60 border border-white/5 shrink-0"
+            >
               <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
                 <span className="flex items-center gap-1.5 text-slate-200 font-semibold text-xs">
                   <Sparkles className="h-3.5 w-3.5 text-slate-400" />
@@ -180,26 +201,33 @@ export function DiagnosticPanel({
                       <span className="font-mono text-white font-bold">{cls.percentage}%</span>
                     </div>
                     <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${cls.percentage}%` }}
+                        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                        className={`h-full rounded-full ${
                           cls.id === "hemorrhagic"
                             ? "bg-red-500"
                             : cls.id === "ischemic"
                             ? "bg-amber-500"
                             : "bg-emerald-500"
                         }`}
-                        style={{ width: `${cls.percentage}%` }}
                       />
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Segmentation Model Confidence Meter */}
           {result && (
-            <div className="space-y-1 p-2 rounded-xl bg-slate-900/60 border border-white/5 shrink-0">
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05, ease: "easeOut" }}
+              className="space-y-1 p-2 rounded-xl bg-slate-900/60 border border-white/5 shrink-0"
+            >
               <div className="flex justify-between text-xs font-semibold text-slate-300">
                 <span className="text-[11px] font-medium text-slate-300">Segmentation Confidence</span>
                 <span className="font-mono text-slate-200 font-bold text-[11px]">
@@ -207,16 +235,18 @@ export function DiagnosticPanel({
                 </span>
               </div>
               <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
-                <div
-                  className={`h-full transition-all duration-300 ${
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${result.confidence * 100}%` }}
+                  transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                  className={`h-full rounded-full ${
                     result?.detected
                       ? "bg-rose-500"
                       : "bg-blue-600"
                   }`}
-                  style={{ width: `${result.confidence * 100}%` }}
                 />
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Key Clinical Metrics Table */}
@@ -250,10 +280,13 @@ export function DiagnosticPanel({
         {/* Bottom-Right Stacked CTAs */}
         <div className="space-y-1.5 pt-2 border-t border-white/5 shrink-0">
           {/* Copy Clinical Summary */}
-          <button
+          <motion.button
+            whileHover={result ? { scale: 1.015, y: -1 } : {}}
+            whileTap={result ? { scale: 0.985 } : {}}
+            transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onCopySummary}
             disabled={!result}
-            className="btn-clinical-subtle w-full h-8.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
+            className="btn-clinical-subtle w-full h-8.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors"
             title="Copy clinical summary to clipboard"
           >
             {copiedToast ? (
@@ -262,13 +295,16 @@ export function DiagnosticPanel({
               <Copy className="h-3.5 w-3.5 text-slate-300" />
             )}
             <span>{copiedToast ? "Summary Copied!" : "Copy Clinical Summary"}</span>
-          </button>
+          </motion.button>
 
           {/* Export Composite Image */}
-          <button
+          <motion.button
+            whileHover={hasImage ? { scale: 1.015, y: -1 } : {}}
+            whileTap={hasImage ? { scale: 0.985 } : {}}
+            transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onExportImage}
             disabled={!hasImage}
-            className="btn-clinical-cyan w-full h-8.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm"
+            className="btn-clinical-cyan w-full h-8.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm"
             title="Export high-resolution annotated image composite with lesion mask overlay"
           >
             {exportedStatus === "image" ? (
@@ -277,13 +313,16 @@ export function DiagnosticPanel({
               <Download className="h-3.5 w-3.5 text-white" />
             )}
             <span>{exportedStatus === "image" ? "Image Exported!" : "Export Composite Image"}</span>
-          </button>
+          </motion.button>
 
           {/* Download Clinical Report */}
-          <button
+          <motion.button
+            whileHover={result ? { scale: 1.015, y: -1 } : {}}
+            whileTap={result ? { scale: 0.985 } : {}}
+            transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onExportReport}
             disabled={!result}
-            className="btn-clinical-teal w-full h-9 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm"
+            className="btn-clinical-teal w-full h-9 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm"
             title="Download formal clinical diagnostic summary text report"
           >
             {exportedStatus === "report" ? (
@@ -292,7 +331,7 @@ export function DiagnosticPanel({
               <FileText className="h-3.5 w-3.5" />
             )}
             <span>{exportedStatus === "report" ? "Report Downloaded!" : "Download Clinical Report"}</span>
-          </button>
+          </motion.button>
         </div>
       </div>
     </section>
