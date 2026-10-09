@@ -246,7 +246,7 @@ export function ScanIngestionPanel({
           <button
             onClick={onRunInference}
             disabled={isScanning || !imageUrl}
-            className={`relative overflow-hidden h-12 w-full rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] shadow-md ${
+            className={`relative overflow-hidden h-12 w-full shrink-0 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] shadow-md ${
               isScanning || !imageUrl
                 ? "bg-slate-800/60 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
                 : "btn-clinical-primary text-white"

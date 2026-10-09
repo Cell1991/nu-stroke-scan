@@ -12,7 +12,6 @@ import { ScanIngestionPanel } from "@/components/ingestion/ScanIngestionPanel";
 import { DualViewport } from "@/components/viewport/DualViewport";
 import { DisplayCalibrationPanel } from "@/components/controls/DisplayCalibrationPanel";
 import { DiagnosticPanel } from "@/components/diagnostic/DiagnosticPanel";
-import { FooterBar } from "@/components/footer/FooterBar";
 
 export default function Home() {
   const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
@@ -417,8 +416,6 @@ export default function Home() {
           onExportReport={exportReportText}
         />
       </main>
-
-      <FooterBar />
     </div>
   );
 }
