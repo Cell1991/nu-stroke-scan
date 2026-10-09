@@ -122,7 +122,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             pct = round(p_non_ct * 100.0, 1)
             raise HTTPException(
                 status_code=422,
-                detail=f"ภาพที่อัปโหลดไม่ใช่ภาพ Non-Contrast Brain CT Scan (ตรวจพบภาพทั่วไป/ผิดประเภท {pct}%) กรุณาอัปโหลดภาพเอกซเรย์คอมพิวเตอร์สมองใหม่อีกครั้ง",
+                detail=f"The uploaded image is not a valid Non-Contrast Brain CT Scan (Non-CT confidence: {pct}%). Please upload an axial non-contrast brain CT scan slice.",
             )
     except HTTPException:
         raise

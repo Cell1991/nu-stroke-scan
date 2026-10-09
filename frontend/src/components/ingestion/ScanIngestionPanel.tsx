@@ -126,27 +126,27 @@ export function ScanIngestionPanel({
         {error && (
           <div
             className={`mt-2 p-2.5 rounded-xl border text-xs font-medium space-y-2 transition-all ${
-              error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")
+              error.includes("Brain CT") || error.includes("Modality") || error.includes("not a valid")
                 ? "bg-rose-950/50 border-rose-600/60 text-rose-200"
                 : "bg-red-950/40 border-red-600/40 text-red-200"
             }`}
           >
             <div className="flex items-start gap-2">
-              {error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ") ? (
+              {error.includes("Brain CT") || error.includes("Modality") || error.includes("not a valid") ? (
                 <ShieldAlert className="h-4.5 w-4.5 shrink-0 text-rose-400 mt-0.5" />
               ) : (
                 <AlertTriangle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
               )}
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-xs text-white">
-                  {error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")
-                    ? "ตรวจพบภาพไม่ถูกต้อง (Invalid Modality)"
-                    : "เกิดข้อผิดพลาดในการประมวลผล"}
+                  {error.includes("Brain CT") || error.includes("Modality") || error.includes("not a valid")
+                    ? "Invalid Modality Detected"
+                    : "Processing Error Encountered"}
                 </p>
                 <p className="text-[11px] text-rose-300 mt-0.5 leading-relaxed">{error}</p>
               </div>
             </div>
-            {(error.includes("Brain CT") || error.includes("ไม่ใช่ภาพ")) && (
+            {(error.includes("Brain CT") || error.includes("Modality") || error.includes("not a valid")) && (
               <div className="flex justify-end pt-0.5">
                 <button
                   onClick={() => {
@@ -156,7 +156,7 @@ export function ScanIngestionPanel({
                   className="px-2.5 py-1 rounded-md bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs transition-colors cursor-pointer shadow-sm flex items-center gap-1.5"
                 >
                   <UploadCloud className="h-3.5 w-3.5" />
-                  เลือกภาพ Brain CT ใหม่
+                  Select New Brain CT Scan
                 </button>
               </div>
             )}
