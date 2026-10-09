@@ -16,6 +16,13 @@ services:
     depends_on:
       - backend
 
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://frontend:3000
+    depends_on:
+      - frontend
+
   backend:
     build:
       context: ./backend
