@@ -37,18 +37,18 @@ export function ScanIngestionPanel({
   }
 
   return (
-    <section className="col-span-3 flex flex-col gap-2.5 min-h-0 overflow-y-auto pr-0.5">
+    <section className="col-span-3 flex flex-col gap-2 min-h-0 overflow-y-auto pr-0.5">
       {/* Patient Scan Ingestion */}
-      <div className="rounded-2xl medical-glass-panel p-4 flex flex-col shrink-0">
-        <div className="flex items-center justify-between mb-2.5">
-          <span className="text-sm font-bold tracking-wider text-sky-400 uppercase flex items-center gap-2">
-            <UploadCloud className="h-4.5 w-4.5 text-sky-400" />
+      <div className="rounded-2xl medical-glass-panel p-3 flex flex-col shrink-0">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5">
+            <UploadCloud className="h-4 w-4 text-sky-400" />
             Patient CT Scan
           </span>
           {file && (
             <button
               onClick={onClearScan}
-              className="text-xs font-semibold text-rose-400 hover:text-rose-300 cursor-pointer transition-colors px-2 py-0.5 rounded-lg hover:bg-rose-950/40"
+              className="text-[11px] font-semibold text-rose-400 hover:text-rose-300 cursor-pointer transition-colors px-1.5 py-0.5 rounded-lg hover:bg-rose-950/40"
             >
               Clear Scan
             </button>
@@ -67,45 +67,45 @@ export function ScanIngestionPanel({
             setIsDragging(false);
           }}
           onDrop={handleDrop}
-          className={`h-48 xl:h-56 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-4 ${
+          className={`h-28 xl:h-32 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 relative overflow-hidden p-2 ${
             isDragging
               ? "border-sky-400 bg-sky-950/40 scale-[1.01]"
               : "border-slate-700/80 hover:border-sky-400/80 bg-slate-900/50 hover:bg-slate-900/80 active:scale-[0.99]"
           }`}
         >
           {imageUrl ? (
-            <div className="flex flex-col items-center gap-2.5 px-2 w-full">
-              <div className="relative">
+            <div className="flex items-center gap-3 px-2 w-full">
+              <div className="relative shrink-0">
                 <img
                   src={imageUrl}
                   alt="Loaded Scan"
-                  className="h-20 w-20 xl:h-24 xl:w-24 object-contain rounded-xl border border-slate-700 bg-black shadow-md"
+                  className="h-16 w-16 xl:h-20 xl:w-20 object-contain rounded-lg border border-slate-700 bg-black shadow-md"
                 />
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-xs text-white font-bold">
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border border-slate-900 flex items-center justify-center text-[10px] text-white font-bold">
                   ✓
                 </span>
               </div>
-              <div className="text-center w-full">
-                <p className="text-sm font-bold text-white truncate max-w-[220px] mx-auto">
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-xs font-bold text-white truncate max-w-[180px]">
                   {file?.name ?? "Loaded Slice"}
                 </p>
-                <p className="text-xs font-medium text-sky-400 mt-1">
-                  Click or drag new slice to replace
+                <p className="text-[11px] font-medium text-sky-400 mt-0.5">
+                  Click to replace slice
                 </p>
               </div>
             </div>
           ) : (
-            <div className="space-y-3 py-1">
-              <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center mx-auto text-sky-400 shadow-sm">
-                <UploadCloud className="h-6 w-6" />
+            <div className="flex flex-col items-center gap-1.5 py-1">
+              <div className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 shadow-sm">
+                <UploadCloud className="h-4.5 w-4.5" />
               </div>
               <div>
-                <p className="text-sm font-bold text-slate-100">Drop Brain CT or Browse</p>
-                <p className="text-xs text-slate-400 font-medium mt-1">
-                  Supports DICOM, NIfTI, PNG, JPG (Max 25MB)
+                <p className="text-xs font-bold text-slate-100">Drop Brain CT or Browse</p>
+                <p className="text-[10px] text-slate-400 font-medium mt-0.5">
+                  DICOM, NIfTI, PNG, JPG (Max 25MB)
                 </p>
               </div>
-              <span className="inline-block px-4 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-xs font-semibold shadow-sm transition-colors">
+              <span className="inline-block px-3 py-0.5 rounded-md bg-slate-800 border border-slate-700 hover:border-sky-400/50 text-sky-300 text-[11px] font-semibold shadow-sm transition-colors mt-0.5">
                 Select File
               </span>
             </div>
@@ -165,38 +165,38 @@ export function ScanIngestionPanel({
       </div>
 
       {/* Neural Architecture & Inference */}
-      <div className="rounded-2xl medical-glass-panel p-4 flex flex-col flex-1 min-h-0 justify-between">
+      <div className="rounded-2xl medical-glass-panel p-3 flex flex-col flex-1 min-h-0 justify-between">
         <div>
-          <span className="text-sm font-bold tracking-wider text-sky-400 uppercase flex items-center gap-2 mb-3 shrink-0">
-            <Brain className="h-4.5 w-4.5 text-sky-400" />
+          <span className="text-xs font-bold tracking-wider text-sky-400 uppercase flex items-center gap-1.5 mb-2 shrink-0">
+            <Brain className="h-4 w-4 text-sky-400" />
             Neural Architecture
           </span>
 
           {/* Model Architecture Buttons */}
-          <div className="space-y-2.5 mb-3 overflow-y-auto">
+          <div className="space-y-1.5 mb-2 overflow-y-auto">
             {MODELS.map((m) => {
               const isSelected = modelId === m.id;
               return (
                 <button
                   key={m.id}
                   onClick={() => onModelChange(m.id)}
-                  className={`w-full py-3 px-3.5 rounded-xl text-left transition-all cursor-pointer select-none border ${
+                  className={`w-full py-2 px-3 rounded-xl text-left transition-all cursor-pointer select-none border ${
                     isSelected
-                      ? "bg-slate-800/95 border-sky-400/80 text-white shadow-lg shadow-sky-500/10 font-bold"
+                      ? "bg-slate-800/95 border-sky-400/80 text-white shadow-md shadow-sky-500/10 font-bold"
                       : "bg-slate-900/50 hover:bg-slate-800/60 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2">
                       <span
-                        className={`w-2.5 h-2.5 rounded-full ${
-                          isSelected ? "bg-sky-400 shadow-[0_0_8px_#38bdf8]" : "bg-slate-600"
+                        className={`w-2 h-2 rounded-full ${
+                          isSelected ? "bg-sky-400 shadow-[0_0_6px_#38bdf8]" : "bg-slate-600"
                         }`}
                       />
-                      <span className="text-sm font-bold">{m.name}</span>
+                      <span className="text-xs font-bold">{m.name}</span>
                     </div>
                     <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold ${
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-semibold ${
                         isSelected
                           ? "bg-sky-500/20 text-sky-300 border border-sky-400/30"
                           : "bg-slate-800 text-slate-400"
@@ -206,7 +206,7 @@ export function ScanIngestionPanel({
                     </span>
                   </div>
                   <div
-                    className={`text-xs mt-1 pl-5 ${
+                    className={`text-[11px] pl-4 leading-tight mt-0.5 ${
                       isSelected ? "text-sky-300/90 font-medium" : "text-slate-400"
                     }`}
                   >
@@ -219,8 +219,8 @@ export function ScanIngestionPanel({
         </div>
 
         {/* Bottom Group: Telemetry Info + Primary CTA Button */}
-        <div className="space-y-3 pt-2">
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-300 space-y-1.5">
+        <div className="space-y-2 pt-1.5">
+          <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 text-[11px] text-slate-300 space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Analysis Matrix:</span>
               <span className="font-mono text-slate-200 font-semibold">512 × 512 DICOM</span>
@@ -246,20 +246,20 @@ export function ScanIngestionPanel({
           <button
             onClick={onRunInference}
             disabled={isScanning || !imageUrl}
-            className={`relative overflow-hidden h-12 w-full shrink-0 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] shadow-md ${
+            className={`relative overflow-hidden h-11 w-full shrink-0 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center cursor-pointer select-none active:scale-[0.98] shadow-md ${
               isScanning || !imageUrl
                 ? "bg-slate-800/60 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
                 : "btn-clinical-primary text-white"
             }`}
           >
             {isScanning ? (
-              <div className="flex items-center justify-center gap-2.5">
-                <RefreshCw className="h-4.5 w-4.5 animate-spin text-white" />
+              <div className="flex items-center justify-center gap-2">
+                <RefreshCw className="h-4 w-4 animate-spin text-white" />
                 <span>ANALYZING CT SCAN...</span>
               </div>
             ) : (
-              <span className="flex items-center gap-2">
-                <Activity className="h-4.5 w-4.5 text-sky-200" />
+              <span className="flex items-center gap-1.5">
+                <Activity className="h-4 w-4 text-sky-200" />
                 ANALYZE BRAIN CT SCAN
               </span>
             )}
