@@ -271,37 +271,49 @@ export function DualViewport({
             )}
 
             {/* Image and Lesion Mask Render */}
-            {errorMessage ? (
-              <div className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-rose-500/25">
-                {/* Ambient glow background */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.12),transparent_70%)] pointer-events-none" />
+            {errorMessage ? (() => {
+              const lowerErr = errorMessage.toLowerCase();
+              const isConnectionError =
+                lowerErr.includes("unreachable") ||
+                lowerErr.includes("connection refused") ||
+                lowerErr.includes("failed to fetch") ||
+                lowerErr.includes("503") ||
+                lowerErr.includes("backend is running");
 
-                {/* Animated Graphic Element */}
-                <div className="relative flex items-center justify-center mb-4">
-                  {/* Outer pulse wave */}
-                  <div className="absolute h-20 w-20 rounded-full bg-rose-500/15 animate-ping pointer-events-none" />
-                  
-                  {/* Concentric radar rings */}
-                  <div className="absolute h-18 w-18 rounded-full border border-rose-500/30 bg-rose-500/5 animate-pulse" />
-                  <div className="absolute h-14 w-14 rounded-full border border-rose-500/50" />
+              return (
+                <div className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-rose-500/25">
+                  {/* Ambient glow background */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.12),transparent_70%)] pointer-events-none" />
 
-                  {/* Core Icon Badge */}
-                  <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400">
-                    <ShieldAlert className="h-6 w-6 text-rose-400" strokeWidth={2.2} />
+                  {/* Animated Graphic Element */}
+                  <div className="relative flex items-center justify-center mb-4">
+                    {/* Outer pulse wave */}
+                    <div className="absolute h-20 w-20 rounded-full bg-rose-500/15 animate-ping pointer-events-none" />
+                    
+                    {/* Concentric radar rings */}
+                    <div className="absolute h-18 w-18 rounded-full border border-rose-500/30 bg-rose-500/5 animate-pulse" />
+                    <div className="absolute h-14 w-14 rounded-full border border-rose-500/50" />
+
+                    {/* Core Icon Badge */}
+                    <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400">
+                      <ShieldAlert className="h-6 w-6 text-rose-400" strokeWidth={2.2} />
+                    </div>
+                  </div>
+
+                  {/* Single-Glance Minimal Cognitive Load Text */}
+                  <div className="relative z-10 text-center max-w-sm px-4">
+                    <h3 className="text-base font-extrabold tracking-tight text-white uppercase">
+                      {isConnectionError ? "AI Backend Disconnected" : "Invalid Scan Image"}
+                    </h3>
+                    <p className="text-xs text-slate-300 font-medium mt-1">
+                      {isConnectionError
+                        ? "Cannot reach AI inference server. Please connect the backend URL in Vercel settings or start Docker."
+                        : "Please upload a valid axial head CT scan."}
+                    </p>
                   </div>
                 </div>
-
-                {/* Single-Glance Minimal Cognitive Load Text */}
-                <div className="relative z-10 text-center">
-                  <h3 className="text-base font-extrabold tracking-tight text-white uppercase">
-                    Invalid Scan Image
-                  </h3>
-                  <p className="text-xs text-slate-300 font-medium mt-1">
-                    Please upload a valid axial head CT scan.
-                  </p>
-                </div>
-              </div>
-            ) : hasAnalyzed && imageUrl ? (
+              );
+            })() : hasAnalyzed && imageUrl ? (
               <div
                 className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
                 style={{
