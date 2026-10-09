@@ -278,57 +278,57 @@ export function DiagnosticPanel({
         </div>
 
         {/* Bottom-Right Stacked CTAs */}
-        <div className="space-y-1.5 pt-2 border-t border-white/5 shrink-0">
+        <div className="space-y-2 pt-2 border-t border-white/5 shrink-0">
           {/* Copy Clinical Summary */}
           <motion.button
-            whileHover={result ? { scale: 1.015, y: -1 } : {}}
+            whileHover={result ? { scale: 1.012, y: -1 } : {}}
             whileTap={result ? { scale: 0.985 } : {}}
             transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onCopySummary}
             disabled={!result}
-            className="btn-clinical-subtle w-full h-8.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors"
+            className="w-full h-10 disabled:opacity-35 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all bg-slate-900/60 hover:bg-slate-800/80 text-slate-300 hover:text-white border border-white/10 hover:border-slate-600 shadow-sm"
             title="Copy clinical summary to clipboard"
           >
             {copiedToast ? (
-              <Check className="h-3.5 w-3.5 text-emerald-400" />
+              <Check className="h-4 w-4 text-emerald-400" />
             ) : (
-              <Copy className="h-3.5 w-3.5 text-slate-300" />
+              <Copy className="h-4 w-4 text-slate-400" />
             )}
             <span>{copiedToast ? "Summary Copied!" : "Copy Clinical Summary"}</span>
           </motion.button>
 
           {/* Export Composite Image */}
           <motion.button
-            whileHover={hasImage ? { scale: 1.015, y: -1 } : {}}
+            whileHover={hasImage ? { scale: 1.012, y: -1 } : {}}
             whileTap={hasImage ? { scale: 0.985 } : {}}
             transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onExportImage}
             disabled={!hasImage}
-            className="btn-clinical-cyan w-full h-8.5 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm"
+            className="w-full h-10 disabled:opacity-35 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all bg-slate-800/70 hover:bg-slate-700/80 text-slate-200 hover:text-white border border-white/10 hover:border-slate-500 shadow-sm"
             title="Export high-resolution annotated image composite with lesion mask overlay"
           >
             {exportedStatus === "image" ? (
-              <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
             ) : (
-              <Download className="h-3.5 w-3.5 text-white" />
+              <Download className="h-4 w-4 text-blue-400" />
             )}
             <span>{exportedStatus === "image" ? "Image Exported!" : "Export Composite Image"}</span>
           </motion.button>
 
           {/* Download Clinical Report */}
           <motion.button
-            whileHover={result ? { scale: 1.015, y: -1 } : {}}
+            whileHover={result ? { scale: 1.012, y: -1 } : {}}
             whileTap={result ? { scale: 0.985 } : {}}
             transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onExportReport}
             disabled={!result}
-            className="btn-clinical-teal w-full h-9 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm"
+            className="w-full h-10 disabled:opacity-35 disabled:cursor-not-allowed text-xs font-semibold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white border border-blue-400/30 shadow-md"
             title="Download formal clinical diagnostic summary text report"
           >
             {exportedStatus === "report" ? (
-              <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+              <CheckCircle2 className="h-4 w-4 text-white" />
             ) : (
-              <FileText className="h-3.5 w-3.5" />
+              <FileText className="h-4 w-4 text-blue-100" />
             )}
             <span>{exportedStatus === "report" ? "Report Downloaded!" : "Download Clinical Report"}</span>
           </motion.button>
