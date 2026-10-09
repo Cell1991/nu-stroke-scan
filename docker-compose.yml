@@ -14,9 +14,9 @@ services:
   tunnel:
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
-    command: tunnel --no-autoupdate --url http://frontend:3000
+    command: tunnel --no-autoupdate --url http://backend:8000
     depends_on:
-      - frontend
+      - backend
 
   backend:
     build:
