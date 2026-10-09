@@ -60,9 +60,9 @@ export function recomputeMaskFromProbability({
 
   ctx.putImageData(outImgData, 0, 0);
   const maskUrl = canvas.toDataURL("image/png");
-  const detected = lesionPixels >= 15;
+  const detected = lesionPixels >= 35;
   const lesionArea = detected ? Number(((lesionPixels / totalPixels) * 100).toFixed(2)) : 0;
-  const avgConfidence = lesionPixels >= 15 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
+  const avgConfidence = lesionPixels >= 35 ? (sumProb / lesionPixels) / 255 : maxProb / 255;
   const confidence = Number(Math.max(avgConfidence, detected ? 0.85 : 0.95).toFixed(4));
   const label = detected
     ? (isIschemic ? "Acute Ischemic Infarction (Yellow Mask)" : "Acute Hemorrhagic Stroke (Red Mask)")

@@ -154,12 +154,21 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             probabilities = output if spec.outputs_probability else torch.sigmoid(output)
 
         prob_np = probabilities.cpu().numpy()
+
+        # Anatomical constraint: Stroke lesions cannot exist in calvarial bone (gray > 185) or air outside skull (gray < 15)
+        gray_aligned = np.asarray(
+            image.convert("L").resize((prob_np.shape[1], prob_np.shape[0]), Image.BILINEAR),
+            dtype=np.float32,
+        )
+        intracranial_mask = (gray_aligned > 15) & (gray_aligned < 185)
+        prob_np = np.where(intracranial_mask, prob_np, 0.0)
+
         raw_mask = (prob_np >= selected_threshold).astype(np.uint8) * 255
         total_pixels = prob_np.size
         raw_lesion_pixels = int(np.count_nonzero(raw_mask > 0))
 
-        # Suppress isolated noise artifacts (< 15 pixels out of 50k pixels)
-        MIN_LESION_PIXELS = 15
+        # Suppress isolated noise artifacts (< 35 pixels out of 50k-65k pixels)
+        MIN_LESION_PIXELS = 35
         detected = raw_lesion_pixels >= MIN_LESION_PIXELS
         mask = raw_mask if detected else np.zeros_like(raw_mask)
         lesion_pixels = int(np.count_nonzero(mask > 0))
