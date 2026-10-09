@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* NU Stroke Scan - Modern Minimal Medical PACS Theme */
+/* Professional Medical PACS Theme: Deep Obsidian, Slate & Titanium */
 :root {
-  --bg-deep: #090b0e;
-  --bg-panel: rgba(16, 20, 26, 0.85);
-  --bg-panel-solid: #11141b;
-  --bg-card: rgba(21, 26, 35, 0.7);
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  --bg-deep: #080a0f;
+  --bg-panel: #0d1118;
+  --bg-panel-solid: #10151f;
+  --bg-card: #141a26;
+  --border-subtle: rgba(255, 255, 255, 0.07);
   --border-medium: rgba(255, 255, 255, 0.12);
   --blue-primary: #2563eb;
   --blue-accent: #3b82f6;
@@ -27,7 +27,7 @@ html, body {
   padding: 0;
   background-color: var(--bg-deep);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
@@ -42,43 +42,44 @@ html, body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.15);
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.3);
+  background: rgba(148, 163, 184, 0.35);
 }
 
-/* Modern Minimal Backdrop: Matte deep graphite without sci-fi grid */
+/* Professional Hospital PACS Backdrop: Deep matte carbon */
 .medical-ambient-backdrop {
-  background-color: #090b0e;
-  background-image: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.25) 0%, transparent 75%);
+  background-color: #07090e;
+  background-image: radial-gradient(circle at 50% -20%, #111726 0%, #07090e 70%);
 }
 
-/* Modern Minimal Panel: Clean dark slate, subtle razor border */
+/* Professional Workstation Panel: Crisp dark chassis */
 .medical-glass-panel {
-  background: rgba(15, 18, 25, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+  background: #0d1119;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.6);
 }
 
 /* DICOM Medical Viewport Canvas */
 .dicom-canvas-bg {
-  background-color: #030407;
+  background-color: #030508;
+  background-image: radial-gradient(circle at 50% 50%, #080e18 0%, #020306 100%);
 }
 
-/* Subtle Minimal Calibration Grid (Neutral, non-neon) */
+/* Draw.io Professional Infinite Architectural Grid (Clean, Neutral, Borderless) */
 .dicom-fine-grid {
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
   pointer-events: none;
+  border: none !important;
+  outline: none !important;
 }
+
 
 /* Clean Minimal Slider: Apple / Linear Style */
 .neu-slider-container {

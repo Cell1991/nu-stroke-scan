@@ -9,9 +9,9 @@ export const metadata: Metadata = {
   title: "NU Stroke Scan · Clinical Decision Support",
   description: "Non-Contrast Brain CT Stroke Lesion Segmentation & Neuro-Imaging Decision Support",
   icons: {
-    icon: "/brand_icon_trans.png",
-    shortcut: "/brand_icon_trans.png",
-    apple: "/brand_icon_trans.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 };
 

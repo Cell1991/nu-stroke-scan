@@ -223,7 +223,7 @@ export default function Home() {
     probDataRef.current = null;
     allModelsCacheRef.current = {};
     if (!selectedFile.type.startsWith("image/")) {
-      setError("Please select a valid brain CT scan image (DICOM/NIfTI, PNG, JPG, or WEBP).");
+      setError("Please select a valid brain CT scan image (PNG or JPG).");
       return;
     }
     if (selectedFile.size > MAX_FILE_SIZE) {
@@ -328,7 +328,46 @@ export default function Home() {
       }
 
       const data = await res.json();
+
+      // Print received detection results for all models to browser console
+      console.group("[NU STROKE SCAN] Inference Results Received");
+      console.log("Raw Response Data:", data);
+
+      if (data.modality) {
+        console.group("Modality Screener (ResNet-18)");
+        console.log(`Status: ${data.modality.is_valid ? "VALID BRAIN CT" : "INVALID"}`);
+        console.log(`Brain CT Probability: ${(Number(data.modality.brain_ct_probability ?? 0) * 100).toFixed(2)}%`);
+        console.log(`Confidence: ${(Number(data.modality.confidence ?? 0) * 100).toFixed(2)}%`);
+        console.groupEnd();
+      }
+
+      if (data.classification) {
+        console.group("Disease Classifier (MaxViT)");
+        console.log(`Prediction: ${data.classification.predicted_label} (${data.classification.predicted_class})`);
+        console.log(`Confidence: ${(Number(data.classification.confidence ?? 0) * 100).toFixed(2)}%`);
+        if (data.classification.classes) {
+          console.table(data.classification.classes);
+        }
+        console.groupEnd();
+      }
+
       const rawModels = (data.models && typeof data.models === "object" ? data.models : { [modelId]: data }) as Record<string, RawInferenceModelOutput>;
+
+      console.group("Segmentation Models Detection Summary");
+      Object.entries(rawModels).forEach(([mId, mData]) => {
+        const detected = Boolean(mData.detected ?? mData.lesion_detected);
+        const area = mData.lesion_area ?? mData.lesion_area_percentage ?? 0;
+        const conf = Number(mData.confidence ?? 0);
+        console.log(`• Model [${mData.model_label || mId}]:`, {
+          detection: detected ? "LESION DETECTED" : "NO LESION",
+          confidence: `${(conf * 100).toFixed(2)}%`,
+          lesionArea: `${area}%`,
+          label: mData.label,
+        });
+      });
+      console.groupEnd();
+      console.groupEnd();
+
       const newCache: Record<string, CachedModelAnalysis> = {};
 
       for (const [mId, mData] of Object.entries(rawModels)) {
@@ -418,10 +457,10 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden font-sans p-3 gap-2.5 select-none medical-ambient-backdrop text-slate-100">
+    <div className="h-screen w-screen flex flex-col overflow-hidden font-sans select-none bg-[#080a0f] text-slate-100">
       <HeaderBar />
 
-      <main className="flex-1 min-h-0 grid grid-cols-12 gap-2.5 overflow-hidden">
+      <main className="flex-1 min-h-0 grid grid-cols-12 overflow-hidden">
         <ScanIngestionPanel
           file={file}
           imageUrl={imageUrl}
@@ -434,12 +473,13 @@ export default function Home() {
           onRunInference={runInference}
         />
 
-        <section className="col-span-6 flex flex-col gap-2.5 min-h-0">
+        <section className="col-span-6 flex flex-col min-h-0 border-r border-slate-800/80 overflow-hidden">
           <DualViewport
             imageUrl={imageUrl}
             result={result}
             modelName={activeModel.name}
             isScanning={isScanning}
+            errorMessage={error}
             zoom={zoom}
             pan={pan}
             showGrid={showGrid}

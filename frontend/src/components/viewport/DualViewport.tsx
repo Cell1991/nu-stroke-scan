@@ -1,4 +1,5 @@
-import { Activity, Brain, Layers, ShieldCheck } from "lucide-react";
+import React from "react";
+import { Brain, Columns2, ShieldAlert } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
 import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
 
@@ -17,6 +18,7 @@ interface DualViewportProps {
   result: PredictionResult | null;
   modelName: string;
   isScanning: boolean;
+  errorMessage?: string | null;
   zoom: number;
   pan: PanOffset;
   showGrid: boolean;
@@ -37,6 +39,7 @@ export function DualViewport({
   result,
   modelName,
   isScanning,
+  errorMessage,
   zoom,
   pan,
   showGrid,
@@ -51,35 +54,34 @@ export function DualViewport({
   onContextMenu,
   onWheel,
 }: DualViewportProps) {
+  const predictedClass = result?.classification?.predicted_class;
+  const isIschemic = predictedClass === "ischemic";
+  const isHemo = predictedClass === "hemorrhagic";
+  const hasAnalyzed = Boolean(result || isScanning);
+
+  // Draw.io Style Infinite Synchronized Grid: Scales dynamically with zoom & translates with pan
+  const minorGridSize = Math.max(8, 20 * zoom);
+  const majorGridSize = Math.max(40, 100 * zoom);
+  const gridPosition = `calc(50% + ${pan.x}px) calc(50% + ${pan.y}px)`;
+  const gridBackgroundSize = `${minorGridSize}px ${minorGridSize}px, ${minorGridSize}px ${minorGridSize}px, ${majorGridSize}px ${majorGridSize}px, ${majorGridSize}px ${majorGridSize}px`;
+  const gridBackgroundPosition = `${gridPosition}, ${gridPosition}, ${gridPosition}, ${gridPosition}`;
+
   return (
-    <div className="flex-1 min-h-0 rounded-2xl medical-glass-panel p-3.5 flex flex-col relative">
+    <div className="flex-1 min-h-0 flex flex-col gap-3 relative overflow-hidden bg-[#080a0f] p-3.5 pb-2.5">
       {/* Viewport Top Header */}
-      <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-white/5 shrink-0">
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-white/5">
-            <span className="w-2 h-2 rounded-full bg-blue-500" />
-            <span className="text-sm font-semibold text-slate-200 tracking-wide">
-              Synchronized Dual Viewport (512×512)
-            </span>
-          </div>
-          {result && (
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-mono text-emerald-300">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-              <span>PIPELINE VERIFIED · 3 MODELS LOADED</span>
-            </div>
-          )}
-        </div>
-        <div className="text-xs font-medium text-slate-400 flex items-center gap-2">
-          <span>Right-Click: Loupe</span>
-          <span className="text-slate-600">·</span>
-          <span>Scroll: Zoom</span>
-        </div>
+      <div className="h-8 flex items-center justify-between pb-2 border-b border-white/10 shrink-0 select-none">
+        <span className="text-xs font-bold tracking-wider text-slate-200 uppercase flex items-center gap-2">
+          <Columns2 className="h-4 w-4 text-blue-400" />
+          Dual Viewport
+        </span>
       </div>
 
       {/* Dual Viewport Canvas Container */}
       <div className="flex-1 min-h-0 relative flex overflow-hidden">
-        <div className="h-full w-full grid grid-cols-2 gap-3 relative">
-          {/* Left Display: ORIGINAL NCCT */}
+        <div className="h-full w-full grid grid-cols-2 gap-2 relative">
+          {/* ========================================================= */}
+          {/* LEFT DISPLAY: ORIGINAL NCCT                              */}
+          {/* ========================================================= */}
           <div
             onContextMenu={(e) => onContextMenu(e, "left")}
             onMouseDown={onMouseDown}
@@ -87,7 +89,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "left")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700 transition-colors overflow-hidden flex items-center justify-center p-2 select-none ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -98,24 +100,34 @@ export function DualViewport({
               </div>
             )}
 
-            {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
+            {showGrid && (
+              <div
+                className="dicom-fine-grid absolute inset-0 z-10 pointer-events-none"
+                style={{
+                  backgroundSize: gridBackgroundSize,
+                  backgroundPosition: gridBackgroundPosition,
+                }}
+              />
+            )}
 
-            {/* Corner HUD Brackets */}
-            <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-slate-700/60 pointer-events-none" />
-            <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-slate-700/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-slate-700/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-slate-700/60 pointer-events-none" />
-
-            <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-md bg-black/80 border border-white/10 text-xs font-mono font-bold text-slate-200 uppercase tracking-wider pointer-events-none">
+            {/* Clean Header Badge */}
+            <div className="absolute top-2.5 left-2.5 z-20 pointer-events-none px-2 py-0.5 rounded bg-black/80 border border-white/10 text-[11px] font-mono font-bold text-slate-200 uppercase">
               ORIGINAL NCCT
             </div>
-            <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">
-              R
-            </span>
-            <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">
-              L
-            </span>
 
+            {/* Anatomical Orientation Markers (R on Left, L on Right) */}
+            {imageUrl && (
+              <>
+                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[11px] font-mono font-bold text-slate-400">
+                  R
+                </span>
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[11px] font-mono font-bold text-slate-400">
+                  L
+                </span>
+              </>
+            )}
+
+            {/* Image Render */}
             {imageUrl ? (
               <div
                 className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
@@ -132,22 +144,16 @@ export function DualViewport({
                 />
               </div>
             ) : (
-              <div className="text-center p-6 text-slate-400 space-y-3 pointer-events-none flex flex-col items-center">
-                <div className="relative flex items-center justify-center text-slate-600">
-                  <Brain className="h-14 w-14" />
-                  <Activity className="h-5 w-5 text-slate-400 absolute" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">NO SCAN LOADED</p>
-                  <p className="text-xs text-slate-400 mt-1">Upload an axial brain slice to begin</p>
-                </div>
+              <div className="text-center p-6 text-slate-400 pointer-events-none">
+                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide">NO SCAN LOADED</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">Upload a brain CT slice</p>
               </div>
             )}
 
-            {/* Left Loupe */}
+            {/* Left Loupe Magnifier */}
             {loupe.active && loupe.target === "left" && (
               <div
-                className="absolute z-50 pointer-events-none rounded-full border border-slate-300/80 bg-black overflow-hidden shadow-2xl"
+                className="absolute z-50 pointer-events-none rounded-full border border-cyan-400 bg-black overflow-hidden shadow-2xl"
                 style={{
                   width: "160px",
                   height: "160px",
@@ -172,20 +178,30 @@ export function DualViewport({
                       style={{ filter: `brightness(${brightness}%) contrast(${contrast}%)` }}
                     />
                   )}
+                  {showGrid && (
+                    <div
+                      className="dicom-fine-grid absolute inset-0 z-10 pointer-events-none"
+                      style={{
+                        backgroundSize: gridBackgroundSize,
+                        backgroundPosition: gridBackgroundPosition,
+                      }}
+                    />
+                  )}
                 </div>
                 <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                  <div className="w-full h-[1px] bg-white/40" />
-                  <div className="h-full w-[1px] bg-white/40 absolute" />
-                  <div className="w-4 h-4 rounded-full border border-white/50 absolute" />
+                  <div className="w-full h-[1px] bg-cyan-400/30" />
+                  <div className="h-full w-[1px] bg-cyan-400/30 absolute" />
                 </div>
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-black/90 border border-slate-700 text-slate-200">
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/90 border border-slate-700 text-cyan-300">
                   {loupe.scale.toFixed(1)}×
                 </div>
               </div>
             )}
           </div>
 
-          {/* Right Display: AI OVERLAY */}
+          {/* ========================================================= */}
+          {/* RIGHT DISPLAY: AI OVERLAY                                */}
+          {/* ========================================================= */}
           <div
             onContextMenu={(e) => onContextMenu(e, "right")}
             onMouseDown={onMouseDown}
@@ -193,54 +209,97 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "right")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700 transition-colors overflow-hidden flex items-center justify-center p-2 select-none ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
           >
             {isScanning && <ScanningPipelineHUD />}
 
-            {showGrid && <div className="dicom-fine-grid absolute inset-0 z-10" />}
+            {showGrid && !errorMessage && hasAnalyzed && (
+              <div
+                className="dicom-fine-grid absolute inset-0 z-10 pointer-events-none"
+                style={{
+                  backgroundSize: gridBackgroundSize,
+                  backgroundPosition: gridBackgroundPosition,
+                }}
+              />
+            )}
 
-            {/* Corner HUD Brackets */}
-            <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-slate-700/60 pointer-events-none" />
-            <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-slate-700/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-slate-700/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-slate-700/60 pointer-events-none" />
-
-            <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 pointer-events-none">
-              <div className="px-2.5 py-1 rounded-md bg-black/80 border border-white/10 text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-                AI OVERLAY - {modelName.toUpperCase()}
-              </div>
-              {result?.detected && (
-                <div
-                  className={`px-2 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider border flex items-center gap-1.5 ${
-                    result.classification?.predicted_class === "ischemic"
-                      ? "bg-amber-950/80 border-amber-500/50 text-amber-300"
-                      : "bg-rose-950/80 border-rose-500/50 text-rose-300"
-                  }`}
-                >
-                  <span
-                    className={`w-2 h-2 rounded-full ${
-                      result.classification?.predicted_class === "ischemic" ? "bg-amber-400" : "bg-rose-500"
-                    }`}
-                  />
-                  <span>
-                    {result.classification?.predicted_class === "ischemic"
-                      ? "ISCHEMIC (YELLOW)"
-                      : "HEMORRHAGIC (RED)"}
-                  </span>
+            {/* Clean Floating Header */}
+            {errorMessage ? (
+              <div className="absolute top-2.5 left-2.5 z-30 flex items-center gap-1.5 pointer-events-none">
+                <div className="px-2 py-0.5 rounded bg-rose-950/90 border border-rose-500/50 text-[11px] font-mono font-bold text-rose-300 uppercase flex items-center gap-1.5 shadow-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
+                  INVALID SCAN
                 </div>
-              )}
-            </div>
-            <span className="absolute top-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">
-              R
-            </span>
-            <span className="absolute bottom-3 right-3 z-20 text-xs font-mono text-slate-400 font-bold pointer-events-none">
-              L
-            </span>
+              </div>
+            ) : hasAnalyzed ? (
+              <div className="absolute top-2.5 left-2.5 z-30 flex items-center gap-1.5 pointer-events-none">
+                <div className="px-2 py-0.5 rounded bg-black/80 border border-white/10 text-[11px] font-mono font-bold text-slate-200 uppercase">
+                  AI OVERLAY - {modelName.toUpperCase()}
+                </div>
 
-            {imageUrl ? (
+                {result?.detected && (
+                  <div
+                    className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold uppercase tracking-wide border flex items-center ${
+                      isIschemic
+                        ? "bg-amber-950/80 border-amber-500/50 text-amber-300"
+                        : "bg-rose-950/80 border-rose-500/50 text-rose-300"
+                    }`}
+                  >
+                    <span>
+                      {isIschemic ? "ISCHEMIC" : isHemo ? "HEMORRHAGIC" : "LESION"}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            {/* Anatomical Orientation Markers (R on Left, L on Right) */}
+            {hasAnalyzed && !errorMessage && (
+              <>
+                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[11px] font-mono font-bold text-slate-400">
+                  R
+                </span>
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-[11px] font-mono font-bold text-slate-400">
+                  L
+                </span>
+              </>
+            )}
+
+            {/* Image and Lesion Mask Render */}
+            {errorMessage ? (
+              <div className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-rose-500/25">
+                {/* Ambient glow background */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.12),transparent_70%)] pointer-events-none" />
+
+                {/* Animated Graphic Element */}
+                <div className="relative flex items-center justify-center mb-4">
+                  {/* Outer pulse wave */}
+                  <div className="absolute h-20 w-20 rounded-full bg-rose-500/15 animate-ping pointer-events-none" />
+                  
+                  {/* Concentric radar rings */}
+                  <div className="absolute h-18 w-18 rounded-full border border-rose-500/30 bg-rose-500/5 animate-pulse" />
+                  <div className="absolute h-14 w-14 rounded-full border border-rose-500/50" />
+
+                  {/* Core Icon Badge */}
+                  <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400">
+                    <ShieldAlert className="h-6 w-6 text-rose-400" strokeWidth={2.2} />
+                  </div>
+                </div>
+
+                {/* Single-Glance Minimal Cognitive Load Text */}
+                <div className="relative z-10 text-center">
+                  <h3 className="text-base font-extrabold tracking-tight text-white uppercase">
+                    Invalid Scan Image
+                  </h3>
+                  <p className="text-xs text-slate-300 font-medium mt-1">
+                    Please upload a valid axial head CT scan.
+                  </p>
+                </div>
+              </div>
+            ) : hasAnalyzed && imageUrl ? (
               <div
                 className="relative h-full w-full flex items-center justify-center transition-transform duration-75 ease-out pointer-events-none"
                 style={{
@@ -263,23 +322,56 @@ export function DualViewport({
                   />
                 )}
               </div>
+            ) : imageUrl ? (
+              <div className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-blue-500/25">
+                {/* Ambient glow background */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15),transparent_70%)] pointer-events-none" />
+
+                {/* Animated Graphic Element */}
+                <div className="relative flex items-center justify-center mb-4">
+                  {/* Outer pulse wave */}
+                  <div className="absolute h-20 w-20 rounded-full bg-blue-500/15 animate-ping pointer-events-none" />
+
+                  {/* Concentric radar rings */}
+                  <div className="absolute h-18 w-18 rounded-full border border-blue-500/30 bg-blue-500/5 animate-pulse" />
+                  <div className="absolute h-14 w-14 rounded-full border border-cyan-400/50" />
+
+                  {/* Core Icon Badge */}
+                  <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-900/90 via-slate-900 to-indigo-950 border border-blue-400/70 shadow-xl shadow-blue-950/80 flex items-center justify-center text-blue-300">
+                    <Brain className="h-6 w-6 text-blue-300 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]" strokeWidth={2} />
+                  </div>
+                </div>
+
+                {/* Single-Glance Minimal Cognitive Load Text */}
+                <div className="relative z-10 text-center max-w-sm px-4">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-blue-950/80 border border-blue-500/40 text-blue-300 shadow-sm shadow-blue-950/50 mb-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_#22d3ee]" />
+                    READY FOR ANALYSIS
+                  </div>
+
+                  <h3 className="text-lg sm:text-xl font-black tracking-tight uppercase flex flex-wrap items-center justify-center gap-1.5 text-white">
+                    <span>CLICK</span>
+                    <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_14px_rgba(56,189,248,0.6)]">
+                      &ldquo;ANALYZE BRAIN CT&rdquo;
+                    </span>
+                  </h3>
+
+                  <p className="text-xs text-slate-400 font-medium mt-1 tracking-wide">
+                    To start stroke lesion segmentation
+                  </p>
+                </div>
+              </div>
             ) : (
-              <div className="text-center p-6 text-slate-400 space-y-3 pointer-events-none flex flex-col items-center">
-                <div className="relative flex items-center justify-center text-slate-600">
-                  <Brain className="h-14 w-14" />
-                  <Layers className="h-5 w-5 text-slate-400 absolute" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">LESION OVERLAY</p>
-                  <p className="text-xs text-slate-400 mt-1">Segmentation overlays will appear upon analysis</p>
-                </div>
+              <div className="text-center p-6 text-slate-400 pointer-events-none">
+                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide">LESION OVERLAY</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">Upload a CT scan slice to begin</p>
               </div>
             )}
 
-            {/* Right Loupe */}
-            {loupe.active && loupe.target === "right" && (
+            {/* Right Loupe Magnifier */}
+            {!errorMessage && hasAnalyzed && loupe.active && loupe.target === "right" && (
               <div
-                className="absolute z-50 pointer-events-none rounded-full border border-slate-300/80 bg-black overflow-hidden shadow-2xl"
+                className="absolute z-50 pointer-events-none rounded-full border border-indigo-400 bg-black overflow-hidden shadow-2xl"
                 style={{
                   width: "160px",
                   height: "160px",
@@ -312,13 +404,21 @@ export function DualViewport({
                       style={{ opacity: maskOpacity / 100 }}
                     />
                   )}
+                  {showGrid && (
+                    <div
+                      className="dicom-fine-grid absolute inset-0 z-10 pointer-events-none"
+                      style={{
+                        backgroundSize: gridBackgroundSize,
+                        backgroundPosition: gridBackgroundPosition,
+                      }}
+                    />
+                  )}
                 </div>
                 <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                  <div className="w-full h-[1px] bg-white/40" />
-                  <div className="h-full w-[1px] bg-white/40 absolute" />
-                  <div className="w-4 h-4 rounded-full border border-white/50 absolute" />
+                  <div className="w-full h-[1px] bg-indigo-400/30" />
+                  <div className="h-full w-[1px] bg-indigo-400/30 absolute" />
                 </div>
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-black/90 border border-slate-700 text-slate-200">
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/90 border border-slate-700 text-indigo-300">
                   {loupe.scale.toFixed(1)}×
                 </div>
               </div>

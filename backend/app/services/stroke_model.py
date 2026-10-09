@@ -106,18 +106,31 @@ CLASSIFICATION_CLASSES = [
 
 
 def load_classifier(checkpoint_path: Path, device: torch.device) -> nn.Module:
+    import logging
     import timm
+
+    logger = logging.getLogger(__name__)
 
     if not checkpoint_path.is_file():
         raise RuntimeError(f"Classifier checkpoint not found: {checkpoint_path}")
 
-    model = timm.create_model("maxvit_tiny_tf_224", pretrained=False, num_classes=3)
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
     sd = checkpoint.get("state_dict", checkpoint)
     cleaned = strip_orig_mod_prefix(sd)
-    model.load_state_dict(cleaned, strict=True)
-    model.to(device).eval()
-    return model
+
+    # Automatically detect and support MaxViT architecture variant (base, tiny, small)
+    for model_name in ["maxvit_base_tf_224", "maxvit_tiny_tf_224", "maxvit_small_tf_224"]:
+        try:
+            model = timm.create_model(model_name, pretrained=False, num_classes=3)
+            model.load_state_dict(cleaned, strict=True)
+            logger.info("Successfully loaded classifier architecture '%s' from %s", model_name, checkpoint_path)
+            model.to(device).eval()
+            return model
+        except Exception:
+            continue
+
+    raise RuntimeError(f"Failed to load classifier checkpoint into supported MaxViT architectures: {checkpoint_path}")
+
 
 
 def prepare_image_for_classifier(image: Image.Image, device: torch.device) -> Tensor:

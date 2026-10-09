@@ -2,28 +2,43 @@ import React from "react";
 
 export function HeaderBar() {
   return (
-    <header className="h-14 px-5 flex items-center justify-between shrink-0 rounded-2xl medical-glass-panel">
-      <div className="flex items-center gap-3">
-        <div className="relative flex items-center justify-center h-10 w-10 shrink-0 rounded-xl bg-slate-800/90 border border-white/10 p-1.5 shadow-sm">
+    <header className="h-16 px-4 flex items-center justify-between shrink-0 bg-gradient-to-r from-[#0a0d14] via-[#0f1422] to-[#0a0d14] border-b border-white/[0.08] relative shadow-md select-none overflow-hidden">
+      {/* Ambient Top Lighting & Bottom Glow Accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_-20%,rgba(59,130,246,0.12),transparent)] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/35 to-transparent pointer-events-none" />
+
+      {/* Left: Brand Identity (Aligned with panel content below) */}
+      <div className="flex items-center gap-3.5 relative z-10">
+        {/* Illuminated Medical Brand Badge */}
+        <div className="relative flex items-center justify-center h-11 w-11 shrink-0 select-none">
+          <div className="absolute inset-0 rounded-xl bg-orange-500/15 blur-sm pointer-events-none" />
           <img
-            src="/brand_icon_trans.png"
+            src="/logo.png"
             alt="NU Stroke Scan Logo"
-            className="h-7 w-7 object-contain select-none pointer-events-none"
+            className="h-10 w-10 object-contain relative z-10 select-none pointer-events-none drop-shadow-[0_0_14px_rgba(249,115,22,0.5)]"
           />
         </div>
+
+        {/* Title - Scaled to match Logo height with ultra-bold presence */}
         <div className="flex flex-col justify-center">
-          <h1 className="font-semibold text-base tracking-tight text-slate-100 leading-tight">
+          <h1
+            className="font-display font-black text-xl sm:text-[26px] md:text-[28px] tracking-wide uppercase leading-none select-none bg-gradient-to-r from-amber-300 via-orange-500 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_0_16px_rgba(249,115,22,0.45)]"
+            style={{ fontWeight: 900 }}
+          >
             NU STROKE SCAN
           </h1>
-          <p className="text-xs text-slate-400 font-normal leading-tight">
-            Neuro-Imaging Clinical Intelligence · Naresuan University Hospital
-          </p>
+          {/* Fallback subtitle for mobile/narrow viewports */}
+          <span className="sm:hidden text-[10px] text-orange-200/70 font-mono tracking-wider uppercase mt-1 leading-none">
+            Neuro-Imaging Clinical Intelligence
+          </span>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/60 border border-white/5 text-xs text-slate-400 font-mono">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-        <span>Clinical Workstation</span>
+      {/* Right: Subtitle anchored across the workstation bar (Desktop) */}
+      <div className="hidden sm:flex items-center gap-2 relative z-10">
+        <span className="text-sm font-bold tracking-wider text-slate-300 uppercase font-mono">
+          Neuro-Imaging Clinical Intelligence
+        </span>
       </div>
     </header>
   );

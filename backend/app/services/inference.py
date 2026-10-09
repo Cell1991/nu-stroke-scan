@@ -7,6 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
+import scipy.ndimage as ndi
 import torch
 from fastapi import HTTPException, UploadFile
 from PIL import Image, UnidentifiedImageError
@@ -55,6 +56,21 @@ def get_modality_screener():
     return load_modality_screener(checkpoint_path, torch.device("cpu"))
 
 
+def _clean_mask_components(raw_mask: np.ndarray, min_component_pixels: int = 100) -> np.ndarray:
+    """Filter out isolated noise artifacts using connected component analysis.
+    Genuine focal acute stroke lesions are contiguous tissue structures (>= 100 contiguous pixels).
+    """
+    labeled, num_features = ndi.label(raw_mask > 0)
+    if num_features == 0:
+        return np.zeros_like(raw_mask)
+    component_sizes = np.bincount(labeled.ravel())
+    component_sizes[0] = 0  # ignore background
+    valid_components = np.where(component_sizes >= min_component_pixels)[0]
+    if len(valid_components) == 0:
+        return np.zeros_like(raw_mask)
+    return np.isin(labeled, valid_components).astype(np.uint8) * 255
+
+
 def _mask_to_rgba(
     mask: np.ndarray,
     color: tuple[int, int, int] = _MASK_COLOR,
@@ -87,7 +103,7 @@ def validate_brain_ct(image: Image.Image) -> None:
             logger.warning("Rejected upload with chromatic color information: color_ratio=%.4f", color_ratio)
             raise HTTPException(
                 status_code=422,
-                detail="Invalid Modality Detected: The uploaded image contains chromatic color information. Authentic Non-Contrast Brain CT scans are grayscale only. Please upload an authentic axial head CT slice.",
+                detail="Invalid scan image. Please upload a valid axial head CT.",
             )
 
     # 2. Ambient Air (Corner Luminance) Screening: Gantry air outside the head is near-black (< 50).
@@ -106,7 +122,7 @@ def validate_brain_ct(image: Image.Image) -> None:
         logger.warning("Rejected upload with bright/inverted background: corners_mean=%.1f", corners_mean)
         raise HTTPException(
             status_code=422,
-            detail="Invalid Modality Detected: The uploaded image has a bright/inverted non-radiological background. Authentic axial Brain CT scans must have dark ambient air surrounding the skull. Please upload an authentic axial Brain CT slice.",
+            detail="Invalid scan image. Please upload a valid axial head CT.",
         )
 
     # 3. Soft Tissue Parenchyma Density Screening: Real axial CT contains soft brain tissue densities.
@@ -115,7 +131,7 @@ def validate_brain_ct(image: Image.Image) -> None:
         logger.warning("Rejected upload lacking brain tissue densities: parenchyma_ratio=%.4f", parenchyma_ratio)
         raise HTTPException(
             status_code=422,
-            detail="Invalid Modality Detected: The uploaded image does not contain brain parenchyma tissue densities. Please upload an authentic axial Brain CT slice.",
+            detail="Invalid scan image. Please upload a valid axial head CT.",
         )
 
 
@@ -127,7 +143,7 @@ async def _read_and_validate_upload(upload: UploadFile) -> tuple[bytes, Image.Im
         image = Image.open(io.BytesIO(raw))
         image.load()
     except (UnidentifiedImageError, OSError) as error:
-        raise HTTPException(status_code=422, detail="Invalid image file. Please upload a readable CT scan.") from error
+        raise HTTPException(status_code=422, detail="Invalid scan image. Please upload a valid axial head CT.") from error
     validate_brain_ct(image)
     return raw, image
 
@@ -211,14 +227,14 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
 
         raw_mask = (prob_np >= selected_threshold).astype(np.uint8) * 255
         total_pixels = prob_np.size
-        raw_lesion_pixels = int(np.count_nonzero(raw_mask > 0))
 
-        # Suppress isolated noise artifacts (< 35 pixels out of 50k-65k pixels)
-        MIN_LESION_PIXELS = 35
-        detected = raw_lesion_pixels >= MIN_LESION_PIXELS
-        mask = raw_mask if detected else np.zeros_like(raw_mask)
-        lesion_pixels = int(np.count_nonzero(mask > 0))
-        lesion_area_pct = round((lesion_pixels / total_pixels) * 100.0, 2)
+        # Suppress isolated noise artifacts using connected component analysis
+        # Genuine acute stroke lesions are contiguous tissue structures (>= 100 contiguous pixels)
+        cleaned_mask = _clean_mask_components(raw_mask, min_component_pixels=100)
+        lesion_pixels = int(np.count_nonzero(cleaned_mask > 0))
+        detected = lesion_pixels >= 100
+        mask = cleaned_mask if detected else np.zeros_like(cleaned_mask)
+        lesion_area_pct = round((np.count_nonzero(mask > 0) / total_pixels) * 100.0, 2) if detected else 0.0
 
         if detected:
             positive_probs = prob_np[mask > 0]
@@ -244,6 +260,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         }
 
     # Multiclass Disease Type Classification (Hemorrhagic vs Ischemic vs Normal)
+    # Harmonized with segmented lesion findings and CT radiologic tissue attenuation (Hounsfield Units)
     base_cls_probs = [0.95, 0.025, 0.025]
     try:
         classifier = get_classifier()
@@ -266,9 +283,9 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
                 image.convert("L").resize((mask_arr.shape[1], mask_arr.shape[0]), Image.BILINEAR),
                 dtype=np.float32,
             )
-            # Brain parenchyma: tissue between air (< 20) and skull bone (> 160)
+            # Brain parenchyma: tissue density between ambient air (< 20) and calvarium bone (> 160)
             brain_parenchyma = (gray_aligned > 20) & (gray_aligned < 160)
-            # Lesion pixels strictly inside brain (exclude calvarium/skull bone > 185)
+            # Lesion pixels strictly inside parenchyma (exclude skull bone > 185)
             lesion_in_brain = (mask_arr > 0) & (gray_aligned < 185)
 
             if np.count_nonzero(lesion_in_brain) > 0 and np.count_nonzero(brain_parenchyma) > 0:
@@ -276,37 +293,36 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             else:
                 density_diff = 0.0
 
-            # Physiological radiologic attenuation weighting (Blood is hyperdense, infarct is hypodense)
-            if density_diff > 10.0:
-                # Acute hemorrhage (hyperdense blood)
-                boost = min(0.96, 0.78 + (density_diff / 75.0))
-                w_hem = max(p_hem, boost)
-                w_isch = min(p_isch, 1.0 - w_hem)
-            elif density_diff < -10.0:
-                # Acute ischemic infarction (hypodense edema)
-                boost = min(0.96, 0.78 + (abs(density_diff) / 75.0))
-                w_isch = max(p_isch, boost)
-                w_hem = min(p_hem, 1.0 - w_isch)
-            else:
-                # Intermediate/subacute: combine classifier with density trend
-                diff_weight = density_diff / 40.0
-                w_hem = max(0.05, p_hem + diff_weight)
-                w_isch = max(0.05, p_isch - diff_weight)
+            # Suppress normal probability to near zero (< 1.2%) when a lesion is confirmed
+            p_norm_adj = min(0.012, p_norm * 0.015)
 
-            # Suppress normal probability appropriately since lesion is clinically confirmed
-            p_norm_final = min(0.015, p_norm * 0.05)
-            rem = 1.0 - p_norm_final
-            s = max(1e-5, w_hem + w_isch)
-            p_hem_final = round((w_hem / s) * rem, 4)
-            p_isch_final = round(rem - p_hem_final, 4)
+            # Radiologic density weighting:
+            # Hypodense cytotoxic edema (density_diff < -5.0 HU) -> Acute Ischemic Infarction (Yellow)
+            # Hyperdense acute extravasated blood (density_diff > +5.0 HU) -> Acute Hemorrhagic Stroke (Red)
+            if density_diff < -5.0:
+                w_isch = max(p_isch, 0.92) + (abs(density_diff) / 50.0)
+                w_hem = max(0.01, p_hem * 0.08)
+            elif density_diff > 5.0:
+                w_hem = max(p_hem, 0.92) + (density_diff / 50.0)
+                w_isch = max(0.01, p_isch * 0.08)
+            else:
+                sum_stroke = max(1e-5, p_hem + p_isch)
+                w_hem = p_hem / sum_stroke
+                w_isch = p_isch / sum_stroke
+
+            tot_w = max(1e-5, w_hem + w_isch)
+            rem = 1.0 - p_norm_adj
+            p_hem_final = round((w_hem / tot_w) * rem, 4)
+            p_isch_final = round((w_isch / tot_w) * rem, 4)
+            p_norm_final = round(1.0 - p_hem_final - p_isch_final, 4)
             cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
             top_idx = 1 if p_hem_final >= p_isch_final else 2
         else:
-            # Clinically normal head CT (no acute lesion in brain parenchyma)
-            p_norm_final = max(0.96, p_norm)
+            # No lesion detected -> Clinically normal head CT
+            p_norm_final = max(0.965, p_norm)
             rem = 1.0 - p_norm_final
-            stroke_tot = max(1e-5, p_hem + p_isch)
-            p_hem_final = round((p_hem / stroke_tot) * rem, 4)
+            sum_stroke = max(1e-5, p_hem + p_isch)
+            p_hem_final = round((p_hem / sum_stroke) * rem, 4)
             p_isch_final = round(rem - p_hem_final, 4)
             cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
             top_idx = 0
@@ -331,7 +347,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             ],
         }
 
-    # Format output for all 3 models with their respective classifications and mask colors
+    # Format output for all 3 models with harmonized classification and dynamic PACS mask colors
     all_models = {}
     for m_id in arch_ids:
         run = arch_runs[m_id]
@@ -341,15 +357,14 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
 
         model_cls_data = compute_model_classification(mask, run["detected"], run["lesion_area"])
 
-        # Dynamic Mask Color per model classification:
-        # Hemorrhagic: Red (239, 68, 68)
+        # Dynamic Mask Color:
         # Ischemic: Yellow / Amber (234, 179, 8)
+        # Hemorrhagic: Red (239, 68, 68)
         if model_cls_data["predicted_class"] == "ischemic":
             model_mask_color = _ISCHEMIC_COLOR
         else:
             model_mask_color = _HEMORRHAGIC_COLOR
 
-        # Solid alpha mask on detected lesion so frontend slider has full 0-100% dynamic opacity control
         rgba_image = _mask_to_rgba(mask, color=model_mask_color)
         mask_pil = Image.fromarray(rgba_image, mode="RGBA")
         mask_resized = mask_pil.resize((image.width, image.height), Image.NEAREST)
@@ -357,7 +372,6 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         mask_resized.save(mask_buffer, format="PNG")
         mask_b64 = base64.b64encode(mask_buffer.getvalue()).decode("ascii")
 
-        # Probability map encoded as 8-bit grayscale PNG (0-255 representing 0.0-1.0 probability)
         prob_uint8 = (prob_np * 255.0).clip(0, 255).astype(np.uint8)
         prob_pil = Image.fromarray(prob_uint8, mode="L").resize((image.width, image.height), Image.BILINEAR)
         prob_buf = io.BytesIO()
