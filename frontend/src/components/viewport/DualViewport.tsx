@@ -32,6 +32,7 @@ interface DualViewportProps {
   onMouseUp: () => void;
   onContextMenu: (e: React.MouseEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
+  onAnalyze?: () => void;
 }
 
 export function DualViewport({
@@ -53,6 +54,7 @@ export function DualViewport({
   onMouseUp,
   onContextMenu,
   onWheel,
+  onAnalyze,
 }: DualViewportProps) {
   const predictedClass = result?.classification?.predicted_class;
   const isIschemic = predictedClass === "ischemic";
@@ -323,41 +325,54 @@ export function DualViewport({
                 )}
               </div>
             ) : imageUrl ? (
-              <div className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-blue-500/25">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={onAnalyze}
+                onMouseDown={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onAnalyze?.();
+                  }
+                }}
+                className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-blue-500/25 hover:border-blue-400/70 hover:bg-slate-900/90 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-2xl hover:shadow-blue-950/70"
+                title="Click anywhere to analyze scan"
+              >
                 {/* Ambient glow background */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15),transparent_70%)] pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15),transparent_70%)] group-hover:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.28),transparent_70%)] transition-all duration-300 pointer-events-none" />
 
                 {/* Animated Graphic Element */}
-                <div className="relative flex items-center justify-center mb-4">
+                <div className="relative flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
                   {/* Outer pulse wave */}
-                  <div className="absolute h-20 w-20 rounded-full bg-blue-500/15 animate-ping pointer-events-none" />
+                  <div className="absolute h-20 w-20 rounded-full bg-blue-500/15 group-hover:bg-blue-500/25 animate-ping pointer-events-none transition-colors" />
 
                   {/* Concentric radar rings */}
-                  <div className="absolute h-18 w-18 rounded-full border border-blue-500/30 bg-blue-500/5 animate-pulse" />
-                  <div className="absolute h-14 w-14 rounded-full border border-cyan-400/50" />
+                  <div className="absolute h-18 w-18 rounded-full border border-blue-500/30 group-hover:border-blue-400/50 bg-blue-500/5 group-hover:bg-blue-500/10 animate-pulse transition-all" />
+                  <div className="absolute h-14 w-14 rounded-full border border-cyan-400/50 group-hover:border-cyan-300 transition-colors" />
 
                   {/* Core Icon Badge */}
-                  <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-900/90 via-slate-900 to-indigo-950 border border-blue-400/70 shadow-xl shadow-blue-950/80 flex items-center justify-center text-blue-300">
-                    <Brain className="h-6 w-6 text-blue-300 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]" strokeWidth={2} />
+                  <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-900/90 via-slate-900 to-indigo-950 border border-blue-400/70 group-hover:border-cyan-400 group-hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] shadow-xl shadow-blue-950/80 flex items-center justify-center text-blue-300 transition-all duration-300">
+                    <Brain className="h-6 w-6 text-blue-300 group-hover:text-cyan-200 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)] group-hover:drop-shadow-[0_0_12px_rgba(56,189,248,1)] transition-all" strokeWidth={2} />
                   </div>
                 </div>
 
                 {/* Single-Glance Minimal Cognitive Load Text */}
                 <div className="relative z-10 text-center max-w-sm px-4">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-blue-950/80 border border-blue-500/40 text-blue-300 shadow-sm shadow-blue-950/50 mb-2.5">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-blue-950/80 border border-blue-500/40 group-hover:border-cyan-400/60 text-blue-300 group-hover:text-cyan-200 shadow-sm shadow-blue-950/50 mb-2.5 transition-colors">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_#22d3ee]" />
-                    READY FOR ANALYSIS
+                    CLICK ANYWHERE TO START
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-black tracking-tight uppercase flex flex-wrap items-center justify-center gap-1.5 text-white">
+                  <h3 className="text-lg sm:text-xl font-black tracking-tight uppercase flex flex-wrap items-center justify-center gap-1.5 text-white group-hover:scale-[1.03] transition-transform duration-200">
                     <span>CLICK</span>
                     <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_14px_rgba(56,189,248,0.6)]">
                       &ldquo;ANALYZE BRAIN CT&rdquo;
                     </span>
                   </h3>
 
-                  <p className="text-xs text-slate-400 font-medium mt-1 tracking-wide">
-                    To start stroke lesion segmentation
+                  <p className="text-xs text-slate-400 group-hover:text-slate-300 font-medium mt-1 tracking-wide transition-colors">
+                    Click card or bottom button to run segmentation
                   </p>
                 </div>
               </div>

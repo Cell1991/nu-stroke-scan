@@ -493,6 +493,7 @@ export default function Home() {
             onMouseUp={handleViewportMouseUp}
             onContextMenu={handleViewportContextMenu}
             onWheel={handleViewportWheel}
+            onAnalyze={runInference}
           />
 
           <DisplayCalibrationPanel
