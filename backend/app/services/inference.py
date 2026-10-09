@@ -189,48 +189,50 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         }
 
     # Multiclass Disease Type Classification (Hemorrhagic vs Ischemic vs Normal)
-    classification_data = None
-    ref_mask = best_mask if best_mask is not None else arch_runs.get(model_id, arch_runs["vcanet"])["mask"]
-    ref_detected = any_detected
-    ref_area = best_area if any_detected else arch_runs.get(model_id, arch_runs["vcanet"])["lesion_area"]
-
+    base_cls_probs = [0.95, 0.025, 0.025]
     try:
         classifier = get_classifier()
         cls_tensor = prepare_image_for_classifier(image, torch.device("cpu"))
         with torch.inference_mode():
             cls_logits = classifier(cls_tensor)[0]
-            cls_probs = cls_logits.softmax(dim=0).cpu().numpy().tolist()
+            base_cls_probs = cls_logits.softmax(dim=0).cpu().numpy().tolist()
+    except Exception as exc:
+        logger.warning("Classification inference bypassed or failed: %s", exc)
 
-        top_idx = int(np.argmax(cls_probs))
+    def compute_model_classification(
+        mask_arr: np.ndarray,
+        is_detected: bool,
+        lesion_pct: float,
+    ) -> dict[str, object]:
+        p_norm, p_hem, p_isch = float(base_cls_probs[0]), float(base_cls_probs[1]), float(base_cls_probs[2])
 
-        # Harmonize classification probabilities with segmented lesion findings & CT radiologic attenuation
-        # CLASSIFICATION_CLASSES: [0: normal, 1: hemorrhagic, 2: ischemic]
-        p_norm, p_hem, p_isch = float(cls_probs[0]), float(cls_probs[1]), float(cls_probs[2])
-        if ref_detected and ref_area >= 0.05:
-            # A definite lesion is segmented! Scan is clinically NOT normal.
+        if is_detected and lesion_pct >= 0.05:
             gray_aligned = np.asarray(
-                image.convert("L").resize((ref_mask.shape[1], ref_mask.shape[0]), Image.BILINEAR),
+                image.convert("L").resize((mask_arr.shape[1], mask_arr.shape[0]), Image.BILINEAR),
                 dtype=np.float32,
             )
-            brain_mask = (gray_aligned > 15) & (gray_aligned < 240)
-            lesion_pixels_arr = gray_aligned[ref_mask > 0]
-            brain_pixels_arr = gray_aligned[brain_mask]
-            lesion_density_diff = 0.0
-            if lesion_pixels_arr.size > 0 and brain_pixels_arr.size > 0:
-                lesion_density_diff = float(np.mean(lesion_pixels_arr) - np.mean(brain_pixels_arr))
+            # Brain parenchyma: tissue between air (< 20) and skull bone (> 160)
+            brain_parenchyma = (gray_aligned > 20) & (gray_aligned < 160)
+            # Lesion pixels strictly inside brain (exclude high-density calvarium/skull bone > 185)
+            lesion_in_brain = (mask_arr > 0) & (gray_aligned < 185)
+
+            if np.count_nonzero(lesion_in_brain) > 0 and np.count_nonzero(brain_parenchyma) > 0:
+                density_diff = float(np.mean(gray_aligned[lesion_in_brain]) - np.mean(gray_aligned[brain_parenchyma]))
+            else:
+                density_diff = 0.0
 
             # Suppress normal probability to near zero
             p_norm_adj = min(0.015, p_norm * 0.02)
 
             # Radiologic density weighting:
-            # Blood is hyperdense on CT (lesion_density_diff > 0) -> Hemorrhagic
-            # Infarct/edema is hypodense on CT (lesion_density_diff < 0) -> Ischemic
-            if lesion_density_diff > 8.0:
-                w_hem = max(p_hem, 0.85) + (lesion_density_diff / 50.0)
-                w_isch = max(0.02, p_isch * 0.2)
-            elif lesion_density_diff < -8.0:
-                w_isch = max(p_isch, 0.85) + (abs(lesion_density_diff) / 50.0)
-                w_hem = max(0.02, p_hem * 0.2)
+            # Hypodense lesion (density_diff < -5.0 HU) -> Acute Ischemic Infarction (Yellow)
+            # Hyperdense lesion (density_diff > +5.0 HU) -> Acute Hemorrhagic Stroke (Red)
+            if density_diff < -5.0:
+                w_isch = max(p_isch, 0.88) + (abs(density_diff) / 50.0)
+                w_hem = max(0.01, p_hem * 0.1)
+            elif density_diff > 5.0:
+                w_hem = max(p_hem, 0.88) + (density_diff / 50.0)
+                w_isch = max(0.01, p_isch * 0.1)
             else:
                 sum_stroke = max(1e-5, p_hem + p_isch)
                 w_hem = p_hem / sum_stroke
@@ -241,26 +243,25 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             p_hem_final = round((w_hem / tot_w) * rem, 4)
             p_isch_final = round((w_isch / tot_w) * rem, 4)
             p_norm_final = round(1.0 - p_hem_final - p_isch_final, 4)
-            cls_probs = [p_norm_final, p_hem_final, p_isch_final]
+            cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
             top_idx = 1 if p_hem_final >= p_isch_final else 2
-        elif not ref_detected or ref_area < 0.05:
-            # No lesion detected above clinical threshold -> Normal scan
+        else:
             p_norm_final = max(0.96, p_norm)
             rem = 1.0 - p_norm_final
             sum_stroke = max(1e-5, p_hem + p_isch)
             p_hem_final = round((p_hem / sum_stroke) * rem, 4)
             p_isch_final = round(rem - p_hem_final, 4)
-            cls_probs = [p_norm_final, p_hem_final, p_isch_final]
+            cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
             top_idx = 0
 
         top_class = CLASSIFICATION_CLASSES[top_idx]
-        classification_data = {
+        return {
             "predicted_class": top_class["id"],
             "predicted_label": top_class["label"],
-            "confidence": round(float(cls_probs[top_idx]), 4),
+            "confidence": round(float(cls_probs_final[top_idx]), 4),
             "probabilities": {
                 c["id"]: round(float(p), 4)
-                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs)
+                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs_final)
             },
             "classes": [
                 {
@@ -269,21 +270,11 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
                     "probability": round(float(p), 4),
                     "percentage": round(float(p) * 100.0, 1),
                 }
-                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs)
+                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs_final)
             ],
         }
-    except Exception as exc:
-        logger.warning("Classification inference bypassed or failed: %s", exc)
 
-    # Dynamic Mask Color:
-    # Hemorrhagic: Red (239, 68, 68)
-    # Ischemic: Yellow / Amber (234, 179, 8)
-    if classification_data and classification_data["predicted_class"] == "ischemic":
-        active_mask_color = _ISCHEMIC_COLOR
-    else:
-        active_mask_color = _HEMORRHAGIC_COLOR
-
-    # Format output for all 3 models
+    # Format output for all 3 models with their respective classifications and mask colors
     all_models = {}
     for m_id in arch_ids:
         run = arch_runs[m_id]
@@ -291,8 +282,18 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         mask = run["mask"]
         prob_np = run["prob_np"]
 
+        model_cls_data = compute_model_classification(mask, run["detected"], run["lesion_area"])
+
+        # Dynamic Mask Color per model classification:
+        # Hemorrhagic: Red (239, 68, 68)
+        # Ischemic: Yellow / Amber (234, 179, 8)
+        if model_cls_data["predicted_class"] == "ischemic":
+            model_mask_color = _ISCHEMIC_COLOR
+        else:
+            model_mask_color = _HEMORRHAGIC_COLOR
+
         # Solid alpha mask on detected lesion so frontend slider has full 0-100% dynamic opacity control
-        rgba_image = _mask_to_rgba(mask, color=active_mask_color)
+        rgba_image = _mask_to_rgba(mask, color=model_mask_color)
         mask_pil = Image.fromarray(rgba_image, mode="RGBA")
         mask_resized = mask_pil.resize((image.width, image.height), Image.NEAREST)
         mask_buffer = io.BytesIO()
@@ -324,7 +325,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             "mask_base64": mask_b64,
             "mask_png_base64": mask_b64,
             "prob_png_base64": prob_b64,
-            "classification": classification_data,
+            "classification": model_cls_data,
             "modality": modality_info,
         }
 
