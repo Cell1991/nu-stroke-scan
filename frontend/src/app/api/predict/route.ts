@@ -35,7 +35,7 @@ async function forwardToBackend(req: NextRequest, endpoint: string) {
       }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
+      const timeoutId = setTimeout(() => controller.abort(), 90000);
 
       const res = await fetch(targetUrl, {
         method: "POST",

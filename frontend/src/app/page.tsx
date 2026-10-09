@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import confetti from "canvas-confetti";
 import { MODELS, MAX_FILE_SIZE } from "@/constants/models";
 import { PanOffset, PredictionResult } from "@/types";
 import { exportMedicalComposite } from "@/utils/canvasExport";
@@ -312,11 +311,27 @@ export default function Home() {
         throw new Error(typeof message === "string" ? message : JSON.stringify(message));
       }
 
+      interface RawInferenceModelOutput {
+        prob_png_base64?: string;
+        mask_base64?: string;
+        mask_png_base64?: string;
+        label?: string;
+        confidence?: number;
+        detected?: boolean;
+        lesion_detected?: boolean;
+        lesion_area?: number;
+        lesion_area_percentage?: number;
+        model_label?: string;
+        input_size?: [number, number];
+        classification?: PredictionResult["classification"];
+        modality?: PredictionResult["modality"];
+      }
+
       const data = await res.json();
-      const rawModels = data.models && typeof data.models === "object" ? data.models : { [modelId]: data };
+      const rawModels = (data.models && typeof data.models === "object" ? data.models : { [modelId]: data }) as Record<string, RawInferenceModelOutput>;
       const newCache: Record<string, CachedModelAnalysis> = {};
 
-      for (const [mId, mData] of Object.entries<any>(rawModels)) {
+      for (const [mId, mData] of Object.entries(rawModels)) {
         const probB64 = mData.prob_png_base64 || mData.mask_base64 || mData.mask_png_base64;
         const initialMaskUrl = (mData.mask_base64 || mData.mask_png_base64)
           ? `data:image/png;base64,${mData.mask_base64 || mData.mask_png_base64}`
@@ -352,15 +367,6 @@ export default function Home() {
           activeAnalysis.probData,
           activeAnalysis.result
         );
-
-        // Subtle medical particle feedback upon successful analysis
-        confetti({
-          particleCount: 28,
-          spread: 55,
-          origin: { y: 0.85 },
-          colors: ["#3b82f6", "#10b981", "#60a5fa"],
-          disableForReducedMotion: true,
-        });
       }
     } catch (err: unknown) {
       console.error(err);

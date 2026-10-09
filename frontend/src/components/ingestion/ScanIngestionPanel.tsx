@@ -38,10 +38,10 @@ export function ScanIngestionPanel({
   }
 
   return (
-    <section className="col-span-3 flex flex-col gap-2 min-h-0 overflow-y-auto pr-0.5">
+    <section className="col-span-3 flex flex-col gap-2 min-h-0 overflow-hidden pr-0.5">
       {/* Patient Scan Ingestion */}
-      <div className="rounded-2xl medical-glass-panel p-3 flex flex-col shrink-0">
-        <div className="flex items-center justify-between mb-2">
+      <div className="rounded-2xl medical-glass-panel p-2.5 xl:p-3 flex flex-col shrink-0">
+        <div className="flex items-center justify-between mb-1.5">
           <span className="text-xs font-semibold tracking-wider text-slate-300 uppercase flex items-center gap-1.5">
             <UploadCloud className="h-4 w-4 text-slate-400" />
             Patient CT Scan
@@ -68,47 +68,46 @@ export function ScanIngestionPanel({
             setIsDragging(false);
           }}
           onDrop={handleDrop}
-          className={`h-28 xl:h-32 border border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 relative overflow-hidden p-2 ${
+          className={`border border-dashed rounded-xl flex items-center justify-center text-center cursor-pointer transition-all duration-150 relative overflow-hidden ${
+            imageUrl ? "h-16 xl:h-20 p-2" : "h-22 xl:h-26 p-2"
+          } ${
             isDragging
               ? "border-blue-500 bg-blue-950/20"
               : "border-slate-800 hover:border-slate-600 bg-slate-900/40 hover:bg-slate-900/70"
           }`}
         >
           {imageUrl ? (
-            <div className="flex items-center gap-3 px-2 w-full">
+            <div className="flex items-center gap-2.5 px-1.5 w-full">
               <div className="relative shrink-0">
                 <img
                   src={imageUrl}
                   alt="Loaded Scan"
-                  className="h-16 w-16 xl:h-20 xl:w-20 object-contain rounded-lg border border-slate-700/80 bg-black shadow-sm"
+                  className="h-12 w-12 xl:h-14 xl:w-14 object-contain rounded-lg border border-slate-700/80 bg-black shadow-sm"
                 />
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border border-slate-900 flex items-center justify-center text-[10px] text-white font-bold">
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border border-slate-900 flex items-center justify-center text-[9px] text-white font-bold">
                   ✓
                 </span>
               </div>
               <div className="text-left flex-1 min-w-0">
-                <p className="text-xs font-semibold text-slate-200 truncate max-w-[180px]">
+                <p className="text-xs font-semibold text-slate-200 truncate">
                   {file?.name ?? "Loaded Slice"}
                 </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
+                <p className="text-[10px] text-slate-400 mt-0.5">
                   Click to replace slice
                 </p>
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-1.5 py-1">
-              <div className="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 shadow-sm">
-                <UploadCloud className="h-4.5 w-4.5" />
+            <div className="flex flex-col items-center gap-1 py-0.5">
+              <div className="w-6 h-6 rounded-md bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 shadow-sm">
+                <UploadCloud className="h-3.5 w-3.5" />
               </div>
               <div>
                 <p className="text-xs font-semibold text-slate-200">Drop Brain CT or Browse</p>
-                <p className="text-[10px] text-slate-400 mt-0.5">
+                <p className="text-[9.5px] text-slate-400 mt-0.5">
                   DICOM, NIfTI, PNG, JPG (Max 25MB)
                 </p>
               </div>
-              <span className="inline-block px-3 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-medium shadow-sm transition-colors mt-0.5">
-                Select File
-              </span>
             </div>
           )}
         </div>
@@ -166,25 +165,25 @@ export function ScanIngestionPanel({
       </div>
 
       {/* Neural Architecture & Inference */}
-      <div className="rounded-2xl medical-glass-panel p-3 flex flex-col flex-1 min-h-0 justify-between">
+      <div className="rounded-2xl medical-glass-panel p-2.5 xl:p-3 flex flex-col flex-1 min-h-0 justify-between overflow-hidden">
         <div>
-          <span className="text-xs font-semibold tracking-wider text-slate-300 uppercase flex items-center gap-1.5 mb-2 shrink-0">
+          <span className="text-xs font-semibold tracking-wider text-slate-300 uppercase flex items-center gap-1.5 mb-1.5 shrink-0">
             <Brain className="h-4 w-4 text-slate-400" />
             Neural Architecture
           </span>
 
           {/* Model Architecture Buttons */}
-          <div className="space-y-1.5 mb-2 overflow-y-auto">
+          <div className="space-y-1.5 shrink-0">
             {MODELS.map((m) => {
               const isSelected = modelId === m.id;
               return (
                 <motion.button
                   key={m.id}
-                  whileHover={{ scale: 1.012, x: 2 }}
+                  whileHover={{ scale: 1.01, x: 2 }}
                   whileTap={{ scale: 0.985 }}
                   transition={{ type: "spring", stiffness: 450, damping: 28 }}
                   onClick={() => onModelChange(m.id)}
-                  className={`w-full py-2 px-3 rounded-xl text-left transition-colors cursor-pointer select-none border relative overflow-hidden ${
+                  className={`w-full py-1.5 px-2.5 rounded-xl text-left transition-colors cursor-pointer select-none border relative overflow-hidden ${
                     isSelected
                       ? "bg-slate-800/90 border-blue-500/60 text-white shadow-md"
                       : "bg-slate-900/40 hover:bg-slate-800/50 text-slate-300 hover:text-white border-white/5 hover:border-slate-700"
@@ -207,7 +206,7 @@ export function ScanIngestionPanel({
                       <span className="text-xs font-semibold">{m.name}</span>
                     </div>
                     <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium transition-colors ${
+                      className={`text-[9.5px] px-2 py-0.5 rounded-full font-mono font-medium transition-colors ${
                         isSelected
                           ? "bg-blue-500/20 text-blue-300 border border-blue-400/30"
                           : "bg-slate-800 text-slate-400"
@@ -217,7 +216,7 @@ export function ScanIngestionPanel({
                     </span>
                   </div>
                   <div
-                    className={`text-[11px] pl-4 leading-tight mt-0.5 relative z-10 transition-colors ${
+                    className={`text-[10.5px] pl-4 leading-tight mt-0.5 relative z-10 transition-colors ${
                       isSelected ? "text-slate-200 font-normal" : "text-slate-400"
                     }`}
                   >
@@ -230,8 +229,8 @@ export function ScanIngestionPanel({
         </div>
 
         {/* Bottom Group: Telemetry Info + Primary CTA Button */}
-        <div className="space-y-2 pt-1.5">
-          <div className="p-2.5 rounded-xl bg-slate-900/50 border border-white/5 text-[11px] text-slate-300 space-y-1">
+        <div className="space-y-2 pt-1">
+          <div className="p-2 rounded-xl bg-slate-900/50 border border-white/5 text-[10.5px] text-slate-300 space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Analysis Matrix:</span>
               <span className="font-mono text-slate-200 font-medium">512 × 512 DICOM</span>
@@ -255,12 +254,12 @@ export function ScanIngestionPanel({
 
           {/* Primary Action Button */}
           <motion.button
-            whileHover={!isScanning && imageUrl ? { scale: 1.018, y: -1 } : {}}
+            whileHover={!isScanning && imageUrl ? { scale: 1.015, y: -1 } : {}}
             whileTap={!isScanning && imageUrl ? { scale: 0.985 } : {}}
             transition={{ type: "spring", stiffness: 450, damping: 25 }}
             onClick={onRunInference}
             disabled={isScanning || !imageUrl}
-            className={`relative overflow-hidden h-11 w-full shrink-0 rounded-xl font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer select-none shadow-md ${
+            className={`relative overflow-hidden h-10 xl:h-11 w-full shrink-0 rounded-xl font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer select-none shadow-md ${
               isScanning || !imageUrl
                 ? "bg-slate-800/50 text-slate-500 border border-white/5 cursor-not-allowed shadow-none"
                 : "btn-clinical-primary btn-shimmer-sweep text-white"

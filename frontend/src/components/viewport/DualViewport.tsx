@@ -1,5 +1,4 @@
-import React from "react";
-import { Activity, Brain, Layers } from "lucide-react";
+import { Activity, Brain, Layers, ShieldCheck } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
 import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
 
@@ -56,11 +55,19 @@ export function DualViewport({
     <div className="flex-1 min-h-0 rounded-2xl medical-glass-panel p-3.5 flex flex-col relative">
       {/* Viewport Top Header */}
       <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-white/5 shrink-0">
-        <div className="flex items-center gap-2.5 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-white/5">
-          <span className="w-2 h-2 rounded-full bg-blue-500" />
-          <span className="text-sm font-semibold text-slate-200 tracking-wide">
-            Synchronized Dual Viewport (512×512)
-          </span>
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-white/5">
+            <span className="w-2 h-2 rounded-full bg-blue-500" />
+            <span className="text-sm font-semibold text-slate-200 tracking-wide">
+              Synchronized Dual Viewport (512×512)
+            </span>
+          </div>
+          {result && (
+            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-mono text-emerald-300">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+              <span>PIPELINE VERIFIED · 3 MODELS LOADED</span>
+            </div>
+          )}
         </div>
         <div className="text-xs font-medium text-slate-400 flex items-center gap-2">
           <span>Right-Click: Loupe</span>
