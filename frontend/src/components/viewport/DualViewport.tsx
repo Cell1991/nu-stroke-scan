@@ -615,10 +615,10 @@ export function DualViewport({
 
         {/* Floating Indicator when Canvas Touch Gestures are Unlocked */}
         {!isTouchLocked && (
-          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/60 text-[11px] font-mono font-bold text-emerald-300 flex items-center gap-1.5 shadow-xl backdrop-blur-sm select-none">
-            <Unlock className="h-3.5 w-3.5 text-emerald-400" />
+          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none px-2.5 py-0.5 rounded-full bg-emerald-950/90 border border-emerald-500/60 text-[10px] font-mono font-bold text-emerald-300 flex items-center gap-1.5 shadow-xl backdrop-blur-sm whitespace-nowrap select-none">
+            <Unlock className="h-3 w-3 text-emerald-400 shrink-0" />
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span>ปลดล็อคภาพ · ลากเพื่อแพน / บีบเพื่อซูม</span>
+            <span className="whitespace-nowrap">Touch Active</span>
           </div>
         )}
       </div>

@@ -88,12 +88,12 @@ export function MobilePanController({
   return (
     <div className="lg:hidden w-full select-none bg-slate-900/95 border border-slate-800 rounded-xl p-2 sm:p-2.5 shadow-lg shadow-black/40">
       {/* Header Bar */}
-      <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-white/10">
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
-          <Move className="h-3.5 w-3.5 text-cyan-400" />
-          <span>Precision Viewport Navigation</span>
+      <div className="flex items-center justify-between gap-2 pb-1.5 mb-2 border-b border-white/10">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <Move className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+          <span className="text-xs font-bold text-slate-200 uppercase tracking-wider truncate">Navigation</span>
           {isShifted && (
-            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shrink-0 whitespace-nowrap">
               Panned
             </span>
           )}
@@ -103,27 +103,27 @@ export function MobilePanController({
           <button
             onClick={onToggleTouchLock}
             type="button"
-            className={`h-6 px-2.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all border active:scale-95 shadow-sm cursor-pointer select-none ${
+            className={`h-6.5 px-2.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all border active:scale-95 shadow-sm cursor-pointer select-none shrink-0 whitespace-nowrap ${
               isTouchLocked
                 ? "bg-slate-950/80 text-amber-300 border-amber-500/50 hover:bg-amber-950/40"
                 : "bg-emerald-950/80 text-emerald-300 border-emerald-500/60 ring-1 ring-emerald-500/30 hover:bg-emerald-900/60"
             }`}
             title={
               isTouchLocked
-                ? "Touch gestures locked (Default) - Screen scrolls naturally. Click to unlock finger drag & pinch zoom"
-                : "Touch gestures unlocked - Drag to pan, pinch to zoom inside scan"
+                ? "Touch gestures locked - Screen scrolls naturally. Tap to unlock touch gestures"
+                : "Touch gestures active - Drag to pan, pinch to zoom inside scan"
             }
           >
             {isTouchLocked ? (
               <>
                 <Lock className="h-3 w-3 text-amber-400 shrink-0" />
-                <span>Lock ภาพ</span>
+                <span className="whitespace-nowrap">Locked</span>
               </>
             ) : (
               <>
                 <Unlock className="h-3 w-3 text-emerald-400 shrink-0" />
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                <span>ปลดล็อคภาพ</span>
+                <span className="whitespace-nowrap">Unlocked</span>
               </>
             )}
           </button>
