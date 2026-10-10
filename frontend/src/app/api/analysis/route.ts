@@ -40,6 +40,9 @@ export async function POST(req: NextRequest) {
       const res = await fetch(targetUrl, {
         method: "POST",
         body: outboundFormData,
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
         signal: controller.signal,
       });
       clearTimeout(timeoutId);

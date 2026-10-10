@@ -12,9 +12,11 @@ services:
       - backend
 
   tunnel:
-    image: cloudflare/cloudflared:latest
-    restart: unless-stopped
-    command: tunnel --no-autoupdate --url http://backend:8000
+    image: ngrok/ngrok:alpine
+    restart: always
+    environment:
+      - NGROK_AUTHTOKEN=3IzTrzylMpoLkhFhjnbTHegPaAF_6MC2UgQuP3ErK8kvPQEYU
+    command: http backend:8000 --url=https://driven-display-slingshot.ngrok-free.dev
     depends_on:
       - backend
 
