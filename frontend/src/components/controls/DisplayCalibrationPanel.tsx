@@ -40,16 +40,16 @@ export function DisplayCalibrationPanel({
   return (
     <div className="shrink-0 bg-[#0c1017] border-t border-slate-800/80 p-2 sm:p-2.5 select-none">
       {/* Calibration Header & Quick Controls */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 sm:gap-2 pb-1.5 mb-1.5 border-b border-white/10">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="text-xs font-semibold tracking-wider text-slate-200 uppercase flex items-center gap-1.5">
-            <Sliders className="h-3.5 w-3.5 text-blue-400" />
+      <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-white/10">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="text-xs font-semibold tracking-wider text-slate-200 uppercase flex items-center gap-1.5 truncate">
+            <Sliders className="h-3.5 w-3.5 text-blue-400 shrink-0" />
             Display & Windowing Calibration
           </span>
         </div>
 
         {/* Viewport Tools: Zoom, Grid, Reset (Desktop only - on mobile, merged into MobilePanController) */}
-        <div className="hidden lg:flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
+        <div className="hidden lg:flex items-center gap-1.5 sm:gap-2 shrink-0 flex-nowrap">
           {/* Zoom stepper */}
           <div className="h-7 sm:h-8 flex items-center bg-slate-900/90 px-1 sm:px-1.5 rounded-lg sm:rounded-xl border border-white/10 shadow-sm text-xs select-none">
             <button

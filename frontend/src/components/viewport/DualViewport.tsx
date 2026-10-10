@@ -33,6 +33,9 @@ interface DualViewportProps {
   onMouseUp: () => void;
   onContextMenu: (e: React.MouseEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
+  onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void;
+  onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void;
+  onTouchEnd?: () => void;
   onAnalyze?: () => void;
   onClear?: () => void;
   onPanStep?: (dx: number, dy: number) => void;
@@ -61,6 +64,9 @@ export function DualViewport({
   onMouseDown,
   onMouseMove,
   onMouseUp,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd,
   onContextMenu,
   onWheel,
   onAnalyze,
@@ -107,6 +113,10 @@ export function DualViewport({
             onMouseMove={(e) => onMouseMove(e, "left")}
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            onTouchCancel={onTouchEnd}
             onWheel={(e) => onWheel(e, "left")}
             className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
@@ -227,6 +237,10 @@ export function DualViewport({
             onMouseMove={(e) => onMouseMove(e, "right")}
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            onTouchCancel={onTouchEnd}
             onWheel={(e) => onWheel(e, "right")}
             className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"

@@ -145,6 +145,35 @@ export default function Home() {
     dragStartRef.current = null;
   }
 
+  function handleViewportTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      setIsDraggingViewport(true);
+      dragStartRef.current = {
+        x: touch.clientX,
+        y: touch.clientY,
+        panX: pan.x,
+        panY: pan.y,
+      };
+    }
+  }
+
+  function handleViewportTouchMove(e: React.TouchEvent<HTMLDivElement>) {
+    if (!isDraggingViewport || !dragStartRef.current || e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - dragStartRef.current.x;
+    const dy = touch.clientY - dragStartRef.current.y;
+    setPan({
+      x: Math.round(dragStartRef.current.panX + dx),
+      y: Math.round(dragStartRef.current.panY + dy),
+    });
+  }
+
+  function handleViewportTouchEnd() {
+    setIsDraggingViewport(false);
+    dragStartRef.current = null;
+  }
+
   function handlePanStep(dx: number, dy: number) {
     setPan((prev) => ({
       x: Math.round(prev.x + dx),
@@ -197,6 +226,48 @@ export default function Home() {
       setZoom((prev) => Math.max(0.5, Number((prev - 0.15).toFixed(2))));
     }
   }
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      const STEP = 25;
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        handlePanStep(0, -STEP);
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        handlePanStep(0, STEP);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePanStep(-STEP, 0);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handlePanStep(STEP, 0);
+      } else if (e.key === "+" || e.key === "=") {
+        e.preventDefault();
+        handleZoomIn();
+      } else if (e.key === "-" || e.key === "_") {
+        e.preventDefault();
+        handleZoomOut();
+      } else if (e.key === "0" || e.key === "r" || e.key === "R") {
+        if (!e.ctrlKey && !e.metaKey) {
+          handleResetPan();
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   async function extractProbDataFromB64(
     probB64: string
@@ -511,6 +582,9 @@ export default function Home() {
             onMouseDown={handleViewportMouseDown}
             onMouseMove={handleViewportMouseMove}
             onMouseUp={handleViewportMouseUp}
+            onTouchStart={handleViewportTouchStart}
+            onTouchMove={handleViewportTouchMove}
+            onTouchEnd={handleViewportTouchEnd}
             onContextMenu={handleViewportContextMenu}
             onWheel={handleViewportWheel}
             onAnalyze={runInference}
