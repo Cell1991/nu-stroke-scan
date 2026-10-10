@@ -40,7 +40,7 @@ export function DisplayCalibrationPanel({
   return (
     <div className="shrink-0 bg-[#0c1017] border-t border-slate-800/80 p-2.5 select-none">
       {/* Calibration Header & Quick Controls */}
-      <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-white/10">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-white/10">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold tracking-wider text-slate-200 uppercase flex items-center gap-1.5">
             <Sliders className="h-3.5 w-3.5 text-blue-400" />
@@ -49,7 +49,7 @@ export function DisplayCalibrationPanel({
         </div>
 
         {/* Viewport Tools: Zoom, Grid, Reset */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
           {/* Zoom stepper */}
           <div className="h-8 flex items-center bg-slate-900/90 px-1.5 rounded-xl border border-white/10 shadow-sm text-xs select-none">
             <button
@@ -101,7 +101,7 @@ export function DisplayCalibrationPanel({
       </div>
 
       {/* 4 Spacious Sliders Arranged in 2 Rows (2x2 Grid) */}
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
         {/* Row 1, Col 1: Brightness */}
         <div className="px-3.5 py-2.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
           <div className="flex items-center justify-between text-sm text-slate-200">

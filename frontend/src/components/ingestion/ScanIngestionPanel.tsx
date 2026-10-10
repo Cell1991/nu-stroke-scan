@@ -38,9 +38,12 @@ export function ScanIngestionPanel({
   }
 
   return (
-    <section className="col-span-3 flex flex-col min-h-0 h-full overflow-hidden bg-[#0c1017] border-r border-slate-800/80 p-3.5 justify-between">
+    <section
+      id="ingestion-panel"
+      className="w-full lg:col-span-3 flex flex-col lg:min-h-0 lg:h-full lg:overflow-hidden bg-[#0c1017] border-b lg:border-b-0 lg:border-r border-slate-800/80 p-3.5 sm:p-4 justify-between gap-4 lg:gap-0"
+    >
       {/* Top Section: Study Ingestion & Models */}
-      <div className="flex flex-col gap-3.5 overflow-hidden">
+      <div className="flex flex-col gap-3.5 lg:overflow-hidden">
         {/* Header */}
         <div className="h-8 flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
           <span className="text-xs font-bold tracking-wider text-slate-200 uppercase flex items-center gap-2">

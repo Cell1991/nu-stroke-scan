@@ -71,7 +71,7 @@ export function DualViewport({
   const gridBackgroundPosition = `${gridPosition}, ${gridPosition}, ${gridPosition}, ${gridPosition}`;
 
   return (
-    <div className="flex-1 min-h-0 flex flex-col gap-3 relative overflow-hidden bg-[#080a0f] p-3.5 pb-2.5">
+    <div className="w-full flex-1 flex flex-col gap-3 relative lg:overflow-hidden bg-[#080a0f] p-3 sm:p-3.5 pb-2.5 lg:min-h-0">
       {/* Viewport Top Header */}
       <div className="h-8 flex items-center justify-between pb-2 border-b border-white/10 shrink-0 select-none">
         <span className="text-xs font-bold tracking-wider text-slate-200 uppercase flex items-center gap-2">
@@ -81,8 +81,8 @@ export function DualViewport({
       </div>
 
       {/* Dual Viewport Canvas Container */}
-      <div className="flex-1 min-h-0 relative flex overflow-hidden">
-        <div className="h-full w-full grid grid-cols-2 gap-2 relative">
+      <div className="w-full relative flex lg:flex-1 lg:min-h-0 lg:overflow-hidden">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2 relative lg:h-full">
           {/* ========================================================= */}
           {/* LEFT DISPLAY: ORIGINAL NCCT                              */}
           {/* ========================================================= */}
@@ -93,7 +93,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "left")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[300px] sm:min-h-[340px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -213,7 +213,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "right")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[300px] sm:min-h-[340px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"

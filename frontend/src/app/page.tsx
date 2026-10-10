@@ -290,6 +290,10 @@ export default function Home() {
     setIsScanning(true);
     setError(null);
 
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      document.getElementById("viewport-panel")?.scrollIntoView({ behavior: "smooth" });
+    }
+
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -444,23 +448,50 @@ export default function Home() {
     setTimeout(() => setCopiedToast(false), 2000);
   }
 
-  function exportReportText() {
+  async function exportReportText() {
     if (!result || !file) return;
-    exportClinicalReportFile({
+    await exportClinicalReportFile({
       result,
       fileName: file.name,
       modelName: activeModel.name,
       threshold,
+      imageUrl: imageUrl || undefined,
+      probData: probDataRef.current,
     });
     setExportedStatus("report");
     setTimeout(() => setExportedStatus(null), 2500);
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden font-sans select-none bg-[#080a0f] text-slate-100">
+    <div className="min-h-screen w-full lg:h-screen lg:w-screen flex flex-col overflow-y-auto lg:overflow-hidden font-sans select-none bg-[#080a0f] text-slate-100 scroll-smooth">
       <HeaderBar />
 
-      <main className="flex-1 min-h-0 grid grid-cols-12 overflow-hidden">
+      {/* Mobile Sticky Quick Navigation Bar (Hidden on Desktop) */}
+      <nav className="lg:hidden sticky top-0 z-40 bg-[#0a0d14]/95 backdrop-blur-md border-b border-white/10 px-3 py-2 flex items-center gap-2 shadow-lg">
+        <a
+          href="#ingestion-panel"
+          className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 active:bg-blue-600/30 text-center truncate flex items-center justify-center gap-1.5"
+        >
+          <span>📥 Ingestion</span>
+          {file && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
+        </a>
+        <a
+          href="#viewport-panel"
+          className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 active:bg-blue-600/30 text-center truncate flex items-center justify-center gap-1.5"
+        >
+          <span>🔬 Viewport</span>
+          {isScanning && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />}
+        </a>
+        <a
+          href="#diagnostic-panel"
+          className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 active:bg-blue-600/30 text-center truncate flex items-center justify-center gap-1.5"
+        >
+          <span>📊 Results</span>
+          {result && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
+        </a>
+      </nav>
+
+      <main className="flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:min-h-0 lg:overflow-hidden">
         <ScanIngestionPanel
           file={file}
           imageUrl={imageUrl}
@@ -473,7 +504,10 @@ export default function Home() {
           onRunInference={runInference}
         />
 
-        <section className="col-span-6 flex flex-col min-h-0 border-r border-slate-800/80 overflow-hidden">
+        <section
+          id="viewport-panel"
+          className="w-full lg:col-span-6 flex flex-col lg:min-h-0 lg:h-full border-b lg:border-b-0 lg:border-r border-slate-800/80 lg:overflow-hidden"
+        >
           <DualViewport
             imageUrl={imageUrl}
             result={result}

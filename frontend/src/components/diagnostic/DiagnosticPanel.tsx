@@ -37,9 +37,12 @@ export function DiagnosticPanel({
   const isIsch = predictedClass === "ischemic";
 
   return (
-    <section className="col-span-3 flex flex-col min-h-0 h-full overflow-hidden bg-[#0c1017] p-3.5 justify-between select-none">
+    <section
+      id="diagnostic-panel"
+      className="w-full lg:col-span-3 flex flex-col lg:min-h-0 lg:h-full lg:overflow-hidden bg-[#0c1017] p-3.5 sm:p-4 justify-between gap-4 lg:gap-0 select-none"
+    >
       {/* Top Content: Low Cognitive Load Hierarchy */}
-      <div className="flex flex-col gap-3 overflow-hidden">
+      <div className="flex flex-col gap-3 lg:overflow-hidden">
         {/* Header */}
         <div className="h-8 flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
           <span className="text-xs font-bold tracking-wider text-slate-200 uppercase flex items-center gap-2">
