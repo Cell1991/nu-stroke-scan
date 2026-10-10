@@ -466,31 +466,6 @@ export default function Home() {
     <div className="min-h-screen w-full lg:h-screen lg:w-screen flex flex-col overflow-y-auto lg:overflow-hidden font-sans select-none bg-[#080a0f] text-slate-100 scroll-smooth">
       <HeaderBar />
 
-      {/* Mobile Sticky Quick Navigation Bar (Hidden on Desktop) */}
-      <nav className="lg:hidden sticky top-0 z-40 bg-[#0a0d14]/95 backdrop-blur-md border-b border-white/10 px-3 py-2 flex items-center gap-2 shadow-lg">
-        <a
-          href="#ingestion-panel"
-          className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 active:bg-blue-600/30 text-center truncate flex items-center justify-center gap-1.5"
-        >
-          <span>📥 Ingestion</span>
-          {file && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
-        </a>
-        <a
-          href="#viewport-panel"
-          className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 active:bg-blue-600/30 text-center truncate flex items-center justify-center gap-1.5"
-        >
-          <span>🔬 Viewport</span>
-          {isScanning && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />}
-        </a>
-        <a
-          href="#diagnostic-panel"
-          className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 active:bg-blue-600/30 text-center truncate flex items-center justify-center gap-1.5"
-        >
-          <span>📊 Results</span>
-          {result && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
-        </a>
-      </nav>
-
       <main className="flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:min-h-0 lg:overflow-hidden">
         <ScanIngestionPanel
           file={file}

@@ -1,0 +1,181 @@
+<mxfile host="Electron">
+  <diagram name="NU-Stroke-Scan-Flowchart" id="concise-flowchart-en">
+    <mxGraphModel dx="3431" dy="2200" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="2450" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="START&#xa;Open Workstation" vertex="1">
+          <mxGeometry height="70" width="360" x="460" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="in_upload" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Upload Brain CT Scan" vertex="1">
+          <mxGeometry height="75" width="380" x="450" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="dec_file" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Valid Format&#xa;and Size &lt;= 25 MB?" vertex="1">
+          <mxGeometry height="120" width="300" x="490" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="err_file" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Show Upload Error" vertex="1">
+          <mxGeometry height="75" width="280" x="930" y="322.5" as="geometry" />
+        </mxCell>
+        <mxCell id="term_err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END" vertex="1">
+          <mxGeometry height="50" width="140" x="1290" y="335" as="geometry" />
+        </mxCell>
+        <mxCell id="out_standby" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Display CT Slice&#xa;and Standby Card" vertex="1">
+          <mxGeometry height="75" width="380" x="450" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="in_analyze" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Click Analyze" vertex="1">
+          <mxGeometry height="75" width="380" x="450" y="615" as="geometry" />
+        </mxCell>
+        <mxCell id="proc_req" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Send Image to AI Backend" vertex="1">
+          <mxGeometry height="70" width="360" x="460" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="dec_conn" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Backend Connected?" vertex="1">
+          <mxGeometry height="120" width="300" x="490" y="865" as="geometry" />
+        </mxCell>
+        <mxCell id="err_conn" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Show Disconnected Card" vertex="1">
+          <mxGeometry height="75" width="280" x="930" y="887.5" as="geometry" />
+        </mxCell>
+        <mxCell id="term_err2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END" vertex="1">
+          <mxGeometry height="50" width="140" x="1290" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="dec_mod" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Valid Brain CT Scan?" vertex="1">
+          <mxGeometry height="120" width="300" x="490" y="1055" as="geometry" />
+        </mxCell>
+        <mxCell id="err_mod" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Show Invalid Scan Card" vertex="1">
+          <mxGeometry height="75" width="280" x="930" y="1077.5" as="geometry" />
+        </mxCell>
+        <mxCell id="term_err3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END" vertex="1">
+          <mxGeometry height="50" width="140" x="1290" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="proc_ai" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Run ML Models and Cache Results" vertex="1">
+          <mxGeometry height="70" width="360" x="460" y="1245" as="geometry" />
+        </mxCell>
+        <mxCell id="dec_class" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Predicted Condition?" vertex="1">
+          <mxGeometry height="120" width="300" x="490" y="1370" as="geometry" />
+        </mxCell>
+        <mxCell id="res_isch" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Display Yellow Mask&#xa;Ischemic Stroke" vertex="1">
+          <mxGeometry height="75" width="320" x="80" y="1560" as="geometry" />
+        </mxCell>
+        <mxCell id="res_hem" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Display Red Mask&#xa;Hemorrhagic Stroke" vertex="1">
+          <mxGeometry height="75" width="320" x="480" y="1560" as="geometry" />
+        </mxCell>
+        <mxCell id="res_norm" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Display Normal Scan&#xa;No Lesion Detected" vertex="1">
+          <mxGeometry height="75" width="320" x="880" y="1560" as="geometry" />
+        </mxCell>
+        <mxCell id="proc_workstation" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Review Results and Adjust Settings&#xa;Switch Models, Threshold, Opacity, Zoom" vertex="1">
+          <mxGeometry height="80" width="520" x="380" y="1700" as="geometry" />
+        </mxCell>
+        <mxCell id="dec_export" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Export Report?" vertex="1">
+          <mxGeometry height="120" width="300" x="490" y="1840" as="geometry" />
+        </mxCell>
+        <mxCell id="ex_img" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Download PNG Image&#xa;512 x 512 Pixels" vertex="1">
+          <mxGeometry height="75" width="320" x="80" y="2030" as="geometry" />
+        </mxCell>
+        <mxCell id="ex_rep" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Download TXT Report" vertex="1">
+          <mxGeometry height="75" width="320" x="480" y="2030" as="geometry" />
+        </mxCell>
+        <mxCell id="ex_clip" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Copy Summary Text" vertex="1">
+          <mxGeometry height="75" width="320" x="880" y="2030" as="geometry" />
+        </mxCell>
+        <mxCell id="end_success" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END&#xa;Analysis Complete" vertex="1">
+          <mxGeometry height="70" width="360" x="460" y="2170" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="start" style="strokeColor=#000000;strokeWidth=2;" target="in_upload">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="in_upload" style="strokeColor=#000000;strokeWidth=2;" target="dec_file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="dec_file" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="err_file" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="err_file" style="strokeColor=#000000;strokeWidth=2;" target="term_err1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="dec_file" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="out_standby" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="28" y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="out_standby" style="strokeColor=#000000;strokeWidth=2;" target="in_analyze">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="in_analyze" style="strokeColor=#000000;strokeWidth=2;" target="proc_req">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="proc_req" style="strokeColor=#000000;strokeWidth=2;" target="dec_conn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="dec_conn" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="err_conn" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="err_conn" style="strokeColor=#000000;strokeWidth=2;" target="term_err2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="dec_conn" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="dec_mod" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="28" y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="dec_mod" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="err_mod" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="err_mod" style="strokeColor=#000000;strokeWidth=2;" target="term_err3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="dec_mod" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="proc_ai" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="28" y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="proc_ai" style="strokeColor=#000000;strokeWidth=2;" target="dec_class">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="dec_class" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="res_isch" value="Ischemic">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="dec_class" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="res_hem" value="Hemorrhagic">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="dec_class" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="res_norm" value="Normal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="res_isch" style="strokeColor=#000000;strokeWidth=2;" target="proc_workstation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="res_hem" style="strokeColor=#000000;strokeWidth=2;" target="proc_workstation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="res_norm" style="strokeColor=#000000;strokeWidth=2;" target="proc_workstation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="proc_workstation" style="strokeColor=#000000;strokeWidth=2;" target="dec_export">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="dec_export" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="ex_img" value="PNG Image">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="dec_export" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="ex_rep" value="TXT Report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="dec_export" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="ex_clip" value="Copy Summary">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" edge="1" parent="1" source="ex_img" style="strokeColor=#000000;strokeWidth=2;" target="end_success">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" edge="1" parent="1" source="ex_rep" style="strokeColor=#000000;strokeWidth=2;" target="end_success">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" edge="1" parent="1" source="ex_clip" style="strokeColor=#000000;strokeWidth=2;" target="end_success">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

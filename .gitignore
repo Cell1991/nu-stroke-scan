@@ -31,3 +31,5 @@ checkpoints/*.pt
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
+.$*.bkp
+*.bkp
