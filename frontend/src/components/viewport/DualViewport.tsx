@@ -284,9 +284,18 @@ export function DualViewport({
 
               return (
                 <div
+                  role="button"
+                  tabIndex={0}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (onClear) onClear();
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      if (onClear) onClear();
+                    }
                   }}
                   className="group relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 hover:bg-rose-950/30 backdrop-blur-sm rounded-xl border border-rose-500/25 hover:border-rose-500/60 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-rose-950/50"
                   title="Click to clear and upload a new scan"
