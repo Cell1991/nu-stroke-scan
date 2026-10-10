@@ -225,7 +225,7 @@ export function DualViewport({
             onTouchCancel={handleCanvasTouchEnd}
             onWheel={(e) => onWheel(e, "left")}
             style={{ touchAction: isTouchLocked ? "auto" : "none" }}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[240px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -350,7 +350,7 @@ export function DualViewport({
             onTouchCancel={handleCanvasTouchEnd}
             onWheel={(e) => onWheel(e, "right")}
             style={{ touchAction: isTouchLocked ? "auto" : "none" }}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[240px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
