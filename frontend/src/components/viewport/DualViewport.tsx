@@ -2,6 +2,7 @@ import React from "react";
 import { Brain, Columns2, ShieldAlert } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
 import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
+import { MobilePanController } from "./MobilePanController";
 
 interface LoupeState {
   active: boolean;
@@ -34,6 +35,8 @@ interface DualViewportProps {
   onWheel: (e: React.WheelEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
   onAnalyze?: () => void;
   onClear?: () => void;
+  onPanStep?: (dx: number, dy: number) => void;
+  onResetPan?: () => void;
 }
 
 export function DualViewport({
@@ -57,6 +60,8 @@ export function DualViewport({
   onWheel,
   onAnalyze,
   onClear,
+  onPanStep,
+  onResetPan,
 }: DualViewportProps) {
   const predictedClass = result?.classification?.predicted_class;
   const isIschemic = predictedClass === "ischemic";
@@ -476,6 +481,16 @@ export function DualViewport({
           </div>
         </div>
       </div>
+
+      {/* Mobile Directional Controller (Mobile only: lg:hidden - strictly hidden on desktop) */}
+      {onPanStep && onResetPan && (
+        <MobilePanController
+          pan={pan}
+          zoom={zoom}
+          onPanStep={onPanStep}
+          onResetPan={onResetPan}
+        />
+      )}
     </div>
   );
 }

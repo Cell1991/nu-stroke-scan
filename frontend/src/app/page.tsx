@@ -145,6 +145,17 @@ export default function Home() {
     dragStartRef.current = null;
   }
 
+  function handlePanStep(dx: number, dy: number) {
+    setPan((prev) => ({
+      x: Math.round(prev.x + dx),
+      y: Math.round(prev.y + dy),
+    }));
+  }
+
+  function handleResetPan() {
+    setPan({ x: 0, y: 0 });
+  }
+
   function handleViewportContextMenu(e: React.MouseEvent<HTMLDivElement>, targetSide: "left" | "right") {
     e.preventDefault();
     if (!imageUrl) return;
@@ -504,6 +515,8 @@ export default function Home() {
             onWheel={handleViewportWheel}
             onAnalyze={runInference}
             onClear={handleClearScan}
+            onPanStep={handlePanStep}
+            onResetPan={handleResetPan}
           />
 
           <DisplayCalibrationPanel
