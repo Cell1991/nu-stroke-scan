@@ -25,13 +25,9 @@ export function exportMedicalComposite({
   baseImg.crossOrigin = "anonymous";
 
   baseImg.onload = () => {
-    const origW = baseImg.naturalWidth || 512;
-    const origH = baseImg.naturalHeight || 512;
-
-    // Scale up small scans to high-resolution (min 512x512) for publication/PACS grade quality
-    const scanDisplaySize = Math.max(origW, origH, 512);
-    const scanW = scanDisplaySize;
-    const scanH = scanDisplaySize;
+    // Medical CT Brain Standard Matrix: Strictly standardized to 512 × 512 pixels
+    const scanW = 512;
+    const scanH = 512;
 
     const pad = 24;
     const headerH = 60;
@@ -73,7 +69,7 @@ export function exportMedicalComposite({
 
     ctx.font = "500 11px monospace";
     ctx.fillStyle = "#64748b";
-    ctx.fillText(`AXIAL CT · ${origW} × ${origH} px`, canvasW - pad, 46);
+    ctx.fillText("AXIAL CT · 512 × 512 px", canvasW - pad, 46);
     ctx.textAlign = "left";
 
     // Header Divider Line

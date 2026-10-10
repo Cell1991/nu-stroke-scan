@@ -62,6 +62,7 @@ Key Segmentation Metrics:
 - Neural Classification: ${result.label}
 - Confidence Certainty: ${(result.confidence * 100).toFixed(1)}%
 - Lesion Area (ROI Volume): ${result.lesionArea ?? 0}%
+- Standard Matrix: 512 × 512 px
 - Sensitivity Cutoff: ${threshold}%
 - Source File: ${fileName}
 -----------------------------------------------------
