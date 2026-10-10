@@ -16,8 +16,8 @@ services:
     image: ngrok/ngrok:alpine
     restart: always
     environment:
-      - NGROK_AUTHTOKEN=3IzTrzylMpoLkhFhjnbTHegPaAF_6MC2UgQuP3ErK8kvPQEYU
-    command: http backend:8000 --url=https://driven-display-slingshot.ngrok-free.dev
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN:-}
+    command: ${NGROK_COMMAND:-http backend:8000}
     depends_on:
       - backend
 

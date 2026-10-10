@@ -53,7 +53,6 @@ class Settings(BaseSettings):
             Path(__file__).parents[3] / target_name,
             Path(target_name),
             Path(f"../{target_name}"),
-            Path(f"D:/UT/{model_id}_results/checkpoints/best.pth" if model_id != "patcher" else "D:/UT/patcher_results/checkpoints/best.ckpt"),
         ]
 
         for p in candidates:
