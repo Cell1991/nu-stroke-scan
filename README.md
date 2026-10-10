@@ -76,6 +76,15 @@ The clinical interface is engineered for high-precision radiological examination
 ### 5. Professional Medical Composite Image Export
 - **PACS-Grade Framing**: Generates downloadable clinical composite images with dark slate framing, baking in active windowing (brightness, contrast), mask opacity, decision threshold, patient scan dimensions, and diagnostic summary metadata.
 
+### 6. Formal Clinical Diagnostic Report (PDF) & Summary
+- **Vector A4 PDF Report**: One-click generation of formal A4 clinical diagnostic reports using `jsPDF`, complete with patient file metadata, modality verification, dual-pane original vs. lesion scans, multi-class probability breakdown, and radiological recommendations.
+- **Structured Clipboard Export**: One-click copy of clinical assessment findings to clipboard for EMR/PACS reporting.
+
+### 7. Responsive Mobile Console with 360° MOBA Virtual Joystick
+- **360° Free Analog Navigation**: Touchscreen virtual joystick designed for mobile review, offering full 360-degree continuous panning with analog speed scaling, pointer capture, and automatic spring-back.
+- **Unified Quick Controls**: Integrated stepper zoom (`- 100% +`), grid toggle, center re-alignment, and calibration reset in a single high-tech gaming console.
+- **Zero Desktop Interference**: Strictly isolated with Tailwind `lg:hidden` to ensure desktop workstation layout and mouse interactions remain 100% untouched.
+
 ---
 
 <!-- Animated Medical Divider -->
@@ -263,14 +272,27 @@ GET /api/analysis/models
 - [Docker Engine](https://docs.docker.com/engine/install/) & Docker Compose (v2.20+)
 - Node.js (v20+) & Python 3.12+ *(for local dev)*
 
-### 1. One-Click Launch with All-in-One Scripts (Windows / PowerShell)
+### 1. Model Weights & Automated Checkpoint Downloader
+
+Production model weights (~1.43 GB total) are hosted on [GitHub Releases (v1.0.0-weights)](https://github.com/Cell1991/nu-stroke-scan/releases/tag/v1.0.0-weights).
+
+```bash
+# Automated 1-Click Download (Standalone)
+python scripts/download_checkpoints.py
+
+# Or on Windows, simply double-click:
+download_checkpoints.bat
+```
+*(Note: Running `start.bat` or `.\start.ps1` will automatically check for missing checkpoints and download them before starting).*
+
+### 2. One-Click Launch with All-in-One Scripts (Windows / PowerShell)
 
 ```bash
 # Clone the repository
 git clone https://github.com/Cell1991/nu-stroke-scan.git
 cd nu-stroke-scan
 
-# Option A: One-click Batch launcher (starts backend, frontend & ngrok tunnel)
+# Option A: One-click Batch launcher (auto-downloads weights + starts backend, frontend & ngrok tunnel)
 start.bat
 
 # Option B: One-click PowerShell launcher
@@ -280,7 +302,7 @@ start.bat
 docker compose up --build
 ```
 
-### 2. Service Endpoints
+### 3. Service Endpoints
 
 | Service Tier | Port & Protocol | URL |
 | :--- | :--- | :--- |
