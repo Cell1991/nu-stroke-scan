@@ -93,7 +93,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "left")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[230px] sm:min-h-[290px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[180px] sm:h-[240px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -213,7 +213,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "right")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[230px] sm:min-h-[290px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[180px] sm:h-[240px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
