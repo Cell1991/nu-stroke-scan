@@ -1,5 +1,6 @@
 services:
   frontend:
+    restart: unless-stopped
     build:
       context: ./frontend
       target: production
@@ -21,6 +22,7 @@ services:
       - backend
 
   backend:
+    restart: unless-stopped
     build:
       context: ./backend
     ports:

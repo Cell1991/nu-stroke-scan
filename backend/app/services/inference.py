@@ -97,9 +97,9 @@ def validate_brain_ct(image: Image.Image) -> None:
         arr_rgb = np.asarray(rgb, dtype=np.float32)
         r, g, b = arr_rgb[..., 0], arr_rgb[..., 1], arr_rgb[..., 2]
         channel_diff = np.maximum(np.maximum(np.abs(r - g), np.abs(r - b)), np.abs(g - b))
-        # Real CT scans have channel_diff == 0 (with rare JPEG lossy compression artifact < 20).
-        color_ratio = float(np.mean(channel_diff > 22.0))
-        if color_ratio > 0.015:
+        # Real CT scans have channel_diff == 0 (with JPEG lossy compression artifacts around edges).
+        color_ratio = float(np.mean(channel_diff > 25.0))
+        if color_ratio > 0.05:
             logger.warning("Rejected upload with chromatic color information: color_ratio=%.4f", color_ratio)
             raise HTTPException(
                 status_code=422,
