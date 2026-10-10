@@ -37,6 +37,11 @@ interface DualViewportProps {
   onClear?: () => void;
   onPanStep?: (dx: number, dy: number) => void;
   onResetPan?: () => void;
+  onZoomIn?: () => void;
+  onZoomOut?: () => void;
+  onResetZoom?: () => void;
+  onToggleGrid?: () => void;
+  onResetAll?: () => void;
 }
 
 export function DualViewport({
@@ -62,6 +67,11 @@ export function DualViewport({
   onClear,
   onPanStep,
   onResetPan,
+  onZoomIn,
+  onZoomOut,
+  onResetZoom,
+  onToggleGrid,
+  onResetAll,
 }: DualViewportProps) {
   const predictedClass = result?.classification?.predicted_class;
   const isIschemic = predictedClass === "ischemic";
@@ -98,7 +108,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "left")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[180px] sm:h-[240px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -218,7 +228,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "right")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[180px] sm:h-[240px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -302,38 +312,38 @@ export function DualViewport({
                       if (onClear) onClear();
                     }
                   }}
-                  className="group relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 hover:bg-rose-950/30 backdrop-blur-sm rounded-xl border border-rose-500/25 hover:border-rose-500/60 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-rose-950/50"
+                  className="group relative z-20 h-full w-full flex flex-col items-center justify-center p-3 sm:p-5 lg:p-6 text-center select-none overflow-hidden bg-slate-950/80 hover:bg-rose-950/30 backdrop-blur-sm rounded-xl border border-rose-500/25 hover:border-rose-500/60 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-rose-950/50"
                   title="Click to clear and upload a new scan"
                 >
                   {/* Ambient glow background */}
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.12),transparent_70%)] group-hover:bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.25),transparent_70%)] transition-all duration-300 pointer-events-none" />
 
                   {/* Animated Graphic Element */}
-                  <div className="relative flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
+                  <div className="relative flex items-center justify-center mb-2 sm:mb-3 lg:mb-4 group-hover:scale-105 transition-transform duration-300">
                     {/* Outer pulse wave */}
-                    <div className="absolute h-20 w-20 rounded-full bg-rose-500/15 group-hover:bg-rose-500/25 animate-ping pointer-events-none transition-colors" />
+                    <div className="absolute h-14 w-14 sm:h-18 sm:w-18 lg:h-20 lg:w-20 rounded-full bg-rose-500/15 group-hover:bg-rose-500/25 animate-ping pointer-events-none transition-colors" />
                     
                     {/* Concentric radar rings */}
-                    <div className="absolute h-18 w-18 rounded-full border border-rose-500/30 group-hover:border-rose-400/50 bg-rose-500/5 group-hover:bg-rose-500/10 animate-pulse transition-all" />
-                    <div className="absolute h-14 w-14 rounded-full border border-rose-500/50 group-hover:border-rose-400/70 transition-colors" />
+                    <div className="absolute h-12 w-12 sm:h-16 sm:w-16 lg:h-18 lg:w-18 rounded-full border border-rose-500/30 group-hover:border-rose-400/50 bg-rose-500/5 group-hover:bg-rose-500/10 animate-pulse transition-all" />
+                    <div className="absolute h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 rounded-full border border-rose-500/50 group-hover:border-rose-400/70 transition-colors" />
 
                     {/* Core Icon Badge */}
-                    <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 group-hover:border-rose-400 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.5)] shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400 group-hover:text-rose-300 transition-all duration-300">
-                      <ShieldAlert className="h-6 w-6 text-rose-400 group-hover:text-rose-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)] transition-all" strokeWidth={2.2} />
+                    <div className="relative h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 rounded-xl lg:rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 group-hover:border-rose-400 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.5)] shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400 group-hover:text-rose-300 transition-all duration-300">
+                      <ShieldAlert className="h-5 w-5 sm:h-5.5 sm:w-5.5 lg:h-6 lg:w-6 text-rose-400 group-hover:text-rose-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)] transition-all" strokeWidth={2.2} />
                     </div>
                   </div>
 
                   {/* Single-Glance Minimal Cognitive Load Text */}
-                  <div className="relative z-10 text-center max-w-sm px-4">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-rose-950/80 border border-rose-500/40 group-hover:border-rose-400/60 text-rose-300 group-hover:text-rose-200 shadow-sm shadow-rose-950/50 mb-2.5 transition-colors">
+                  <div className="relative z-10 text-center max-w-sm px-2 sm:px-4">
+                    <div className="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase bg-rose-950/80 border border-rose-500/40 group-hover:border-rose-400/60 text-rose-300 group-hover:text-rose-200 shadow-sm shadow-rose-950/50 mb-1.5 sm:mb-2 lg:mb-2.5 transition-colors">
                       <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse shadow-[0_0_6px_#f43f5e]" />
                       CLICK ANYWHERE TO CLEAR
                     </div>
 
-                    <h3 className="text-base sm:text-lg font-extrabold tracking-tight text-white uppercase group-hover:scale-[1.02] transition-transform duration-200">
+                    <h3 className="text-sm sm:text-base lg:text-lg font-extrabold tracking-tight text-white uppercase group-hover:scale-[1.02] transition-transform duration-200">
                       {isConnectionError ? "AI Backend Disconnected" : "Invalid Scan Image"}
                     </h3>
-                    <p className="text-xs text-slate-300 group-hover:text-slate-200 font-medium mt-1 transition-colors">
+                    <p className="text-[11px] sm:text-xs text-slate-300 group-hover:text-slate-200 font-medium mt-0.5 sm:mt-1 transition-colors">
                       {isConnectionError
                         ? "Cannot reach AI inference server. Click here to reset."
                         : "Click card to clear and select a valid axial head CT scan."}
@@ -376,42 +386,42 @@ export function DualViewport({
                     onAnalyze?.();
                   }
                 }}
-                className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-blue-500/25 hover:border-blue-400/70 hover:bg-slate-900/90 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-2xl hover:shadow-blue-950/70"
+                className="relative z-20 h-full w-full flex flex-col items-center justify-center p-3 sm:p-5 lg:p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-blue-500/25 hover:border-blue-400/70 hover:bg-slate-900/90 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-2xl hover:shadow-blue-950/70"
                 title="Click anywhere to analyze scan"
               >
                 {/* Ambient glow background */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15),transparent_70%)] group-hover:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.28),transparent_70%)] transition-all duration-300 pointer-events-none" />
 
                 {/* Animated Graphic Element */}
-                <div className="relative flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
+                <div className="relative flex items-center justify-center mb-2 sm:mb-3 lg:mb-4 group-hover:scale-105 transition-transform duration-300">
                   {/* Outer pulse wave */}
-                  <div className="absolute h-20 w-20 rounded-full bg-blue-500/15 group-hover:bg-blue-500/25 animate-ping pointer-events-none transition-colors" />
+                  <div className="absolute h-14 w-14 sm:h-18 sm:w-18 lg:h-20 lg:w-20 rounded-full bg-blue-500/15 group-hover:bg-blue-500/25 animate-ping pointer-events-none transition-colors" />
 
                   {/* Concentric radar rings */}
-                  <div className="absolute h-18 w-18 rounded-full border border-blue-500/30 group-hover:border-blue-400/50 bg-blue-500/5 group-hover:bg-blue-500/10 animate-pulse transition-all" />
-                  <div className="absolute h-14 w-14 rounded-full border border-cyan-400/50 group-hover:border-cyan-300 transition-colors" />
+                  <div className="absolute h-12 w-12 sm:h-16 sm:w-16 lg:h-18 lg:w-18 rounded-full border border-blue-500/30 group-hover:border-blue-400/50 bg-blue-500/5 group-hover:bg-blue-500/10 animate-pulse transition-all" />
+                  <div className="absolute h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 rounded-full border border-cyan-400/50 group-hover:border-cyan-300 transition-colors" />
 
                   {/* Core Icon Badge */}
-                  <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-900/90 via-slate-900 to-indigo-950 border border-blue-400/70 group-hover:border-cyan-400 group-hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] shadow-xl shadow-blue-950/80 flex items-center justify-center text-blue-300 transition-all duration-300">
-                    <Brain className="h-6 w-6 text-blue-300 group-hover:text-cyan-200 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)] group-hover:drop-shadow-[0_0_12px_rgba(56,189,248,1)] transition-all" strokeWidth={2} />
+                  <div className="relative h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 rounded-xl lg:rounded-2xl bg-gradient-to-br from-blue-900/90 via-slate-900 to-indigo-950 border border-blue-400/70 group-hover:border-cyan-400 group-hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] shadow-xl shadow-blue-950/80 flex items-center justify-center text-blue-300 transition-all duration-300">
+                    <Brain className="h-5 w-5 sm:h-5.5 sm:w-5.5 lg:h-6 lg:w-6 text-blue-300 group-hover:text-cyan-200 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)] group-hover:drop-shadow-[0_0_12px_rgba(56,189,248,1)] transition-all" strokeWidth={2} />
                   </div>
                 </div>
 
                 {/* Single-Glance Minimal Cognitive Load Text */}
-                <div className="relative z-10 text-center max-w-sm px-4">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-blue-950/80 border border-blue-500/40 group-hover:border-cyan-400/60 text-blue-300 group-hover:text-cyan-200 shadow-sm shadow-blue-950/50 mb-2.5 transition-colors">
+                <div className="relative z-10 text-center max-w-sm px-2 sm:px-4">
+                  <div className="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase bg-blue-950/80 border border-blue-500/40 group-hover:border-cyan-400/60 text-blue-300 group-hover:text-cyan-200 shadow-sm shadow-blue-950/50 mb-1.5 sm:mb-2 lg:mb-2.5 transition-colors">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_#22d3ee]" />
                     CLICK ANYWHERE TO START
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-black tracking-tight uppercase flex flex-wrap items-center justify-center gap-1.5 text-white group-hover:scale-[1.03] transition-transform duration-200">
+                  <h3 className="text-sm sm:text-base lg:text-xl font-black tracking-tight uppercase flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 text-white group-hover:scale-[1.03] transition-transform duration-200">
                     <span>CLICK</span>
                     <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_14px_rgba(56,189,248,0.6)]">
                       &ldquo;ANALYZE BRAIN CT&rdquo;
                     </span>
                   </h3>
 
-                  <p className="text-xs text-slate-400 group-hover:text-slate-300 font-medium mt-1 tracking-wide transition-colors">
+                  <p className="text-[11px] sm:text-xs text-slate-400 group-hover:text-slate-300 font-medium mt-0.5 sm:mt-1 tracking-wide transition-colors">
                     Click card or bottom button to run segmentation
                   </p>
                 </div>
@@ -487,8 +497,14 @@ export function DualViewport({
         <MobilePanController
           pan={pan}
           zoom={zoom}
+          showGrid={showGrid}
           onPanStep={onPanStep}
           onResetPan={onResetPan}
+          onZoomIn={onZoomIn}
+          onZoomOut={onZoomOut}
+          onResetZoom={onResetZoom}
+          onToggleGrid={onToggleGrid}
+          onResetAll={onResetAll}
         />
       )}
     </div>

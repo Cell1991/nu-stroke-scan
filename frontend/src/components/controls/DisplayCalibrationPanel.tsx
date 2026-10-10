@@ -48,8 +48,8 @@ export function DisplayCalibrationPanel({
           </span>
         </div>
 
-        {/* Viewport Tools: Zoom, Grid, Reset */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
+        {/* Viewport Tools: Zoom, Grid, Reset (Desktop only - on mobile, merged into MobilePanController) */}
+        <div className="hidden lg:flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
           {/* Zoom stepper */}
           <div className="h-7 sm:h-8 flex items-center bg-slate-900/90 px-1 sm:px-1.5 rounded-lg sm:rounded-xl border border-white/10 shadow-sm text-xs select-none">
             <button

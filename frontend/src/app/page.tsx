@@ -517,6 +517,11 @@ export default function Home() {
             onClear={handleClearScan}
             onPanStep={handlePanStep}
             onResetPan={handleResetPan}
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+            onResetZoom={handleResetZoom}
+            onToggleGrid={toggleGrid}
+            onResetAll={resetControls}
           />
 
           <DisplayCalibrationPanel
