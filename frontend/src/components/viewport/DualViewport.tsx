@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Brain, Columns2, Lock, ShieldAlert, Unlock } from "lucide-react";
+import { Brain, Columns2, Lock, Pointer, ShieldAlert, Unlock } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
 import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
 import { MobilePanController } from "./MobilePanController";
@@ -251,6 +251,17 @@ export function DualViewport({
               ORIGINAL NCCT
             </div>
 
+            {/* Finger Drag Touch Active Indicator (Top-Right Docked) */}
+            {!isTouchLocked && imageUrl && (
+              <div
+                className="absolute top-2.5 right-2.5 z-20 pointer-events-none px-2 py-0.5 rounded bg-black/80 border border-emerald-500/50 text-emerald-400 flex items-center gap-1 shadow-md backdrop-blur-sm select-none"
+                title="Touch Drag Enabled"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <Pointer className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+              </div>
+            )}
+
             {/* Anatomical Orientation Markers (R on Left, L on Right) */}
             {imageUrl && (
               <>
@@ -396,6 +407,17 @@ export function DualViewport({
                 )}
               </div>
             ) : null}
+
+            {/* Finger Drag Touch Active Indicator (Top-Right Docked) */}
+            {!isTouchLocked && !errorMessage && hasAnalyzed && (
+              <div
+                className="absolute top-2.5 right-2.5 z-20 pointer-events-none px-2 py-0.5 rounded bg-black/80 border border-emerald-500/50 text-emerald-400 flex items-center gap-1 shadow-md backdrop-blur-sm select-none"
+                title="Touch Drag Enabled"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <Pointer className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+              </div>
+            )}
 
             {/* Anatomical Orientation Markers (R on Left, L on Right) */}
             {hasAnalyzed && !errorMessage && (
@@ -612,15 +634,6 @@ export function DualViewport({
             )}
           </div>
         </div>
-
-        {/* Floating Indicator when Canvas Touch Gestures are Unlocked */}
-        {!isTouchLocked && (
-          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none px-2.5 py-0.5 rounded-full bg-emerald-950/90 border border-emerald-500/60 text-[10px] font-mono font-bold text-emerald-300 flex items-center gap-1.5 shadow-xl backdrop-blur-sm whitespace-nowrap select-none">
-            <Unlock className="h-3 w-3 text-emerald-400 shrink-0" />
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="whitespace-nowrap">Touch Active</span>
-          </div>
-        )}
       </div>
 
       {/* Mobile Directional Controller (Mobile only: lg:hidden - strictly hidden on desktop) */}
