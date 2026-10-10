@@ -54,10 +54,10 @@ export function ScanningPipelineHUD() {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/85 backdrop-blur-md p-2 sm:p-5 lg:p-6 select-none animate-in fade-in duration-200">
-      <div className="w-full max-w-[340px] sm:max-w-sm rounded-xl sm:rounded-2xl bg-slate-900/95 border border-blue-500/30 p-2.5 sm:p-4 lg:p-5 shadow-2xl space-y-1.5 sm:space-y-3 lg:space-y-4">
+    <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-5 lg:p-6 select-none animate-in fade-in duration-200">
+      <div className="w-full max-w-[315px] sm:max-w-sm rounded-2xl bg-slate-900/95 border border-blue-500/40 p-3 sm:p-5 shadow-2xl space-y-2 sm:space-y-4">
         {/* Header HUD Status */}
-        <div className="flex items-center justify-between pb-1.5 sm:pb-3 border-b border-white/10">
+        <div className="flex items-center justify-between pb-2 sm:pb-3 border-b border-white/10">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
