@@ -1,102 +1,160 @@
-<mxfile host="Electron">
+<mxfile host="app.diagrams.net">
   <diagram name="NU-Stroke-Scan-UseCase" id="nu-usecase-diagram">
-    <mxGraphModel dx="1848" dy="1185" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="2000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400">
       <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="sys_box" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=55;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=20;collapsible=0;rounded=0;" value="NU Stroke Scan" vertex="1">
-          <mxGeometry height="1170" width="1000" x="340" y="40" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ======================================================== -->
+        <!-- SYSTEM BOUNDARY                                          -->
+        <!-- ======================================================== -->
+        <mxCell id="sys_box" value="NU Stroke Scan Platform" style="swimlane;whiteSpace=wrap;html=1;startSize=55;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=20;collapsible=0;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="40" width="1000" height="1170" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_upload" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Upload Brain CT Scan" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="120" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- COLUMN 1: PRIMARY USE CASES (MEDICAL PERSONNEL INITIATED) -->
+        <!-- ======================================================== -->
+        <mxCell id="uc_upload" value="Upload Brain CT Scan" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="120" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_inspect" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Inspect CT Image" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="270" as="geometry" />
+
+        <mxCell id="uc_inspect" value="Inspect CT Image" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="270" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_model" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Configure ML Architecture" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="420" as="geometry" />
+
+        <mxCell id="uc_model" value="Configure ML Architecture" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="420" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_threshold" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Adjust Sensitivity Threshold" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="570" as="geometry" />
+
+        <mxCell id="uc_threshold" value="Adjust Sensitivity Threshold" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="570" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_analyze" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Run Stroke Analysis" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="720" as="geometry" />
+
+        <mxCell id="uc_analyze" value="Run Stroke Analysis" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="720" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_export" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Export Diagnostic Results" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="910" as="geometry" />
+
+        <mxCell id="uc_export" value="Export Diagnostic Results" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="910" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_clear" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Clear Workstation Study" vertex="1">
-          <mxGeometry height="72" width="340" x="390" y="1080" as="geometry" />
+
+        <mxCell id="uc_clear" value="Clear Workstation Study" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="1080" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_validate" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Validate CT Modality" vertex="1">
-          <mxGeometry height="72" width="340" x="930" y="120" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- COLUMN 2: SUB-CASES & SYSTEM AUTOMATED TASKS             -->
+        <!-- ======================================================== -->
+        <mxCell id="uc_validate" value="Validate CT Modality" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="930" y="120" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_window" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Calibrate Display Windowing" vertex="1">
-          <mxGeometry height="72" width="340" x="930" y="270" as="geometry" />
+
+        <mxCell id="uc_window" value="Calibrate Display Windowing" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="930" y="270" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_classify" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Classify Stroke Type" vertex="1">
-          <mxGeometry height="72" width="340" x="930" y="650" as="geometry" />
+
+        <mxCell id="uc_classify" value="Classify Stroke Type" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="930" y="650" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_segment" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Segment Stroke Lesion" vertex="1">
-          <mxGeometry height="72" width="340" x="930" y="790" as="geometry" />
+
+        <mxCell id="uc_segment" value="Segment Stroke Lesion" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="930" y="790" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_composite" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Export Composite Image" vertex="1">
-          <mxGeometry height="72" width="340" x="930" y="910" as="geometry" />
+
+        <mxCell id="uc_composite" value="Export Composite Image" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="930" y="910" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="uc_report" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Download Clinical Report" vertex="1">
-          <mxGeometry height="72" width="340" x="930" y="1020" as="geometry" />
+
+        <mxCell id="uc_report" value="Download Clinical Report" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="930" y="1020" width="340" height="72" as="geometry"/>
         </mxCell>
-        <mxCell id="actor_medical" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" value="Medical Personnel" vertex="1">
-          <mxGeometry height="160" width="80" x="42" y="560" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- ACTOR 1: MEDICAL PERSONNEL (HUMAN ACTOR - LEFT)          -->
+        <!-- ======================================================== -->
+        <mxCell id="actor_medical" value="Medical Personnel" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="90" y="560" width="80" height="160" as="geometry"/>
         </mxCell>
-        <mxCell id="actor_ml" parent="1" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontSize=18;align=center;" value="&amp;lt;&amp;lt;System&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;ML Inference Server&lt;/b&gt;" vertex="1">
-          <mxGeometry height="90" width="240" x="1421" y="680" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- ACTOR 2: ML INFERENCE SERVER (SYSTEM ACTOR - RIGHT)      -->
+        <!-- ======================================================== -->
+        <mxCell id="actor_ml" value="&amp;lt;&amp;lt;System&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;ML Inference Server&lt;/b&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fontSize=18;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="540" width="240" height="90" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c1" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_upload">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- ASSOCIATIONS: MEDICAL PERSONNEL TO PRIMARY (SOLID, NO ARROWS) -->
+        <!-- ======================================================== -->
+        <mxCell id="rel_c1" edge="1" source="actor_medical" target="uc_upload" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.1;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c2" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_inspect">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_c2" edge="1" source="actor_medical" target="uc_inspect" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.23;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c3" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_model">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_c3" edge="1" source="actor_medical" target="uc_model" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.37;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c4" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_threshold">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_c4" edge="1" source="actor_medical" target="uc_threshold" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c5" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_analyze">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_c5" edge="1" source="actor_medical" target="uc_analyze" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.63;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c6" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_export">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_c6" edge="1" source="actor_medical" target="uc_export" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.77;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_c7" edge="1" parent="1" source="actor_medical" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.3333333333333333;entryX=0;entryY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc_clear">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_c7" edge="1" source="actor_medical" target="uc_clear" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.9;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_inc1" edge="1" parent="1" source="uc_upload" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="uc_validate" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- RELATIONSHIPS: INCLUDE & EXTEND (DASHED, OPAQUE LABELS)  -->
+        <!-- ======================================================== -->
+        <!-- Upload includes Validate -->
+        <mxCell id="rel_inc1" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" edge="1" source="uc_upload" target="uc_validate" parent="1" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_ext1" edge="1" parent="1" source="uc_window" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" target="uc_inspect" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- Windowing extends Inspect -->
+        <mxCell id="rel_ext1" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" edge="1" source="uc_window" target="uc_inspect" parent="1" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_inc2" edge="1" parent="1" source="uc_analyze" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=1;exitY=0.35;entryX=0;entryY=0.5;" target="uc_classify" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- Analyze includes Classify -->
+        <mxCell id="rel_inc2" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" edge="1" source="uc_analyze" target="uc_classify" parent="1" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=1;exitY=0.35;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_inc3" edge="1" parent="1" source="uc_analyze" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=1;exitY=0.65;entryX=0;entryY=0.5;" target="uc_segment" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- Analyze includes Segment -->
+        <mxCell id="rel_inc3" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" edge="1" source="uc_analyze" target="uc_segment" parent="1" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=1;exitY=0.65;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_ext2" edge="1" parent="1" source="uc_composite" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" target="uc_export" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- Composite extends Export -->
+        <mxCell id="rel_ext2" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" edge="1" source="uc_composite" target="uc_export" parent="1" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_ext3" edge="1" parent="1" source="uc_report" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.8;" target="uc_export" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- Report extends Export -->
+        <mxCell id="rel_ext3" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" edge="1" source="uc_report" target="uc_export" parent="1" style="dashed=1;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=2;fontSize=16;fontStyle=2;fontFamily=Arial;labelBackgroundColor=#FFFFFF;labelBorderColor=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.8;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_ml1" edge="1" parent="1" source="actor_ml" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitDx=0;exitDy=0;" target="uc_classify">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- ======================================================== -->
+        <!-- ASSOCIATIONS: ML INFERENCE SERVER (SYSTEM ACTOR)         -->
+        <!-- ======================================================== -->
+        <mxCell id="rel_ml0" edge="1" source="actor_ml" target="uc_validate" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.2;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_ml2" edge="1" parent="1" source="actor_ml" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitDx=0;exitDy=0;" target="uc_segment">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="rel_ml1" edge="1" source="actor_ml" target="uc_classify" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
+        <mxCell id="rel_ml2" edge="1" source="actor_ml" target="uc_segment" parent="1" style="endArrow=none;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.8;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
       </root>
     </mxGraphModel>
   </diagram>
