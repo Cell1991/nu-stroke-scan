@@ -60,7 +60,7 @@ export function exportMedicalComposite({
 
     ctx.font = "500 12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
     ctx.fillStyle = "#94a3b8";
-    ctx.fillText("Neuro-Imaging Clinical Intelligence · Naresuan University Hospital", pad, 46);
+    ctx.fillText("Neuro-Imaging Clinical Intelligence Platform", pad, 46);
 
     // Header Right (Date & Resolution)
     const now = new Date();
@@ -149,19 +149,19 @@ export function exportMedicalComposite({
     ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(pad, footerY - 12);
-    ctx.lineTo(canvasW - pad, footerY - 12);
+    ctx.moveTo(pad, footerY - 10);
+    ctx.lineTo(canvasW - pad, footerY - 10);
     ctx.stroke();
 
     const isPositive = Boolean(result?.detected && result.classification?.predicted_class !== "normal");
     const isIschemic = isPositive && result?.classification?.predicted_class === "ischemic";
 
-    // Status Pill Badge (Top of footer)
+    // Column 1 (Left): Diagnostic Finding & Classification (width ~40%)
     const pillX = pad;
-    const pillY = footerY;
-    const pillH = 26;
-    const pillW = !isPositive ? 220 : isIschemic ? 240 : 250;
-    const pillRadius = 6;
+    const pillY = footerY + 2;
+    const pillH = 24;
+    const pillW = !isPositive ? 190 : isIschemic ? 215 : 225;
+    const pillRadius = 5;
 
     ctx.beginPath();
     if (typeof ctx.roundRect === "function") {
@@ -170,61 +170,62 @@ export function exportMedicalComposite({
       ctx.rect(pillX, pillY, pillW, pillH);
     }
     ctx.fillStyle = !isPositive
-      ? "rgba(16, 185, 129, 0.15)"
+      ? "rgba(16, 185, 129, 0.12)"
       : isIschemic
-        ? "rgba(234, 179, 8, 0.15)"
-        : "rgba(239, 68, 68, 0.15)";
+        ? "rgba(234, 179, 8, 0.12)"
+        : "rgba(239, 68, 68, 0.12)";
     ctx.fill();
     ctx.strokeStyle = !isPositive
-      ? "rgba(16, 185, 129, 0.5)"
+      ? "rgba(16, 185, 129, 0.45)"
       : isIschemic
-        ? "rgba(234, 179, 8, 0.5)"
-        : "rgba(239, 68, 68, 0.5)";
+        ? "rgba(234, 179, 8, 0.45)"
+        : "rgba(239, 68, 68, 0.45)";
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    ctx.font = "bold 11px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "bold 10px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillStyle = !isPositive ? "#34d399" : isIschemic ? "#facc15" : "#f87171";
     ctx.fillText(
       !isPositive
-        ? "● NORMAL HEAD CT (NEGATIVE)"
+        ? "● NORMAL (NO LESION)"
         : isIschemic
-          ? "● ISCHEMIC INFARCT (YELLOW MASK)"
-          : "● HEMORRHAGIC STROKE (RED MASK)",
-      pillX + 12,
-      pillY + 17
+          ? "● ISCHEMIC INFARCT"
+          : "● HEMORRHAGIC STROKE",
+      pillX + 10,
+      pillY + 16
     );
 
     // Primary Classification Label below Pill
     ctx.font = "bold 13px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillStyle = "#f8fafc";
-    const classLabel = result?.classification?.predicted_label || (isPositive ? "Acute Stroke Lesion" : "No Lesion Observed");
+    const classLabel = result?.classification?.predicted_label || (isPositive ? "Acute Stroke Lesion" : "No Acute Infarct/Hemorrhage");
     const classConf = result?.classification
       ? ` (${(result.classification.confidence * 100).toFixed(1)}%)`
       : (result ? ` (${(result.confidence * 100).toFixed(1)}%)` : "");
     ctx.fillText(`${classLabel}${classConf}`, pad, footerY + 48);
 
-    // Center: Quantitative Metrics
+    // Column 2 (Middle): Quantitative Biomarkers (Strictly centered horizontally)
     const midX = Math.round(canvasW * 0.44);
     ctx.font = "600 12px monospace";
-    ctx.fillStyle = "#e2e8f0";
+    ctx.fillStyle = "#f1f5f9";
     ctx.fillText(`Lesion Area : ${result?.lesionArea ?? 0}%`, midX, footerY + 18);
 
     ctx.font = "500 11px monospace";
     ctx.fillStyle = "#94a3b8";
-    ctx.fillText(`Cutoff Sens : ${calibration.threshold}%`, midX, footerY + 36);
-    ctx.fillText(`Overlay Opa : ${calibration.maskOpacity}%`, midX, footerY + 52);
+    ctx.fillText(`Sensitivity : ${calibration.threshold}%`, midX, footerY + 35);
+    ctx.fillText(`Mask Opacity: ${calibration.maskOpacity}%`, midX, footerY + 50);
 
-    // Right side: AI Model info & Clinical disclaimer
+    // Column 3 (Right): Model & Compliance Disclaimer
     ctx.textAlign = "right";
     ctx.font = "bold 12px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillStyle = "#f8fafc";
     ctx.fillText(`Model: ${result?.modelLabel || modelName}`, canvasW - pad, footerY + 18);
 
-    ctx.font = "500 11px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "500 10.5px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.fillStyle = "#94a3b8";
+    ctx.fillText("AI-Assisted Diagnostic Reference", canvasW - pad, footerY + 35);
     ctx.fillStyle = "#64748b";
-    ctx.fillText("AI-Assisted Diagnostic Reference", canvasW - pad, footerY + 36);
-    ctx.fillText("Confirmatory Radiologist Review Required", canvasW - pad, footerY + 52);
+    ctx.fillText("Confirmatory Physician Review Required", canvasW - pad, footerY + 50);
     ctx.textAlign = "left";
 
     // Download PNG synchronously

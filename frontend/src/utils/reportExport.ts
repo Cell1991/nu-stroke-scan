@@ -48,8 +48,8 @@ ${result.classification.classes.map((c) => `  - ${c.label}: ${c.percentage}%`).j
     : "Primary Disease Classification: N/A";
 
   const reportText = `=====================================================
-    NARESUAN UNIVERSITY HOSPITAL · NEURO-IMAGING CENTER
-            STROKE AI CLINICAL DIAGNOSTIC REPORT
+            NU STROKE SCAN RESEARCH PLATFORM
+          STROKE AI CLINICAL DIAGNOSTIC REPORT
 =====================================================
 Timestamp: ${new Date().toISOString()}
 Segmentation Architecture: ${result.modelLabel || modelName}
