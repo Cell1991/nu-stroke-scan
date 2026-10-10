@@ -79,14 +79,14 @@ export function DisplayCalibrationPanel({
 
           <button
             onClick={onToggleGrid}
-            className={`h-7 sm:h-8 px-2.5 sm:w-24 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all border shadow-sm shrink-0 select-none ${
+            className={`h-7 sm:h-8 px-2.5 sm:px-3.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all border shadow-sm shrink-0 select-none whitespace-nowrap ${
               showGrid
                 ? "bg-blue-600/25 text-blue-300 border-blue-400/50 shadow-blue-950/40 ring-1 ring-blue-400/30"
                 : "bg-slate-900/90 text-slate-300 border-white/10 hover:text-white hover:bg-slate-800 hover:border-white/20"
             }`}
           >
             <Grid className={`h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 ${showGrid ? "text-blue-300" : "text-slate-400"}`} />
-            <span className="sm:w-[52px] text-left">Grid {showGrid ? "ON" : "OFF"}</span>
+            <span className="whitespace-nowrap">Grid {showGrid ? "ON" : "OFF"}</span>
           </button>
 
           <button
