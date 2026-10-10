@@ -8,8 +8,10 @@ import {
   ChevronUp,
   Crosshair,
   Grid,
+  Lock,
   Move,
   RotateCcw,
+  Unlock,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -19,6 +21,8 @@ interface MobilePanControllerProps {
   pan: PanOffset;
   zoom: number;
   showGrid: boolean;
+  isTouchLocked?: boolean;
+  onToggleTouchLock?: () => void;
   onPanStep: (dx: number, dy: number) => void;
   onResetPan: () => void;
   onZoomIn?: () => void;
@@ -32,6 +36,8 @@ export function MobilePanController({
   pan,
   zoom,
   showGrid,
+  isTouchLocked = true,
+  onToggleTouchLock,
   onPanStep,
   onResetPan,
   onZoomIn,
@@ -40,7 +46,6 @@ export function MobilePanController({
   onToggleGrid,
   onResetAll,
 }: MobilePanControllerProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeDirection, setActiveDirection] = useState<string | null>(null);
 
   const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -94,18 +99,39 @@ export function MobilePanController({
           )}
         </div>
 
-        <button
-          onClick={() => setIsCollapsed((prev) => !prev)}
-          type="button"
-          className="text-[10px] text-slate-400 hover:text-white px-2 py-0.5 rounded border border-white/10 bg-slate-800/60 active:scale-95 transition-all"
-        >
-          {isCollapsed ? "แสดง" : "ย่อ"}
-        </button>
+        {onToggleTouchLock && (
+          <button
+            onClick={onToggleTouchLock}
+            type="button"
+            className={`h-6 px-2.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all border active:scale-95 shadow-sm cursor-pointer select-none ${
+              isTouchLocked
+                ? "bg-slate-950/80 text-amber-300 border-amber-500/50 hover:bg-amber-950/40"
+                : "bg-emerald-950/80 text-emerald-300 border-emerald-500/60 ring-1 ring-emerald-500/30 hover:bg-emerald-900/60"
+            }`}
+            title={
+              isTouchLocked
+                ? "Touch gestures locked (Default) - Screen scrolls naturally. Click to unlock finger drag & pinch zoom"
+                : "Touch gestures unlocked - Drag to pan, pinch to zoom inside scan"
+            }
+          >
+            {isTouchLocked ? (
+              <>
+                <Lock className="h-3 w-3 text-amber-400 shrink-0" />
+                <span>Lock ภาพ</span>
+              </>
+            ) : (
+              <>
+                <Unlock className="h-3 w-3 text-emerald-400 shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <span>ปลดล็อคภาพ</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {/* Main Controls Layout */}
-      {!isCollapsed && (
-        <div className="flex items-center justify-between gap-3 pt-0.5">
+      <div className="flex items-center justify-between gap-3 pt-0.5">
           {/* ========================================================= */}
           {/* LEFT: 4-WAY CLINICAL DIRECTIONAL D-PAD & CENTER           */}
           {/* ========================================================= */}
@@ -281,7 +307,6 @@ export function MobilePanController({
             </div>
           </div>
         </div>
-      )}
     </div>
   );
 }

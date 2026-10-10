@@ -43,6 +43,7 @@ export default function Home() {
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState<PanOffset>({ x: 0, y: 0 });
   const [showGrid, setShowGrid] = useState(false);
+  const [isTouchLocked, setIsTouchLocked] = useState(true); // Default: Locked against accidental gestures
 
   // Diagnostic Loupe State
   const [loupe, setLoupe] = useState<{
@@ -90,6 +91,18 @@ export default function Home() {
     setShowGrid((prev) => !prev);
   }
 
+  function toggleTouchLock() {
+    setIsTouchLocked((prev) => !prev);
+  }
+
+  function handlePanChange(x: number, y: number) {
+    setPan({ x, y });
+  }
+
+  function handleZoomChange(newZoom: number) {
+    setZoom(newZoom);
+  }
+
   function resetControls() {
     setBrightness(100);
     setContrast(100);
@@ -98,6 +111,7 @@ export default function Home() {
     setZoom(1);
     setPan({ x: 0, y: 0 });
     setShowGrid(false);
+    setIsTouchLocked(true);
     setLoupe((prev) => ({ ...prev, active: false }));
   }
 
@@ -550,6 +564,10 @@ export default function Home() {
             maskOpacity={maskOpacity}
             loupe={loupe}
             isDraggingViewport={isDraggingViewport}
+            isTouchLocked={isTouchLocked}
+            onToggleTouchLock={toggleTouchLock}
+            onPanChange={handlePanChange}
+            onZoomChange={handleZoomChange}
             onMouseDown={handleViewportMouseDown}
             onMouseMove={handleViewportMouseMove}
             onMouseUp={handleViewportMouseUp}

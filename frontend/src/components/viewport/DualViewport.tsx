@@ -1,5 +1,5 @@
-import React from "react";
-import { Brain, Columns2, ShieldAlert } from "lucide-react";
+import React, { useRef } from "react";
+import { Brain, Columns2, Lock, ShieldAlert, Unlock } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
 import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
 import { MobilePanController } from "./MobilePanController";
@@ -28,6 +28,10 @@ interface DualViewportProps {
   maskOpacity: number;
   loupe: LoupeState;
   isDraggingViewport: boolean;
+  isTouchLocked?: boolean;
+  onToggleTouchLock?: () => void;
+  onPanChange?: (x: number, y: number) => void;
+  onZoomChange?: (zoom: number) => void;
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseMove: (e: React.MouseEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
   onMouseUp: () => void;
@@ -58,6 +62,10 @@ export function DualViewport({
   maskOpacity,
   loupe,
   isDraggingViewport,
+  isTouchLocked = true,
+  onToggleTouchLock,
+  onPanChange,
+  onZoomChange,
   onMouseDown,
   onMouseMove,
   onMouseUp,
@@ -77,6 +85,110 @@ export function DualViewport({
   const isIschemic = predictedClass === "ischemic";
   const isHemo = predictedClass === "hemorrhagic";
   const hasAnalyzed = Boolean(result || isScanning);
+
+  // Ultra-Smooth 60/120fps Native-feeling Touch Pan & Pinch-to-Zoom
+  const touchStateRef = useRef<{
+    mode: "pan" | "pinch" | null;
+    startX: number;
+    startY: number;
+    initialPanX: number;
+    initialPanY: number;
+    initialDist: number;
+    initialZoom: number;
+  }>({
+    mode: null,
+    startX: 0,
+    startY: 0,
+    initialPanX: 0,
+    initialPanY: 0,
+    initialDist: 0,
+    initialZoom: 1,
+  });
+
+  const nextTransformRef = useRef<{
+    pan: { x: number; y: number } | null;
+    zoom: number | null;
+  }>({ pan: null, zoom: null });
+
+  const touchRafRef = useRef<number | null>(null);
+
+  const scheduleTouchUpdate = () => {
+    if (touchRafRef.current) return;
+    touchRafRef.current = requestAnimationFrame(() => {
+      touchRafRef.current = null;
+      if (nextTransformRef.current.pan && onPanChange) {
+        onPanChange(nextTransformRef.current.pan.x, nextTransformRef.current.pan.y);
+      }
+      if (nextTransformRef.current.zoom !== null && onZoomChange) {
+        onZoomChange(nextTransformRef.current.zoom);
+      }
+      nextTransformRef.current = { pan: null, zoom: null };
+    });
+  };
+
+  const handleCanvasTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isTouchLocked) return; // When locked: do nothing, let native browser scroll page!
+
+    if (e.touches.length === 1) {
+      touchStateRef.current = {
+        mode: "pan",
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        initialPanX: pan.x,
+        initialPanY: pan.y,
+        initialDist: 0,
+        initialZoom: zoom,
+      };
+    } else if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      touchStateRef.current = {
+        mode: "pinch",
+        startX: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+        startY: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        initialPanX: pan.x,
+        initialPanY: pan.y,
+        initialDist: Math.max(dist, 1),
+        initialZoom: zoom,
+      };
+    }
+  };
+
+  const handleCanvasTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isTouchLocked || !touchStateRef.current.mode) return;
+
+    if (touchStateRef.current.mode === "pan" && e.touches.length === 1) {
+      const dx = e.touches[0].clientX - touchStateRef.current.startX;
+      const dy = e.touches[0].clientY - touchStateRef.current.startY;
+      nextTransformRef.current.pan = {
+        x: Math.round(touchStateRef.current.initialPanX + dx),
+        y: Math.round(touchStateRef.current.initialPanY + dy),
+      };
+      scheduleTouchUpdate();
+    } else if (touchStateRef.current.mode === "pinch" && e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const scaleFactor = dist / touchStateRef.current.initialDist;
+      const clampedZoom = Math.min(
+        4.0,
+        Math.max(0.5, Number((touchStateRef.current.initialZoom * scaleFactor).toFixed(2)))
+      );
+      nextTransformRef.current.zoom = clampedZoom;
+      scheduleTouchUpdate();
+    }
+  };
+
+  const handleCanvasTouchEnd = () => {
+    touchStateRef.current.mode = null;
+    if (touchRafRef.current) {
+      cancelAnimationFrame(touchRafRef.current);
+      touchRafRef.current = null;
+    }
+  };
 
   // Draw.io Style Infinite Synchronized Grid: Scales dynamically with zoom & translates with pan
   const minorGridSize = Math.max(8, 20 * zoom);
@@ -107,7 +219,12 @@ export function DualViewport({
             onMouseMove={(e) => onMouseMove(e, "left")}
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
+            onTouchStart={handleCanvasTouchStart}
+            onTouchMove={handleCanvasTouchMove}
+            onTouchEnd={handleCanvasTouchEnd}
+            onTouchCancel={handleCanvasTouchEnd}
             onWheel={(e) => onWheel(e, "left")}
+            style={{ touchAction: isTouchLocked ? "auto" : "none" }}
             className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
@@ -227,7 +344,12 @@ export function DualViewport({
             onMouseMove={(e) => onMouseMove(e, "right")}
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
+            onTouchStart={handleCanvasTouchStart}
+            onTouchMove={handleCanvasTouchMove}
+            onTouchEnd={handleCanvasTouchEnd}
+            onTouchCancel={handleCanvasTouchEnd}
             onWheel={(e) => onWheel(e, "right")}
+            style={{ touchAction: isTouchLocked ? "auto" : "none" }}
             className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[225px] sm:h-[265px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
@@ -490,6 +612,15 @@ export function DualViewport({
             )}
           </div>
         </div>
+
+        {/* Floating Indicator when Canvas Touch Gestures are Unlocked */}
+        {!isTouchLocked && (
+          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/60 text-[11px] font-mono font-bold text-emerald-300 flex items-center gap-1.5 shadow-xl backdrop-blur-sm select-none">
+            <Unlock className="h-3.5 w-3.5 text-emerald-400" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span>ปลดล็อคภาพ · ลากเพื่อแพน / บีบเพื่อซูม</span>
+          </div>
+        )}
       </div>
 
       {/* Mobile Directional Controller (Mobile only: lg:hidden - strictly hidden on desktop) */}
@@ -498,6 +629,8 @@ export function DualViewport({
           pan={pan}
           zoom={zoom}
           showGrid={showGrid}
+          isTouchLocked={isTouchLocked}
+          onToggleTouchLock={onToggleTouchLock}
           onPanStep={onPanStep}
           onResetPan={onResetPan}
           onZoomIn={onZoomIn}
