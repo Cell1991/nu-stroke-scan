@@ -145,35 +145,6 @@ export default function Home() {
     dragStartRef.current = null;
   }
 
-  function handleViewportTouchStart(e: React.TouchEvent<HTMLDivElement>) {
-    if (e.touches.length === 1) {
-      const touch = e.touches[0];
-      setIsDraggingViewport(true);
-      dragStartRef.current = {
-        x: touch.clientX,
-        y: touch.clientY,
-        panX: pan.x,
-        panY: pan.y,
-      };
-    }
-  }
-
-  function handleViewportTouchMove(e: React.TouchEvent<HTMLDivElement>) {
-    if (!isDraggingViewport || !dragStartRef.current || e.touches.length !== 1) return;
-    const touch = e.touches[0];
-    const dx = touch.clientX - dragStartRef.current.x;
-    const dy = touch.clientY - dragStartRef.current.y;
-    setPan({
-      x: Math.round(dragStartRef.current.panX + dx),
-      y: Math.round(dragStartRef.current.panY + dy),
-    });
-  }
-
-  function handleViewportTouchEnd() {
-    setIsDraggingViewport(false);
-    dragStartRef.current = null;
-  }
-
   function handlePanStep(dx: number, dy: number) {
     setPan((prev) => ({
       x: Math.round(prev.x + dx),
@@ -582,9 +553,6 @@ export default function Home() {
             onMouseDown={handleViewportMouseDown}
             onMouseMove={handleViewportMouseMove}
             onMouseUp={handleViewportMouseUp}
-            onTouchStart={handleViewportTouchStart}
-            onTouchMove={handleViewportTouchMove}
-            onTouchEnd={handleViewportTouchEnd}
             onContextMenu={handleViewportContextMenu}
             onWheel={handleViewportWheel}
             onAnalyze={runInference}
