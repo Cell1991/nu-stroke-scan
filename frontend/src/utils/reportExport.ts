@@ -42,6 +42,8 @@ ${clsSummary}
 
 async function prepareImageData(
   imageUrl: string,
+  result: PredictionResult,
+  threshold: number,
   probData?: { width: number; height: number; data: Uint8ClampedArray } | null
 ): Promise<{ originalBase64: string; lesionBase64: string }> {
   return new Promise((resolve) => {
@@ -84,25 +86,42 @@ async function prepareImageData(
         lesionCtx.fillRect(0, 0, scanW, scanH);
         lesionCtx.drawImage(img, 0, 0, scanW, scanH);
 
-        if (probData) {
-          const { width: pw, height: ph, data: pdata } = probData;
+        // Render acute lesion mask overlay only on detected lesion pixels above threshold
+        if (probData && result?.detected) {
+          const { width: pW, height: pH, data: pData } = probData;
           const maskCanvas = document.createElement("canvas");
-          maskCanvas.width = pw;
-          maskCanvas.height = ph;
-          const mctx = maskCanvas.getContext("2d");
-          if (mctx) {
-            const imgData = mctx.createImageData(pw, ph);
-            for (let i = 0; i < pdata.length; i += 4) {
-              const a = pdata[i + 3];
-              if (a > 0) {
-                imgData.data[i] = 239;     // #ef4444 red
-                imgData.data[i + 1] = 68;
-                imgData.data[i + 2] = 68;
-                imgData.data[i + 3] = Math.round(a * 0.85);
+          maskCanvas.width = pW;
+          maskCanvas.height = pH;
+          const maskCtx = maskCanvas.getContext("2d");
+          if (maskCtx) {
+            const maskImgData = maskCtx.createImageData(pW, pH);
+            const out = maskImgData.data;
+            const cutoff = Math.round((threshold / 100) * 255);
+
+            const isIschemic = result?.classification?.predicted_class === "ischemic";
+            const maskR = isIschemic ? 234 : 239;
+            const maskG = isIschemic ? 179 : 68;
+            const maskB = isIschemic ? 8 : 68;
+
+            const totalPixels = pW * pH;
+            for (let i = 0; i < totalPixels; i++) {
+              const idx = i * 4;
+              const prob = pData[idx]; // Probability value stored in Red channel (0 - 255)
+              if (prob >= cutoff) {
+                out[idx] = maskR;
+                out[idx + 1] = maskG;
+                out[idx + 2] = maskB;
+                out[idx + 3] = 255;
+              } else {
+                out[idx + 3] = 0;
               }
             }
-            mctx.putImageData(imgData, 0, 0);
+            maskCtx.putImageData(maskImgData, 0, 0);
+
+            lesionCtx.save();
+            lesionCtx.globalAlpha = 0.85;
             lesionCtx.drawImage(maskCanvas, 0, 0, scanW, scanH);
+            lesionCtx.restore();
           }
         }
 
@@ -317,7 +336,9 @@ export async function exportClinicalReportFile({
   doc.setTextColor(15, 23, 42);
   doc.text("Diagnostic Neuro-Imaging Evidence (Standard Matrix 512 × 512 px)", pad, evidenceY);
 
-  const images = imageUrl ? await prepareImageData(imageUrl, probData) : { originalBase64: "", lesionBase64: "" };
+  const images = imageUrl
+    ? await prepareImageData(imageUrl, result, threshold, probData)
+    : { originalBase64: "", lesionBase64: "" };
   const imgBoxW = 56;
   const imgBoxH = 56;
   const imgY = evidenceY + 4;
