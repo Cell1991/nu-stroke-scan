@@ -2,6 +2,11 @@ Write-Host "=========================================================" -Foregrou
 Write-Host "   NU STROKE SCAN - ALL-IN-ONE AUTOMATIC LAUNCHER" -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host ""
+
+Write-Host "[*] Checking model weights in checkpoints/..." -ForegroundColor Yellow
+python scripts/download_checkpoints.py
+Write-Host ""
+
 Write-Host "[*] Launching FastAPI AI Backend (Port 8000)..." -ForegroundColor Green
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd backend; uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
