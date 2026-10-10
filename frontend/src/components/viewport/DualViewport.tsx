@@ -71,9 +71,9 @@ export function DualViewport({
   const gridBackgroundPosition = `${gridPosition}, ${gridPosition}, ${gridPosition}, ${gridPosition}`;
 
   return (
-    <div className="w-full flex-1 flex flex-col gap-3 relative lg:overflow-hidden bg-[#080a0f] p-3 sm:p-3.5 pb-2.5 lg:min-h-0">
+    <div className="w-full flex-1 flex flex-col gap-2 sm:gap-2.5 lg:gap-3 relative lg:overflow-hidden bg-[#080a0f] p-2.5 sm:p-3 lg:p-3.5 pb-2 lg:pb-2.5 lg:min-h-0">
       {/* Viewport Top Header */}
-      <div className="h-8 flex items-center justify-between pb-2 border-b border-white/10 shrink-0 select-none">
+      <div className="h-7 sm:h-8 flex items-center justify-between pb-1.5 sm:pb-2 border-b border-white/10 shrink-0 select-none">
         <span className="text-xs font-bold tracking-wider text-slate-200 uppercase flex items-center gap-2">
           <Columns2 className="h-4 w-4 text-blue-400" />
           Dual Viewport
@@ -93,7 +93,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "left")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[300px] sm:min-h-[340px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[230px] sm:min-h-[290px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
@@ -213,7 +213,7 @@ export function DualViewport({
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
             onWheel={(e) => onWheel(e, "right")}
-            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[300px] sm:min-h-[340px] lg:min-h-0 lg:h-full ${
+            className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none min-h-[230px] sm:min-h-[290px] lg:min-h-0 lg:h-full ${
               loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"

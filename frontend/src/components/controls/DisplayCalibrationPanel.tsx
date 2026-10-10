@@ -38,10 +38,10 @@ export function DisplayCalibrationPanel({
   onThresholdChange,
 }: DisplayCalibrationPanelProps) {
   return (
-    <div className="shrink-0 bg-[#0c1017] border-t border-slate-800/80 p-2.5 select-none">
+    <div className="shrink-0 bg-[#0c1017] border-t border-slate-800/80 p-2 sm:p-2.5 select-none">
       {/* Calibration Header & Quick Controls */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-white/10">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 sm:gap-2 pb-1.5 mb-1.5 border-b border-white/10">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="text-xs font-semibold tracking-wider text-slate-200 uppercase flex items-center gap-1.5">
             <Sliders className="h-3.5 w-3.5 text-blue-400" />
             Display & Windowing Calibration
@@ -49,21 +49,21 @@ export function DisplayCalibrationPanel({
         </div>
 
         {/* Viewport Tools: Zoom, Grid, Reset */}
-        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
           {/* Zoom stepper */}
-          <div className="h-8 flex items-center bg-slate-900/90 px-1.5 rounded-xl border border-white/10 shadow-sm text-xs select-none">
+          <div className="h-7 sm:h-8 flex items-center bg-slate-900/90 px-1 sm:px-1.5 rounded-lg sm:rounded-xl border border-white/10 shadow-sm text-xs select-none">
             <button
               onClick={onZoomOut}
               disabled={zoom <= 0.5}
               title="Zoom Out"
-              className="h-6 w-6 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer transition-colors"
+              className="h-5 w-5 sm:h-6 sm:w-6 rounded-md sm:rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer transition-colors"
             >
-              <ZoomOut className="h-3.5 w-3.5" />
+              <ZoomOut className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
             </button>
             <button
               onClick={onResetZoom}
               title="Reset Zoom"
-              className="px-2.5 text-xs font-extrabold font-mono text-slate-100 hover:text-blue-300 cursor-pointer transition-colors"
+              className="px-1.5 sm:px-2.5 text-xs font-extrabold font-mono text-slate-100 hover:text-blue-300 cursor-pointer transition-colors"
             >
               {Math.round(zoom * 100)}%
             </button>
@@ -71,45 +71,45 @@ export function DisplayCalibrationPanel({
               onClick={onZoomIn}
               disabled={zoom >= 4}
               title="Zoom In"
-              className="h-6 w-6 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer transition-colors"
+              className="h-5 w-5 sm:h-6 sm:w-6 rounded-md sm:rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer transition-colors"
             >
-              <ZoomIn className="h-3.5 w-3.5" />
+              <ZoomIn className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
             </button>
           </div>
 
           <button
             onClick={onToggleGrid}
-            className={`h-8 w-24 rounded-xl text-xs font-bold tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all border shadow-sm shrink-0 select-none ${
+            className={`h-7 sm:h-8 px-2.5 sm:w-24 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all border shadow-sm shrink-0 select-none ${
               showGrid
                 ? "bg-blue-600/25 text-blue-300 border-blue-400/50 shadow-blue-950/40 ring-1 ring-blue-400/30"
                 : "bg-slate-900/90 text-slate-300 border-white/10 hover:text-white hover:bg-slate-800 hover:border-white/20"
             }`}
           >
-            <Grid className={`h-4 w-4 shrink-0 ${showGrid ? "text-blue-300" : "text-slate-400"}`} />
-            <span className="w-[52px] text-left">Grid {showGrid ? "ON" : "OFF"}</span>
+            <Grid className={`h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 ${showGrid ? "text-blue-300" : "text-slate-400"}`} />
+            <span className="sm:w-[52px] text-left">Grid {showGrid ? "ON" : "OFF"}</span>
           </button>
 
           <button
             onClick={onResetAll}
-            className="h-8 px-3.5 rounded-xl text-xs font-bold tracking-wide text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 hover:bg-slate-800 hover:border-white/20 flex items-center gap-2 cursor-pointer transition-all shadow-sm active:scale-[0.98]"
+            className="h-7 sm:h-8 px-2.5 sm:px-3.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold tracking-wide text-slate-300 hover:text-white bg-slate-900/90 border border-white/10 hover:bg-slate-800 hover:border-white/20 flex items-center gap-1.5 sm:gap-2 cursor-pointer transition-all shadow-sm active:scale-[0.98]"
             title="Reset calibration sliders"
           >
-            <RotateCcw className="h-4 w-4 text-slate-400" />
+            <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-400" />
             <span>Reset</span>
           </button>
         </div>
       </div>
 
       {/* 4 Spacious Sliders Arranged in 2 Rows (2x2 Grid) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-2.5">
         {/* Row 1, Col 1: Brightness */}
-        <div className="px-3.5 py-2.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
-          <div className="flex items-center justify-between text-sm text-slate-200">
-            <span className="flex items-center gap-2 font-semibold">
-              <Sun className="h-4 w-4 text-blue-400" />
+        <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-900/60 border border-white/5 space-y-1 sm:space-y-1.5">
+          <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200">
+            <span className="flex items-center gap-1.5 sm:gap-2 font-semibold">
+              <Sun className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-400" />
               Brightness
             </span>
-            <span className="font-mono font-bold text-sm text-slate-100">{brightness}%</span>
+            <span className="font-mono font-bold text-xs sm:text-sm text-slate-100">{brightness}%</span>
           </div>
           <SmoothSlider
             value={brightness}
@@ -121,13 +121,13 @@ export function DisplayCalibrationPanel({
         </div>
 
         {/* Row 1, Col 2: Contrast */}
-        <div className="px-3.5 py-2.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
-          <div className="flex items-center justify-between text-sm text-slate-200">
-            <span className="flex items-center gap-2 font-semibold">
-              <Eye className="h-4 w-4 text-blue-400" />
+        <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-900/60 border border-white/5 space-y-1 sm:space-y-1.5">
+          <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200">
+            <span className="flex items-center gap-1.5 sm:gap-2 font-semibold">
+              <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-400" />
               Contrast
             </span>
-            <span className="font-mono font-bold text-sm text-slate-100">{contrast}%</span>
+            <span className="font-mono font-bold text-xs sm:text-sm text-slate-100">{contrast}%</span>
           </div>
           <SmoothSlider
             value={contrast}
@@ -139,13 +139,13 @@ export function DisplayCalibrationPanel({
         </div>
 
         {/* Row 2, Col 1: Mask Opacity */}
-        <div className="px-3.5 py-2.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
-          <div className="flex items-center justify-between text-sm text-slate-200">
-            <span className="flex items-center gap-2 font-semibold">
-              <Layers className="h-4 w-4 text-blue-400" />
+        <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-900/60 border border-white/5 space-y-1 sm:space-y-1.5">
+          <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200">
+            <span className="flex items-center gap-1.5 sm:gap-2 font-semibold">
+              <Layers className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-400" />
               Mask Opacity
             </span>
-            <span className="font-mono font-bold text-sm text-slate-100">{maskOpacity}%</span>
+            <span className="font-mono font-bold text-xs sm:text-sm text-slate-100">{maskOpacity}%</span>
           </div>
           <SmoothSlider
             value={maskOpacity}
@@ -157,13 +157,13 @@ export function DisplayCalibrationPanel({
         </div>
 
         {/* Row 2, Col 2: Sensitivity Threshold */}
-        <div className="px-3.5 py-2.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
-          <div className="flex items-center justify-between text-sm text-slate-200">
-            <span className="flex items-center gap-2 font-semibold">
-              <Sliders className="h-4 w-4 text-blue-400" />
+        <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-900/60 border border-white/5 space-y-1 sm:space-y-1.5">
+          <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200">
+            <span className="flex items-center gap-1.5 sm:gap-2 font-semibold">
+              <Sliders className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-400" />
               Threshold
             </span>
-            <span className="font-mono font-bold text-sm text-slate-100">{threshold}%</span>
+            <span className="font-mono font-bold text-xs sm:text-sm text-slate-100">{threshold}%</span>
           </div>
           <SmoothSlider
             value={threshold}
