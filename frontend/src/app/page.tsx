@@ -494,6 +494,7 @@ export default function Home() {
             onContextMenu={handleViewportContextMenu}
             onWheel={handleViewportWheel}
             onAnalyze={runInference}
+            onClear={handleClearScan}
           />
 
           <DisplayCalibrationPanel

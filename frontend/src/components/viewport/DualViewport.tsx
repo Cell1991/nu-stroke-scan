@@ -33,6 +33,7 @@ interface DualViewportProps {
   onContextMenu: (e: React.MouseEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>, targetSide: "left" | "right") => void;
   onAnalyze?: () => void;
+  onClear?: () => void;
 }
 
 export function DualViewport({
@@ -55,6 +56,7 @@ export function DualViewport({
   onContextMenu,
   onWheel,
   onAnalyze,
+  onClear,
 }: DualViewportProps) {
   const predictedClass = result?.classification?.predicted_class;
   const isIschemic = predictedClass === "ischemic";
@@ -281,34 +283,46 @@ export function DualViewport({
                 lowerErr.includes("backend is running");
 
               return (
-                <div className="relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 backdrop-blur-sm rounded-xl border border-rose-500/25">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onClear) onClear();
+                  }}
+                  className="group relative z-20 h-full w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden bg-slate-950/80 hover:bg-rose-950/30 backdrop-blur-sm rounded-xl border border-rose-500/25 hover:border-rose-500/60 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-rose-950/50"
+                  title="Click to clear and upload a new scan"
+                >
                   {/* Ambient glow background */}
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.12),transparent_70%)] pointer-events-none" />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.12),transparent_70%)] group-hover:bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.25),transparent_70%)] transition-all duration-300 pointer-events-none" />
 
                   {/* Animated Graphic Element */}
-                  <div className="relative flex items-center justify-center mb-4">
+                  <div className="relative flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
                     {/* Outer pulse wave */}
-                    <div className="absolute h-20 w-20 rounded-full bg-rose-500/15 animate-ping pointer-events-none" />
+                    <div className="absolute h-20 w-20 rounded-full bg-rose-500/15 group-hover:bg-rose-500/25 animate-ping pointer-events-none transition-colors" />
                     
                     {/* Concentric radar rings */}
-                    <div className="absolute h-18 w-18 rounded-full border border-rose-500/30 bg-rose-500/5 animate-pulse" />
-                    <div className="absolute h-14 w-14 rounded-full border border-rose-500/50" />
+                    <div className="absolute h-18 w-18 rounded-full border border-rose-500/30 group-hover:border-rose-400/50 bg-rose-500/5 group-hover:bg-rose-500/10 animate-pulse transition-all" />
+                    <div className="absolute h-14 w-14 rounded-full border border-rose-500/50 group-hover:border-rose-400/70 transition-colors" />
 
                     {/* Core Icon Badge */}
-                    <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400">
-                      <ShieldAlert className="h-6 w-6 text-rose-400" strokeWidth={2.2} />
+                    <div className="relative h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-900/90 via-slate-900 to-rose-950 border border-rose-500/70 group-hover:border-rose-400 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.5)] shadow-xl shadow-rose-950/80 flex items-center justify-center text-rose-400 group-hover:text-rose-300 transition-all duration-300">
+                      <ShieldAlert className="h-6 w-6 text-rose-400 group-hover:text-rose-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)] transition-all" strokeWidth={2.2} />
                     </div>
                   </div>
 
                   {/* Single-Glance Minimal Cognitive Load Text */}
                   <div className="relative z-10 text-center max-w-sm px-4">
-                    <h3 className="text-base font-extrabold tracking-tight text-white uppercase">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-rose-950/80 border border-rose-500/40 group-hover:border-rose-400/60 text-rose-300 group-hover:text-rose-200 shadow-sm shadow-rose-950/50 mb-2.5 transition-colors">
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse shadow-[0_0_6px_#f43f5e]" />
+                      CLICK ANYWHERE TO CLEAR
+                    </div>
+
+                    <h3 className="text-base sm:text-lg font-extrabold tracking-tight text-white uppercase group-hover:scale-[1.02] transition-transform duration-200">
                       {isConnectionError ? "AI Backend Disconnected" : "Invalid Scan Image"}
                     </h3>
-                    <p className="text-xs text-slate-300 font-medium mt-1">
+                    <p className="text-xs text-slate-300 group-hover:text-slate-200 font-medium mt-1 transition-colors">
                       {isConnectionError
-                        ? "Cannot reach AI inference server. Please connect the backend URL in Vercel settings or start Docker."
-                        : "Please upload a valid axial head CT scan."}
+                        ? "Cannot reach AI inference server. Click here to reset."
+                        : "Click card to clear and select a valid axial head CT scan."}
                     </p>
                   </div>
                 </div>
