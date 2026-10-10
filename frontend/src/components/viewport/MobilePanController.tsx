@@ -88,9 +88,9 @@ export function MobilePanController({
   return (
     <div className="lg:hidden w-full select-none bg-slate-900/95 border border-slate-800 rounded-xl p-2 sm:p-2.5 shadow-lg shadow-black/40">
       {/* Header Bar */}
-      <div className="flex items-center justify-between gap-2 pb-1.5 mb-2 border-b border-white/10">
+      <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-white/10">
         <div className="flex items-center gap-1.5 min-w-0">
-          <Move className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+          <Move className="h-4 w-4 text-cyan-400 shrink-0" />
           <span className="text-xs font-bold text-slate-200 uppercase tracking-wider truncate">Navigation</span>
           {isShifted && (
             <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shrink-0 whitespace-nowrap">
@@ -103,10 +103,10 @@ export function MobilePanController({
           <button
             onClick={onToggleTouchLock}
             type="button"
-            className={`h-6.5 px-2.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all border active:scale-95 shadow-sm cursor-pointer select-none shrink-0 whitespace-nowrap ${
+            className={`h-8 px-3.5 rounded-xl text-[11px] font-bold flex items-center gap-2 transition-all border active:scale-95 shadow-md cursor-pointer select-none shrink-0 whitespace-nowrap ${
               isTouchLocked
-                ? "bg-slate-950/80 text-amber-300 border-amber-500/50 hover:bg-amber-950/40"
-                : "bg-emerald-950/80 text-emerald-300 border-emerald-500/60 ring-1 ring-emerald-500/30 hover:bg-emerald-900/60"
+                ? "bg-amber-950/50 text-amber-300 border-amber-500/60 shadow-amber-950/30 hover:bg-amber-900/50"
+                : "bg-emerald-950/60 text-emerald-300 border-emerald-500/70 ring-2 ring-emerald-500/30 shadow-emerald-950/40 hover:bg-emerald-900/60"
             }`}
             title={
               isTouchLocked
@@ -116,14 +116,14 @@ export function MobilePanController({
           >
             {isTouchLocked ? (
               <>
-                <Lock className="h-3 w-3 text-amber-400 shrink-0" />
-                <span className="whitespace-nowrap">Locked</span>
+                <Lock className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                <span className="whitespace-nowrap tracking-wide">Locked</span>
               </>
             ) : (
               <>
-                <Unlock className="h-3 w-3 text-emerald-400 shrink-0" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                <span className="whitespace-nowrap">Unlocked</span>
+                <Unlock className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_8px_#34d399]" />
+                <span className="whitespace-nowrap tracking-wide">Unlocked</span>
               </>
             )}
           </button>
