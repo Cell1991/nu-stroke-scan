@@ -219,23 +219,23 @@ export function MobilePanController({
           {/* ========================================================= */}
           {/* RIGHT: ZOOM STEPPER & BALANCED TOOLS (GRID & RESET)      */}
           {/* ========================================================= */}
-          <div className="flex-1 flex flex-col justify-center gap-2 self-stretch py-0.5">
+          <div className="flex-1 flex flex-col justify-center gap-2.5 self-stretch py-0.5">
             {/* Row 1: Zoom In/Out Stepper (Full Width) */}
-            <div className="h-9.5 flex items-center justify-between bg-slate-950/80 border border-slate-700/80 rounded-xl px-2 shadow-sm">
+            <div className="h-11 flex items-center justify-between bg-slate-950/80 border border-slate-700/80 rounded-xl px-2 shadow-sm">
               <button
                 onClick={onZoomOut}
                 disabled={zoom <= 0.5}
                 type="button"
-                className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 active:scale-95 transition-all"
+                className="h-8 w-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 active:scale-95 transition-all cursor-pointer"
                 title="Zoom Out"
               >
-                <ZoomOut className="h-3.5 w-3.5" />
+                <ZoomOut className="h-4 w-4" />
               </button>
 
               <button
                 onClick={onResetZoom}
                 type="button"
-                className="px-2 text-xs font-mono font-bold text-cyan-300 hover:text-cyan-200 active:scale-95 transition-all"
+                className="px-2 text-xs font-mono font-bold text-cyan-300 hover:text-cyan-200 active:scale-95 transition-all cursor-pointer"
                 title="Reset Zoom to 100%"
               >
                 {Math.round(zoom * 100)}%
@@ -245,26 +245,26 @@ export function MobilePanController({
                 onClick={onZoomIn}
                 disabled={zoom >= 4}
                 type="button"
-                className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 active:scale-95 transition-all"
+                className="h-8 w-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30 active:scale-95 transition-all cursor-pointer"
                 title="Zoom In"
               >
-                <ZoomIn className="h-3.5 w-3.5" />
+                <ZoomIn className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Row 2: Equal Proportional Grid & Reset All Buttons */}
+            {/* Row 2: Equal Proportional Grid & Reset All Buttons (Exact same height as Zoom Stepper) */}
             <div className="grid grid-cols-2 gap-2">
               {/* Grid ON/OFF Button */}
               <button
                 onClick={onToggleGrid}
                 type="button"
-                className={`h-9.5 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all border active:scale-95 shadow-sm whitespace-nowrap ${
+                className={`h-11 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all border active:scale-95 shadow-sm whitespace-nowrap cursor-pointer ${
                   showGrid
                     ? "bg-blue-600/30 text-blue-300 border-blue-400/60 shadow-blue-950/50"
                     : "bg-slate-950/80 text-slate-300 border-slate-700/80 hover:text-white hover:bg-slate-800"
                 }`}
               >
-                <Grid className={`h-3.5 w-3.5 shrink-0 ${showGrid ? "text-cyan-300" : "text-slate-400"}`} />
+                <Grid className={`h-4 w-4 shrink-0 ${showGrid ? "text-cyan-300" : "text-slate-400"}`} />
                 <span className="whitespace-nowrap">Grid {showGrid ? "ON" : "OFF"}</span>
               </button>
 
@@ -272,10 +272,10 @@ export function MobilePanController({
               <button
                 onClick={onResetAll}
                 type="button"
-                className="h-9.5 px-2.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-950/80 border border-slate-700/80 hover:bg-slate-800 active:scale-95 flex items-center justify-center gap-1.5 transition-all shadow-sm whitespace-nowrap"
+                className="h-11 px-3 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-950/80 border border-slate-700/80 hover:bg-slate-800 active:scale-95 flex items-center justify-center gap-1.5 transition-all shadow-sm whitespace-nowrap cursor-pointer"
                 title="Reset Calibration & View"
               >
-                <RotateCcw className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                <RotateCcw className="h-4 w-4 shrink-0 text-slate-400" />
                 <span className="whitespace-nowrap">Reset All</span>
               </button>
             </div>
