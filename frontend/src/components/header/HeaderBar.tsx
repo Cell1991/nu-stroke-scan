@@ -1,6 +1,72 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Maximize, Minimize } from "lucide-react";
 
 export function HeaderBar() {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const doc = document as any;
+      const isFull = !!(
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement
+      );
+      setIsFullscreen(isFull);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange);
+    document.addEventListener("MSFullscreenChange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("mozfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("MSFullscreenChange", handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleFullscreen = async () => {
+    try {
+      const doc = document as any;
+      const docEl = document.documentElement as any;
+
+      if (
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement
+      ) {
+        if (doc.exitFullscreen) {
+          await doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+          await doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+          await doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+          await doc.msExitFullscreen();
+        }
+      } else {
+        if (docEl.requestFullscreen) {
+          await docEl.requestFullscreen();
+        } else if (docEl.webkitRequestFullscreen) {
+          await docEl.webkitRequestFullscreen();
+        } else if (docEl.mozRequestFullScreen) {
+          await docEl.mozRequestFullScreen();
+        } else if (docEl.msRequestFullscreen) {
+          await docEl.msRequestFullscreen();
+        }
+      }
+    } catch (err) {
+      console.warn("Fullscreen toggle error", err);
+    }
+  };
+
   return (
     <header className="h-14 sm:h-16 lg:h-[68px] px-3.5 sm:px-5 flex items-center justify-between shrink-0 bg-gradient-to-r from-[#0a0d14] via-[#0f1422] to-[#0a0d14] border-b border-white/[0.08] relative shadow-md select-none overflow-hidden">
       {/* Ambient Top Lighting & Bottom Glow Accent */}
@@ -34,7 +100,28 @@ export function HeaderBar() {
         </div>
       </div>
 
-      {/* Right: Subtitle anchored across the workstation bar (Desktop) */}
+      {/* Right: Mobile Fullscreen Button (Far Right, strictly mobile only: sm:hidden) */}
+      <button
+        type="button"
+        onClick={toggleFullscreen}
+        className="sm:hidden relative z-10 flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 active:scale-95 transition-all shadow-sm shrink-0 cursor-pointer"
+        title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+        aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+      >
+        {isFullscreen ? (
+          <>
+            <Minimize className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-300">Exit</span>
+          </>
+        ) : (
+          <>
+            <Maximize className="h-3.5 w-3.5 text-slate-300 shrink-0" />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-300">Full</span>
+          </>
+        )}
+      </button>
+
+      {/* Right: Subtitle anchored across the workstation bar (Desktop: hidden on mobile) */}
       <div className="hidden sm:flex items-center gap-2 relative z-10">
         <span className="text-sm font-bold tracking-wider text-slate-300 uppercase font-mono">
           Neuro-Imaging Clinical Intelligence
