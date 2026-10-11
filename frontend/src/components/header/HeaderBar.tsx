@@ -2,7 +2,7 @@ import React from "react";
 
 export function HeaderBar() {
   return (
-    <header className="h-12 sm:h-14 lg:h-16 px-3 sm:px-4 flex items-center justify-between shrink-0 bg-gradient-to-r from-[#0a0d14] via-[#0f1422] to-[#0a0d14] border-b border-white/[0.08] relative shadow-md select-none overflow-hidden">
+    <header className="h-14 sm:h-16 lg:h-[68px] px-3.5 sm:px-5 flex items-center justify-between shrink-0 bg-gradient-to-r from-[#0a0d14] via-[#0f1422] to-[#0a0d14] border-b border-white/[0.08] relative shadow-md select-none overflow-hidden">
       {/* Ambient Top Lighting & Bottom Glow Accent */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_-20%,rgba(59,130,246,0.12),transparent)] pointer-events-none" />
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/35 to-transparent pointer-events-none" />
