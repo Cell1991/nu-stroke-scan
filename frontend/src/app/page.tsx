@@ -128,6 +128,10 @@ export default function Home() {
 
   function handleViewportMouseMove(e: React.MouseEvent<HTMLDivElement>, targetSide: "left" | "right") {
     if (loupe.active) {
+      if (typeof window !== "undefined" && window.innerWidth < 1024) {
+        setLoupe((prev) => ({ ...prev, active: false }));
+        return;
+      }
       const rect = e.currentTarget.getBoundingClientRect();
       const rawX = e.clientX - rect.left;
       const rawY = e.clientY - rect.top;
@@ -174,6 +178,15 @@ export default function Home() {
     e.preventDefault();
     if (!imageUrl) return;
 
+    // Diagnostic Loupe Magnifier is strictly desktop-only (disabled on mobile / touch viewports)
+    if (typeof window !== "undefined") {
+      const isMobileViewport = window.innerWidth < 1024;
+      const isTouchOnly = window.matchMedia("(pointer: coarse)").matches && !window.matchMedia("(pointer: fine)").matches;
+      if (isMobileViewport || isTouchOnly) {
+        return;
+      }
+    }
+
     const rect = e.currentTarget.getBoundingClientRect();
     const rawX = e.clientX - rect.left;
     const rawY = e.clientY - rect.top;
@@ -197,6 +210,10 @@ export default function Home() {
     e.stopPropagation();
 
     if (loupe.active && loupe.target === targetSide) {
+      if (typeof window !== "undefined" && window.innerWidth < 1024) {
+        setLoupe((prev) => ({ ...prev, active: false }));
+        return;
+      }
       const delta = e.deltaY < 0 ? 0.3 : -0.3;
       setLoupe((prev) => ({
         ...prev,
@@ -250,8 +267,18 @@ export default function Home() {
       }
     }
 
+    function handleResize() {
+      if (window.innerWidth < 1024) {
+        setLoupe((prev) => (prev.active ? { ...prev, active: false } : prev));
+      }
+    }
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   async function extractProbDataFromB64(

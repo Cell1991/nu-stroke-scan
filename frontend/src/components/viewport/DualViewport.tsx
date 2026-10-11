@@ -214,7 +214,12 @@ export function DualViewport({
           {/* LEFT DISPLAY: ORIGINAL NCCT                              */}
           {/* ========================================================= */}
           <div
-            onContextMenu={(e) => onContextMenu(e, "left")}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+                onContextMenu(e, "left");
+              }
+            }}
             onMouseDown={onMouseDown}
             onMouseMove={(e) => onMouseMove(e, "left")}
             onMouseUp={onMouseUp}
@@ -226,7 +231,7 @@ export function DualViewport({
             onWheel={(e) => onWheel(e, "left")}
             style={{ touchAction: isTouchLocked ? "auto" : "none" }}
             className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[295px] sm:h-[310px] lg:min-h-0 lg:h-full ${
-              loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
+              loupe.active ? "lg:cursor-crosshair cursor-grab" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
           >
@@ -297,10 +302,10 @@ export function DualViewport({
               </div>
             )}
 
-            {/* Left Loupe Magnifier */}
+            {/* Left Loupe Magnifier (Desktop Only) */}
             {loupe.active && loupe.target === "left" && (
               <div
-                className="absolute z-50 pointer-events-none rounded-full border border-cyan-400 bg-black overflow-hidden shadow-2xl"
+                className="hidden lg:block absolute z-50 pointer-events-none rounded-full border border-cyan-400 bg-black overflow-hidden shadow-2xl"
                 style={{
                   width: "160px",
                   height: "160px",
@@ -350,7 +355,12 @@ export function DualViewport({
           {/* RIGHT DISPLAY: AI OVERLAY                                */}
           {/* ========================================================= */}
           <div
-            onContextMenu={(e) => onContextMenu(e, "right")}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+                onContextMenu(e, "right");
+              }
+            }}
             onMouseDown={onMouseDown}
             onMouseMove={(e) => onMouseMove(e, "right")}
             onMouseUp={onMouseUp}
@@ -362,7 +372,7 @@ export function DualViewport({
             onWheel={(e) => onWheel(e, "right")}
             style={{ touchAction: isTouchLocked ? "auto" : "none" }}
             className={`dicom-canvas-bg relative rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-all overflow-hidden flex items-center justify-center p-2 select-none h-[295px] sm:h-[310px] lg:min-h-0 lg:h-full ${
-              loupe.active ? "cursor-crosshair" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
+              loupe.active ? "lg:cursor-crosshair cursor-grab" : isDraggingViewport ? "cursor-grabbing" : "cursor-grab"
             }`}
             title="Right-click to toggle Loupe · Scroll Wheel to Zoom"
           >
@@ -577,10 +587,10 @@ export function DualViewport({
               </div>
             )}
 
-            {/* Right Loupe Magnifier */}
+            {/* Right Loupe Magnifier (Desktop Only) */}
             {!errorMessage && hasAnalyzed && loupe.active && loupe.target === "right" && (
               <div
-                className="absolute z-50 pointer-events-none rounded-full border border-indigo-400 bg-black overflow-hidden shadow-2xl"
+                className="hidden lg:block absolute z-50 pointer-events-none rounded-full border border-indigo-400 bg-black overflow-hidden shadow-2xl"
                 style={{
                   width: "160px",
                   height: "160px",
