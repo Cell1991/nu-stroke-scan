@@ -19,7 +19,7 @@
         </mxCell>
 
         <!-- UPLOAD SCAN -->
-        <mxCell id="in_upload" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Upload Brain CT Scan&#xa;File, Photos, or Camera" vertex="1">
+        <mxCell id="in_upload" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Upload Brain CT Scan" vertex="1">
           <mxGeometry height="75" width="380" x="450" y="340" as="geometry" />
         </mxCell>
 
@@ -209,14 +209,24 @@
         <mxCell id="e18" edge="1" parent="1" source="dec_class" style="strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="res_norm" value="Normal">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e19" edge="1" parent="1" source="res_isch" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;" target="dec_nav">
+        <mxCell id="e19" edge="1" parent="1" source="res_isch" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dec_nav">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="1825" />
+              <mxPoint x="640" y="1825" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="res_hem" style="strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dec_nav">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e20" edge="1" parent="1" source="res_hem" style="strokeColor=#000000;strokeWidth=2;" target="dec_nav">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e21" edge="1" parent="1" source="res_norm" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;" target="dec_nav">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e21" edge="1" parent="1" source="res_norm" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dec_nav">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="1825" />
+              <mxPoint x="640" y="1825" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e_nav_dpad" edge="1" parent="1" source="dec_nav" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;fontSize=18;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" target="nav_dpad" value="D-Pad Control">
           <mxGeometry relative="1" as="geometry">
@@ -228,11 +238,21 @@
             <mxPoint y="-16" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="e_nav_dpad_out" edge="1" parent="1" source="nav_dpad" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;" target="proc_workstation">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e_nav_dpad_out" edge="1" parent="1" source="nav_dpad" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="proc_workstation">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="2150" />
+              <mxPoint x="510" y="2150" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="e_nav_touch_out" edge="1" parent="1" source="nav_touch" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;" target="proc_workstation">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e_nav_touch_out" edge="1" parent="1" source="nav_touch" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="proc_workstation">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="2150" />
+              <mxPoint x="770" y="2150" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e22" edge="1" parent="1" source="proc_workstation" style="strokeColor=#000000;strokeWidth=2;" target="dec_export">
           <mxGeometry relative="1" as="geometry" />
