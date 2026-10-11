@@ -104,20 +104,14 @@ export function HeaderBar() {
       <button
         type="button"
         onClick={toggleFullscreen}
-        className="sm:hidden relative z-10 flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 active:scale-95 transition-all shadow-sm shrink-0 cursor-pointer"
+        className="sm:hidden relative z-10 flex items-center justify-center h-8.5 w-8.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 active:scale-95 transition-all shadow-sm shrink-0 cursor-pointer"
         title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
         aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
       >
         {isFullscreen ? (
-          <>
-            <Minimize className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-300">Exit</span>
-          </>
+          <Minimize className="h-4 w-4 text-cyan-400 shrink-0" />
         ) : (
-          <>
-            <Maximize className="h-3.5 w-3.5 text-slate-300 shrink-0" />
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-300">Full</span>
-          </>
+          <Maximize className="h-4 w-4 text-slate-300 shrink-0" />
         )}
       </button>
 
