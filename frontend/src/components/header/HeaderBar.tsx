@@ -101,19 +101,53 @@ export function HeaderBar() {
       </div>
 
       {/* Right: Mobile Fullscreen Button (Far Right, strictly mobile only: sm:hidden) */}
-      <button
-        type="button"
-        onClick={toggleFullscreen}
-        className="sm:hidden relative z-10 flex items-center justify-center h-8.5 w-8.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 active:scale-95 transition-all shadow-sm shrink-0 cursor-pointer"
-        title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-        aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-      >
-        {isFullscreen ? (
-          <Minimize className="h-4 w-4 text-cyan-400 shrink-0" />
-        ) : (
-          <Maximize className="h-4 w-4 text-slate-300 shrink-0" />
-        )}
-      </button>
+      <div className="sm:hidden relative z-10 flex items-center shrink-0">
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          className={`relative flex items-center justify-center h-9 w-9 rounded-xl backdrop-blur-md active:scale-95 transition-all duration-300 group cursor-pointer overflow-hidden ${
+            isFullscreen
+              ? "bg-gradient-to-b from-emerald-950/70 via-slate-900/90 to-slate-950 border border-emerald-500/50 shadow-[0_0_16px_rgba(16,185,129,0.25)]"
+              : "bg-gradient-to-b from-slate-800/80 via-slate-900/90 to-slate-950 border border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.6),0_0_12px_rgba(34,211,238,0.12)] hover:shadow-[0_0_18px_rgba(34,211,238,0.3)]"
+          }`}
+          title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+          aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+        >
+          {/* Subtle Top-Edge Specular Sheen */}
+          <div
+            className={`absolute inset-x-0 top-0 h-[1px] pointer-events-none transition-colors ${
+              isFullscreen
+                ? "bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent"
+                : "bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
+            }`}
+          />
+
+          {/* Ambient Background Glow on Hover / Active */}
+          <div
+            className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
+              isFullscreen
+                ? "bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.15),transparent_70%)]"
+                : "bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.12),transparent_70%)] opacity-70 group-hover:opacity-100"
+            }`}
+          />
+
+          {/* Icon with Medical Optics Glow */}
+          {isFullscreen ? (
+            <>
+              <Minimize
+                className="h-4 w-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)] transition-transform duration-200 group-hover:scale-110 shrink-0"
+                strokeWidth={2.2}
+              />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]" />
+            </>
+          ) : (
+            <Maximize
+              className="h-4 w-4 text-cyan-300 group-hover:text-cyan-200 drop-shadow-[0_0_6px_rgba(34,211,238,0.6)] transition-transform duration-200 group-hover:scale-110 shrink-0"
+              strokeWidth={2.2}
+            />
+          )}
+        </button>
+      </div>
 
       {/* Right: Subtitle anchored across the workstation bar (Desktop: hidden on mobile) */}
       <div className="hidden sm:flex items-center gap-2 relative z-10">
