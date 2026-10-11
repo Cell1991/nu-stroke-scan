@@ -1,6 +1,6 @@
-<mxfile host="Electron">
+<mxfile host="Electron" pages="2">
   <diagram name="Desktop Workflow" id="concise-flowchart-desktop-en">
-    <mxGraphModel dx="3431" dy="2200" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="2450" math="0" shadow="0">
+    <mxGraphModel dx="2402" dy="1540" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="2450" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -25,7 +25,7 @@
         <mxCell id="in_analyze" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Click Analyze" vertex="1">
           <mxGeometry height="75" width="380" x="450" y="615" as="geometry" />
         </mxCell>
-        <mxCell id="proc_req" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Send Image to AI Backend" vertex="1">
+        <mxCell id="proc_req" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Send Image to Backend" vertex="1">
           <mxGeometry height="70" width="360" x="460" y="740" as="geometry" />
         </mxCell>
         <mxCell id="dec_conn" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Backend Connected?" vertex="1">
@@ -183,12 +183,10 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
         <!-- START -->
         <mxCell id="start_m" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="START&#xa;Open Mobile Workstation" vertex="1">
           <mxGeometry height="70" width="360" x="460" y="50" as="geometry" />
         </mxCell>
-
         <!-- FULLSCREEN DECISION (Mobile Specific) -->
         <mxCell id="dec_fs" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Toggle Fullscreen?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="170" as="geometry" />
@@ -196,12 +194,10 @@
         <mxCell id="proc_fs" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Enable Fullscreen View&#xa;via Mobile Nav Bar" vertex="1">
           <mxGeometry height="75" width="340" x="900" y="192.5" as="geometry" />
         </mxCell>
-
         <!-- UPLOAD SCAN -->
         <mxCell id="in_upload_m" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Upload Brain CT Scan" vertex="1">
           <mxGeometry height="75" width="380" x="450" y="340" as="geometry" />
         </mxCell>
-
         <!-- FILE VALIDATION -->
         <mxCell id="dec_file_m" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Valid Format&#xa;and Size &lt;= 25 MB?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="470" as="geometry" />
@@ -212,22 +208,18 @@
         <mxCell id="term_err1_m" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END" vertex="1">
           <mxGeometry height="50" width="140" x="1290" y="505" as="geometry" />
         </mxCell>
-
         <!-- STANDBY CARD -->
         <mxCell id="out_standby_m" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Display CT Slice&#xa;and Standby Card" vertex="1">
           <mxGeometry height="75" width="380" x="450" y="650" as="geometry" />
         </mxCell>
-
         <!-- TAP ANALYZE -->
         <mxCell id="in_analyze_m" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Tap Analyze" vertex="1">
           <mxGeometry height="75" width="380" x="450" y="775" as="geometry" />
         </mxCell>
-
         <!-- SEND REQUEST -->
-        <mxCell id="proc_req_m" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Send Image to AI Backend" vertex="1">
+        <mxCell id="proc_req_m" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Send Image to Backend" vertex="1">
           <mxGeometry height="70" width="360" x="460" y="900" as="geometry" />
         </mxCell>
-
         <!-- CONNECTION CHECK -->
         <mxCell id="dec_conn_m" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Backend Connected?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="1025" as="geometry" />
@@ -238,7 +230,6 @@
         <mxCell id="term_err2_m" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END" vertex="1">
           <mxGeometry height="50" width="140" x="1290" y="1060" as="geometry" />
         </mxCell>
-
         <!-- MODALITY / VALID SCAN CHECK -->
         <mxCell id="dec_mod_m" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Valid Brain CT Scan?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="1215" as="geometry" />
@@ -249,12 +240,10 @@
         <mxCell id="term_err3_m" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END" vertex="1">
           <mxGeometry height="50" width="140" x="1290" y="1250" as="geometry" />
         </mxCell>
-
         <!-- RUN MODELS -->
         <mxCell id="proc_ai_m" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Run ML Models and Cache Results" vertex="1">
           <mxGeometry height="70" width="360" x="460" y="1405" as="geometry" />
         </mxCell>
-
         <!-- PREDICTED CONDITION -->
         <mxCell id="dec_class_m" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Predicted Condition?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="1530" as="geometry" />
@@ -268,7 +257,6 @@
         <mxCell id="res_norm_m" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Display Normal Scan&#xa;No Lesion Detected" vertex="1">
           <mxGeometry height="75" width="320" x="880" y="1720" as="geometry" />
         </mxCell>
-
         <!-- MOBILE VIEWPORT NAVIGATION DECISION (Mobile Specific) -->
         <mxCell id="dec_nav_m" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Viewport Navigation Mode?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="1860" as="geometry" />
@@ -279,12 +267,10 @@
         <mxCell id="nav_touch_m" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Unlock Touch Gestures&#xa;for Direct Pan and Pinch Zoom" vertex="1">
           <mxGeometry height="80" width="380" x="740" y="2040" as="geometry" />
         </mxCell>
-
         <!-- REVIEW RESULTS & CALIBRATION -->
         <mxCell id="proc_workstation_m" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Review Results and Adjust Settings&#xa;Switch Models, Threshold, Opacity, Grid" vertex="1">
           <mxGeometry height="80" width="520" x="380" y="2180" as="geometry" />
         </mxCell>
-
         <!-- EXPORT REPORT -->
         <mxCell id="dec_export_m" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Export Report?" vertex="1">
           <mxGeometry height="120" width="300" x="490" y="2320" as="geometry" />
@@ -298,12 +284,10 @@
         <mxCell id="ex_clip_m" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="Copy Summary Text" vertex="1">
           <mxGeometry height="75" width="320" x="880" y="2510" as="geometry" />
         </mxCell>
-
         <!-- END SUCCESS -->
         <mxCell id="end_success_m" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=18;" value="END&#xa;Analysis Complete" vertex="1">
           <mxGeometry height="70" width="360" x="460" y="2650" as="geometry" />
         </mxCell>
-
         <!-- EDGES -->
         <mxCell id="e1_m" edge="1" parent="1" source="start_m" style="strokeColor=#000000;strokeWidth=2;" target="dec_fs">
           <mxGeometry relative="1" as="geometry" />
