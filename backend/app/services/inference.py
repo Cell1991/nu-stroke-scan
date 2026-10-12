@@ -103,7 +103,7 @@ def validate_brain_ct(image: Image.Image) -> None:
             logger.warning("Rejected upload with chromatic color information: color_ratio=%.4f", color_ratio)
             raise HTTPException(
                 status_code=422,
-                detail="Invalid scan image. Please upload a valid axial head CT.",
+                detail="Invalid scan image. Please upload a valid axial non-contrast Brain CT.",
             )
 
     # 2. Ambient Air (Corner Luminance) Screening: Gantry air outside the head is near-black (< 50).
@@ -122,7 +122,7 @@ def validate_brain_ct(image: Image.Image) -> None:
         logger.warning("Rejected upload with bright/inverted background: corners_mean=%.1f", corners_mean)
         raise HTTPException(
             status_code=422,
-            detail="Invalid scan image. Please upload a valid axial head CT.",
+            detail="Invalid scan image. Please upload a valid axial non-contrast Brain CT.",
         )
 
     # 3. Soft Tissue Parenchyma Density Screening: Real axial CT contains soft brain tissue densities.
@@ -131,7 +131,7 @@ def validate_brain_ct(image: Image.Image) -> None:
         logger.warning("Rejected upload lacking brain tissue densities: parenchyma_ratio=%.4f", parenchyma_ratio)
         raise HTTPException(
             status_code=422,
-            detail="Invalid scan image. Please upload a valid axial head CT.",
+            detail="Invalid scan image. Please upload a valid axial non-contrast Brain CT.",
         )
 
 

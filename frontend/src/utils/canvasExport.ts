@@ -22,7 +22,9 @@ export function exportMedicalComposite({
   if (!imageUrl) return;
 
   const baseImg = new Image();
-  baseImg.crossOrigin = "anonymous";
+  if (imageUrl.startsWith("http")) {
+    baseImg.crossOrigin = "anonymous";
+  }
 
   baseImg.onload = () => {
     // Medical CT Brain Standard Matrix: Strictly standardized to 512 × 512 pixels

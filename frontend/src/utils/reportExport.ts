@@ -53,7 +53,9 @@ async function prepareImageData(
     }
 
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    if (imageUrl.startsWith("http")) {
+      img.crossOrigin = "anonymous";
+    }
     img.onload = () => {
       try {
         const scanW = 512;

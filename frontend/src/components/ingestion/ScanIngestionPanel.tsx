@@ -6,7 +6,6 @@ import { MODELS } from "@/constants/models";
 interface ScanIngestionPanelProps {
   file: File | null;
   imageUrl: string | null;
-  error: string | null;
   isScanning: boolean;
   modelId: string;
   onModelChange: (modelId: string) => void;
@@ -18,7 +17,6 @@ interface ScanIngestionPanelProps {
 export function ScanIngestionPanel({
   file,
   imageUrl,
-  error,
   isScanning,
   modelId,
   onModelChange,

@@ -15,6 +15,7 @@ import { DiagnosticPanel } from "@/components/diagnostic/DiagnosticPanel";
 
 interface CachedModelAnalysis {
   result: PredictionResult;
+  initialResult: PredictionResult;
   probData: { width: number; height: number; data: Uint8ClampedArray } | null;
 }
 
@@ -22,6 +23,8 @@ export default function Home() {
   const probDataRef = useRef<{ width: number; height: number; data: Uint8ClampedArray } | null>(null);
   const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
   const allModelsCacheRef = useRef<Record<string, CachedModelAnalysis>>({});
+  const resultRef = useRef<PredictionResult | null>(null);
+  const rafThresholdRef = useRef<number | null>(null);
 
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -285,35 +288,79 @@ export default function Home() {
     probB64: string
   ): Promise<{ width: number; height: number; data: Uint8ClampedArray } | null> {
     if (!probB64) return null;
-    return new Promise((resolve) => {
-      const probImg = new Image();
-      probImg.crossOrigin = "anonymous";
-      probImg.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = probImg.width || 512;
-        canvas.height = probImg.height || 512;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          resolve(null);
-          return;
+    const cleanB64 = probB64.replace(/^data:image\/\w+;base64,/, "");
+
+    // 1. Blazing fast modern ImageBitmap decoding via Blob (zero DOM, zero CORS)
+    try {
+      if (typeof window !== "undefined" && typeof atob === "function") {
+        const binaryStr = atob(cleanB64);
+        const len = binaryStr.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryStr.charCodeAt(i);
         }
-        ctx.drawImage(probImg, 0, 0);
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        resolve({
-          width: canvas.width,
-          height: canvas.height,
-          data: imgData.data,
-        });
+        const blob = new Blob([bytes], { type: "image/png" });
+
+        if (typeof createImageBitmap === "function") {
+          const bitmap = await createImageBitmap(blob);
+          const canvas = document.createElement("canvas");
+          canvas.width = bitmap.width;
+          canvas.height = bitmap.height;
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          if (ctx) {
+            ctx.drawImage(bitmap, 0, 0);
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            bitmap.close();
+            return {
+              width: canvas.width,
+              height: canvas.height,
+              data: imgData.data,
+            };
+          }
+        }
+      }
+    } catch {
+      // Fall through to HTMLImageElement fallback
+    }
+
+    // 2. HTMLImageElement fallback (strictly WITHOUT crossOrigin on data: URIs to prevent browser CORS rejections)
+    return new Promise((resolve) => {
+      if (typeof window === "undefined") {
+        resolve(null);
+        return;
+      }
+      const probImg = new Image();
+      probImg.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = probImg.naturalWidth || probImg.width || 512;
+          canvas.height = probImg.naturalHeight || probImg.height || 512;
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(probImg, 0, 0);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          resolve({
+            width: canvas.width,
+            height: canvas.height,
+            data: imgData.data,
+          });
+        } catch {
+          resolve(null);
+        }
       };
       probImg.onerror = () => resolve(null);
-      probImg.src = `data:image/png;base64,${probB64}`;
-      setTimeout(() => resolve(null), 3500);
+      probImg.src = `data:image/png;base64,${cleanB64}`;
+      setTimeout(() => resolve(null), 4000);
     });
   }
 
   function handleFile(selectedFile: File) {
     setError(null);
     setResult(null);
+    resultRef.current = null;
     probDataRef.current = null;
     allModelsCacheRef.current = {};
     if (!selectedFile.type.startsWith("image/")) {
@@ -335,6 +382,7 @@ export default function Home() {
     setFile(null);
     setImageUrl(null);
     setResult(null);
+    resultRef.current = null;
     probDataRef.current = null;
     allModelsCacheRef.current = {};
     setError(null);
@@ -347,17 +395,44 @@ export default function Home() {
     targetResult?: PredictionResult | null
   ) {
     setThreshold(newThreshold);
-    const baseResult = targetResult !== undefined ? targetResult : result;
-    const strokeClass = overrideClass ?? baseResult?.classification?.predicted_class;
-    const activeProbData = overrideProbData !== undefined ? overrideProbData : probDataRef.current;
-    const recomputed = recomputeMaskFromProbability({
-      probData: activeProbData,
-      threshold: newThreshold,
-      strokeClass,
-    });
 
-    if (recomputed) {
-      setResult((prev) => (prev ? { ...prev, ...recomputed } : null));
+    const baseResult = targetResult !== undefined ? targetResult : resultRef.current ?? result;
+    const activeCache = allModelsCacheRef.current[modelId];
+    const initialCls = activeCache?.initialResult?.classification ?? baseResult?.classification;
+    const strokeClass = overrideClass ?? initialCls?.predicted_class ?? baseResult?.classification?.predicted_class;
+    const activeProbData = overrideProbData !== undefined ? overrideProbData : probDataRef.current;
+
+    const performRecompute = () => {
+      const recomputed = recomputeMaskFromProbability({
+        probData: activeProbData,
+        threshold: newThreshold,
+        strokeClass,
+        originalClassification: initialCls,
+      });
+
+      if (recomputed) {
+        setResult((prev) => {
+          if (!prev) return null;
+          const updated = { ...prev, ...recomputed };
+          resultRef.current = updated;
+          if (allModelsCacheRef.current[modelId]) {
+            allModelsCacheRef.current[modelId].result = updated;
+          }
+          return updated;
+        });
+      }
+    };
+
+    if (overrideProbData !== undefined || targetResult !== undefined) {
+      performRecompute();
+    } else {
+      if (rafThresholdRef.current !== null) {
+        cancelAnimationFrame(rafThresholdRef.current);
+      }
+      rafThresholdRef.current = requestAnimationFrame(() => {
+        performRecompute();
+        rafThresholdRef.current = null;
+      });
     }
   }
 
@@ -366,10 +441,11 @@ export default function Home() {
     const cached = allModelsCacheRef.current[newModelId];
     if (cached) {
       probDataRef.current = cached.probData;
+      resultRef.current = cached.result;
       setResult(cached.result);
       applyThreshold(
         threshold,
-        cached.result.classification?.predicted_class,
+        cached.initialResult.classification?.predicted_class,
         cached.probData,
         cached.result
       );
@@ -476,19 +552,22 @@ export default function Home() {
         const pData = probB64 ? await extractProbDataFromB64(probB64) : null;
         const matchingModelOption = MODELS.find((m) => m.id === mId);
 
+        const resObj: PredictionResult = {
+          label: mData.label || "Analysis Complete",
+          confidence: Number(mData.confidence ?? 0.95),
+          maskUrl: initialMaskUrl,
+          detected: Boolean(mData.detected ?? mData.lesion_detected),
+          lesionArea: mData.lesion_area ?? mData.lesion_area_percentage ?? 0,
+          modelLabel: mData.model_label || matchingModelOption?.name || mId,
+          inputSize: mData.input_size || [512, 512],
+          classification: mData.classification || null,
+          modality: mData.modality || null,
+        };
+
         newCache[mId] = {
           probData: pData,
-          result: {
-            label: mData.label || "Analysis Complete",
-            confidence: Number(mData.confidence ?? 0.95),
-            maskUrl: initialMaskUrl,
-            detected: Boolean(mData.detected ?? mData.lesion_detected),
-            lesionArea: mData.lesion_area ?? mData.lesion_area_percentage ?? 0,
-            modelLabel: mData.model_label || matchingModelOption?.name || mId,
-            inputSize: mData.input_size || [512, 512],
-            classification: mData.classification || null,
-            modality: mData.modality || null,
-          },
+          result: { ...resObj },
+          initialResult: { ...resObj },
         };
       }
 
@@ -497,10 +576,11 @@ export default function Home() {
       const activeAnalysis = newCache[modelId] || Object.values(newCache)[0];
       if (activeAnalysis) {
         probDataRef.current = activeAnalysis.probData;
+        resultRef.current = activeAnalysis.result;
         setResult(activeAnalysis.result);
         applyThreshold(
           threshold,
-          activeAnalysis.result.classification?.predicted_class,
+          activeAnalysis.initialResult.classification?.predicted_class,
           activeAnalysis.probData,
           activeAnalysis.result
         );
@@ -564,7 +644,6 @@ export default function Home() {
         <ScanIngestionPanel
           file={file}
           imageUrl={imageUrl}
-          error={error}
           isScanning={isScanning}
           modelId={modelId}
           onModelChange={handleModelChange}

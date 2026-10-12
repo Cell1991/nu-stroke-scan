@@ -4,7 +4,7 @@ import {
   Check,
   Copy,
   FileDown,
-  Image,
+  Image as ImageIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { PredictionResult } from "@/types";
@@ -216,7 +216,7 @@ export function DiagnosticPanel({
             {exportedStatus === "image" ? (
               <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-300 shrink-0" strokeWidth={2.2} />
             ) : (
-              <Image className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white shrink-0" strokeWidth={2} />
+              <ImageIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white shrink-0" strokeWidth={2} />
             )}
             <span className="truncate">{exportedStatus === "image" ? "Image Exported" : "Export Composite Image"}</span>
           </div>

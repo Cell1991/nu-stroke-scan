@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Brain, Columns2, Lock, Pointer, ShieldAlert, Unlock } from "lucide-react";
+import { Brain, Columns2, Pointer, ShieldAlert } from "lucide-react";
 import { PanOffset, PredictionResult } from "@/types";
 import { ScanningPipelineHUD } from "./ScanningPipelineHUD";
 import { MobilePanController } from "./MobilePanController";

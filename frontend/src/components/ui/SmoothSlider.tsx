@@ -111,6 +111,7 @@ export function SmoothSlider({
           }}
           onPointerCancel={() => setIsDragging(false)}
           onChange={(e) => onChange(Number(e.target.value))}
+          onInput={(e) => onChange(Number((e.target as HTMLInputElement).value))}
           className="absolute inset-0 w-full h-full opacity-0 cursor-grab active:cursor-grabbing z-30 m-0"
         />
       </div>

@@ -3,12 +3,27 @@
 import React, { useState, useEffect } from "react";
 import { Maximize, Minimize } from "lucide-react";
 
+interface VendorFullscreenDocument extends Document {
+  webkitFullscreenElement?: Element;
+  mozFullScreenElement?: Element;
+  msFullscreenElement?: Element;
+  webkitExitFullscreen?: () => Promise<void>;
+  mozCancelFullScreen?: () => Promise<void>;
+  msExitFullscreen?: () => Promise<void>;
+}
+
+interface VendorFullscreenElement extends HTMLElement {
+  webkitRequestFullscreen?: () => Promise<void>;
+  mozRequestFullScreen?: () => Promise<void>;
+  msRequestFullscreen?: () => Promise<void>;
+}
+
 export function HeaderBar() {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      const doc = document as any;
+      const doc = document as VendorFullscreenDocument;
       const isFull = !!(
         doc.fullscreenElement ||
         doc.webkitFullscreenElement ||
@@ -33,8 +48,8 @@ export function HeaderBar() {
 
   const toggleFullscreen = async () => {
     try {
-      const doc = document as any;
-      const docEl = document.documentElement as any;
+      const doc = document as VendorFullscreenDocument;
+      const docEl = document.documentElement as VendorFullscreenElement;
 
       if (
         doc.fullscreenElement ||
