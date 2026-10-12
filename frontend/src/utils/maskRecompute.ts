@@ -3,6 +3,7 @@ import { ClassificationData, StrokeSubtype } from "@/types";
 export interface RecomputeThresholdParams {
   probData: { width: number; height: number; data: Uint8ClampedArray } | null;
   threshold: number;
+  strokeType?: "ischemic" | "hemorrhagic" | "normal";
   strokeClass?: string;
   originalClassification?: ClassificationData | null;
 }
@@ -19,6 +20,7 @@ export interface RecomputeThresholdResult {
 export function recomputeMaskFromProbability({
   probData,
   threshold,
+  strokeType,
   strokeClass,
   originalClassification,
 }: RecomputeThresholdParams): RecomputeThresholdResult | null {
@@ -40,9 +42,14 @@ export function recomputeMaskFromProbability({
   let maxProb = 0;
   const totalPixels = width * height;
 
+  // Resolve immutable baseline stroke subtype:
+  // If strokeType or strokeClass is explicitly ischemic, or if ischemic was the top stroke class originally
   const isIschemic =
-    strokeClass === "ischemic" ||
-    (originalClassification?.probabilities &&
+    strokeType === "ischemic" ||
+    (!strokeType && strokeClass === "ischemic") ||
+    (!strokeType &&
+      !strokeClass &&
+      originalClassification?.probabilities &&
       (originalClassification.probabilities["ischemic"] ?? 0) >
         (originalClassification.probabilities["hemorrhagic"] ?? 0));
 
@@ -93,21 +100,33 @@ export function recomputeMaskFromProbability({
   if (originalClassification) {
     if (!detected) {
       // Lesion cutoff eliminates lesion -> Harmonize to Normal Head CT
+      const normPct = 96.5;
+      const ischPct = isIschemic ? 2.5 : 1.0;
+      const hemoPct = isIschemic ? 1.0 : 2.5;
+
       updatedClassification = {
         ...originalClassification,
         predicted_class: "normal",
         predicted_label: "Normal Head CT",
         confidence: 0.965,
-        classes: originalClassification.classes.map((c) => {
-          if (c.id === "normal") return { ...c, probability: 0.965, percentage: 96.5 };
-          if (c.id === "hemorrhagic") return { ...c, probability: 0.025, percentage: 2.5 };
-          return { ...c, probability: 0.01, percentage: 1.0 };
-        }),
+        probabilities: {
+          normal: 0.965,
+          ischemic: ischPct / 100,
+          hemorrhagic: hemoPct / 100,
+        },
+        classes: [
+          { id: "normal", label: "Normal (No Stroke)", probability: 0.965, percentage: normPct },
+          { id: "hemorrhagic", label: "Hemorrhagic Stroke", probability: hemoPct / 100, percentage: hemoPct },
+          { id: "ischemic", label: "Ischemic Stroke", probability: ischPct / 100, percentage: ischPct },
+        ],
       };
     } else {
-      // Lesion confirmed -> Restore active subtype with updated confidence
+      // Lesion confirmed -> Strictly preserve active subtype with updated confidence
       const targetClass: StrokeSubtype = isIschemic ? "ischemic" : "hemorrhagic";
       const targetLabel = isIschemic ? "Ischemic Stroke" : "Hemorrhagic Stroke";
+      const otherClass: StrokeSubtype = isIschemic ? "hemorrhagic" : "ischemic";
+      const otherLabel = isIschemic ? "Hemorrhagic Stroke" : "Ischemic Stroke";
+
       const detConf = Number(Math.max(confidence, 0.92).toFixed(4));
       const detPct = Number((detConf * 100).toFixed(1));
       const remPct = Number((100 - detPct).toFixed(1));
@@ -119,15 +138,16 @@ export function recomputeMaskFromProbability({
         predicted_class: targetClass,
         predicted_label: targetLabel,
         confidence: detConf,
-        classes: originalClassification.classes.map((c) => {
-          if (c.id === targetClass) {
-            return { ...c, probability: detConf, percentage: detPct };
-          }
-          if (c.id === "normal") {
-            return { ...c, probability: normPct / 100, percentage: normPct };
-          }
-          return { ...c, probability: otherPct / 100, percentage: otherPct };
-        }),
+        probabilities: {
+          [targetClass]: detConf,
+          normal: normPct / 100,
+          [otherClass]: otherPct / 100,
+        },
+        classes: [
+          { id: "normal", label: "Normal (No Stroke)", probability: normPct / 100, percentage: normPct },
+          { id: targetClass, label: targetLabel, probability: detConf, percentage: detPct },
+          { id: otherClass, label: otherLabel, probability: otherPct / 100, percentage: otherPct },
+        ],
       };
     }
   }

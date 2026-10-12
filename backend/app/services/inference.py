@@ -35,7 +35,7 @@ _MASK_COLOR = _HEMORRHAGIC_COLOR
 @lru_cache(maxsize=4)
 def get_model(model_id: str):
     if model_id not in MODEL_SPECS:
-        model_id = "vcanet"
+        model_id = "dlka"
     spec = MODEL_SPECS[model_id]
     checkpoint_path = settings.resolve_checkpoint(model_id)
     logger.info("Loading model %s from %s", model_id, checkpoint_path)
@@ -191,20 +191,20 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
     except Exception as exc:
         logger.warning("Modality verification bypassed or checkpoint error: %s", exc)
 
-    arch_ids = ["vcanet", "dlka", "patcher"]
+    arch_ids = ["dlka", "vcanet", "patcher"]
     arch_runs = {}
     any_detected = False
     best_mask = None
     best_area = 0.0
 
     for m_id in arch_ids:
-        spec = MODEL_SPECS.get(m_id, MODEL_SPECS["vcanet"])
+        spec = MODEL_SPECS.get(m_id, MODEL_SPECS["dlka"])
         try:
             model = get_model(spec.id)
         except Exception as exc:
-            logger.error("Failed to load model %s: %s. Falling back to VCA-Net.", spec.id, exc)
-            spec = MODEL_SPECS["vcanet"]
-            model = get_model("vcanet")
+            logger.error("Failed to load model %s: %s. Falling back to Deformable LKA.", spec.id, exc)
+            spec = MODEL_SPECS["dlka"]
+            model = get_model("dlka")
 
         tensor = prepare_image(image, spec.input_size, spec.norm_mean, spec.norm_std)
         with torch.inference_mode():
@@ -347,6 +347,16 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             ],
         }
 
+    # Unified Study-Level Stroke Classification (Harmonized across all segmentation architectures)
+    fallback_empty_mask = np.zeros((image.height, image.width), dtype=np.uint8)
+    study_cls_data = compute_model_classification(
+        best_mask if best_mask is not None else fallback_empty_mask,
+        any_detected,
+        best_area,
+    )
+    study_stroke_class = study_cls_data["predicted_class"]
+    study_mask_color = _ISCHEMIC_COLOR if study_stroke_class == "ischemic" else _HEMORRHAGIC_COLOR
+
     # Format output for all 3 models with harmonized classification and dynamic PACS mask colors
     all_models = {}
     for m_id in arch_ids:
@@ -355,15 +365,9 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         mask = run["mask"]
         prob_np = run["prob_np"]
 
-        model_cls_data = compute_model_classification(mask, run["detected"], run["lesion_area"])
-
-        # Dynamic Mask Color:
-        # Ischemic: Yellow / Amber (234, 179, 8)
-        # Hemorrhagic: Red (239, 68, 68)
-        if model_cls_data["predicted_class"] == "ischemic":
-            model_mask_color = _ISCHEMIC_COLOR
-        else:
-            model_mask_color = _HEMORRHAGIC_COLOR
+        # Ensure all models segmenting this scan adhere to the study ground truth classification
+        model_cls_data = study_cls_data if any_detected else compute_model_classification(mask, run["detected"], run["lesion_area"])
+        model_mask_color = study_mask_color if any_detected else _HEMORRHAGIC_COLOR
 
         rgba_image = _mask_to_rgba(mask, color=model_mask_color)
         mask_pil = Image.fromarray(rgba_image, mode="RGBA")
@@ -401,7 +405,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         }
 
     # Selected model is primary return object, with full 'models' dict attached
-    active_key = model_id if model_id in all_models else "vcanet"
+    active_key = model_id if model_id in all_models else "dlka"
     main_result = all_models[active_key].copy()
     main_result["models"] = all_models
     return main_result

@@ -16,6 +16,7 @@ import { DiagnosticPanel } from "@/components/diagnostic/DiagnosticPanel";
 interface CachedModelAnalysis {
   result: PredictionResult;
   initialResult: PredictionResult;
+  baseStrokeType: "ischemic" | "hemorrhagic" | "normal";
   probData: { width: number; height: number; data: Uint8ClampedArray } | null;
 }
 
@@ -36,7 +37,7 @@ export default function Home() {
   const [copiedToast, setCopiedToast] = useState(false);
 
   // Model & Display Controls
-  const [modelId, setModelId] = useState("vcanet");
+  const [modelId, setModelId] = useState("dlka");
   const [brightness, setBrightness] = useState(100);
   const [contrast, setContrast] = useState(100);
   const [maskOpacity, setMaskOpacity] = useState(85);
@@ -390,23 +391,36 @@ export default function Home() {
 
   function applyThreshold(
     newThreshold: number,
-    overrideClass?: string,
+    overrideStrokeType?: "ischemic" | "hemorrhagic" | "normal",
     overrideProbData?: { width: number; height: number; data: Uint8ClampedArray } | null,
     targetResult?: PredictionResult | null
   ) {
     setThreshold(newThreshold);
 
-    const baseResult = targetResult !== undefined ? targetResult : resultRef.current ?? result;
     const activeCache = allModelsCacheRef.current[modelId];
+    const baseResult = targetResult !== undefined ? targetResult : resultRef.current ?? result;
     const initialCls = activeCache?.initialResult?.classification ?? baseResult?.classification;
-    const strokeClass = overrideClass ?? initialCls?.predicted_class ?? baseResult?.classification?.predicted_class;
+
+    // Resolve immutable stroke subtype for the active scan and model
+    const strokeType: "ischemic" | "hemorrhagic" | "normal" =
+      overrideStrokeType ??
+      activeCache?.baseStrokeType ??
+      (initialCls?.predicted_class === "ischemic"
+        ? "ischemic"
+        : initialCls?.predicted_class === "hemorrhagic"
+        ? "hemorrhagic"
+        : initialCls?.probabilities &&
+          (initialCls.probabilities["ischemic"] ?? 0) > (initialCls.probabilities["hemorrhagic"] ?? 0)
+        ? "ischemic"
+        : "hemorrhagic");
+
     const activeProbData = overrideProbData !== undefined ? overrideProbData : probDataRef.current;
 
     const performRecompute = () => {
       const recomputed = recomputeMaskFromProbability({
         probData: activeProbData,
         threshold: newThreshold,
-        strokeClass,
+        strokeType,
         originalClassification: initialCls,
       });
 
@@ -445,7 +459,7 @@ export default function Home() {
       setResult(cached.result);
       applyThreshold(
         threshold,
-        cached.initialResult.classification?.predicted_class,
+        cached.baseStrokeType,
         cached.probData,
         cached.result
       );
@@ -542,6 +556,18 @@ export default function Home() {
       console.groupEnd();
       console.groupEnd();
 
+      // Determine overall study baseline stroke subtype from MaxViT classifier
+      const globalCls = data.classification;
+      const globalSubtype: "ischemic" | "hemorrhagic" | "normal" =
+        globalCls?.predicted_class === "ischemic"
+          ? "ischemic"
+          : globalCls?.predicted_class === "hemorrhagic"
+          ? "hemorrhagic"
+          : globalCls?.probabilities &&
+            (globalCls.probabilities["ischemic"] ?? 0) > (globalCls.probabilities["hemorrhagic"] ?? 0)
+          ? "ischemic"
+          : "hemorrhagic";
+
       const newCache: Record<string, CachedModelAnalysis> = {};
 
       for (const [mId, mData] of Object.entries(rawModels)) {
@@ -551,6 +577,15 @@ export default function Home() {
           : "";
         const pData = probB64 ? await extractProbDataFromB64(probB64) : null;
         const matchingModelOption = MODELS.find((m) => m.id === mId);
+
+        // Derive stroke type: if model classified as ischemic or study global classifier is ischemic, strictly ischemic
+        const mCls = mData.classification;
+        let modelStrokeType: "ischemic" | "hemorrhagic" | "normal" = globalSubtype;
+        if (mCls?.predicted_class === "ischemic" || globalSubtype === "ischemic") {
+          modelStrokeType = "ischemic";
+        } else if (mCls?.predicted_class === "hemorrhagic" || globalSubtype === "hemorrhagic") {
+          modelStrokeType = "hemorrhagic";
+        }
 
         const resObj: PredictionResult = {
           label: mData.label || "Analysis Complete",
@@ -566,6 +601,7 @@ export default function Home() {
 
         newCache[mId] = {
           probData: pData,
+          baseStrokeType: modelStrokeType,
           result: { ...resObj },
           initialResult: { ...resObj },
         };
@@ -580,7 +616,7 @@ export default function Home() {
         setResult(activeAnalysis.result);
         applyThreshold(
           threshold,
-          activeAnalysis.initialResult.classification?.predicted_class,
+          activeAnalysis.baseStrokeType,
           activeAnalysis.probData,
           activeAnalysis.result
         );
