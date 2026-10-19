@@ -1,0 +1,115 @@
+<mxfile host="Electron" pages="1">
+  <diagram id="master-3tier-grid" name="Master 3-Tier System Architecture">
+    <mxGraphModel dx="1850" dy="1100" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1860" pageHeight="920" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ==================== TIER 1: PRESENTATION LAYER ==================== -->
+        <mxCell id="tier1_frame" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1740" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tier1_label" value="Tier 1:&#xa;Presentation&#xa;Layer&#xa;(Frontend)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="230" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t1_col1" value="Scan Ingestion &amp;&#xa;API Proxy Client&#xa;(Next.js &amp; React)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="340" y="105" width="420" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t1_col2" value="Display Calibration &amp;&#xa;Threshold Controls&#xa;(Windowing, Opacity &amp; Loupe)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="830" y="105" width="420" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t1_col3" value="Multi-Model Cache, Canvas&#xa;&amp; jsPDF Export Suite&#xa;(Dual Viewport &amp; Reports)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="105" width="430" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TIER 2: APPLICATION & AI LAYER ==================== -->
+        <mxCell id="tier2_frame" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="350" width="1740" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tier2_label" value="Tier 2:&#xa;Application&#xa;&amp; AI Layer&#xa;(Backend)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="60" y="350" width="230" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t2_col1" value="FastAPI Gateway &amp;&#xa;Heuristic Guardrails&#xa;(PIL &amp; NumPy Validation)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="340" y="395" width="420" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t2_col2" value="PyTorch 5-Model AI Engine&#xa;(ResNet-18, MaxViT, D-LKA,&#xa;VCA-Net &amp; Patcher)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="830" y="395" width="420" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t2_col3" value="SciPy Noise Filter &amp;&#xa;CT Density Harmonizer&#xa;(HU Attenuation &amp; Base64)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="395" width="430" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TIER 3: DATA & INFRASTRUCTURE LAYER ==================== -->
+        <mxCell id="tier3_frame" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="640" width="1740" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tier3_label" value="Tier 3:&#xa;Data &amp;&#xa;DevOps&#xa;Layer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="60" y="640" width="230" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t3_col1" value="Docker Compose &amp;&#xa;ngrok HTTPS Tunnel&#xa;(Container Orchestration)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="340" y="685" width="420" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t3_col2" value="Model Checkpoints Volume&#xa;(5 Pretrained Model Weights&#xa;Read-Only Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="830" y="685" width="420" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t3_col3" value="PostgreSQL Database&#xa;&amp; SQLAlchemy ORM&#xa;(Alembic Migrations)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="685" width="430" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== 100% STRAIGHT ARROWS ==================== -->
+        <!-- Tier 1 Horizontal Flow -->
+        <mxCell id="e_t1_1" edge="1" parent="1" source="t1_col1" target="t1_col2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_t1_2" edge="1" parent="1" source="t1_col2" target="t1_col3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Tier 2 Horizontal Flow -->
+        <mxCell id="e_t2_1" edge="1" parent="1" source="t2_col1" target="t2_col2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_t2_2" edge="1" parent="1" source="t2_col2" target="t2_col3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Tier 1 -> Tier 2 Request (Column 1 Straight Down) -->
+        <mxCell id="e_req" edge="1" parent="1" source="t1_col1" target="t2_col1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Tier 2 -> Tier 1 Response (Column 3 Straight Up) -->
+        <mxCell id="e_res" edge="1" parent="1" source="t2_col3" target="t1_col3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Tier 3 -> Tier 2 Infrastructure Support -->
+        <mxCell id="e_inf_1" edge="1" parent="1" source="t3_col1" target="tier2_frame" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.2816;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_inf_2" edge="1" parent="1" source="t3_col2" target="t2_col2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_inf_3" edge="1" parent="1" source="t3_col3" target="tier2_frame" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;startArrow=classic;endArrow=classic;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.8477;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,109 @@
+<mxfile host="Electron" pages="1">
+  <diagram id="infra-deployment-clean" name="Infrastructure and Deployment Architecture">
+    <mxGraphModel dx="1550" dy="1050" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1480" pageHeight="980" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Outer Deployment Swimlane -->
+        <mxCell id="docker_swimlane" value="Docker Compose Deployment &amp; Infrastructure Architecture" style="swimlane;whiteSpace=wrap;html=1;startSize=60;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;collapsible=0;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="50" width="1320" height="870" as="geometry" />
+        </mxCell>
+
+        <!-- Row 1 Center: Client Web Browser -->
+        <mxCell id="client_browser" value="Client Web Browser" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="520" y="140" width="440" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Row 2 Left: Frontend Container -->
+        <mxCell id="c_frontend" value="Frontend Container&#xa;(Next.js Web Server)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="200" y="290" width="440" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Row 2 Right: Tunnel Container -->
+        <mxCell id="c_tunnel" value="Tunnel Container&#xa;(ngrok HTTPS Gateway)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="840" y="290" width="440" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Row 3 Center: Backend Container -->
+        <mxCell id="c_backend" value="Backend Container&#xa;(FastAPI &amp; PyTorch Engine)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="500" y="450" width="480" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Row 4 Left: Model Checkpoints Volume -->
+        <mxCell id="v_checkpoints" value="Model Checkpoints Volume&#xa;(Read-Only Model Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="200" y="610" width="440" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Row 4 Right: Database Container -->
+        <mxCell id="c_database" value="Database Container&#xa;(PostgreSQL &amp; SQLAlchemy)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="840" y="610" width="440" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Row 5 Right: PostgreSQL Data Volume -->
+        <mxCell id="v_pgdata" value="Database Storage Volume&#xa;(Persistent Data Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="840" y="765" width="440" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Symmetric Unlabeled Edges -->
+        <mxCell id="ie1" edge="1" parent="1" source="client_browser" target="c_frontend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="255" />
+              <mxPoint x="420" y="255" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ie2" edge="1" parent="1" source="client_browser" target="c_tunnel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="255" />
+              <mxPoint x="1060" y="255" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ie3" edge="1" parent="1" source="c_frontend" target="c_backend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="415" />
+              <mxPoint x="740" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ie4" edge="1" parent="1" source="c_tunnel" target="c_backend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1060" y="415" />
+              <mxPoint x="740" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ie5" edge="1" parent="1" source="c_backend" target="v_checkpoints" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="575" />
+              <mxPoint x="420" y="575" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ie6" edge="1" parent="1" source="c_backend" target="c_database" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="575" />
+              <mxPoint x="1060" y="575" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ie7" edge="1" parent="1" source="c_database" target="v_pgdata" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
