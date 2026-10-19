@@ -1,164 +1,89 @@
-<mxfile host="Electron" pages="1">
+<mxfile host="Electron">
   <diagram id="backend-ai-clean" name="Backend and AI Inference Pipeline">
-    <mxGraphModel dx="1650" dy="1150" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1680" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2402" dy="1540" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1680" pageHeight="1160" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Outer Swimlane -->
-        <mxCell id="be_swimlane" value="Backend &amp; AI Inference Pipeline (FastAPI, PyTorch &amp; SciPy)" style="swimlane;whiteSpace=wrap;html=1;startSize=60;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;collapsible=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="60" y="50" width="1560" height="990" as="geometry" />
+        <mxCell id="be_swimlane" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=60;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;collapsible=0;rounded=0;" value="Backend &amp; AI Inference Pipeline (FastAPI, PyTorch &amp; SciPy)" vertex="1">
+          <mxGeometry height="1060" width="1560" x="60" y="40" as="geometry" />
         </mxCell>
-
-        <!-- Row 1: FastAPI Upload Endpoint -->
-        <mxCell id="be_endpoint" value="FastAPI Analysis Endpoint" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="450" y="135" width="460" height="75" as="geometry" />
+        <mxCell id="be_endpoint" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="FastAPI Analysis Endpoint" vertex="1">
+          <mxGeometry height="75" width="460" x="387" y="122" as="geometry" />
         </mxCell>
-
-        <!-- Row 2: Radiologic Heuristic Guardrails -->
-        <mxCell id="be_heuristics" value="Radiologic Heuristic Guardrails" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="450" y="265" width="460" height="75" as="geometry" />
+        <mxCell id="be_heuristics" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Radiologic Heuristic Guardrails" vertex="1">
+          <mxGeometry height="75" width="460" x="387" y="242" as="geometry" />
         </mxCell>
-
-        <!-- Row 3: ResNet-18 Modality Screener -->
-        <mxCell id="be_resnet" value="ResNet-18 Modality Screener" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="450" y="395" width="460" height="75" as="geometry" />
+        <mxCell id="be_resnet" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="ResNet-18 Modality Screener" vertex="1">
+          <mxGeometry height="75" width="460" x="387" y="362" as="geometry" />
         </mxCell>
-
-        <!-- Right Rejection Box -->
-        <mxCell id="be_reject" value="Invalid Scan Rejection" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="330" width="380" height="75" as="geometry" />
+        <mxCell id="be_reject" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Invalid Scan Rejection" vertex="1">
+          <mxGeometry height="75" width="380" x="1057" y="302" as="geometry" />
         </mxCell>
-
-        <!-- Row 4: 4 Models -->
-        <mxCell id="m_dlka" value="D-LKA Net&#xa;Segmentation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="120" y="545" width="310" height="90" as="geometry" />
+        <mxCell id="m_dlka" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Deformable LKA&#xa;(D-LKA Net)" vertex="1">
+          <mxGeometry height="85" width="380" x="77" y="502" as="geometry" />
         </mxCell>
-
-        <mxCell id="m_vcanet" value="VCA-Net&#xa;Segmentation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="480" y="545" width="310" height="90" as="geometry" />
+        <mxCell id="m_vcanet" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="VCA-Net&#xa;Segmentation" vertex="1">
+          <mxGeometry height="85" width="380" x="537" y="502" as="geometry" />
         </mxCell>
-
-        <mxCell id="m_patcher" value="Patcher&#xa;Segmentation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="840" y="545" width="310" height="90" as="geometry" />
+        <mxCell id="m_patcher" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Patcher&#xa;(SegFormer)" vertex="1">
+          <mxGeometry height="85" width="380" x="997" y="502" as="geometry" />
         </mxCell>
-
-        <mxCell id="m_maxvit" value="MaxViT 3-Class&#xa;Stroke Classifier" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="1200" y="545" width="340" height="90" as="geometry" />
+        <mxCell id="be_scipy" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Intracranial &amp; SciPy Noise Filter" vertex="1">
+          <mxGeometry height="75" width="460" x="387" y="652" as="geometry" />
         </mxCell>
-
-        <!-- Row 5: Intracranial & SciPy Noise Filter -->
-        <mxCell id="be_scipy" value="Intracranial &amp; SciPy Noise Filter" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="405" y="705" width="460" height="80" as="geometry" />
+        <mxCell id="m_maxvit" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="MaxViT 3-Class Stroke Classifier" vertex="1">
+          <mxGeometry height="75" width="460" x="387" y="777" as="geometry" />
         </mxCell>
-
-        <!-- Row 6: Result Assembly -->
-        <mxCell id="be_harmonize" value="Result Assembly" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
-          <mxGeometry x="580" y="855" width="520" height="80" as="geometry" />
+        <mxCell id="be_assembly" parent="be_swimlane" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Result Assembly" vertex="1">
+          <mxGeometry height="75" width="460" x="387" y="902" as="geometry" />
         </mxCell>
-
-        <!-- Edges -->
-        <mxCell id="be_e1" edge="1" parent="1" source="be_endpoint" target="be_heuristics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="be_e1" edge="1" parent="be_swimlane" source="be_endpoint" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="be_heuristics">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <mxCell id="be_e2" edge="1" parent="1" source="be_heuristics" target="be_resnet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="be_e2" edge="1" parent="be_swimlane" source="be_heuristics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="be_resnet">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <mxCell id="be_e3" edge="1" parent="1" source="be_heuristics" target="be_reject" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="be_e3" edge="1" parent="be_swimlane" source="be_heuristics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="be_reject">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1330" y="303" />
+              <mxPoint x="1247" y="280" />
             </Array>
           </mxGeometry>
         </mxCell>
-
-        <mxCell id="be_e4" edge="1" parent="1" source="be_resnet" target="be_reject" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+        <mxCell id="be_e4" edge="1" parent="be_swimlane" source="be_resnet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="be_reject">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1330" y="433" />
+              <mxPoint x="1247" y="400" />
             </Array>
           </mxGeometry>
         </mxCell>
-
-        <!-- Data Routing from ResNet-18 to 4 Models -->
-        <mxCell id="be_f1" edge="1" parent="1" source="be_resnet" target="m_dlka" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="be_s1" edge="1" parent="be_swimlane" source="be_resnet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="m_dlka">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="680" y="505" />
-              <mxPoint x="275" y="505" />
+              <mxPoint x="617" y="469" />
+              <mxPoint x="267" y="469" />
             </Array>
           </mxGeometry>
         </mxCell>
-
-        <mxCell id="be_f2" edge="1" parent="1" source="be_resnet" target="m_vcanet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="680" y="505" />
-              <mxPoint x="635" y="505" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="be_f3" edge="1" parent="1" source="be_resnet" target="m_patcher" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="680" y="505" />
-              <mxPoint x="995" y="505" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="be_f4" edge="1" parent="1" source="be_resnet" target="m_maxvit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="680" y="505" />
-              <mxPoint x="1370" y="505" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- Join 3 Segmentation Models into SciPy -->
-        <mxCell id="be_j1" edge="1" parent="1" source="m_dlka" target="be_scipy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="275" y="670" />
-              <mxPoint x="635" y="670" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="be_j2" edge="1" parent="1" source="m_vcanet" target="be_scipy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="be_s2" edge="1" parent="be_swimlane" source="m_dlka" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="m_vcanet">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <mxCell id="be_j3" edge="1" parent="1" source="m_patcher" target="be_scipy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="be_s3" edge="1" parent="be_swimlane" source="m_vcanet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="m_patcher">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="be_s4" edge="1" parent="be_swimlane" source="m_patcher" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="be_scipy">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="995" y="670" />
-              <mxPoint x="635" y="670" />
+              <mxPoint x="1187" y="619" />
+              <mxPoint x="617" y="619" />
             </Array>
           </mxGeometry>
         </mxCell>
-
-        <!-- Join SciPy + MaxViT into Result Assembly -->
-        <mxCell id="be_h1" edge="1" parent="1" source="be_scipy" target="be_harmonize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="635" y="820" />
-              <mxPoint x="840" y="820" />
-            </Array>
-          </mxGeometry>
+        <mxCell id="be_s5" edge="1" parent="be_swimlane" source="be_scipy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="m_maxvit">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <mxCell id="be_h2" edge="1" parent="1" source="m_maxvit" target="be_harmonize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1370" y="820" />
-              <mxPoint x="840" y="820" />
-            </Array>
-          </mxGeometry>
+        <mxCell id="be_s6" edge="1" parent="be_swimlane" source="m_maxvit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="be_assembly">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

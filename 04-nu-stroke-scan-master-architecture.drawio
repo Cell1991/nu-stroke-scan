@@ -39,20 +39,20 @@
           <mxGeometry x="340" y="395" width="420" height="110" as="geometry" />
         </mxCell>
 
-        <mxCell id="t2_col2" value="PyTorch 5-Model AI Engine&#xa;(ResNet-18, MaxViT, D-LKA,&#xa;VCA-Net &amp; Patcher)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="t2_col2" value="Modality &amp; Segmentation AI&#xa;+ SciPy Noise Filter&#xa;(ResNet-18, D-LKA, VCA-Net &amp; Patcher)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="830" y="395" width="420" height="110" as="geometry" />
         </mxCell>
 
-        <mxCell id="t2_col3" value="SciPy Noise Filter &amp;&#xa;Result Assembly&#xa;(Mask Coloring &amp; Base64)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="t2_col3" value="MaxViT Classifier &amp;&#xa;Result Assembly&#xa;(Mask Coloring &amp; Base64)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="1320" y="395" width="430" height="110" as="geometry" />
         </mxCell>
 
-        <!-- ==================== TIER 3: DATA & INFRASTRUCTURE LAYER ==================== -->
+        <!-- ==================== TIER 3: DATA & MODEL STORE LAYER ==================== -->
         <mxCell id="tier3_frame" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="60" y="640" width="1740" height="200" as="geometry" />
         </mxCell>
 
-        <mxCell id="tier3_label" value="Tier 3:&#xa;Data &amp;&#xa;DevOps&#xa;Layer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="tier3_label" value="Tier 3:&#xa;Data &amp;&#xa;Model Store&#xa;(Docker)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="60" y="640" width="230" height="200" as="geometry" />
         </mxCell>
 
@@ -60,11 +60,11 @@
           <mxGeometry x="340" y="685" width="420" height="110" as="geometry" />
         </mxCell>
 
-        <mxCell id="t3_col2" value="Model Checkpoints Volume&#xa;(5 Trained Model Checkpoints&#xa;Read-Only Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="t3_col2" value="Modality &amp; Segmentation Store&#xa;(4 Trained Model Checkpoints&#xa;Read-Only Volume)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="830" y="685" width="420" height="110" as="geometry" />
         </mxCell>
 
-        <mxCell id="t3_col3" value="Docker Compose &amp;&#xa;ngrok HTTPS Tunnel&#xa;(Container Orchestration)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="t3_col3" value="Disease Classifier Store&#xa;(Trained MaxViT Checkpoint&#xa;Read-Only Volume)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="1320" y="685" width="430" height="110" as="geometry" />
         </mxCell>
 
@@ -97,7 +97,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- Tier 3 -> Tier 2 Infrastructure Support -->
+        <!-- Tier 3 -> Tier 2 Direct Box-to-Box Support -->
         <mxCell id="e_inf_1" edge="1" parent="1" source="t3_col1" target="t2_col1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -106,7 +106,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="e_inf_3" edge="1" parent="1" source="t3_col3" target="tier2_frame" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.8477;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;">
+        <mxCell id="e_inf_3" edge="1" parent="1" source="t3_col3" target="t2_col3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
