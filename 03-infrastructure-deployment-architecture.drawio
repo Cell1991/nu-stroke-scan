@@ -31,17 +31,17 @@
         </mxCell>
 
         <!-- Row 4 Left: Model Checkpoints Volume -->
-        <mxCell id="v_checkpoints" value="Model Checkpoints Volume&#xa;(Read-Only Model Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="v_checkpoints" value="Model Checkpoints Volume&#xa;(5 Trained Model Checkpoints)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="200" y="610" width="440" height="90" as="geometry" />
         </mxCell>
 
         <!-- Row 4 Right: Database Container -->
-        <mxCell id="c_database" value="Database Container&#xa;(PostgreSQL &amp; SQLAlchemy)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="c_database" value="Database Container&#xa;(PostgreSQL Health &amp; Future Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="840" y="610" width="440" height="90" as="geometry" />
         </mxCell>
 
         <!-- Row 5 Right: PostgreSQL Data Volume -->
-        <mxCell id="v_pgdata" value="Database Storage Volume&#xa;(Persistent Data Store)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+        <mxCell id="v_pgdata" value="Database Storage Volume&#xa;(Provisioned Database Volume)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" vertex="1" parent="1">
           <mxGeometry x="840" y="765" width="440" height="90" as="geometry" />
         </mxCell>
 
@@ -91,7 +91,7 @@
           </mxGeometry>
         </mxCell>
 
-        <mxCell id="ie6" edge="1" parent="1" source="c_backend" target="c_database" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="ie6" edge="1" parent="1" source="c_backend" target="c_database" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="740" y="575" />

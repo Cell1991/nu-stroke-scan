@@ -22,7 +22,7 @@
         <mxCell id="fe_viewport" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Synchronized Dual Viewport" vertex="1">
           <mxGeometry height="80" width="420" x="210" y="580" as="geometry" />
         </mxCell>
-        <mxCell id="fe_diagnostic" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Diagnostic Findings Panel" vertex="1">
+        <mxCell id="fe_diagnostic" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="Diagnostic Assessment Panel" vertex="1">
           <mxGeometry height="80" width="420" x="710" y="580" as="geometry" />
         </mxCell>
         <mxCell id="fe_export" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;fontSize=22;" value="jsPDF &amp; PNG Export Suite" vertex="1">
