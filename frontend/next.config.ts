@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: [
     "*.trycloudflare.com",
     "**.trycloudflare.com",
+    "*.ngrok-free.app",
+    "**.ngrok-free.app",
     "localhost",
     "127.0.0.1",
   ],

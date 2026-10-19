@@ -393,11 +393,12 @@ export default function Home() {
     newThreshold: number,
     overrideStrokeType?: "ischemic" | "hemorrhagic" | "normal",
     overrideProbData?: { width: number; height: number; data: Uint8ClampedArray } | null,
-    targetResult?: PredictionResult | null
+    targetResult?: PredictionResult | null,
+    targetModelId: string = modelId
   ) {
     setThreshold(newThreshold);
 
-    const activeCache = allModelsCacheRef.current[modelId];
+    const activeCache = allModelsCacheRef.current[targetModelId];
     const baseResult = targetResult !== undefined ? targetResult : resultRef.current ?? result;
     const initialCls = activeCache?.initialResult?.classification ?? baseResult?.classification;
 
@@ -429,8 +430,8 @@ export default function Home() {
           if (!prev) return null;
           const updated = { ...prev, ...recomputed };
           resultRef.current = updated;
-          if (allModelsCacheRef.current[modelId]) {
-            allModelsCacheRef.current[modelId].result = updated;
+          if (allModelsCacheRef.current[targetModelId]) {
+            allModelsCacheRef.current[targetModelId].result = updated;
           }
           return updated;
         });
@@ -461,7 +462,8 @@ export default function Home() {
         threshold,
         cached.baseStrokeType,
         cached.probData,
-        cached.result
+        cached.result,
+        newModelId
       );
     }
   }
@@ -491,10 +493,11 @@ export default function Home() {
 
       if (!res.ok) {
         const errPayload = await res.json().catch(() => ({}));
+        // `error` is set by the Next.js proxy when the backend cannot be reached; prefer it over the raw `detail`
         const message =
+          errPayload.error ||
           errPayload.detail?.message ||
           errPayload.detail ||
-          errPayload.error ||
           `Server returned ${res.status}`;
         throw new Error(typeof message === "string" ? message : JSON.stringify(message));
       }
@@ -589,7 +592,7 @@ export default function Home() {
 
         const resObj: PredictionResult = {
           label: mData.label || "Analysis Complete",
-          confidence: Number(mData.confidence ?? 0.95),
+          confidence: Number(mData.confidence ?? 0),
           maskUrl: initialMaskUrl,
           detected: Boolean(mData.detected ?? mData.lesion_detected),
           lesionArea: mData.lesion_area ?? mData.lesion_area_percentage ?? 0,
@@ -635,7 +638,6 @@ export default function Home() {
       imageUrl,
       file,
       result,
-      probData: probDataRef.current,
       calibration: { brightness, contrast, maskOpacity, threshold },
       modelName: activeModel.name,
       onSuccess: () => {

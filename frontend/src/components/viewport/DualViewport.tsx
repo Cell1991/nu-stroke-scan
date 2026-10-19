@@ -448,6 +448,7 @@ export function DualViewport({
                 lowerErr.includes("unreachable") ||
                 lowerErr.includes("connection refused") ||
                 lowerErr.includes("failed to fetch") ||
+                lowerErr.includes("unavailable") ||
                 lowerErr.includes("503") ||
                 lowerErr.includes("backend is running");
 

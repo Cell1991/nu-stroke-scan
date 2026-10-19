@@ -1,4 +1,4 @@
-import { ClassificationData, StrokeSubtype } from "@/types";
+import { ClassificationData } from "@/types";
 
 export interface RecomputeThresholdParams {
   probData: { width: number; height: number; data: Uint8ClampedArray } | null;
@@ -75,8 +75,39 @@ export function recomputeMaskFromProbability({
     }
   }
 
-  const MIN_LESION_PIXELS = 100;
-  const detected = lesionPixels >= MIN_LESION_PIXELS;
+  // Same noise filter as the backend: drop 4-connected regions smaller than 100 pixels at the
+  // 224 × 224 model resolution (scaled to the resolution of this probability map).
+  const minComponent = Math.max(1, Math.round((100 * totalPixels) / (224 * 224)));
+  const visited = new Uint8Array(totalPixels);
+  const stack: number[] = [];
+  const component: number[] = [];
+  for (let start = 0; start < totalPixels; start++) {
+    if (visited[start] || out[start * 4 + 3] === 0) continue;
+    component.length = 0;
+    stack.push(start);
+    visited[start] = 1;
+    while (stack.length) {
+      const p = stack.pop()!;
+      component.push(p);
+      const x = p % width;
+      const neighbors = [p - width, p + width, x > 0 ? p - 1 : -1, x < width - 1 ? p + 1 : -1];
+      for (const q of neighbors) {
+        if (q >= 0 && q < totalPixels && !visited[q] && out[q * 4 + 3] !== 0) {
+          visited[q] = 1;
+          stack.push(q);
+        }
+      }
+    }
+    if (component.length < minComponent) {
+      for (const p of component) {
+        out[p * 4 + 3] = 0;
+        lesionPixels--;
+        sumProb -= data[p * 4];
+      }
+    }
+  }
+
+  const detected = lesionPixels >= minComponent;
 
   if (!detected) {
     // Zero out alpha channel completely if no lesion exceeds clinical threshold
@@ -88,69 +119,17 @@ export function recomputeMaskFromProbability({
   ctx.putImageData(outImgData, 0, 0);
   const maskUrl = canvas.toDataURL("image/png");
   const lesionArea = detected ? Number(((lesionPixels / totalPixels) * 100).toFixed(2)) : 0;
-  const avgConfidence = detected ? sumProb / lesionPixels / 255 : maxProb / 255;
-  const confidence = Number(Math.max(avgConfidence, detected ? 0.85 : 0.95).toFixed(4));
+  // Mean lesion probability when a lesion is shown; otherwise 1 − the highest pixel probability
+  const confidence = Number((detected ? sumProb / lesionPixels / 255 : 1 - maxProb / 255).toFixed(4));
   const label = detected
     ? isIschemic
       ? "Acute Ischemic Infarction (Yellow Mask)"
       : "Acute Hemorrhagic Stroke (Red Mask)"
     : "No Acute Lesion Detected";
 
-  let updatedClassification: ClassificationData | null | undefined = originalClassification;
-  if (originalClassification) {
-    if (!detected) {
-      // Lesion cutoff eliminates lesion -> Harmonize to Normal Head CT
-      const normPct = 96.5;
-      const ischPct = isIschemic ? 2.5 : 1.0;
-      const hemoPct = isIschemic ? 1.0 : 2.5;
-
-      updatedClassification = {
-        ...originalClassification,
-        predicted_class: "normal",
-        predicted_label: "Normal Head CT",
-        confidence: 0.965,
-        probabilities: {
-          normal: 0.965,
-          ischemic: ischPct / 100,
-          hemorrhagic: hemoPct / 100,
-        },
-        classes: [
-          { id: "normal", label: "Normal (No Stroke)", probability: 0.965, percentage: normPct },
-          { id: "hemorrhagic", label: "Hemorrhagic Stroke", probability: hemoPct / 100, percentage: hemoPct },
-          { id: "ischemic", label: "Ischemic Stroke", probability: ischPct / 100, percentage: ischPct },
-        ],
-      };
-    } else {
-      // Lesion confirmed -> Strictly preserve active subtype with updated confidence
-      const targetClass: StrokeSubtype = isIschemic ? "ischemic" : "hemorrhagic";
-      const targetLabel = isIschemic ? "Ischemic Stroke" : "Hemorrhagic Stroke";
-      const otherClass: StrokeSubtype = isIschemic ? "hemorrhagic" : "ischemic";
-      const otherLabel = isIschemic ? "Hemorrhagic Stroke" : "Ischemic Stroke";
-
-      const detConf = Number(Math.max(confidence, 0.92).toFixed(4));
-      const detPct = Number((detConf * 100).toFixed(1));
-      const remPct = Number((100 - detPct).toFixed(1));
-      const normPct = Number((remPct * 0.7).toFixed(1));
-      const otherPct = Number((remPct - normPct).toFixed(1));
-
-      updatedClassification = {
-        ...originalClassification,
-        predicted_class: targetClass,
-        predicted_label: targetLabel,
-        confidence: detConf,
-        probabilities: {
-          [targetClass]: detConf,
-          normal: normPct / 100,
-          [otherClass]: otherPct / 100,
-        },
-        classes: [
-          { id: "normal", label: "Normal (No Stroke)", probability: normPct / 100, percentage: normPct },
-          { id: targetClass, label: targetLabel, probability: detConf, percentage: detPct },
-          { id: otherClass, label: otherLabel, probability: otherPct / 100, percentage: otherPct },
-        ],
-      };
-    }
-  }
+  // The disease-type classification comes from the MaxViT classifier and does not depend on the
+  // segmentation threshold, so it is passed through unchanged.
+  const updatedClassification = originalClassification;
 
   return {
     maskUrl,

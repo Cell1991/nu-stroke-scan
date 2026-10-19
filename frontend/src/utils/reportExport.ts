@@ -30,7 +30,7 @@ ${result.classification.classes.map((c) => `  - ${c.label} - ${c.percentage}%`).
   return `=== NU STROKE SCAN CLINICAL ASSESSMENT ===
 Date/Time - ${new Date().toLocaleString()}
 Patient File - ${fileName}
-Model Architecture - ${result.modelLabel || modelName}
+Model Architecture - ${modelName}
 Lesion Finding - ${result.label}
 Segmentation Confidence - ${(result.confidence * 100).toFixed(1)}%
 Lesion Volume (ROI) - ${result.lesionArea ?? 0}%
@@ -223,7 +223,7 @@ export async function exportClinicalReportFile({
   doc.text("Axial Brain CT (Verified)", pad + 4, 50.5);
 
   doc.setTextColor(15, 23, 42);
-  doc.text(result.modelLabel || modelName, pad + 65, 50.5);
+  doc.text(modelName, pad + 65, 50.5);
   doc.text(`${threshold}% Cutoff`, pad + 125, 50.5);
 
   // Section 2 - Primary Diagnostic Assessment Banner
@@ -253,7 +253,7 @@ export async function exportClinicalReportFile({
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
     doc.setTextColor(30, 41, 59);
-    doc.text(`Disease Classification - ${predictedClass} (${(result.confidence * 100).toFixed(1)}% Neural Certainty)`, pad + 6, 68);
+    doc.text(`Disease Classification - ${predictedClass} (${((result.classification?.confidence ?? result.confidence) * 100).toFixed(1)}% Neural Certainty)`, pad + 6, 68);
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
@@ -397,7 +397,7 @@ export async function exportClinicalReportFile({
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor(71, 85, 105);
-  doc.text(`Segmentation Engine - ${result.modelLabel || modelName} (Deep Learning Network)`, pad + 4, techY + 9);
+  doc.text(`Segmentation Engine - ${modelName} (Deep Learning Network)`, pad + 4, techY + 9);
   doc.text("Classification Backbone - MaxViT Hybrid Attention Multi-Class Architecture", pad + 4, techY + 13);
   doc.text("Modality Screener - Axial Non-Contrast Brain CT Deep Neural Filter (p >= 0.70)", pad + 4, techY + 17);
 
@@ -429,7 +429,7 @@ export async function exportClinicalReportFile({
   doc.setFont("helvetica", "bold");
   doc.setFontSize(6.5);
   doc.setTextColor(71, 85, 105);
-  doc.text("Status - Electronically Authenticated and Recorded   •   NU Stroke Scan Platform", pad + 4, discY + 18.5);
+  doc.text("Status - Generated automatically by the NU Stroke Scan research prototype   •   Not a clinical record", pad + 4, discY + 18.5);
 
   // Footer Line
   const footerY = 286;
