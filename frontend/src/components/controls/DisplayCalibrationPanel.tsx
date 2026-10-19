@@ -168,8 +168,8 @@ export function DisplayCalibrationPanel({
           <SmoothSlider
             value={threshold}
             onChange={onThresholdChange}
-            min={10}
-            max={95}
+            min={1}
+            max={99}
             defaultValue={50}
           />
         </div>

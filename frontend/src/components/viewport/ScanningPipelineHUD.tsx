@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Check, Loader2, ShieldCheck, Cpu, Sparkles, Activity } from "lucide-react";
+import { Check, Loader2, ShieldCheck, Cpu, Sparkles } from "lucide-react";
 
 interface Step {
   id: number;
@@ -20,7 +20,7 @@ const PIPELINE_STEPS: Step[] = [
   {
     id: 2,
     label: "Tri-Architecture Segmentation",
-    sub: "VCA-Net, DLKA & Patcher parallel inferencing",
+    sub: "VCA-Net, D-LKA Net & Patcher in one request",
     icon: Cpu,
   },
   {
@@ -28,12 +28,6 @@ const PIPELINE_STEPS: Step[] = [
     label: "MaxViT Pathological Classifier",
     sub: "Deep vision feature stroke subtype evaluation",
     icon: Sparkles,
-  },
-  {
-    id: 4,
-    label: "Physiological Tissue Attenuation",
-    sub: "Quantitative Hounsfield density mapping",
-    icon: Activity,
   },
 ];
 
@@ -44,12 +38,10 @@ export function ScanningPipelineHUD() {
     // Progressively cycle through stages during inference
     const t1 = setTimeout(() => setCurrentStep(2), 650);
     const t2 = setTimeout(() => setCurrentStep(3), 1350);
-    const t3 = setTimeout(() => setCurrentStep(4), 2100);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
-      clearTimeout(t3);
     };
   }, []);
 
@@ -68,7 +60,7 @@ export function ScanningPipelineHUD() {
             </span>
           </div>
           <span className="text-[10px] sm:text-[11px] font-mono text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded-full border border-blue-800/60">
-            Phase {currentStep}/4
+            Phase {currentStep}/3
           </span>
         </div>
 
@@ -125,13 +117,13 @@ export function ScanningPipelineHUD() {
         <div className="pt-1 sm:pt-2">
           <div className="flex justify-between text-[9px] sm:text-[10px] font-mono text-slate-400 mb-0.5 sm:mb-1">
             <span>Neural Processing</span>
-            <span>{currentStep === 1 ? "25%" : currentStep === 2 ? "55%" : currentStep === 3 ? "80%" : "98%"}</span>
+            <span>{currentStep === 1 ? "30%" : currentStep === 2 ? "65%" : "95%"}</span>
           </div>
           <div className="h-1 sm:h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
             <div
               className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-500 rounded-full"
               style={{
-                width: currentStep === 1 ? "25%" : currentStep === 2 ? "55%" : currentStep === 3 ? "80%" : "98%",
+                width: currentStep === 1 ? "30%" : currentStep === 2 ? "65%" : "95%",
               }}
             />
           </div>

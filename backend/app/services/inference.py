@@ -127,7 +127,8 @@ def validate_brain_ct(image: Image.Image) -> None:
 
     # 3. Soft Tissue Parenchyma Density Screening: Real axial CT contains soft brain tissue densities.
     parenchyma_ratio = float(np.mean((arr_gray >= 20) & (arr_gray <= 125)))
-    if parenchyma_ratio < 0.04:
+    # 1% (not higher): genuine slices near the skull vertex or base contain little brain tissue
+    if parenchyma_ratio < 0.01:
         logger.warning("Rejected upload lacking brain tissue densities: parenchyma_ratio=%.4f", parenchyma_ratio)
         raise HTTPException(
             status_code=422,
@@ -189,22 +190,19 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
     except HTTPException:
         raise
     except Exception as exc:
-        logger.warning("Modality verification bypassed or checkpoint error: %s", exc)
+        logger.error("Modality verification failed: %s", exc)
+        raise HTTPException(status_code=503, detail="Modality verification model is unavailable.") from exc
 
     arch_ids = ["dlka", "vcanet", "patcher"]
     arch_runs = {}
-    any_detected = False
-    best_mask = None
-    best_area = 0.0
 
     for m_id in arch_ids:
         spec = MODEL_SPECS.get(m_id, MODEL_SPECS["dlka"])
         try:
             model = get_model(spec.id)
         except Exception as exc:
-            logger.error("Failed to load model %s: %s. Falling back to Deformable LKA.", spec.id, exc)
-            spec = MODEL_SPECS["dlka"]
-            model = get_model("dlka")
+            logger.error("Failed to load model %s: %s", spec.id, exc)
+            raise HTTPException(status_code=503, detail=f"Segmentation model {spec.label} is unavailable.") from exc
 
         tensor = prepare_image(image, spec.input_size, spec.norm_mean, spec.norm_std)
         with torch.inference_mode():
@@ -217,12 +215,13 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
 
         prob_np = probabilities.cpu().numpy()
 
-        # Anatomical constraint: Stroke lesions cannot exist in calvarial bone (gray > 185) or air outside skull (gray < 15)
+        # Anatomical constraint: no lesion in calvarial bone (saturated, gray >= 250) or air outside the skull (gray <= 15).
+        # Acute blood (~50-80 HU) maps to roughly 160-255 in the brain window, so the bone cutoff must stay near saturation.
         gray_aligned = np.asarray(
             image.convert("L").resize((prob_np.shape[1], prob_np.shape[0]), Image.BILINEAR),
             dtype=np.float32,
         )
-        intracranial_mask = (gray_aligned > 15) & (gray_aligned < 185)
+        intracranial_mask = (gray_aligned > 15) & (gray_aligned < 250)
         prob_np = np.where(intracranial_mask, prob_np, 0.0)
 
         raw_mask = (prob_np >= selected_threshold).astype(np.uint8) * 255
@@ -240,13 +239,9 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             positive_probs = prob_np[mask > 0]
             confidence = float(np.mean(positive_probs))
             label = "Acute Stroke Lesion Detected"
-            any_detected = True
-            if lesion_area_pct > best_area or best_mask is None:
-                best_mask = mask
-                best_area = lesion_area_pct
         else:
             max_p = float(np.max(prob_np)) if prob_np.size > 0 else 0.0
-            confidence = float(1.0 - max_p) if max_p < 0.5 else 0.95
+            confidence = float(1.0 - max_p)
             label = "No Acute Lesion Detected"
 
         arch_runs[m_id] = {
@@ -259,105 +254,36 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
             "lesion_area": lesion_area_pct,
         }
 
-    # Multiclass Disease Type Classification (Hemorrhagic vs Ischemic vs Normal)
-    # Harmonized with segmented lesion findings and CT radiologic tissue attenuation (Hounsfield Units)
-    base_cls_probs = [0.95, 0.025, 0.025]
+    # Multiclass Disease Type Classification (MaxViT): reported exactly as the model outputs it
     try:
         classifier = get_classifier()
         cls_tensor = prepare_image_for_classifier(image, torch.device("cpu"))
         with torch.inference_mode():
-            cls_logits = classifier(cls_tensor)[0]
-            base_cls_probs = cls_logits.softmax(dim=0).cpu().numpy().tolist()
+            cls_probs = classifier(cls_tensor)[0].softmax(dim=0).cpu().numpy().tolist()
     except Exception as exc:
-        logger.warning("Classification inference bypassed or failed: %s", exc)
+        logger.error("Disease classification failed: %s", exc)
+        raise HTTPException(status_code=503, detail="Disease classification model is unavailable.") from exc
 
-    def compute_model_classification(
-        mask_arr: np.ndarray,
-        is_detected: bool,
-        lesion_pct: float,
-    ) -> dict[str, object]:
-        p_norm, p_hem, p_isch = float(base_cls_probs[0]), float(base_cls_probs[1]), float(base_cls_probs[2])
+    top_idx = int(np.argmax(cls_probs))
+    top_class = CLASSIFICATION_CLASSES[top_idx]
+    study_cls_data = {
+        "predicted_class": top_class["id"],
+        "predicted_label": top_class["label"],
+        "confidence": round(float(cls_probs[top_idx]), 4),
+        "probabilities": {c["id"]: round(float(p), 4) for c, p in zip(CLASSIFICATION_CLASSES, cls_probs)},
+        "classes": [
+            {
+                "id": c["id"],
+                "label": c["label"],
+                "probability": round(float(p), 4),
+                "percentage": round(float(p) * 100.0, 1),
+            }
+            for c, p in zip(CLASSIFICATION_CLASSES, cls_probs)
+        ],
+    }
+    study_mask_color = _ISCHEMIC_COLOR if top_class["id"] == "ischemic" else _HEMORRHAGIC_COLOR
 
-        if is_detected and lesion_pct >= 0.05:
-            gray_aligned = np.asarray(
-                image.convert("L").resize((mask_arr.shape[1], mask_arr.shape[0]), Image.BILINEAR),
-                dtype=np.float32,
-            )
-            # Brain parenchyma: tissue density between ambient air (< 20) and calvarium bone (> 160)
-            brain_parenchyma = (gray_aligned > 20) & (gray_aligned < 160)
-            # Lesion pixels strictly inside parenchyma (exclude skull bone > 185)
-            lesion_in_brain = (mask_arr > 0) & (gray_aligned < 185)
-
-            if np.count_nonzero(lesion_in_brain) > 0 and np.count_nonzero(brain_parenchyma) > 0:
-                density_diff = float(np.mean(gray_aligned[lesion_in_brain]) - np.mean(gray_aligned[brain_parenchyma]))
-            else:
-                density_diff = 0.0
-
-            # Suppress normal probability to near zero (< 1.2%) when a lesion is confirmed
-            p_norm_adj = min(0.012, p_norm * 0.015)
-
-            # Radiologic density weighting:
-            # Hypodense cytotoxic edema (density_diff < -5.0 HU) -> Acute Ischemic Infarction (Yellow)
-            # Hyperdense acute extravasated blood (density_diff > +5.0 HU) -> Acute Hemorrhagic Stroke (Red)
-            if density_diff < -5.0:
-                w_isch = max(p_isch, 0.92) + (abs(density_diff) / 50.0)
-                w_hem = max(0.01, p_hem * 0.08)
-            elif density_diff > 5.0:
-                w_hem = max(p_hem, 0.92) + (density_diff / 50.0)
-                w_isch = max(0.01, p_isch * 0.08)
-            else:
-                sum_stroke = max(1e-5, p_hem + p_isch)
-                w_hem = p_hem / sum_stroke
-                w_isch = p_isch / sum_stroke
-
-            tot_w = max(1e-5, w_hem + w_isch)
-            rem = 1.0 - p_norm_adj
-            p_hem_final = round((w_hem / tot_w) * rem, 4)
-            p_isch_final = round((w_isch / tot_w) * rem, 4)
-            p_norm_final = round(1.0 - p_hem_final - p_isch_final, 4)
-            cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
-            top_idx = 1 if p_hem_final >= p_isch_final else 2
-        else:
-            # No lesion detected -> Clinically normal head CT
-            p_norm_final = max(0.965, p_norm)
-            rem = 1.0 - p_norm_final
-            sum_stroke = max(1e-5, p_hem + p_isch)
-            p_hem_final = round((p_hem / sum_stroke) * rem, 4)
-            p_isch_final = round(rem - p_hem_final, 4)
-            cls_probs_final = [p_norm_final, p_hem_final, p_isch_final]
-            top_idx = 0
-
-        top_class = CLASSIFICATION_CLASSES[top_idx]
-        return {
-            "predicted_class": top_class["id"],
-            "predicted_label": top_class["label"],
-            "confidence": round(float(cls_probs_final[top_idx]), 4),
-            "probabilities": {
-                c["id"]: round(float(p), 4)
-                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs_final)
-            },
-            "classes": [
-                {
-                    "id": c["id"],
-                    "label": c["label"],
-                    "probability": round(float(p), 4),
-                    "percentage": round(float(p) * 100.0, 1),
-                }
-                for c, p in zip(CLASSIFICATION_CLASSES, cls_probs_final)
-            ],
-        }
-
-    # Unified Study-Level Stroke Classification (Harmonized across all segmentation architectures)
-    fallback_empty_mask = np.zeros((image.height, image.width), dtype=np.uint8)
-    study_cls_data = compute_model_classification(
-        best_mask if best_mask is not None else fallback_empty_mask,
-        any_detected,
-        best_area,
-    )
-    study_stroke_class = study_cls_data["predicted_class"]
-    study_mask_color = _ISCHEMIC_COLOR if study_stroke_class == "ischemic" else _HEMORRHAGIC_COLOR
-
-    # Format output for all 3 models with harmonized classification and dynamic PACS mask colors
+    # Format output for all 3 models; the mask color follows the classifier's predicted type
     all_models = {}
     for m_id in arch_ids:
         run = arch_runs[m_id]
@@ -365,9 +291,8 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         mask = run["mask"]
         prob_np = run["prob_np"]
 
-        # Ensure all models segmenting this scan adhere to the study ground truth classification
-        model_cls_data = study_cls_data if any_detected else compute_model_classification(mask, run["detected"], run["lesion_area"])
-        model_mask_color = study_mask_color if any_detected else _HEMORRHAGIC_COLOR
+        model_cls_data = study_cls_data
+        model_mask_color = study_mask_color
 
         rgba_image = _mask_to_rgba(mask, color=model_mask_color)
         mask_pil = Image.fromarray(rgba_image, mode="RGBA")

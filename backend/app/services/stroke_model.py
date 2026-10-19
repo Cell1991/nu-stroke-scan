@@ -43,9 +43,10 @@ class ModelSpec:
 _DLKA_NORM_MEAN = [0.17936552250532273]
 _DLKA_NORM_STD = [0.30729273223622366]
 
-# Patcher normalization stats (CT HU / intensity stats: 54.305 / 255, 148.049 / 255)
-_PATCHER_NORM_MEAN = [54.305244 / 255.0]
-_PATCHER_NORM_STD = [148.0489 / 255.0]
+# Patcher was trained on the same 224 x 224 pipeline output and img_norm_cfg as D-LKA
+# (patcher_ct/local_configs/segformer/ours/patchformer_stroke.py)
+_PATCHER_NORM_MEAN = _DLKA_NORM_MEAN
+_PATCHER_NORM_STD = _DLKA_NORM_STD
 
 MODEL_SPECS: dict[str, ModelSpec] = {
     "vcanet": ModelSpec(
@@ -69,7 +70,7 @@ MODEL_SPECS: dict[str, ModelSpec] = {
     "patcher": ModelSpec(
         id="patcher",
         label="Patcher (SegFormer)",
-        input_size=256,
+        input_size=224,
         norm_mean=_PATCHER_NORM_MEAN,
         norm_std=_PATCHER_NORM_STD,
         outputs_probability=False,
@@ -137,7 +138,8 @@ def prepare_image_for_classifier(image: Image.Image, device: torch.device) -> Te
     imagenet_mean = torch.tensor([0.485, 0.456, 0.406], device=device).view(1, 3, 1, 1)
     imagenet_std = torch.tensor([0.229, 0.224, 0.225], device=device).view(1, 3, 1, 1)
 
-    grayscale = image.convert("L").resize((224, 224), Image.BILINEAR)
+    # Bicubic, as in training (PIL's default resample in classification_ct/dataset.py)
+    grayscale = image.convert("L").resize((224, 224), Image.BICUBIC)
     arr = np.asarray(grayscale, dtype=np.float32) / 255.0
     tensor = torch.from_numpy(arr).float().to(device).unsqueeze(0).unsqueeze(0).repeat(1, 3, 1, 1)
     tensor = (tensor - imagenet_mean) / imagenet_std
