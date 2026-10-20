@@ -149,15 +149,8 @@ async def _read_and_validate_upload(upload: UploadFile) -> tuple[bytes, Image.Im
     return raw, image
 
 
-async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold: float | None = None) -> dict[str, object]:
-    if model_id not in MODEL_SPECS:
-        model_id = "vcanet"
-
-    raw, image = await _read_and_validate_upload(upload)
-    selected_threshold = settings.model_threshold if threshold is None else max(0.01, min(0.99, float(threshold)))
-
-    # Modality Verification Gatekeeper (Valid Non-Contrast Brain CT vs Other/Invalid Image)
-    modality_info = None
+def _verify_modality(image: Image.Image, filename: str | None) -> dict[str, object]:
+    """Modality Verification Gatekeeper (Valid Non-Contrast Brain CT vs Other/Invalid Image)."""
     try:
         screener = get_modality_screener()
         mod_tensor = prepare_image_for_modality(image, torch.device("cpu"))
@@ -180,7 +173,7 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
         if not is_valid_modality:
             logger.warning(
                 "Upload '%s' failed modality verification: p_brain_ct=%.4f, p_non_ct=%.4f",
-                upload.filename, p_brain_ct, p_non_ct,
+                filename, p_brain_ct, p_non_ct,
             )
             pct = round(p_non_ct * 100.0, 1)
             raise HTTPException(
@@ -192,6 +185,23 @@ async def analyze_upload(upload: UploadFile, model_id: str = "vcanet", threshold
     except Exception as exc:
         logger.error("Modality verification failed: %s", exc)
         raise HTTPException(status_code=503, detail="Modality verification model is unavailable.") from exc
+    return modality_info
+
+
+async def validate_upload(upload: UploadFile) -> dict[str, object]:
+    """Upload-time check (Validate CT Modality): rule-based checks + ResNet-18 screener, no segmentation."""
+    _, image = await _read_and_validate_upload(upload)
+    return {"is_valid": True, "modality": _verify_modality(image, upload.filename), "width": image.width, "height": image.height}
+
+
+async def analyze_upload(upload: UploadFile, model_id: str = "dlka", threshold: float | None = None) -> dict[str, object]:
+    if model_id not in MODEL_SPECS:
+        model_id = "dlka"
+
+    raw, image = await _read_and_validate_upload(upload)
+    selected_threshold = settings.model_threshold if threshold is None else max(0.01, min(0.99, float(threshold)))
+    # Re-checked here too, so a direct API call cannot skip the upload-time validation
+    modality_info = _verify_modality(image, upload.filename)
 
     arch_ids = ["dlka", "vcanet", "patcher"]
     arch_runs = {}

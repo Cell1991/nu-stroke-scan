@@ -26,6 +26,7 @@ export default function Home() {
   const allModelsCacheRef = useRef<Record<string, CachedModelAnalysis>>({});
   const resultRef = useRef<PredictionResult | null>(null);
   const rafThresholdRef = useRef<number | null>(null);
+  const validationTokenRef = useRef(0);
 
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -377,9 +378,32 @@ export default function Home() {
     }
     setFile(selectedFile);
     setImageUrl(URL.createObjectURL(selectedFile));
+    void validateUpload(selectedFile);
+  }
+
+  // Upload Brain CT Scan <<include>> Validate CT Modality: rule-based checks + ResNet-18 run as soon as the file is chosen.
+  // A rejected image shows the INVALID SCAN card right away; runInference re-validates on the server as well.
+  async function validateUpload(selectedFile: File) {
+    const token = ++validationTokenRef.current;
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    let message: string | null = null;
+    try {
+      const res = await fetch("/api/validate", { method: "POST", body: formData });
+      if (!res.ok) {
+        const errPayload = await res.json().catch(() => ({}));
+        const m = errPayload.error || errPayload.detail?.message || errPayload.detail || `Server returned ${res.status}`;
+        message = typeof m === "string" ? m : JSON.stringify(m);
+      }
+    } catch {
+      message = "AI Backend Unreachable: Failed to fetch.";
+    }
+    // Ignore the answer if the user has already picked another file or cleared the study
+    if (message && token === validationTokenRef.current) setError(message);
   }
 
   function handleClearScan() {
+    validationTokenRef.current++;
     setFile(null);
     setImageUrl(null);
     setResult(null);

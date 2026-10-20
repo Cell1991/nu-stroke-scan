@@ -258,7 +258,7 @@ export async function exportClinicalReportFile({
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(71, 85, 105);
-    doc.text(`Estimated Lesion Area (ROI Volume) - ${result.lesionArea ?? 0}% of Brain Parenchyma   |   Urgent Review Recommended`, pad + 6, 74);
+    doc.text(`Estimated Lesion Area (ROI Volume) - ${result.lesionArea ?? 0}% of Image Pixels   |   Urgent Review Recommended`, pad + 6, 74);
   } else {
     doc.setFillColor(240, 253, 244);
     doc.setDrawColor(187, 247, 208);

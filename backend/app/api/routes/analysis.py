@@ -17,5 +17,5 @@ async def list_models() -> list[dict[str, str]]:
 
 
 @router.post("")
-async def analyze_image(file: UploadFile = File(...), model: str = Form("vcanet"), threshold: float = Form(0.5)) -> dict[str, object]:
+async def analyze_image(file: UploadFile = File(...), model: str = Form("dlka"), threshold: float = Form(0.5)) -> dict[str, object]:
     return await analyze_upload(file, model_id=model, threshold=threshold)

@@ -89,3 +89,17 @@ def test_reject_color_logo() -> None:
     detail = response.json().get("detail", "")
     assert "Brain CT" in str(detail)
 
+
+def test_validate_on_upload() -> None:
+    # Upload-time check: a CT-like slice passes, a blank image is rejected with the same 422 as /api/predict
+    ok = client.post("/api/validate", files={"file": ("scan.png", create_synthetic_brain_ct(), "image/png")})
+    assert ok.status_code == 200
+    assert ok.json()["is_valid"] is True and ok.json()["modality"]["is_valid"] is True
+
+    buf = io.BytesIO()
+    Image.new("RGB", (224, 224), color=(255, 255, 255)).save(buf, format="PNG")
+    buf.seek(0)
+    bad = client.post("/api/validate", files={"file": ("blank.png", buf, "image/png")})
+    assert bad.status_code == 422
+    assert "Brain CT" in str(bad.json().get("detail", ""))
+
